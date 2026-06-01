@@ -48,7 +48,15 @@ fn main() {
         return;
     }
 
-    let workspace_root = PathBuf::from(env::var("CARGO_WORKSPACE_DIR").unwrap());
+    let workspace_root = match env::var("CARGO_WORKSPACE_DIR") {
+        Ok(dir) => PathBuf::from(dir),
+        Err(_) => {
+            // When used as a [patch] dependency, CARGO_WORKSPACE_DIR may not be
+            // set.  Fall back to OUT_DIR + ancestors to find a writable root.
+            let out = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR set by cargo"));
+            out.ancestors().nth(4).unwrap_or(&out).to_path_buf()
+        }
+    };
     let temp_dir = workspace_root.join("temp");
     fs::create_dir_all(&temp_dir).expect("Failed to create temp directory");
 

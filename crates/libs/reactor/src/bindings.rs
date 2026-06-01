@@ -12090,6 +12090,13 @@ pub struct IPivotItemFactory_Vtbl {
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
 }
+/// A Windows.Foundation.Point value type (X, Y in f64).
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct Point {
+    pub X: f64,
+    pub Y: f64,
+}
 windows_core::imp::define_interface!(
     IPointerPoint,
     IPointerPoint_Vtbl,
@@ -12110,6 +12117,16 @@ impl IPointerPoint {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
+    pub fn get_Position(&self) -> windows_core::Result<Point> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).get_Position)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
 }
 #[repr(C)]
 #[doc(hidden)]
@@ -12119,7 +12136,10 @@ pub struct IPointerPoint_Vtbl {
     get_IsInContact: usize,
     get_PointerDeviceType: usize,
     get_PointerId: usize,
-    get_Position: usize,
+    pub get_Position: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut Point,
+    ) -> windows_core::HRESULT,
     pub get_Properties: unsafe extern "system" fn(
         *mut core::ffi::c_void,
         *mut *mut core::ffi::c_void,
@@ -17324,6 +17344,71 @@ impl IUIElement {
             ))
         }
     }
+    pub fn add_PointerMoved<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
+    where
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<PointerRoutedEventArgs>,
+            ) + 'static,
+    {
+        let handler: PointerEventHandler = {
+            let com = windows_core::imp::DelegateBox::<PointerEventHandler, F>::new(
+                &PointerEventHandlerBox::<F>::VTABLE,
+                handler,
+            );
+            unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        };
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            let token__ = (windows_core::Interface::vtable(self).add_PointerMoved)(
+                windows_core::Interface::as_raw(self),
+                windows_core::Interface::as_raw(&handler),
+                &mut result__,
+            )
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).remove_PointerMoved,
+            ))
+        }
+    }
+    pub fn add_PointerWheelChanged<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
+    where
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<PointerRoutedEventArgs>,
+            ) + 'static,
+    {
+        let handler: PointerEventHandler = {
+            let com = windows_core::imp::DelegateBox::<PointerEventHandler, F>::new(
+                &PointerEventHandlerBox::<F>::VTABLE,
+                handler,
+            );
+            unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        };
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            let token__ =
+                (windows_core::Interface::vtable(self).add_PointerWheelChanged)(
+                    windows_core::Interface::as_raw(self),
+                    windows_core::Interface::as_raw(&handler),
+                    &mut result__,
+                )
+                .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).remove_PointerWheelChanged,
+            ))
+        }
+    }
     pub fn add_PointerExited<F>(
         &self,
         handler: F,
@@ -17595,8 +17680,13 @@ pub struct IUIElement_Vtbl {
     ) -> windows_core::HRESULT,
     pub remove_PointerPressed:
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
-    add_PointerMoved: usize,
-    remove_PointerMoved: usize,
+    pub add_PointerMoved: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut i64,
+    ) -> windows_core::HRESULT,
+    pub remove_PointerMoved:
+        unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub add_PointerReleased: unsafe extern "system" fn(
         *mut core::ffi::c_void,
         *mut core::ffi::c_void,
@@ -17617,8 +17707,13 @@ pub struct IUIElement_Vtbl {
     remove_PointerCaptureLost: usize,
     add_PointerCanceled: usize,
     remove_PointerCanceled: usize,
-    add_PointerWheelChanged: usize,
-    remove_PointerWheelChanged: usize,
+    pub add_PointerWheelChanged: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut i64,
+    ) -> windows_core::HRESULT,
+    pub remove_PointerWheelChanged:
+        unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub add_Tapped: unsafe extern "system" fn(
         *mut core::ffi::c_void,
         *mut core::ffi::c_void,

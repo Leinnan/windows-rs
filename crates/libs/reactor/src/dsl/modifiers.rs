@@ -269,6 +269,30 @@ pub trait ElementExt: Sized {
         self
     }
 
+    /// Register a `PointerMoved` handler with position and button state.
+    fn on_pointer_moved<F>(mut self, f: F) -> Self
+    where
+        F: Fn(crate::core::pointer::PointerEventInfo) + 'static,
+    {
+        if let Some(m) = self.modifiers_mut() {
+            ensure_pointer_handlers(m).on_pointer_moved =
+                Some(crate::core::callback::Callback::new(f));
+        }
+        self
+    }
+
+    /// Register a `PointerWheelChanged` handler with delta and position.
+    fn on_pointer_wheel<F>(mut self, f: F) -> Self
+    where
+        F: Fn(crate::core::pointer::PointerWheelInfo) + 'static,
+    {
+        if let Some(m) = self.modifiers_mut() {
+            ensure_pointer_handlers(m).on_pointer_wheel =
+                Some(crate::core::callback::Callback::new(f));
+        }
+        self
+    }
+
     // ── Accessibility modifiers ──────────────────────────────────────────
 
     fn automation_name(mut self, name: impl Into<String>) -> Self {

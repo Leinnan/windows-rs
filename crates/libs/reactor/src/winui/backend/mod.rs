@@ -155,6 +155,8 @@ struct PointerRevokerSet {
     pressed: Option<windows_core::EventRevoker>,
     released: Option<windows_core::EventRevoker>,
     exited: Option<windows_core::EventRevoker>,
+    moved: Option<windows_core::EventRevoker>,
+    wheel: Option<windows_core::EventRevoker>,
 }
 
 impl Default for WinUIBackend {
@@ -4131,6 +4133,24 @@ impl Backend for WinUIBackend {
                 .ok();
         }
 
+        if let Some(cb) = handlers.on_pointer_moved.clone() {
+            tokens.moved = iue
+                .add_PointerMoved(move |sender, args| {
+                    let info = pointer_event_info(sender, args);
+                    cb.invoke(info);
+                })
+                .ok();
+        }
+
+        if let Some(cb) = handlers.on_pointer_wheel.clone() {
+            tokens.wheel = iue
+                .add_PointerWheelChanged(move |sender, args| {
+                    let info = pointer_wheel_info(sender, args);
+                    cb.invoke(info);
+                })
+                .ok();
+        }
+
         if let Some(cb) = handlers.on_pointer_exited.clone() {
             tokens.exited = iue
                 .add_PointerExited(move |_sender, _args| {
@@ -4182,6 +4202,43 @@ fn pointer_event_info(
     info.is_left_button_pressed = iprops.get_IsLeftButtonPressed().unwrap_or(false);
     info.is_right_button_pressed = iprops.get_IsRightButtonPressed().unwrap_or(false);
     info.is_middle_button_pressed = iprops.get_IsMiddleButtonPressed().unwrap_or(false);
+    if let Ok(pos) = ipoint.get_Position() {
+        info.x = pos.X;
+        info.y = pos.Y;
+    }
+    info
+}
+
+/// Extract scroll delta and position for a `PointerWheelChanged` callback.
+fn pointer_wheel_info(
+    sender: windows_core::InRef<'_, windows_core::IInspectable>,
+    args: windows_core::InRef<'_, Xaml::PointerRoutedEventArgs>,
+) -> crate::core::pointer::PointerWheelInfo {
+    let mut info = crate::core::pointer::PointerWheelInfo::default();
+    let Some(args) = args.as_ref() else {
+        return info;
+    };
+    let Ok(iargs) = args.cast::<Xaml::IPointerRoutedEventArgs>() else {
+        return info;
+    };
+    let relative: Option<Xaml::UIElement> = sender
+        .as_ref()
+        .and_then(|s| s.cast::<Xaml::UIElement>().ok());
+    let point = match relative.as_ref() {
+        Some(ue) => iargs.GetCurrentPoint(ue),
+        None => iargs.GetCurrentPoint(None),
+    };
+    let Ok(point) = point else {
+        return info;
+    };
+    let Ok(ipoint) = point.cast::<Xaml::IPointerPoint>() else {
+        return info;
+    };
+    if let Ok(pos) = ipoint.get_Position() {
+        info.x = pos.X;
+        info.y = pos.Y;
+    }
+    // MouseWheelDelta is not yet wired in bindings; delta stays 0.
     info
 }
 

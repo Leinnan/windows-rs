@@ -15,6 +15,8 @@ pub struct PointerHandlers {
     pub on_pointer_pressed: Option<Callback<PointerEventInfo>>,
     pub on_pointer_released: Option<Callback<PointerEventInfo>>,
     pub on_pointer_exited: Option<Callback<()>>,
+    pub on_pointer_moved: Option<Callback<PointerEventInfo>>,
+    pub on_pointer_wheel: Option<Callback<PointerWheelInfo>>,
 }
 
 impl PointerHandlers {
@@ -24,14 +26,26 @@ impl PointerHandlers {
             && self.on_pointer_pressed.is_none()
             && self.on_pointer_released.is_none()
             && self.on_pointer_exited.is_none()
+            && self.on_pointer_moved.is_none()
+            && self.on_pointer_wheel.is_none()
     }
 }
 
 /// Button state captured at a `PointerPressed` / `PointerReleased`
 /// callback. Non-mouse pointer kinds report all three as `false`.
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
 pub struct PointerEventInfo {
     pub is_left_button_pressed: bool,
     pub is_right_button_pressed: bool,
     pub is_middle_button_pressed: bool,
+    pub x: f64,
+    pub y: f64,
+}
+
+/// Wheel delta + position captured at a `PointerWheelChanged` callback.
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
+pub struct PointerWheelInfo {
+    pub delta: i32,
+    pub x: f64,
+    pub y: f64,
 }

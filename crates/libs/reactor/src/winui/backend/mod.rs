@@ -789,6 +789,15 @@ impl Backend for WinUIBackend {
                 (Prop::IsTextSelectionEnabled, PropValue::Bool(v), Handle::RichTextBlock(tb)) => {
                     tb.put_IsTextSelectionEnabled(*v)
                 }
+                (Prop::IsTextSelectionEnabled, PropValue::Unset, Handle::RichTextBlock(tb)) => {
+                    tb.put_IsTextSelectionEnabled(false)
+                }
+                (Prop::IsTextSelectionEnabled, PropValue::Bool(v), Handle::TextBlock(tb)) => {
+                    tb.put_IsTextSelectionEnabled(*v)
+                }
+                (Prop::IsTextSelectionEnabled, PropValue::Unset, Handle::TextBlock(tb)) => {
+                    tb.put_IsTextSelectionEnabled(false)
+                }
                 (Prop::TextWrappingWrap, PropValue::Bool(v), Handle::TextBlock(tb)) => {
                     let mode = if *v {
                         Xaml::TextWrapping::Wrap
@@ -1140,11 +1149,12 @@ impl Backend for WinUIBackend {
                 (Prop::Padding, PropValue::Unset, Handle::Border(br)) => {
                     br.put_Padding(to_xaml_thickness(Thickness::default()))
                 }
-                (Prop::Padding, PropValue::Thickness(t), _) => {
-                    if let Ok(ctl) = handle.as_framework_element().cast::<Xaml::Control>() {
+                (Prop::Padding, PropValue::Thickness(t), h) => {
+                    if let Ok(ctl) = h.as_framework_element().cast::<Xaml::Control>() {
                         ctl.cast::<Xaml::IControl>()?
                             .put_Padding(to_xaml_thickness(*t))
                     } else {
+                        diag::unhandled_modifier("set_prop", Prop::Padding, h);
                         Ok(())
                     }
                 }
@@ -1531,6 +1541,9 @@ impl Backend for WinUIBackend {
                     bmp.cast::<Xaml::IBitmapImage>()?.put_UriSource(&uri)?;
                     img.put_Source(&bmp.cast::<Xaml::ImageSource>()?)
                 }
+                (Prop::ImageSource, PropValue::SurfaceImageSource(sis), Handle::Image(img)) => {
+                    img.put_Source(&sis.image_source()?)
+                }
                 (Prop::ImageSource, PropValue::Unset, Handle::Image(img)) => img.put_Source(None),
                 (Prop::ImageStretch, PropValue::ImageStretch(s), Handle::Image(img)) => {
                     use ImageStretch as E;
@@ -1559,6 +1572,9 @@ impl Backend for WinUIBackend {
                 }
                 (Prop::CanReorderTabs, PropValue::Bool(v), Handle::TabView(tv)) => {
                     tv.put_CanReorderTabs(*v)
+                }
+                (Prop::IsAddTabButtonVisible, PropValue::Bool(v), Handle::TabView(tv)) => {
+                    tv.put_IsAddTabButtonVisible(*v)
                 }
                 (Prop::TabHeader, PropValue::Str(s), Handle::TabViewItem(ti)) => {
                     let tb = string_as_textblock(s)?;
@@ -1711,7 +1727,17 @@ impl Backend for WinUIBackend {
                     let tb = string_as_textblock(s)?;
                     pi.put_Header(&tb)
                 }
-                (Prop::BreadcrumbItems, PropValue::StrList(_), Handle::BreadcrumbBar(_)) => Ok(()),
+                (Prop::BreadcrumbItems, PropValue::StrList(items), Handle::BreadcrumbBar(bc)) => {
+                    let vec: Vec<Option<windows_core::IInspectable>> = items
+                        .iter()
+                        .map(|s| {
+                            let r = windows_reference::IReference::from(s.as_str());
+                            Some(r.into())
+                        })
+                        .collect();
+                    let ivec: windows_collections::IVector<windows_core::IInspectable> = vec.into();
+                    bc.put_ItemsSource(&ivec)
+                }
                 // ── W2: PasswordBox ───────────────────────────────────────────
                 (Prop::PasswordValue, PropValue::Str(s), Handle::PasswordBox(p)) => {
                     if p.get_Password().ok().as_deref() == Some(s.as_str()) {
@@ -2959,6 +2985,12 @@ impl Backend for WinUIBackend {
         for list in kids.values_mut() {
             list.retain(|c| *c != id);
         }
+        // Clean up auxiliary per-control maps that were previously missed,
+        // preventing stale entries (and their captured closures) from
+        // accumulating across mount/unmount cycles.
+        self.menu_click_handlers.borrow_mut().remove(&id);
+        self.command_bar_flyout_handlers.borrow_mut().remove(&id);
+        self.theme_brush_registry.borrow_mut().remove(&id);
     }
     fn attach_event(&mut self, id: ControlId, event: Event, handler: EventHandler) {
         let map = self.controls.borrow();
@@ -3216,6 +3248,17 @@ impl Backend for WinUIBackend {
             (Event::TabCloseRequested, _) => {
                 panic!("WinUIBackend::attach_event: TabCloseRequested on non-TabView {id}")
             }
+            (Event::AddTabButtonClick, Handle::TabView(tv)) => {
+                revokers.push(
+                    tv.add_AddTabButtonClick(move |_sender, _args| {
+                        handler.invoke();
+                    })
+                    .unwrap(),
+                );
+            }
+            (Event::AddTabButtonClick, _) => {
+                panic!("WinUIBackend::attach_event: AddTabButtonClick on non-TabView {id}")
+            }
             (Event::NavSelectionChanged, Handle::NavigationView(nv)) => {
                 revokers.push(
                     nv.add_SelectionChanged(move |_sender, args| {
@@ -3373,8 +3416,15 @@ impl Backend for WinUIBackend {
             (Event::PivotSelectionChanged, _) => {
                 panic!("WinUIBackend::attach_event: PivotSelectionChanged on non-Pivot {id}")
             }
-            (Event::BreadcrumbItemClicked, h @ Handle::BreadcrumbBar(_)) => {
-                diag::unhandled_event(id, event, h);
+            (Event::BreadcrumbItemClicked, Handle::BreadcrumbBar(bc)) => {
+                revokers.push(
+                    bc.add_ItemClicked(move |_sender, args| {
+                        if let Some(idx) = args.as_ref().and_then(|a| a.get_Index().ok()) {
+                            handler.invoke_i32(idx);
+                        }
+                    })
+                    .unwrap(),
+                );
             }
             (Event::BreadcrumbItemClicked, _) => {
                 panic!(
@@ -4290,16 +4340,25 @@ fn mount_static_tooltip_element(el: &Element) -> Option<Xaml::UIElement> {
         }
         Element::Image(img) => {
             let i = Xaml::Image::new().ok()?;
-            if !img.source.is_empty()
-                && let Ok(uri) = Xaml::Uri::CreateUri(img.source.as_str())
-                && let Ok(bmp) = Xaml::BitmapImage::new()
-            {
-                if let Ok(ibmp) = bmp.cast::<Xaml::IBitmapImage>() {
-                    let _ = ibmp.put_UriSource(&uri);
+            match &img.source {
+                ImageSource::Uri(uri_str) => {
+                    if let Ok(uri) = Xaml::Uri::CreateUri(uri_str.as_str())
+                        && let Ok(bmp) = Xaml::BitmapImage::new()
+                    {
+                        if let Ok(ibmp) = bmp.cast::<Xaml::IBitmapImage>() {
+                            let _ = ibmp.put_UriSource(&uri);
+                        }
+                        if let Ok(src) = bmp.cast::<Xaml::ImageSource>() {
+                            let _ = i.put_Source(&src);
+                        }
+                    }
                 }
-                if let Ok(src) = bmp.cast::<Xaml::ImageSource>() {
-                    let _ = i.put_Source(&src);
+                ImageSource::Surface(sis) => {
+                    if let Ok(src) = sis.image_source() {
+                        let _ = i.put_Source(&src);
+                    }
                 }
+                ImageSource::None => {}
             }
             i.cast::<Xaml::UIElement>().ok()
         }

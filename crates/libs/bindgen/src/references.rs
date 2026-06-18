@@ -11,16 +11,6 @@ pub struct ReferenceStage {
     path: String,
 }
 
-impl Default for ReferenceStage {
-    fn default() -> Self {
-        Self {
-            name: String::new(),
-            style: ReferenceStyle::Full,
-            path: String::new(),
-        }
-    }
-}
-
 impl ReferenceStage {
     #[track_caller]
     pub fn parse(mut arg: &str) -> Self {
@@ -85,7 +75,9 @@ impl References {
             stage
                 .into_iter()
                 .map(|stage| {
-                    let filter = Filter::new(reader, &[&stage.path], &[]);
+                    let entries = filter_parser::parse_filter_entry(&stage.path);
+                    let resolved = filter_parser::resolve_entries(reader, &entries);
+                    let filter = Filter::from_resolved(reader, &resolved);
 
                     Reference {
                         name: stage.name,

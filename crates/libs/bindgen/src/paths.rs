@@ -2,24 +2,15 @@ use super::*;
 
 impl Config<'_> {
     pub fn write_core(&self) -> TokenStream {
-        self.write_specific("windows_core")
-    }
-
-    pub fn write_result(&self) -> TokenStream {
-        self.write_specific("windows_result")
-    }
-
-    pub fn write_strings(&self) -> TokenStream {
-        self.write_specific("windows_strings")
-    }
-
-    fn write_specific(&self, specific: &str) -> TokenStream {
         if self.bindgen.style.is_sys() {
-            if self.bindgen.layout.is_package() || self.bindgen.deps != DepMode::None {
+            if self.bindgen.layout.is_package() {
+                // Package mode generates the `windows-sys` crate itself.
                 quote! { windows_sys::core:: }
             } else if self.bindgen.layout.is_flat() {
+                // Flat sys bindings define core types inline (no prefix needed).
                 quote! {}
             } else {
+                // Module-based sys bindings reference root-level inline defs.
                 let mut path = String::new();
 
                 for _ in 0..self.namespace.split('.').count() {
@@ -28,10 +19,8 @@ impl Config<'_> {
 
                 path.parse().unwrap()
             }
-        } else if self.bindgen.deps != DepMode::Specific {
-            quote! { windows_core:: }
         } else {
-            format!("{specific}::").parse().unwrap()
+            quote! { windows_core:: }
         }
     }
 

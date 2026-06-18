@@ -1,0 +1,3 @@
+filter = "Test.IFoo::Direct"
+filters = ["Test.IFoo::get_Name"]
+references = ["../../../libs/bindgen/default"]

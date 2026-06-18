@@ -4,7 +4,6 @@
 
 use std::any::Any;
 
-use windows_reactor::core::backend::{Backend, ControlId, ControlKind, Prop, PropValue};
 use windows_reactor::*;
 
 fn labeled_row(label: &str, value: Element) -> Element {
@@ -57,13 +56,13 @@ impl CustomElement for BadgeButton {
     }
     fn mount(&self, backend: &mut dyn Backend) -> ControlId {
         let id = backend.create(ControlKind::Button);
-        backend.set_prop(id, Prop::ButtonContent, PropValue::Str(self.rendered()));
+        backend.set_prop(id, Prop::Content, &PropValue::Str(self.rendered()));
         id
     }
     fn update(&self, prev: &dyn CustomElement, id: ControlId, backend: &mut dyn Backend) {
         let prev = prev.as_any().downcast_ref::<BadgeButton>().unwrap();
         if prev.rendered() != self.rendered() {
-            backend.set_prop(id, Prop::ButtonContent, PropValue::Str(self.rendered()));
+            backend.set_prop(id, Prop::Content, &PropValue::Str(self.rendered()));
         }
     }
 }

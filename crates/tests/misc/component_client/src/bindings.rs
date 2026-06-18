@@ -11,7 +11,7 @@ impl Callback {
     pub fn new<F: Fn(i32) -> windows_core::Result<i32> + Send + 'static>(invoke: F) -> Self {
         let com =
             windows_core::imp::DelegateBox::<Callback, F>::new(&CallbackBox::<F>::VTABLE, invoke);
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke(&self, a: i32) -> windows_core::Result<i32> {
         unsafe {
@@ -26,7 +26,6 @@ impl Callback {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct Callback_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(
@@ -194,7 +193,7 @@ unsafe impl Sync for Class {}
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Flags(pub u32);
 impl Flags {
-    pub const Ok: Self = Self(0u32);
+    pub const Ok: Self = Self(0);
 }
 impl windows_core::TypeKind for Flags {
     type TypeKind = windows_core::CopyType;
@@ -246,7 +245,6 @@ impl windows_core::RuntimeType for IClass {
         windows_core::imp::ConstBuffer::from_slice(b"test_component.IClass");
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IClass_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Property:
@@ -328,7 +326,6 @@ impl IThing_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IThing_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Method: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,

@@ -12,7 +12,7 @@ pub mod Test {
         windows_core::IInspectable
     );
     impl IFoo {
-        pub fn Keep(&self) -> windows_result::Result<i32> {
+        pub fn Keep(&self) -> windows_core::Result<i32> {
             unsafe {
                 let mut result__ = core::mem::zeroed();
                 (windows_core::Interface::vtable(self).Keep)(
@@ -27,12 +27,9 @@ pub mod Test {
         const NAME: &'static str = "Test.IFoo";
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct IFoo_Vtbl {
         pub base__: windows_core::IInspectable_Vtbl,
         pub Keep:
-            unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_result::HRESULT,
-        Mute: usize,
-        Default: usize,
+            unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     }
 }

@@ -8,7 +8,6 @@ pub mod Test {
         windows_core::IInspectable,
         IBase
     );
-    impl Base {}
     impl windows_core::RuntimeType for Base {
         const SIGNATURE: windows_core::imp::ConstBuffer =
             windows_core::imp::ConstBuffer::for_class::<Self, IBase>();
@@ -47,7 +46,6 @@ pub mod Test {
         }
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct IBase_Vtbl {
         pub base__: windows_core::IInspectable_Vtbl,
     }
@@ -78,7 +76,6 @@ pub mod Test {
         }
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct ILeaf_Vtbl {
         pub base__: windows_core::IInspectable_Vtbl,
     }
@@ -113,7 +110,6 @@ pub mod Test {
         }
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct IMiddle_Vtbl {
         pub base__: windows_core::IInspectable_Vtbl,
     }
@@ -127,7 +123,6 @@ pub mod Test {
         ILeaf
     );
     windows_core::imp::required_hierarchy!(Leaf, IBase, IMiddle, Middle, Base);
-    impl Leaf {}
     impl windows_core::RuntimeType for Leaf {
         const SIGNATURE: windows_core::imp::ConstBuffer =
             windows_core::imp::ConstBuffer::for_class::<Self, ILeaf>();
@@ -149,7 +144,6 @@ pub mod Test {
         IMiddle
     );
     windows_core::imp::required_hierarchy!(Middle, IBase, Base);
-    impl Middle {}
     impl windows_core::RuntimeType for Middle {
         const SIGNATURE: windows_core::imp::ConstBuffer =
             windows_core::imp::ConstBuffer::for_class::<Self, IMiddle>();

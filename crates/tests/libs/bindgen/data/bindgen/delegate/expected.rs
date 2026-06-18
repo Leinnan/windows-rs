@@ -13,7 +13,7 @@ impl DeferralCompletedHandler {
             &DeferralCompletedHandlerBox::<F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke(&self) -> windows_core::Result<()> {
         unsafe {
@@ -23,7 +23,6 @@ impl DeferralCompletedHandler {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct DeferralCompletedHandler_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(this: *mut core::ffi::c_void) -> windows_core::HRESULT,

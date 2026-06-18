@@ -10,16 +10,16 @@ pub struct Config<'a> {
     pub implement: Option<&'a Implements>,
     pub derive: &'a Derive,
     pub link: &'a str,
-    pub warnings: &'a WarningBuilder,
     pub namespace: &'static str,
     /// Delegates that are exclusively used as parameters in `add_*` SpecialName
     /// methods (event handlers). In minimal mode these delegates have their
     /// `new()` and `Invoke()` methods suppressed because the event-add wrapper
     /// inlines the DelegateBox construction directly.
     pub event_only_delegates: &'a HashSet<TypeName>,
-    /// When present, the minimal filter controls method emission directly using
-    /// raw metadata names, bypassing the Filter's method-level logic.
-    pub minimal_filter: Option<&'a MinimalFilter>,
+    /// `true` when MinimalTypeMap was used for type closure — enables
+    /// minimal-style method emission on exclusive interfaces (since their
+    /// owning class may not be in the type map).
+    pub minimal_closure: bool,
 }
 
 impl Config<'_> {
@@ -45,27 +45,14 @@ impl Config<'_> {
     }
 
     /// Returns `true` if the given method should be emitted (not demoted).
-    /// In minimal mode, checks directly against the MinimalFilter using
-    /// raw metadata names. Otherwise falls back to the Filter.
     pub fn includes_method(&self, type_name: TypeName, method: MethodDef) -> bool {
-        if let Some(mf) = self.minimal_filter {
-            // If `--implement` requests this interface, keep all methods.
-            if let Some(implements) = self.implement {
-                if implements.matches(type_name) {
-                    return true;
-                }
-            }
-            // In minimal mode, check both the raw method name and any overload name.
-            if mf.includes_method(type_name, method.name()) {
+        // If `--implement` requests this interface, keep all methods.
+        if let Some(implements) = self.implement {
+            if implements.matches(type_name) {
                 return true;
             }
-            if let Some(overload) = method_overload_name(method) {
-                return mf.includes_method(type_name, &overload);
-            }
-            false
-        } else {
-            self.filter.includes_method(type_name, method)
         }
+        self.filter.includes_method(type_name, method)
     }
 }
 

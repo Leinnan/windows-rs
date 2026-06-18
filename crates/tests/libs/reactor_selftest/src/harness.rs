@@ -23,10 +23,10 @@ use crate::bindings::{
 };
 use crate::bindings::{SolidColorBrush, VisualTreeHelper};
 
-use windows_reactor::core::component::Component;
-use windows_reactor::core::render_host::RenderHost;
-use windows_reactor::winui::WinUIBackend;
-use windows_reactor::winui::dispatcher::WinUIDispatcher;
+use windows_reactor::Component;
+use windows_reactor::RenderHost;
+use windows_reactor::WinUIBackend;
+use windows_reactor::WinUIDispatcher;
 
 use crate::exec::YieldLow;
 
@@ -106,14 +106,14 @@ impl Harness {
             .cast::<crate::bindings::IGrid>()?
             .get_ColumnDefinitions()?;
         let star_one = GridLength {
-            Value: 1.0,
-            GridUnitType: GridUnitType::Star,
+            value: 1.0,
+            grid_unit_type: GridUnitType::Star,
         };
         for i in 0..total {
             let cd = ColumnDefinition::new()?;
             cd.cast::<crate::bindings::IColumnDefinition>()?
                 .put_Width(star_one)?;
-            cols.cast::<windows_collections::IVector<crate::bindings::ColumnDefinition>>()?
+            cols.cast::<windows_collections::IVector<ColumnDefinition>>()?
                 .Append(&cd)?;
             let seg = Border::new()?;
             seg.cast::<crate::bindings::IBorder>()?
@@ -123,7 +123,7 @@ impl Harness {
             segment_bar
                 .cast::<crate::bindings::IPanel>()?
                 .get_Children()?
-                .cast::<windows_collections::IVector<crate::bindings::UIElement>>()?
+                .cast::<windows_collections::IVector<UIElement>>()?
                 .Append(&seg_ui)?;
             inner.segments.borrow_mut().push(seg);
         }
@@ -133,18 +133,18 @@ impl Harness {
             .put_Background(&solid_brush(180, 0, 0, 0)?)?;
         pill.cast::<crate::bindings::IBorder>()?.put_CornerRadius(
             crate::bindings::CornerRadius {
-                TopLeft: 4.0,
-                TopRight: 4.0,
-                BottomRight: 4.0,
-                BottomLeft: 4.0,
+                top_left: 4.0,
+                top_right: 4.0,
+                bottom_right: 4.0,
+                bottom_left: 4.0,
             },
         )?;
         pill.cast::<crate::bindings::IBorder>()?
             .put_Padding(Thickness {
-                Left: 8.0,
-                Top: 2.0,
-                Right: 8.0,
-                Bottom: 2.0,
+                left: 8.0,
+                top: 2.0,
+                right: 8.0,
+                bottom: 2.0,
             })?;
         pill.cast::<crate::bindings::IFrameworkElement>()?
             .put_HorizontalAlignment(HorizontalAlignment::Left)?;
@@ -152,10 +152,10 @@ impl Harness {
             .put_VerticalAlignment(VerticalAlignment::Center)?;
         pill.cast::<crate::bindings::IFrameworkElement>()?
             .put_Margin(Thickness {
-                Left: 12.0,
-                Top: 0.0,
-                Right: 0.0,
-                Bottom: 0.0,
+                left: 12.0,
+                top: 0.0,
+                right: 0.0,
+                bottom: 0.0,
             })?;
         pill.cast::<crate::bindings::IUIElement>()?
             .put_IsHitTestVisible(false)?;
@@ -172,12 +172,12 @@ impl Harness {
         titlebar_area
             .cast::<crate::bindings::IPanel>()?
             .get_Children()?
-            .cast::<windows_collections::IVector<crate::bindings::UIElement>>()?
+            .cast::<windows_collections::IVector<UIElement>>()?
             .Append(&bar_ui)?;
         titlebar_area
             .cast::<crate::bindings::IPanel>()?
             .get_Children()?
-            .cast::<windows_collections::IVector<crate::bindings::UIElement>>()?
+            .cast::<windows_collections::IVector<UIElement>>()?
             .Append(&pill_ui)?;
 
         let root = Grid::new()?;
@@ -185,32 +185,32 @@ impl Harness {
             .cast::<crate::bindings::IGrid>()?
             .get_RowDefinitions()?;
         let auto = GridLength {
-            Value: 0.0,
-            GridUnitType: GridUnitType::Auto,
+            value: 0.0,
+            grid_unit_type: GridUnitType::Auto,
         };
         let row0 = RowDefinition::new()?;
         row0.cast::<crate::bindings::IRowDefinition>()?
             .put_Height(auto)?;
-        rows.cast::<windows_collections::IVector<crate::bindings::RowDefinition>>()?
+        rows.cast::<windows_collections::IVector<RowDefinition>>()?
             .Append(&row0)?;
         let row1 = RowDefinition::new()?;
         row1.cast::<crate::bindings::IRowDefinition>()?
             .put_Height(star_one)?;
-        rows.cast::<windows_collections::IVector<crate::bindings::RowDefinition>>()?
+        rows.cast::<windows_collections::IVector<RowDefinition>>()?
             .Append(&row1)?;
 
         let titlebar_ui: UIElement = titlebar_area.cast()?;
         Grid::SetRow(&titlebar_ui.cast::<FrameworkElement>()?, 0)?;
         root.cast::<crate::bindings::IPanel>()?
             .get_Children()?
-            .cast::<windows_collections::IVector<crate::bindings::UIElement>>()?
+            .cast::<windows_collections::IVector<UIElement>>()?
             .Append(&titlebar_ui)?;
 
         let content_ui: UIElement = inner.content_area.cast()?;
         Grid::SetRow(&content_ui.cast::<FrameworkElement>()?, 1)?;
         root.cast::<crate::bindings::IPanel>()?
             .get_Children()?
-            .cast::<windows_collections::IVector<crate::bindings::UIElement>>()?
+            .cast::<windows_collections::IVector<UIElement>>()?
             .Append(&content_ui)?;
 
         let root_ui: UIElement = root.cast()?;
@@ -310,8 +310,7 @@ impl Harness {
 
         let host_for_post = host.clone_inner();
         let content = inner.content_area.clone();
-        let last_attached: Rc<Cell<Option<windows_reactor::core::backend::ControlId>>> =
-            Rc::new(Cell::new(None));
+        let last_attached: Rc<Cell<Option<windows_reactor::ControlId>>> = Rc::new(Cell::new(None));
         host.set_post_render(move |new_id| {
             if last_attached.get() == new_id {
                 return;
@@ -404,6 +403,25 @@ impl Harness {
         false
     }
 
+    /// Like [`render_until`](Self::render_until), but does not emit a
+    /// diagnostic tree dump on timeout. Use for conditions that are
+    /// expected to time out (e.g. known-flaky WinUI programmatic input).
+    pub async fn render_until_quiet<F>(&self, _label: &str, mut pred: F) -> bool
+    where
+        F: FnMut(&Harness) -> bool,
+    {
+        const MAX_ITERATIONS: u32 = 30;
+        self.render().await;
+        for _ in 0..MAX_ITERATIONS {
+            if pred(self) {
+                return true;
+            }
+            YieldLow::new(self.inner.dispatcher.clone()).await;
+            self.render().await;
+        }
+        pred(self)
+    }
+
     fn is_idle(&self) -> bool {
         self.inner
             .host
@@ -425,16 +443,15 @@ impl Harness {
         F: FnOnce() -> String,
     {
         if ok {
-            println!("ok {name}");
-        } else {
-            let d = diag();
-            if d.is_empty() {
-                println!("not ok {name}");
-            } else {
-                println!("not ok {name} - {d}");
-            }
-            self.inner.failures.set(self.inner.failures.get() + 1);
+            return;
         }
+        let d = diag();
+        if d.is_empty() {
+            println!("not ok {name}");
+        } else {
+            println!("not ok {name} - {d}");
+        }
+        self.inner.failures.set(self.inner.failures.get() + 1);
         let _ = std::io::stdout().flush();
     }
 
@@ -461,6 +478,27 @@ impl Harness {
     pub fn check_skip(&self, name: &str, reason: &str) {
         println!("ok {name} # SKIP {reason}");
         let _ = std::io::stdout().flush();
+    }
+
+    /// Begin capturing stderr output. Returns a [`StderrCapture`] that,
+    /// when finished, yields the captured bytes as a string. Use this to
+    /// detect `windows-reactor:` diagnostic warnings emitted by the
+    /// backend's `eprintln!` calls.
+    #[allow(clippy::unused_self)]
+    pub fn capture_stderr(&self) -> StderrCapture {
+        StderrCapture::start()
+    }
+
+    /// Assert that the captured stderr contains no `windows-reactor:`
+    /// diagnostic lines.
+    pub fn check_no_reactor_warnings(&self, name: &str, captured: &str) {
+        let warnings: Vec<&str> = captured
+            .lines()
+            .filter(|l| l.contains("windows-reactor:"))
+            .collect();
+        self.check_with(name, warnings.is_empty(), || {
+            format!("{} warning(s): {}", warnings.len(), warnings.join("; "))
+        });
     }
 
     /// Emit a free-form TAP diagnostic comment. Useful from driver helpers
@@ -592,7 +630,7 @@ impl Harness {
 
     /// Set the underlying WinUI value on the first CheckBox in the tree.
     /// Fires the Checked/Unchecked event the reactor has wired, which in
-    /// turn drives any `on_changed` callback.
+    /// turn drives any `on_checked` callback.
     pub fn set_checkbox_value(&self, checked: bool) -> Result<()> {
         let Some(cb) = self.find_first::<CheckBox>(&|_| true) else {
             self.diag("set_checkbox_value: no CheckBox found in visual tree");
@@ -698,22 +736,18 @@ impl Harness {
             return Err(Error::empty());
         };
         let btn = btn.clone();
-        self.report_hresult("set_radio_buttons_selected_index", move || {
-            let element: UIElement = btn.cast()?;
-            let peer = match crate::bindings::FrameworkElementAutomationPeer::FromElement(&element)
-            {
-                Ok(p) => p,
-                Err(_) => {
-                    crate::bindings::FrameworkElementAutomationPeer::CreatePeerForElement(&element)?
-                }
-            };
-            let pattern = peer
-                .cast::<crate::bindings::IAutomationPeer>()?
-                .GetPattern(crate::bindings::PatternInterface::Invoke)?;
-            let invoke: crate::bindings::IInvokeProvider = pattern.cast()?;
-            invoke.Invoke()?;
-            Ok(())
-        })
+        let element: UIElement = btn.cast()?;
+        let peer = match crate::bindings::FrameworkElementAutomationPeer::FromElement(&element) {
+            Ok(p) => p,
+            Err(_) => {
+                crate::bindings::FrameworkElementAutomationPeer::CreatePeerForElement(&element)?
+            }
+        };
+        let pattern = peer
+            .cast::<crate::bindings::IAutomationPeer>()?
+            .GetPattern(PatternInterface::Invoke)?;
+        let invoke: IInvokeProvider = pattern.cast()?;
+        invoke.Invoke()
     }
 
     /// Set the selected index on the first ComboBox in the tree.
@@ -773,7 +807,7 @@ fn dump_node(node: &DependencyObject, depth: usize, out: &mut String) {
         out.push_str("  ");
     }
     let class_name = node
-        .cast::<windows_core::IInspectable>()
+        .cast::<IInspectable>()
         .ok()
         .and_then(|i| i.GetRuntimeClassName().ok())
         .map_or_else(|| "<unknown>".into(), |h| h.to_string_lossy());
@@ -830,17 +864,12 @@ fn solid_brush(a: u8, r: u8, g: u8, b: u8) -> Result<SolidColorBrush> {
     let brush = SolidColorBrush::new()?;
     brush
         .cast::<crate::bindings::ISolidColorBrush>()?
-        .put_Color(Color {
-            A: a,
-            R: r,
-            G: g,
-            B: b,
-        })?;
+        .put_Color(Color { a, r, g, b })?;
     Ok(brush)
 }
 
-fn content_string(content: &windows_core::IInspectable) -> Option<String> {
-    let pv: windows_reference::IReference<windows_core::HSTRING> = content.cast().ok()?;
+fn content_string(content: &IInspectable) -> Option<String> {
+    let pv: windows_reference::IReference<HSTRING> = content.cast().ok()?;
     Some(pv.Value().ok()?.to_string_lossy())
 }
 
@@ -855,4 +884,111 @@ fn window_hwnd(window: &Window) -> Result<HWND> {
     let mut hwnd = HWND(std::ptr::null_mut());
     unsafe { native.WindowHandle(&mut hwnd as *mut HWND).ok()? };
     Ok(hwnd)
+}
+
+// ── Stderr capture ─────────────────────────────────────────────────────
+
+type RawHandle = *mut core::ffi::c_void;
+const STD_ERROR_HANDLE: u32 = 0xFFFF_FFF4; // (DWORD)-12
+
+unsafe extern "system" {
+    fn GetStdHandle(nStdHandle: u32) -> RawHandle;
+    fn SetStdHandle(nStdHandle: u32, hHandle: RawHandle) -> i32;
+    fn CreatePipe(
+        hReadPipe: *mut RawHandle,
+        hWritePipe: *mut RawHandle,
+        lpPipeAttributes: *const core::ffi::c_void,
+        nSize: u32,
+    ) -> i32;
+    fn PeekNamedPipe(
+        hNamedPipe: RawHandle,
+        lpBuffer: *mut core::ffi::c_void,
+        nBufferSize: u32,
+        lpBytesRead: *mut u32,
+        lpTotalBytesAvail: *mut u32,
+        lpBytesLeftThisMessage: *mut u32,
+    ) -> i32;
+    fn ReadFile(
+        hFile: RawHandle,
+        lpBuffer: *mut u8,
+        nNumberOfBytesToRead: u32,
+        lpNumberOfBytesRead: *mut u32,
+        lpOverlapped: *mut core::ffi::c_void,
+    ) -> i32;
+    fn CloseHandle(hObject: RawHandle) -> i32;
+}
+
+/// Captures stderr output by redirecting the Win32 standard error handle
+/// to an anonymous pipe. Rust's `eprintln!` calls `GetStdHandle` on each
+/// write, so `SetStdHandle` is the correct redirection mechanism.
+pub struct StderrCapture {
+    original: RawHandle,
+    write_end: RawHandle,
+    read_end: RawHandle,
+}
+
+impl StderrCapture {
+    pub fn start() -> Self {
+        unsafe {
+            let original = GetStdHandle(STD_ERROR_HANDLE);
+            let mut read_end: RawHandle = core::ptr::null_mut();
+            let mut write_end: RawHandle = core::ptr::null_mut();
+            // Use a 1 MB buffer so panic backtraces (RUST_BACKTRACE=1 on CI)
+            // don't fill the pipe and deadlock the write side.
+            CreatePipe(
+                &mut read_end,
+                &mut write_end,
+                core::ptr::null(),
+                1024 * 1024,
+            );
+            SetStdHandle(STD_ERROR_HANDLE, write_end);
+            Self {
+                original,
+                write_end,
+                read_end,
+            }
+        }
+    }
+
+    pub fn finish(self) -> String {
+        unsafe {
+            let _ = std::io::stderr().flush();
+            SetStdHandle(STD_ERROR_HANDLE, self.original);
+            CloseHandle(self.write_end);
+
+            let mut buf = vec![0u8; 65536];
+            let mut total = 0usize;
+            loop {
+                let mut avail: u32 = 0;
+                if PeekNamedPipe(
+                    self.read_end,
+                    core::ptr::null_mut(),
+                    0,
+                    core::ptr::null_mut(),
+                    &mut avail,
+                    core::ptr::null_mut(),
+                ) == 0
+                    || avail == 0
+                {
+                    break;
+                }
+                let mut read: u32 = 0;
+                let to_read = avail.min((buf.len() - total) as u32);
+                ReadFile(
+                    self.read_end,
+                    buf.as_mut_ptr().add(total),
+                    to_read,
+                    &mut read,
+                    core::ptr::null_mut(),
+                );
+                total += read as usize;
+                if total >= buf.len() {
+                    break;
+                }
+            }
+            CloseHandle(self.read_end);
+            buf.truncate(total);
+            String::from_utf8_lossy(&buf).into_owned()
+        }
+    }
 }

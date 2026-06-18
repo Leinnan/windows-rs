@@ -59,10 +59,7 @@ impl Interface {
             .methods()
             .map(|def| {
                 let method = Method::new(def, &self.generics, config.reader);
-                if !config.bindgen.style.is_minimal() && !method.dependencies.included(config) {
-                    config
-                        .warnings
-                        .skip_method(method.def, &method.dependencies, config);
+                if !config.minimal_closure && !method.dependencies.included(config) {
                     MethodOrName::Name(method.def)
                 } else if !config.includes_method(type_name, def) {
                     // Method-level filter demoted this slot to opaque.
@@ -82,7 +79,7 @@ impl Interface {
         let type_name = self.def.type_name();
         self.def.methods().any(|def| {
             let method = Method::new(def, &self.generics, config.reader);
-            (!config.bindgen.style.is_minimal() && !method.dependencies.included(config))
+            (!config.minimal_closure && !method.dependencies.included(config))
                 || !config.includes_method(type_name, def)
         })
     }
@@ -107,9 +104,21 @@ impl Interface {
 
         let vtbl = {
             let virtual_names = &mut MethodNames::for_style(&config.bindgen.style);
-            let result = config.write_result();
+            let result = config.write_core();
 
-            let vtbl_methods = methods.iter().map(|method| match method {
+            // Drop trailing usize slots — nothing indexes past the last real
+            // method, so they waste space and compile time.
+            let methods_for_vtbl: &[MethodOrName] = {
+                let last_real = methods
+                    .iter()
+                    .rposition(|m| matches!(m, MethodOrName::Method(_)));
+                match last_real {
+                    Some(pos) => &methods[..=pos],
+                    None => &[],
+                }
+            };
+
+            let vtbl_methods = methods_for_vtbl.iter().map(|method| match method {
                 MethodOrName::Method(method) => {
                     let name = virtual_names.add(method.def);
                     let vtbl = method.write_abi(config, false);
@@ -138,10 +147,10 @@ impl Interface {
                 }
             });
 
-            let hide_vtbl = if config.bindgen.style.is_sys() {
-                quote! {}
-            } else {
+            let hide_vtbl = if config.bindgen.layout.is_package() {
                 quote! { #[doc(hidden)] }
+            } else {
+                quote! {}
             };
 
             let core = config.write_core();
@@ -180,7 +189,7 @@ impl Interface {
                 // In minimal mode, NAME is only needed for interfaces that are
                 // being implemented (for GetRuntimeClassName). The trait provides
                 // an empty default, so omitting it is safe.
-                let name_const = if config.bindgen.style.is_minimal()
+                let name_const = if config.minimal_closure
                     && !config.should_implement(type_name, false)
                 {
                     quote! {}
@@ -215,7 +224,7 @@ impl Interface {
                 // In minimal mode, NAME on parameterized interfaces is only needed
                 // when the interface is implemented (for GetRuntimeClassName via
                 // RUNTIME_CLASS_NAME). Skip it otherwise.
-                let name_const = if config.bindgen.style.is_minimal()
+                let name_const = if config.minimal_closure
                     && !config.should_implement(type_name, false)
                 {
                     quote! {}
@@ -270,7 +279,7 @@ impl Interface {
                     let interfaces: Vec<_> = required_interfaces
                         .iter()
                         .filter(|ty| {
-                            if config.bindgen.style.is_minimal() {
+                            if config.minimal_closure {
                                 let tn = Type::Interface((*ty).clone()).type_name();
                                 config.types.contains_key(&tn)
                             } else {
@@ -300,39 +309,69 @@ impl Interface {
                 }
             }
 
-            // Even in `minimal` mode, exclusive instance interfaces still need their own-vtable
-            // method block; otherwise WinRT class default interfaces would lose their callable
-            // wrappers entirely. Exclusive factory interfaces (those referenced from the class
-            // via Activatable/Static/Composable) are already exposed through the class, so we
-            // can suppress their methods here to keep call sites concise.
-            //
-            // Types marked with `?Ns.Type` in `--filter` are "trait-only": their `_Impl` trait
-            // and vtable are still emitted (so implementers can stub the methods and the ABI is
-            // preserved), but the inherent `impl IFace { ... }` caller-side wrapper block is
-            // suppressed. This is used for required-but-uncalled interfaces (e.g.
-            // `IPropertyValue` on an `IReference<T>` impl) where no projection caller invokes
-            // the methods through this type.
-            let is_factory =
-                is_exclusive && config.bindgen.style.is_minimal() && self.is_factory(config.reader);
-            let is_trait_only = config.filter.is_trait_only(type_name);
-            if !is_exclusive || (config.bindgen.style.is_minimal() && !is_factory) {
-                if !is_trait_only {
-                    let method_names = &mut MethodNames::for_style(&config.bindgen.style);
-                    let virtual_names = &mut MethodNames::for_style(&config.bindgen.style);
-                    let mut method_tokens = TokenStream::new();
+            // Even in `minimal` mode (or when MinimalTypeMap is active), exclusive instance
+            // interfaces still need their own-vtable method block; otherwise WinRT class
+            // default interfaces would lose their callable wrappers entirely. Exclusive
+            // factory interfaces (those referenced from the class via
+            // Activatable/Static/Composable) are already exposed through the class, and
+            // exclusive `--implement` interfaces (like overrides) are meant to be *implemented*
+            // via the `_Impl` trait — not called. In both cases we suppress the caller-side
+            // method wrapper to avoid dead code.
+            let use_minimal_methods = config.minimal_closure;
+            let suppress_methods = is_exclusive
+                && use_minimal_methods
+                && (self.is_factory(config.reader) || config.should_implement(type_name, false));
+            if !is_exclusive || (use_minimal_methods && !suppress_methods) {
+                let method_names = &mut MethodNames::for_style(&config.bindgen.style);
+                let virtual_names = &mut MethodNames::for_style(&config.bindgen.style);
+                let mut method_tokens = TokenStream::new();
 
-                    for method in methods.iter().filter_map(|method| match &method {
-                        MethodOrName::Method(method) => Some(method),
-                        _ => None,
-                    }) {
+                for method in methods.iter().filter_map(|method| match &method {
+                    MethodOrName::Method(method) => Some(method),
+                    _ => None,
+                }) {
+                    let cfg = method.write_cfg(config, &class_cfg, false);
+
+                    let method = method.write(
+                        config,
+                        Some(self),
+                        InterfaceKind::Default,
+                        method_names,
+                        virtual_names,
+                        true,
+                    );
+
+                    method_tokens.combine(quote! {
+                        #cfg
+                        #method
+                    });
+                }
+
+                for interface in &required_interfaces {
+                    // In `minimal` mode callers `cast` to the owning interface explicitly.
+                    if config.bindgen.style.is_minimal() {
+                        continue;
+                    }
+                    let virtual_names = &mut MethodNames::for_style(&config.bindgen.style);
+
+                    for method in
+                        interface
+                            .get_methods(config)
+                            .iter()
+                            .filter_map(|method| match &method {
+                                MethodOrName::Method(method) => Some(method),
+                                _ => None,
+                            })
+                    {
                         let cfg = method.write_cfg(config, &class_cfg, false);
 
                         let method = method.write(
                             config,
-                            Some(self),
-                            InterfaceKind::Default,
+                            Some(interface),
+                            interface.kind,
                             method_names,
                             virtual_names,
+                            true,
                         );
 
                         method_tokens.combine(quote! {
@@ -340,47 +379,15 @@ impl Interface {
                             #method
                         });
                     }
+                }
 
-                    for interface in &required_interfaces {
-                        // In `minimal` mode callers `cast` to the owning interface explicitly.
-                        if config.bindgen.style.is_minimal() {
-                            continue;
+                if !method_tokens.is_empty() {
+                    result.combine(quote! {
+                        #cfg
+                        impl<#constraints> #name {
+                            #method_tokens
                         }
-                        let virtual_names = &mut MethodNames::for_style(&config.bindgen.style);
-
-                        for method in
-                            interface.get_methods(config).iter().filter_map(
-                                |method| match &method {
-                                    MethodOrName::Method(method) => Some(method),
-                                    _ => None,
-                                },
-                            )
-                        {
-                            let cfg = method.write_cfg(config, &class_cfg, false);
-
-                            let method = method.write(
-                                config,
-                                Some(interface),
-                                interface.kind,
-                                method_names,
-                                virtual_names,
-                            );
-
-                            method_tokens.combine(quote! {
-                                #cfg
-                                #method
-                            });
-                        }
-                    }
-
-                    if !method_tokens.is_empty() {
-                        result.combine(quote! {
-                            #cfg
-                            impl<#constraints> #name {
-                                #method_tokens
-                            }
-                        });
-                    }
+                    });
                 }
 
                 if self.def.is_agile() {
@@ -495,7 +502,6 @@ impl Interface {
                         .any(|ty| ty.has_skipped_methods(config));
 
                 if has_skipped_methods {
-                    config.warnings.skip_implement(self.def);
                 } else {
                     let mut names = MethodNames::for_style(&config.bindgen.style);
 

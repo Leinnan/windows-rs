@@ -53,7 +53,6 @@ pub mod Windows {
             }
         }
         #[repr(C)]
-        #[doc(hidden)]
         pub struct IClosable_Vtbl {
             pub base__: windows_core::IInspectable_Vtbl,
             pub Close: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
@@ -87,15 +86,6 @@ pub mod Windows {
                     .map(|| result__)
                 }
             }
-            pub fn RemoveClosed(&self, cookie: i64) -> windows_core::Result<()> {
-                unsafe {
-                    (windows_core::Interface::vtable(self).RemoveClosed)(
-                        windows_core::Interface::as_raw(self),
-                        cookie,
-                    )
-                    .ok()
-                }
-            }
             pub fn Close(&self) -> windows_core::Result<()> {
                 let this = &windows_core::Interface::cast::<IClosable>(self)?;
                 unsafe {
@@ -110,7 +100,6 @@ pub mod Windows {
             const NAME: &'static str = "Windows.Foundation.IMemoryBufferReference";
         }
         #[repr(C)]
-        #[doc(hidden)]
         pub struct IMemoryBufferReference_Vtbl {
             pub base__: windows_core::IInspectable_Vtbl,
             pub Capacity: unsafe extern "system" fn(

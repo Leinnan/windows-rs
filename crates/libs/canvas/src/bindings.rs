@@ -3,11 +3,13 @@ windows_core::link!("d2d1.dll" "system" fn D2D1CreateFactory(factorytype : D2D1_
 windows_core::link!("d3d11.dll" "system" fn D3D11CreateDevice(padapter : *mut core::ffi::c_void, drivertype : D3D_DRIVER_TYPE, software : HMODULE, flags : D3D11_CREATE_DEVICE_FLAG, pfeaturelevels : *const D3D_FEATURE_LEVEL, featurelevels : u32, sdkversion : u32, ppdevice : *mut *mut core::ffi::c_void, pfeaturelevel : *mut D3D_FEATURE_LEVEL, ppimmediatecontext : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
 windows_core::link!("dwrite.dll" "system" fn DWriteCreateFactory(factorytype : DWRITE_FACTORY_TYPE, iid : *const windows_core::GUID, factory : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
 pub type CLSCTX = u32;
-pub const CLSCTX_INPROC_SERVER: CLSCTX = 1u32;
+pub const CLSCTX_INPROC_SERVER: CLSCTX = 1;
+pub const CLSID_D2D1Shadow: windows_core::GUID =
+    windows_core::GUID::from_u128(0xc67ea361_1863_4e69_89db_695d3e9a5b6b);
 pub const CLSID_WICImagingFactory: windows_core::GUID =
     windows_core::GUID::from_u128(0xcacaf262_9370_4615_a13b_9f5539da4c0a);
 pub type D2D1_ALPHA_MODE = i32;
-pub const D2D1_ALPHA_MODE_PREMULTIPLIED: D2D1_ALPHA_MODE = 1i32;
+pub const D2D1_ALPHA_MODE_PREMULTIPLIED: D2D1_ALPHA_MODE = 1;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_BEZIER_SEGMENT {
@@ -16,15 +18,8 @@ pub struct D2D1_BEZIER_SEGMENT {
     pub point3: windows_numerics::Vector2,
 }
 pub type D2D1_BITMAP_OPTIONS = i32;
-pub const D2D1_BITMAP_OPTIONS_CANNOT_DRAW: D2D1_BITMAP_OPTIONS = 2i32;
-pub const D2D1_BITMAP_OPTIONS_TARGET: D2D1_BITMAP_OPTIONS = 1i32;
-#[repr(C)]
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
-pub struct D2D1_BITMAP_PROPERTIES {
-    pub pixelFormat: D2D1_PIXEL_FORMAT,
-    pub dpiX: f32,
-    pub dpiY: f32,
-}
+pub const D2D1_BITMAP_OPTIONS_CANNOT_DRAW: D2D1_BITMAP_OPTIONS = 2;
+pub const D2D1_BITMAP_OPTIONS_TARGET: D2D1_BITMAP_OPTIONS = 1;
 #[repr(C)]
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct D2D1_BITMAP_PROPERTIES1 {
@@ -41,10 +36,10 @@ pub struct D2D1_BRUSH_PROPERTIES {
     pub transform: windows_numerics::Matrix3x2,
 }
 pub type D2D1_CAP_STYLE = i32;
-pub const D2D1_CAP_STYLE_FLAT: D2D1_CAP_STYLE = 0i32;
-pub const D2D1_CAP_STYLE_ROUND: D2D1_CAP_STYLE = 2i32;
-pub const D2D1_CAP_STYLE_SQUARE: D2D1_CAP_STYLE = 1i32;
-pub const D2D1_CAP_STYLE_TRIANGLE: D2D1_CAP_STYLE = 3i32;
+pub const D2D1_CAP_STYLE_FLAT: D2D1_CAP_STYLE = 0;
+pub const D2D1_CAP_STYLE_ROUND: D2D1_CAP_STYLE = 2;
+pub const D2D1_CAP_STYLE_SQUARE: D2D1_CAP_STYLE = 1;
+pub const D2D1_CAP_STYLE_TRIANGLE: D2D1_CAP_STYLE = 3;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_COLOR_F {
@@ -53,16 +48,17 @@ pub struct D2D1_COLOR_F {
     pub b: f32,
     pub a: f32,
 }
+pub type D2D1_COMPOSITE_MODE = i32;
 pub type D2D1_DASH_STYLE = i32;
-pub const D2D1_DASH_STYLE_DASH: D2D1_DASH_STYLE = 1i32;
-pub const D2D1_DASH_STYLE_DASH_DOT: D2D1_DASH_STYLE = 3i32;
-pub const D2D1_DASH_STYLE_DOT: D2D1_DASH_STYLE = 2i32;
-pub const D2D1_DASH_STYLE_SOLID: D2D1_DASH_STYLE = 0i32;
+pub const D2D1_DASH_STYLE_DASH: D2D1_DASH_STYLE = 1;
+pub const D2D1_DASH_STYLE_DASH_DOT: D2D1_DASH_STYLE = 3;
+pub const D2D1_DASH_STYLE_DOT: D2D1_DASH_STYLE = 2;
+pub const D2D1_DASH_STYLE_SOLID: D2D1_DASH_STYLE = 0;
 pub type D2D1_DEBUG_LEVEL = i32;
 pub type D2D1_DEVICE_CONTEXT_OPTIONS = i32;
-pub const D2D1_DEVICE_CONTEXT_OPTIONS_NONE: D2D1_DEVICE_CONTEXT_OPTIONS = 0i32;
+pub const D2D1_DEVICE_CONTEXT_OPTIONS_NONE: D2D1_DEVICE_CONTEXT_OPTIONS = 0;
 pub type D2D1_DRAW_TEXT_OPTIONS = i32;
-pub const D2D1_DRAW_TEXT_OPTIONS_NONE: D2D1_DRAW_TEXT_OPTIONS = 0i32;
+pub const D2D1_DRAW_TEXT_OPTIONS_NONE: D2D1_DRAW_TEXT_OPTIONS = 0;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_ELLIPSE {
@@ -71,22 +67,22 @@ pub struct D2D1_ELLIPSE {
     pub radiusY: f32,
 }
 pub type D2D1_EXTEND_MODE = i32;
-pub const D2D1_EXTEND_MODE_CLAMP: D2D1_EXTEND_MODE = 0i32;
+pub const D2D1_EXTEND_MODE_CLAMP: D2D1_EXTEND_MODE = 0;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_FACTORY_OPTIONS {
     pub debugLevel: D2D1_DEBUG_LEVEL,
 }
 pub type D2D1_FACTORY_TYPE = i32;
-pub const D2D1_FACTORY_TYPE_SINGLE_THREADED: D2D1_FACTORY_TYPE = 0i32;
+pub const D2D1_FACTORY_TYPE_SINGLE_THREADED: D2D1_FACTORY_TYPE = 0;
 pub type D2D1_FIGURE_BEGIN = i32;
-pub const D2D1_FIGURE_BEGIN_FILLED: D2D1_FIGURE_BEGIN = 0i32;
-pub const D2D1_FIGURE_BEGIN_HOLLOW: D2D1_FIGURE_BEGIN = 1i32;
+pub const D2D1_FIGURE_BEGIN_FILLED: D2D1_FIGURE_BEGIN = 0;
+pub const D2D1_FIGURE_BEGIN_HOLLOW: D2D1_FIGURE_BEGIN = 1;
 pub type D2D1_FIGURE_END = i32;
-pub const D2D1_FIGURE_END_CLOSED: D2D1_FIGURE_END = 1i32;
-pub const D2D1_FIGURE_END_OPEN: D2D1_FIGURE_END = 0i32;
+pub const D2D1_FIGURE_END_CLOSED: D2D1_FIGURE_END = 1;
+pub const D2D1_FIGURE_END_OPEN: D2D1_FIGURE_END = 0;
 pub type D2D1_GAMMA = i32;
-pub const D2D1_GAMMA_2_2: D2D1_GAMMA = 0i32;
+pub const D2D1_GAMMA_2_2: D2D1_GAMMA = 0;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_GRADIENT_STOP {
@@ -94,7 +90,7 @@ pub struct D2D1_GRADIENT_STOP {
     pub color: D2D1_COLOR_F,
 }
 pub type D2D1_INTERPOLATION_MODE = i32;
-pub const D2D1_INTERPOLATION_MODE_LINEAR: D2D1_INTERPOLATION_MODE = 1i32;
+pub const D2D1_INTERPOLATION_MODE_LINEAR: D2D1_INTERPOLATION_MODE = 1;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES {
@@ -102,9 +98,9 @@ pub struct D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES {
     pub endPoint: windows_numerics::Vector2,
 }
 pub type D2D1_LINE_JOIN = i32;
-pub const D2D1_LINE_JOIN_BEVEL: D2D1_LINE_JOIN = 1i32;
-pub const D2D1_LINE_JOIN_MITER: D2D1_LINE_JOIN = 0i32;
-pub const D2D1_LINE_JOIN_ROUND: D2D1_LINE_JOIN = 2i32;
+pub const D2D1_LINE_JOIN_BEVEL: D2D1_LINE_JOIN = 1;
+pub const D2D1_LINE_JOIN_MITER: D2D1_LINE_JOIN = 0;
+pub const D2D1_LINE_JOIN_ROUND: D2D1_LINE_JOIN = 2;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D1_PIXEL_FORMAT {
@@ -139,6 +135,8 @@ pub struct D2D1_STROKE_STYLE_PROPERTIES1 {
     pub transformType: D2D1_STROKE_TRANSFORM_TYPE,
 }
 pub type D2D1_STROKE_TRANSFORM_TYPE = i32;
+pub const D2DERR_RECREATE_TARGET: windows_core::HRESULT =
+    windows_core::HRESULT(0x8899000C_u32 as _);
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct D2D_RECT_F {
@@ -153,35 +151,49 @@ pub struct D2D_SIZE_F {
     pub width: f32,
     pub height: f32,
 }
-pub const D3D11_CREATE_DEVICE_BGRA_SUPPORT: D3D11_CREATE_DEVICE_FLAG = 32u32;
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct D2D_SIZE_U {
+    pub width: u32,
+    pub height: u32,
+}
+pub const D3D11_CREATE_DEVICE_BGRA_SUPPORT: D3D11_CREATE_DEVICE_FLAG = 32;
 pub type D3D11_CREATE_DEVICE_FLAG = u32;
-pub const D3D11_SDK_VERSION: u32 = 7u32;
+pub const D3D11_SDK_VERSION: u32 = 7;
 pub type D3D_DRIVER_TYPE = i32;
-pub const D3D_DRIVER_TYPE_HARDWARE: D3D_DRIVER_TYPE = 1i32;
-pub const D3D_DRIVER_TYPE_WARP: D3D_DRIVER_TYPE = 5i32;
+pub const D3D_DRIVER_TYPE_HARDWARE: D3D_DRIVER_TYPE = 1;
+pub const D3D_DRIVER_TYPE_WARP: D3D_DRIVER_TYPE = 5;
 pub type D3D_FEATURE_LEVEL = i32;
-pub const D3D_FEATURE_LEVEL_11_0: D3D_FEATURE_LEVEL = 45056i32;
+pub const D3D_FEATURE_LEVEL_11_0: D3D_FEATURE_LEVEL = 45056;
 pub type DWRITE_FACTORY_TYPE = i32;
-pub const DWRITE_FACTORY_TYPE_SHARED: DWRITE_FACTORY_TYPE = 0i32;
+pub const DWRITE_FACTORY_TYPE_SHARED: DWRITE_FACTORY_TYPE = 0;
 pub type DWRITE_FONT_STRETCH = i32;
-pub const DWRITE_FONT_STRETCH_NORMAL: DWRITE_FONT_STRETCH = 5i32;
+pub const DWRITE_FONT_STRETCH_NORMAL: DWRITE_FONT_STRETCH = 5;
 pub type DWRITE_FONT_STYLE = i32;
-pub const DWRITE_FONT_STYLE_NORMAL: DWRITE_FONT_STYLE = 0i32;
+pub const DWRITE_FONT_STYLE_NORMAL: DWRITE_FONT_STYLE = 0;
 pub type DWRITE_FONT_WEIGHT = i32;
 pub type DWRITE_MEASURING_MODE = i32;
 pub type DWRITE_PARAGRAPH_ALIGNMENT = i32;
-pub const DWRITE_PARAGRAPH_ALIGNMENT_CENTER: DWRITE_PARAGRAPH_ALIGNMENT = 2i32;
-pub const DWRITE_PARAGRAPH_ALIGNMENT_FAR: DWRITE_PARAGRAPH_ALIGNMENT = 1i32;
-pub const DWRITE_PARAGRAPH_ALIGNMENT_NEAR: DWRITE_PARAGRAPH_ALIGNMENT = 0i32;
+pub const DWRITE_PARAGRAPH_ALIGNMENT_CENTER: DWRITE_PARAGRAPH_ALIGNMENT = 2;
+pub const DWRITE_PARAGRAPH_ALIGNMENT_FAR: DWRITE_PARAGRAPH_ALIGNMENT = 1;
+pub const DWRITE_PARAGRAPH_ALIGNMENT_NEAR: DWRITE_PARAGRAPH_ALIGNMENT = 0;
 pub type DWRITE_TEXT_ALIGNMENT = i32;
-pub const DWRITE_TEXT_ALIGNMENT_CENTER: DWRITE_TEXT_ALIGNMENT = 2i32;
-pub const DWRITE_TEXT_ALIGNMENT_LEADING: DWRITE_TEXT_ALIGNMENT = 0i32;
-pub const DWRITE_TEXT_ALIGNMENT_TRAILING: DWRITE_TEXT_ALIGNMENT = 1i32;
+pub const DWRITE_TEXT_ALIGNMENT_CENTER: DWRITE_TEXT_ALIGNMENT = 2;
+pub const DWRITE_TEXT_ALIGNMENT_LEADING: DWRITE_TEXT_ALIGNMENT = 0;
+pub const DWRITE_TEXT_ALIGNMENT_TRAILING: DWRITE_TEXT_ALIGNMENT = 1;
 pub type DXGI_ALPHA_MODE = i32;
-pub const DXGI_ALPHA_MODE_PREMULTIPLIED: DXGI_ALPHA_MODE = 1i32;
+pub const DXGI_ALPHA_MODE_PREMULTIPLIED: DXGI_ALPHA_MODE = 1;
+pub const DXGI_ERROR_DEVICE_HUNG: windows_core::HRESULT =
+    windows_core::HRESULT(0x887A0006_u32 as _);
+pub const DXGI_ERROR_DEVICE_REMOVED: windows_core::HRESULT =
+    windows_core::HRESULT(0x887A0005_u32 as _);
+pub const DXGI_ERROR_DEVICE_RESET: windows_core::HRESULT =
+    windows_core::HRESULT(0x887A0007_u32 as _);
+pub const DXGI_ERROR_DRIVER_INTERNAL_ERROR: windows_core::HRESULT =
+    windows_core::HRESULT(0x887A0020_u32 as _);
 pub type DXGI_FORMAT = i32;
-pub const DXGI_FORMAT_B8G8R8A8_UNORM: DXGI_FORMAT = 87i32;
-pub const DXGI_FORMAT_UNKNOWN: DXGI_FORMAT = 0i32;
+pub const DXGI_FORMAT_B8G8R8A8_UNORM: DXGI_FORMAT = 87;
+pub const DXGI_FORMAT_UNKNOWN: DXGI_FORMAT = 0;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct DXGI_MATRIX_3X2_F {
@@ -233,11 +245,11 @@ pub struct DXGI_SWAP_CHAIN_FULLSCREEN_DESC {
     pub Windowed: windows_core::BOOL,
 }
 pub type DXGI_SWAP_EFFECT = i32;
-pub const DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL: DXGI_SWAP_EFFECT = 3i32;
+pub const DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL: DXGI_SWAP_EFFECT = 3;
 pub type DXGI_USAGE = u32;
-pub const DXGI_USAGE_RENDER_TARGET_OUTPUT: DXGI_USAGE = 32u32;
+pub const DXGI_USAGE_RENDER_TARGET_OUTPUT: DXGI_USAGE = 32;
 pub type GENERIC_ACCESS_RIGHTS = u32;
-pub const GENERIC_READ: GENERIC_ACCESS_RIGHTS = 2147483648u32;
+pub const GENERIC_READ: GENERIC_ACCESS_RIGHTS = 2147483648;
 pub const GUID_WICPixelFormat32bppPBGRA: windows_core::GUID =
     windows_core::GUID::from_u128(0x6fddc324_4e03_4bfe_b185_3d77768dc910);
 pub type HMODULE = *mut core::ffi::c_void;
@@ -260,7 +272,7 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Image
 );
 impl ID2D1Bitmap {
-    pub unsafe fn GetSize(&self) -> D2D_SIZE_F {
+    pub(crate) unsafe fn GetSize(&self) -> D2D_SIZE_F {
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetSize)(
@@ -272,7 +284,6 @@ impl ID2D1Bitmap {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Bitmap_Vtbl {
     pub base__: ID2D1Image_Vtbl,
     pub GetSize: unsafe extern "system" fn(*mut core::ffi::c_void, *mut D2D_SIZE_F),
@@ -305,7 +316,6 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Bitmap
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Bitmap1_Vtbl {
     pub base__: ID2D1Bitmap_Vtbl,
     GetColorContext: usize,
@@ -330,7 +340,6 @@ impl core::ops::Deref for ID2D1Brush {
 }
 windows_core::imp::interface_hierarchy!(ID2D1Brush, windows_core::IUnknown, ID2D1Resource);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Brush_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     SetOpacity: usize,
@@ -354,7 +363,6 @@ impl core::ops::Deref for ID2D1ColorContext {
 }
 windows_core::imp::interface_hierarchy!(ID2D1ColorContext, windows_core::IUnknown, ID2D1Resource);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1ColorContext_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     GetColorSpace: usize,
@@ -377,7 +385,7 @@ impl core::ops::Deref for ID2D1Device {
 }
 windows_core::imp::interface_hierarchy!(ID2D1Device, windows_core::IUnknown, ID2D1Resource);
 impl ID2D1Device {
-    pub unsafe fn CreateDeviceContext(
+    pub(crate) unsafe fn CreateDeviceContext(
         &self,
         options: D2D1_DEVICE_CONTEXT_OPTIONS,
     ) -> windows_core::Result<ID2D1DeviceContext> {
@@ -393,7 +401,6 @@ impl ID2D1Device {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Device_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     pub CreateDeviceContext: unsafe extern "system" fn(
@@ -427,7 +434,46 @@ windows_core::imp::interface_hierarchy!(
     ID2D1RenderTarget
 );
 impl ID2D1DeviceContext {
-    pub unsafe fn CreateBitmapFromDxgiSurface<P0>(
+    pub(crate) unsafe fn CreateBitmap(
+        &self,
+        size: D2D_SIZE_U,
+        sourcedata: Option<*const core::ffi::c_void>,
+        pitch: u32,
+        bitmapproperties: *const D2D1_BITMAP_PROPERTIES1,
+    ) -> windows_core::Result<ID2D1Bitmap1> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).CreateBitmap)(
+                windows_core::Interface::as_raw(self),
+                size,
+                sourcedata.unwrap_or(core::mem::zeroed()) as _,
+                pitch,
+                bitmapproperties,
+                &mut result__,
+            )
+            .and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub(crate) unsafe fn CreateBitmapFromWicBitmap<P0>(
+        &self,
+        wicbitmapsource: P0,
+        bitmapproperties: Option<*const D2D1_BITMAP_PROPERTIES1>,
+    ) -> windows_core::Result<ID2D1Bitmap1>
+    where
+        P0: windows_core::Param<IWICBitmapSource>,
+    {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).CreateBitmapFromWicBitmap)(
+                windows_core::Interface::as_raw(self),
+                wicbitmapsource.param().abi(),
+                bitmapproperties.unwrap_or(core::mem::zeroed()) as _,
+                &mut result__,
+            )
+            .and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub(crate) unsafe fn CreateBitmapFromDxgiSurface<P0>(
         &self,
         surface: P0,
         bitmapproperties: Option<*const D2D1_BITMAP_PROPERTIES1>,
@@ -446,7 +492,21 @@ impl ID2D1DeviceContext {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn SetTarget<P0>(&self, image: P0)
+    pub(crate) unsafe fn CreateEffect(
+        &self,
+        effectid: *const windows_core::GUID,
+    ) -> windows_core::Result<ID2D1Effect> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).CreateEffect)(
+                windows_core::Interface::as_raw(self),
+                effectid,
+                &mut result__,
+            )
+            .and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub(crate) unsafe fn SetTarget<P0>(&self, image: P0)
     where
         P0: windows_core::Param<ID2D1Image>,
     {
@@ -457,7 +517,38 @@ impl ID2D1DeviceContext {
             );
         }
     }
-    pub unsafe fn DrawBitmap<P0>(
+    pub(crate) unsafe fn GetTarget(&self) -> windows_core::Result<ID2D1Image> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).GetTarget)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            );
+            windows_core::Type::from_abi(result__)
+        }
+    }
+    pub(crate) unsafe fn DrawImage<P0>(
+        &self,
+        image: P0,
+        targetoffset: Option<*const windows_numerics::Vector2>,
+        imagerectangle: Option<*const D2D_RECT_F>,
+        interpolationmode: D2D1_INTERPOLATION_MODE,
+        compositemode: D2D1_COMPOSITE_MODE,
+    ) where
+        P0: windows_core::Param<ID2D1Image>,
+    {
+        unsafe {
+            (windows_core::Interface::vtable(self).DrawImage)(
+                windows_core::Interface::as_raw(self),
+                image.param().abi(),
+                targetoffset.unwrap_or(core::mem::zeroed()) as _,
+                imagerectangle.unwrap_or(core::mem::zeroed()) as _,
+                interpolationmode,
+                compositemode,
+            );
+        }
+    }
+    pub(crate) unsafe fn DrawBitmap<P0>(
         &self,
         bitmap: P0,
         destinationrectangle: Option<*const D2D_RECT_F>,
@@ -482,11 +573,22 @@ impl ID2D1DeviceContext {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1DeviceContext_Vtbl {
     pub base__: ID2D1RenderTarget_Vtbl,
-    CreateBitmap: usize,
-    CreateBitmapFromWicBitmap: usize,
+    pub CreateBitmap: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        D2D_SIZE_U,
+        *const core::ffi::c_void,
+        u32,
+        *const D2D1_BITMAP_PROPERTIES1,
+        *mut *mut core::ffi::c_void,
+    ) -> windows_core::HRESULT,
+    pub CreateBitmapFromWicBitmap: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *const D2D1_BITMAP_PROPERTIES1,
+        *mut *mut core::ffi::c_void,
+    ) -> windows_core::HRESULT,
     CreateColorContext: usize,
     CreateColorContextFromFilename: usize,
     CreateColorContextFromWicColorContext: usize,
@@ -496,7 +598,11 @@ pub struct ID2D1DeviceContext_Vtbl {
         *const D2D1_BITMAP_PROPERTIES1,
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
-    CreateEffect: usize,
+    pub CreateEffect: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *const windows_core::GUID,
+        *mut *mut core::ffi::c_void,
+    ) -> windows_core::HRESULT,
     CreateGradientStopCollection: usize,
     CreateImageBrush: usize,
     CreateBitmapBrush: usize,
@@ -508,7 +614,7 @@ pub struct ID2D1DeviceContext_Vtbl {
     GetGlyphRunWorldBounds: usize,
     GetDevice: usize,
     pub SetTarget: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void),
-    GetTarget: usize,
+    pub GetTarget: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void),
     SetRenderingControls: usize,
     GetRenderingControls: usize,
     SetPrimitiveBlend: usize,
@@ -516,7 +622,14 @@ pub struct ID2D1DeviceContext_Vtbl {
     SetUnitMode: usize,
     GetUnitMode: usize,
     DrawGlyphRun: usize,
-    DrawImage: usize,
+    pub DrawImage: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *const windows_numerics::Vector2,
+        *const D2D_RECT_F,
+        D2D1_INTERPOLATION_MODE,
+        D2D1_COMPOSITE_MODE,
+    ),
     DrawGdiMetafile: usize,
     pub DrawBitmap: unsafe extern "system" fn(
         *mut core::ffi::c_void,
@@ -538,13 +651,66 @@ unsafe impl Send for ID2D1DeviceContext {}
 unsafe impl Sync for ID2D1DeviceContext {}
 impl windows_core::RuntimeName for ID2D1DeviceContext {}
 windows_core::imp::define_interface!(
+    ID2D1Effect,
+    ID2D1Effect_Vtbl,
+    0x28211a43_7d89_476f_8181_2d6159b220ad
+);
+impl core::ops::Deref for ID2D1Effect {
+    type Target = ID2D1Properties;
+    fn deref(&self) -> &Self::Target {
+        unsafe { core::mem::transmute(self) }
+    }
+}
+windows_core::imp::interface_hierarchy!(ID2D1Effect, windows_core::IUnknown, ID2D1Properties);
+impl ID2D1Effect {
+    pub(crate) unsafe fn SetInput<P1>(&self, index: u32, input: P1, invalidate: bool)
+    where
+        P1: windows_core::Param<ID2D1Image>,
+    {
+        unsafe {
+            (windows_core::Interface::vtable(self).SetInput)(
+                windows_core::Interface::as_raw(self),
+                index,
+                input.param().abi(),
+                invalidate.into(),
+            );
+        }
+    }
+    pub(crate) unsafe fn GetOutput(&self) -> windows_core::Result<ID2D1Image> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).GetOutput)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            );
+            windows_core::Type::from_abi(result__)
+        }
+    }
+}
+#[repr(C)]
+pub struct ID2D1Effect_Vtbl {
+    pub base__: ID2D1Properties_Vtbl,
+    pub SetInput: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        u32,
+        *mut core::ffi::c_void,
+        windows_core::BOOL,
+    ),
+    SetInputCount: usize,
+    GetInput: usize,
+    GetInputCount: usize,
+    pub GetOutput: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void),
+}
+unsafe impl Send for ID2D1Effect {}
+unsafe impl Sync for ID2D1Effect {}
+impl windows_core::RuntimeName for ID2D1Effect {}
+windows_core::imp::define_interface!(
     ID2D1Factory,
     ID2D1Factory_Vtbl,
     0x06152247_6f50_465a_9245_118bfd3b6007
 );
 windows_core::imp::interface_hierarchy!(ID2D1Factory, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Factory_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     ReloadSystemMetrics: usize,
@@ -578,7 +744,10 @@ impl core::ops::Deref for ID2D1Factory1 {
 }
 windows_core::imp::interface_hierarchy!(ID2D1Factory1, windows_core::IUnknown, ID2D1Factory);
 impl ID2D1Factory1 {
-    pub unsafe fn CreateDevice<P0>(&self, dxgidevice: P0) -> windows_core::Result<ID2D1Device>
+    pub(crate) unsafe fn CreateDevice<P0>(
+        &self,
+        dxgidevice: P0,
+    ) -> windows_core::Result<ID2D1Device>
     where
         P0: windows_core::Param<IDXGIDevice>,
     {
@@ -592,7 +761,7 @@ impl ID2D1Factory1 {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreateStrokeStyle(
+    pub(crate) unsafe fn CreateStrokeStyle(
         &self,
         strokestyleproperties: *const D2D1_STROKE_STYLE_PROPERTIES1,
         dashes: Option<&[f32]>,
@@ -609,7 +778,7 @@ impl ID2D1Factory1 {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreatePathGeometry(&self) -> windows_core::Result<ID2D1PathGeometry1> {
+    pub(crate) unsafe fn CreatePathGeometry(&self) -> windows_core::Result<ID2D1PathGeometry1> {
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).CreatePathGeometry)(
@@ -621,7 +790,6 @@ impl ID2D1Factory1 {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Factory1_Vtbl {
     pub base__: ID2D1Factory_Vtbl,
     pub CreateDevice: unsafe extern "system" fn(
@@ -664,7 +832,6 @@ impl core::ops::Deref for ID2D1Geometry {
 }
 windows_core::imp::interface_hierarchy!(ID2D1Geometry, windows_core::IUnknown, ID2D1Resource);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Geometry_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     GetBounds: usize,
@@ -701,7 +868,7 @@ windows_core::imp::interface_hierarchy!(
     ID2D1SimplifiedGeometrySink
 );
 impl ID2D1GeometrySink {
-    pub unsafe fn AddLine(&self, point: windows_numerics::Vector2) {
+    pub(crate) unsafe fn AddLine(&self, point: windows_numerics::Vector2) {
         unsafe {
             (windows_core::Interface::vtable(self).AddLine)(
                 windows_core::Interface::as_raw(self),
@@ -709,7 +876,7 @@ impl ID2D1GeometrySink {
             );
         }
     }
-    pub unsafe fn AddBezier(&self, bezier: *const D2D1_BEZIER_SEGMENT) {
+    pub(crate) unsafe fn AddBezier(&self, bezier: *const D2D1_BEZIER_SEGMENT) {
         unsafe {
             (windows_core::Interface::vtable(self).AddBezier)(
                 windows_core::Interface::as_raw(self),
@@ -719,7 +886,6 @@ impl ID2D1GeometrySink {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1GeometrySink_Vtbl {
     pub base__: ID2D1SimplifiedGeometrySink_Vtbl,
     pub AddLine: unsafe extern "system" fn(*mut core::ffi::c_void, windows_numerics::Vector2),
@@ -748,7 +914,6 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Resource
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1GradientStopCollection_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     GetGradientStopCount: usize,
@@ -772,7 +937,6 @@ impl core::ops::Deref for ID2D1Image {
 }
 windows_core::imp::interface_hierarchy!(ID2D1Image, windows_core::IUnknown, ID2D1Resource);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Image_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
 }
@@ -797,7 +961,6 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Brush
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1LinearGradientBrush_Vtbl {
     pub base__: ID2D1Brush_Vtbl,
     SetStartPoint: usize,
@@ -827,7 +990,7 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Geometry
 );
 impl ID2D1PathGeometry {
-    pub unsafe fn Open(&self) -> windows_core::Result<ID2D1GeometrySink> {
+    pub(crate) unsafe fn Open(&self) -> windows_core::Result<ID2D1GeometrySink> {
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).Open)(
@@ -839,7 +1002,6 @@ impl ID2D1PathGeometry {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1PathGeometry_Vtbl {
     pub base__: ID2D1Geometry_Vtbl,
     pub Open: unsafe extern "system" fn(
@@ -872,7 +1034,6 @@ windows_core::imp::interface_hierarchy!(
     ID2D1PathGeometry
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1PathGeometry1_Vtbl {
     pub base__: ID2D1PathGeometry_Vtbl,
     ComputePointAndSegmentAtLength: usize,
@@ -880,6 +1041,30 @@ pub struct ID2D1PathGeometry1_Vtbl {
 unsafe impl Send for ID2D1PathGeometry1 {}
 unsafe impl Sync for ID2D1PathGeometry1 {}
 impl windows_core::RuntimeName for ID2D1PathGeometry1 {}
+windows_core::imp::define_interface!(
+    ID2D1Properties,
+    ID2D1Properties_Vtbl,
+    0x483473d7_cd46_4f9d_9d3a_3112aa80159d
+);
+windows_core::imp::interface_hierarchy!(ID2D1Properties, windows_core::IUnknown);
+#[repr(C)]
+pub struct ID2D1Properties_Vtbl {
+    pub base__: windows_core::IUnknown_Vtbl,
+    GetPropertyCount: usize,
+    GetPropertyName: usize,
+    GetPropertyNameLength: usize,
+    GetType: usize,
+    GetPropertyIndex: usize,
+    SetValueByName: usize,
+    SetValue: usize,
+    GetValueByName: usize,
+    GetValue: usize,
+    GetValueSize: usize,
+    GetSubProperties: usize,
+}
+unsafe impl Send for ID2D1Properties {}
+unsafe impl Sync for ID2D1Properties {}
+impl windows_core::RuntimeName for ID2D1Properties {}
 windows_core::imp::define_interface!(
     ID2D1RadialGradientBrush,
     ID2D1RadialGradientBrush_Vtbl,
@@ -898,7 +1083,6 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Brush
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1RadialGradientBrush_Vtbl {
     pub base__: ID2D1Brush_Vtbl,
     SetCenter: usize,
@@ -927,26 +1111,7 @@ impl core::ops::Deref for ID2D1RenderTarget {
 }
 windows_core::imp::interface_hierarchy!(ID2D1RenderTarget, windows_core::IUnknown, ID2D1Resource);
 impl ID2D1RenderTarget {
-    pub unsafe fn CreateBitmapFromWicBitmap<P0>(
-        &self,
-        wicbitmapsource: P0,
-        bitmapproperties: Option<*const D2D1_BITMAP_PROPERTIES>,
-    ) -> windows_core::Result<ID2D1Bitmap>
-    where
-        P0: windows_core::Param<IWICBitmapSource>,
-    {
-        unsafe {
-            let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBitmapFromWicBitmap)(
-                windows_core::Interface::as_raw(self),
-                wicbitmapsource.param().abi(),
-                bitmapproperties.unwrap_or(core::mem::zeroed()) as _,
-                &mut result__,
-            )
-            .and_then(|| windows_core::Type::from_abi(result__))
-        }
-    }
-    pub unsafe fn CreateSolidColorBrush(
+    pub(crate) unsafe fn CreateSolidColorBrush(
         &self,
         color: *const D2D1_COLOR_F,
         brushproperties: Option<*const D2D1_BRUSH_PROPERTIES>,
@@ -962,7 +1127,7 @@ impl ID2D1RenderTarget {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreateGradientStopCollection(
+    pub(crate) unsafe fn CreateGradientStopCollection(
         &self,
         gradientstops: &[D2D1_GRADIENT_STOP],
         colorinterpolationgamma: D2D1_GAMMA,
@@ -981,7 +1146,7 @@ impl ID2D1RenderTarget {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreateLinearGradientBrush<P2>(
+    pub(crate) unsafe fn CreateLinearGradientBrush<P2>(
         &self,
         lineargradientbrushproperties: *const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES,
         brushproperties: Option<*const D2D1_BRUSH_PROPERTIES>,
@@ -1002,7 +1167,7 @@ impl ID2D1RenderTarget {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreateRadialGradientBrush<P2>(
+    pub(crate) unsafe fn CreateRadialGradientBrush<P2>(
         &self,
         radialgradientbrushproperties: *const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES,
         brushproperties: Option<*const D2D1_BRUSH_PROPERTIES>,
@@ -1023,7 +1188,7 @@ impl ID2D1RenderTarget {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn DrawLine<P2, P4>(
+    pub(crate) unsafe fn DrawLine<P2, P4>(
         &self,
         point0: windows_numerics::Vector2,
         point1: windows_numerics::Vector2,
@@ -1045,7 +1210,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn DrawRectangle<P1, P3>(
+    pub(crate) unsafe fn DrawRectangle<P1, P3>(
         &self,
         rect: *const D2D_RECT_F,
         brush: P1,
@@ -1065,7 +1230,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn FillRectangle<P1>(&self, rect: *const D2D_RECT_F, brush: P1)
+    pub(crate) unsafe fn FillRectangle<P1>(&self, rect: *const D2D_RECT_F, brush: P1)
     where
         P1: windows_core::Param<ID2D1Brush>,
     {
@@ -1077,7 +1242,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn DrawRoundedRectangle<P1, P3>(
+    pub(crate) unsafe fn DrawRoundedRectangle<P1, P3>(
         &self,
         roundedrect: *const D2D1_ROUNDED_RECT,
         brush: P1,
@@ -1097,8 +1262,11 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn FillRoundedRectangle<P1>(&self, roundedrect: *const D2D1_ROUNDED_RECT, brush: P1)
-    where
+    pub(crate) unsafe fn FillRoundedRectangle<P1>(
+        &self,
+        roundedrect: *const D2D1_ROUNDED_RECT,
+        brush: P1,
+    ) where
         P1: windows_core::Param<ID2D1Brush>,
     {
         unsafe {
@@ -1109,7 +1277,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn DrawEllipse<P1, P3>(
+    pub(crate) unsafe fn DrawEllipse<P1, P3>(
         &self,
         ellipse: *const D2D1_ELLIPSE,
         brush: P1,
@@ -1129,7 +1297,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn FillEllipse<P1>(&self, ellipse: *const D2D1_ELLIPSE, brush: P1)
+    pub(crate) unsafe fn FillEllipse<P1>(&self, ellipse: *const D2D1_ELLIPSE, brush: P1)
     where
         P1: windows_core::Param<ID2D1Brush>,
     {
@@ -1141,7 +1309,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn DrawGeometry<P0, P1, P3>(
+    pub(crate) unsafe fn DrawGeometry<P0, P1, P3>(
         &self,
         geometry: P0,
         brush: P1,
@@ -1162,7 +1330,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn FillGeometry<P0, P1, P2>(&self, geometry: P0, brush: P1, opacitybrush: P2)
+    pub(crate) unsafe fn FillGeometry<P0, P1, P2>(&self, geometry: P0, brush: P1, opacitybrush: P2)
     where
         P0: windows_core::Param<ID2D1Geometry>,
         P1: windows_core::Param<ID2D1Brush>,
@@ -1177,7 +1345,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn DrawText<P2, P4>(
+    pub(crate) unsafe fn DrawText<P2, P4>(
         &self,
         string: &[u16],
         textformat: P2,
@@ -1202,7 +1370,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn SetTransform(&self, transform: *const windows_numerics::Matrix3x2) {
+    pub(crate) unsafe fn SetTransform(&self, transform: *const windows_numerics::Matrix3x2) {
         unsafe {
             (windows_core::Interface::vtable(self).SetTransform)(
                 windows_core::Interface::as_raw(self),
@@ -1210,7 +1378,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn GetTransform(&self, transform: *mut windows_numerics::Matrix3x2) {
+    pub(crate) unsafe fn GetTransform(&self, transform: *mut windows_numerics::Matrix3x2) {
         unsafe {
             (windows_core::Interface::vtable(self).GetTransform)(
                 windows_core::Interface::as_raw(self),
@@ -1218,7 +1386,7 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn Clear(&self, clearcolor: Option<*const D2D1_COLOR_F>) {
+    pub(crate) unsafe fn Clear(&self, clearcolor: Option<*const D2D1_COLOR_F>) {
         unsafe {
             (windows_core::Interface::vtable(self).Clear)(
                 windows_core::Interface::as_raw(self),
@@ -1226,14 +1394,14 @@ impl ID2D1RenderTarget {
             );
         }
     }
-    pub unsafe fn BeginDraw(&self) {
+    pub(crate) unsafe fn BeginDraw(&self) {
         unsafe {
             (windows_core::Interface::vtable(self).BeginDraw)(windows_core::Interface::as_raw(
                 self,
             ));
         }
     }
-    pub unsafe fn EndDraw(
+    pub(crate) unsafe fn EndDraw(
         &self,
         tag1: Option<*mut u64>,
         tag2: Option<*mut u64>,
@@ -1247,7 +1415,7 @@ impl ID2D1RenderTarget {
             .ok()
         }
     }
-    pub unsafe fn SetDpi(&self, dpix: f32, dpiy: f32) {
+    pub(crate) unsafe fn SetDpi(&self, dpix: f32, dpiy: f32) {
         unsafe {
             (windows_core::Interface::vtable(self).SetDpi)(
                 windows_core::Interface::as_raw(self),
@@ -1256,18 +1424,31 @@ impl ID2D1RenderTarget {
             );
         }
     }
+    pub(crate) unsafe fn GetDpi(&self, dpix: *mut f32, dpiy: *mut f32) {
+        unsafe {
+            (windows_core::Interface::vtable(self).GetDpi)(
+                windows_core::Interface::as_raw(self),
+                dpix as _,
+                dpiy as _,
+            );
+        }
+    }
+    pub(crate) unsafe fn GetPixelSize(&self) -> D2D_SIZE_U {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).GetPixelSize)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            );
+            result__
+        }
+    }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1RenderTarget_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     CreateBitmap: usize,
-    pub CreateBitmapFromWicBitmap: unsafe extern "system" fn(
-        *mut core::ffi::c_void,
-        *mut core::ffi::c_void,
-        *const D2D1_BITMAP_PROPERTIES,
-        *mut *mut core::ffi::c_void,
-    ) -> windows_core::HRESULT,
+    CreateBitmapFromWicBitmap: usize,
     CreateSharedBitmap: usize,
     CreateBitmapBrush: usize,
     pub CreateSolidColorBrush: unsafe extern "system" fn(
@@ -1401,9 +1582,9 @@ pub struct ID2D1RenderTarget_Vtbl {
     ) -> windows_core::HRESULT,
     GetPixelFormat: usize,
     pub SetDpi: unsafe extern "system" fn(*mut core::ffi::c_void, f32, f32),
-    GetDpi: usize,
+    pub GetDpi: unsafe extern "system" fn(*mut core::ffi::c_void, *mut f32, *mut f32),
     GetSize: usize,
-    GetPixelSize: usize,
+    pub GetPixelSize: unsafe extern "system" fn(*mut core::ffi::c_void, *mut D2D_SIZE_U),
     GetMaximumBitmapSize: usize,
     IsSupported: usize,
 }
@@ -1417,7 +1598,6 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(ID2D1Resource, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1Resource_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     GetFactory: usize,
@@ -1432,7 +1612,7 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(ID2D1SimplifiedGeometrySink, windows_core::IUnknown);
 impl ID2D1SimplifiedGeometrySink {
-    pub unsafe fn BeginFigure(
+    pub(crate) unsafe fn BeginFigure(
         &self,
         startpoint: windows_numerics::Vector2,
         figurebegin: D2D1_FIGURE_BEGIN,
@@ -1445,7 +1625,7 @@ impl ID2D1SimplifiedGeometrySink {
             );
         }
     }
-    pub unsafe fn EndFigure(&self, figureend: D2D1_FIGURE_END) {
+    pub(crate) unsafe fn EndFigure(&self, figureend: D2D1_FIGURE_END) {
         unsafe {
             (windows_core::Interface::vtable(self).EndFigure)(
                 windows_core::Interface::as_raw(self),
@@ -1453,7 +1633,7 @@ impl ID2D1SimplifiedGeometrySink {
             );
         }
     }
-    pub unsafe fn Close(&self) -> windows_core::Result<()> {
+    pub(crate) unsafe fn Close(&self) -> windows_core::Result<()> {
         unsafe {
             (windows_core::Interface::vtable(self).Close)(windows_core::Interface::as_raw(self))
                 .ok()
@@ -1461,7 +1641,6 @@ impl ID2D1SimplifiedGeometrySink {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1SimplifiedGeometrySink_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     SetFillMode: usize,
@@ -1497,7 +1676,7 @@ windows_core::imp::interface_hierarchy!(
     ID2D1Brush
 );
 impl ID2D1SolidColorBrush {
-    pub unsafe fn SetColor(&self, color: *const D2D1_COLOR_F) {
+    pub(crate) unsafe fn SetColor(&self, color: *const D2D1_COLOR_F) {
         unsafe {
             (windows_core::Interface::vtable(self).SetColor)(
                 windows_core::Interface::as_raw(self),
@@ -1507,7 +1686,6 @@ impl ID2D1SolidColorBrush {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1SolidColorBrush_Vtbl {
     pub base__: ID2D1Brush_Vtbl,
     pub SetColor: unsafe extern "system" fn(*mut core::ffi::c_void, *const D2D1_COLOR_F),
@@ -1529,7 +1707,6 @@ impl core::ops::Deref for ID2D1StrokeStyle {
 }
 windows_core::imp::interface_hierarchy!(ID2D1StrokeStyle, windows_core::IUnknown, ID2D1Resource);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1StrokeStyle_Vtbl {
     pub base__: ID2D1Resource_Vtbl,
     GetStartCap: usize,
@@ -1563,7 +1740,6 @@ windows_core::imp::interface_hierarchy!(
     ID2D1StrokeStyle
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID2D1StrokeStyle1_Vtbl {
     pub base__: ID2D1StrokeStyle_Vtbl,
     GetStrokeTransformType: usize,
@@ -1578,7 +1754,6 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(ID3D11Device, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID3D11Device_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     CreateBuffer: usize,
@@ -1632,7 +1807,6 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(ID3D11DeviceChild, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID3D11DeviceChild_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     GetDevice: usize,
@@ -1660,7 +1834,6 @@ windows_core::imp::interface_hierarchy!(
     ID3D11DeviceChild
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct ID3D11DeviceContext_Vtbl {
     pub base__: ID3D11DeviceChild_Vtbl,
     VSSetConstantBuffers: usize,
@@ -1782,7 +1955,7 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IDWriteFactory, windows_core::IUnknown);
 impl IDWriteFactory {
-    pub unsafe fn CreateTextFormat<P0, P1, P6>(
+    pub(crate) unsafe fn CreateTextFormat<P0, P1, P6>(
         &self,
         fontfamilyname: P0,
         fontcollection: P1,
@@ -1815,7 +1988,6 @@ impl IDWriteFactory {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDWriteFactory_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     GetSystemFontCollection: usize,
@@ -1860,7 +2032,6 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IDWriteFontCollection, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDWriteFontCollection_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     GetFontFamilyCount: usize,
@@ -1878,7 +2049,7 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IDWriteTextFormat, windows_core::IUnknown);
 impl IDWriteTextFormat {
-    pub unsafe fn SetTextAlignment(
+    pub(crate) unsafe fn SetTextAlignment(
         &self,
         textalignment: DWRITE_TEXT_ALIGNMENT,
     ) -> windows_core::Result<()> {
@@ -1890,7 +2061,7 @@ impl IDWriteTextFormat {
             .ok()
         }
     }
-    pub unsafe fn SetParagraphAlignment(
+    pub(crate) unsafe fn SetParagraphAlignment(
         &self,
         paragraphalignment: DWRITE_PARAGRAPH_ALIGNMENT,
     ) -> windows_core::Result<()> {
@@ -1904,7 +2075,6 @@ impl IDWriteTextFormat {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDWriteTextFormat_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     pub SetTextAlignment: unsafe extern "system" fn(
@@ -1955,7 +2125,6 @@ impl core::ops::Deref for IDXGIAdapter {
 }
 windows_core::imp::interface_hierarchy!(IDXGIAdapter, windows_core::IUnknown, IDXGIObject);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIAdapter_Vtbl {
     pub base__: IDXGIObject_Vtbl,
     EnumOutputs: usize,
@@ -1978,7 +2147,7 @@ impl core::ops::Deref for IDXGIDevice {
 }
 windows_core::imp::interface_hierarchy!(IDXGIDevice, windows_core::IUnknown, IDXGIObject);
 impl IDXGIDevice {
-    pub unsafe fn GetAdapter(&self) -> windows_core::Result<IDXGIAdapter> {
+    pub(crate) unsafe fn GetAdapter(&self) -> windows_core::Result<IDXGIAdapter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetAdapter)(
@@ -1990,7 +2159,6 @@ impl IDXGIDevice {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIDevice_Vtbl {
     pub base__: IDXGIObject_Vtbl,
     pub GetAdapter: unsafe extern "system" fn(
@@ -2018,7 +2186,6 @@ impl core::ops::Deref for IDXGIDeviceSubObject {
 }
 windows_core::imp::interface_hierarchy!(IDXGIDeviceSubObject, windows_core::IUnknown, IDXGIObject);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIDeviceSubObject_Vtbl {
     pub base__: IDXGIObject_Vtbl,
     GetDevice: usize,
@@ -2039,7 +2206,6 @@ impl core::ops::Deref for IDXGIFactory {
 }
 windows_core::imp::interface_hierarchy!(IDXGIFactory, windows_core::IUnknown, IDXGIObject);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIFactory_Vtbl {
     pub base__: IDXGIObject_Vtbl,
     EnumAdapters: usize,
@@ -2069,7 +2235,6 @@ windows_core::imp::interface_hierarchy!(
     IDXGIFactory
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIFactory1_Vtbl {
     pub base__: IDXGIFactory_Vtbl,
     EnumAdapters1: usize,
@@ -2097,7 +2262,7 @@ windows_core::imp::interface_hierarchy!(
     IDXGIFactory1
 );
 impl IDXGIFactory2 {
-    pub unsafe fn CreateSwapChainForHwnd<P0, P4>(
+    pub(crate) unsafe fn CreateSwapChainForHwnd<P0, P4>(
         &self,
         pdevice: P0,
         hwnd: HWND,
@@ -2123,7 +2288,7 @@ impl IDXGIFactory2 {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreateSwapChainForComposition<P0, P2>(
+    pub(crate) unsafe fn CreateSwapChainForComposition<P0, P2>(
         &self,
         pdevice: P0,
         pdesc: *const DXGI_SWAP_CHAIN_DESC1,
@@ -2147,7 +2312,6 @@ impl IDXGIFactory2 {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIFactory2_Vtbl {
     pub base__: IDXGIFactory1_Vtbl,
     IsWindowedStereoEnabled: usize,
@@ -2186,7 +2350,7 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IDXGIObject, windows_core::IUnknown);
 impl IDXGIObject {
-    pub unsafe fn GetParent<T>(&self) -> windows_core::Result<T>
+    pub(crate) unsafe fn GetParent<T>(&self) -> windows_core::Result<T>
     where
         T: windows_core::Interface,
     {
@@ -2202,7 +2366,6 @@ impl IDXGIObject {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIObject_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     SetPrivateData: usize,
@@ -2230,7 +2393,6 @@ impl core::ops::Deref for IDXGIOutput {
 }
 windows_core::imp::interface_hierarchy!(IDXGIOutput, windows_core::IUnknown, IDXGIObject);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGIOutput_Vtbl {
     pub base__: IDXGIObject_Vtbl,
     GetDesc: usize,
@@ -2267,7 +2429,6 @@ windows_core::imp::interface_hierarchy!(
     IDXGIDeviceSubObject
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGISurface_Vtbl {
     pub base__: IDXGIDeviceSubObject_Vtbl,
     GetDesc: usize,
@@ -2295,7 +2456,11 @@ windows_core::imp::interface_hierarchy!(
     IDXGIDeviceSubObject
 );
 impl IDXGISwapChain {
-    pub unsafe fn Present(&self, syncinterval: u32, flags: DXGI_PRESENT) -> windows_core::HRESULT {
+    pub(crate) unsafe fn Present(
+        &self,
+        syncinterval: u32,
+        flags: DXGI_PRESENT,
+    ) -> windows_core::HRESULT {
         unsafe {
             (windows_core::Interface::vtable(self).Present)(
                 windows_core::Interface::as_raw(self),
@@ -2304,7 +2469,7 @@ impl IDXGISwapChain {
             )
         }
     }
-    pub unsafe fn GetBuffer<T>(&self, buffer: u32) -> windows_core::Result<T>
+    pub(crate) unsafe fn GetBuffer<T>(&self, buffer: u32) -> windows_core::Result<T>
     where
         T: windows_core::Interface,
     {
@@ -2319,7 +2484,7 @@ impl IDXGISwapChain {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn ResizeBuffers(
+    pub(crate) unsafe fn ResizeBuffers(
         &self,
         buffercount: u32,
         width: u32,
@@ -2341,7 +2506,6 @@ impl IDXGISwapChain {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGISwapChain_Vtbl {
     pub base__: IDXGIDeviceSubObject_Vtbl,
     pub Present: unsafe extern "system" fn(
@@ -2393,7 +2557,6 @@ windows_core::imp::interface_hierarchy!(
     IDXGISwapChain
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGISwapChain1_Vtbl {
     pub base__: IDXGISwapChain_Vtbl,
     GetDesc1: usize,
@@ -2431,7 +2594,7 @@ windows_core::imp::interface_hierarchy!(
     IDXGISwapChain1
 );
 impl IDXGISwapChain2 {
-    pub unsafe fn SetMatrixTransform(
+    pub(crate) unsafe fn SetMatrixTransform(
         &self,
         pmatrix: *const DXGI_MATRIX_3X2_F,
     ) -> windows_core::Result<()> {
@@ -2445,7 +2608,6 @@ impl IDXGISwapChain2 {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDXGISwapChain2_Vtbl {
     pub base__: IDXGISwapChain1_Vtbl,
     SetSourceSize: usize,
@@ -2469,7 +2631,10 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IWICBitmapDecoder, windows_core::IUnknown);
 impl IWICBitmapDecoder {
-    pub unsafe fn GetFrame(&self, index: u32) -> windows_core::Result<IWICBitmapFrameDecode> {
+    pub(crate) unsafe fn GetFrame(
+        &self,
+        index: u32,
+    ) -> windows_core::Result<IWICBitmapFrameDecode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetFrame)(
@@ -2482,7 +2647,6 @@ impl IWICBitmapDecoder {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWICBitmapDecoder_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     QueryCapability: usize,
@@ -2519,7 +2683,6 @@ windows_core::imp::interface_hierarchy!(
     IWICBitmapSource
 );
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWICBitmapFrameDecode_Vtbl {
     pub base__: IWICBitmapSource_Vtbl,
     GetMetadataQueryReader: usize,
@@ -2534,7 +2697,6 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IWICBitmapSource, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWICBitmapSource_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     GetSize: usize,
@@ -2561,7 +2723,7 @@ windows_core::imp::interface_hierarchy!(
     IWICBitmapSource
 );
 impl IWICFormatConverter {
-    pub unsafe fn Initialize<P0, P3>(
+    pub(crate) unsafe fn Initialize<P0, P3>(
         &self,
         pisource: P0,
         dstformat: *const windows_core::GUID,
@@ -2589,7 +2751,6 @@ impl IWICFormatConverter {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWICFormatConverter_Vtbl {
     pub base__: IWICBitmapSource_Vtbl,
     pub Initialize: unsafe extern "system" fn(
@@ -2611,7 +2772,7 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IWICImagingFactory, windows_core::IUnknown);
 impl IWICImagingFactory {
-    pub unsafe fn CreateDecoderFromFilename<P0>(
+    pub(crate) unsafe fn CreateDecoderFromFilename<P0>(
         &self,
         wzfilename: P0,
         pguidvendor: Option<*const windows_core::GUID>,
@@ -2634,7 +2795,7 @@ impl IWICImagingFactory {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub unsafe fn CreateFormatConverter(&self) -> windows_core::Result<IWICFormatConverter> {
+    pub(crate) unsafe fn CreateFormatConverter(&self) -> windows_core::Result<IWICFormatConverter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).CreateFormatConverter)(
@@ -2646,7 +2807,6 @@ impl IWICImagingFactory {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWICImagingFactory_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     pub CreateDecoderFromFilename: unsafe extern "system" fn(
@@ -2693,7 +2853,6 @@ windows_core::imp::define_interface!(
 );
 windows_core::imp::interface_hierarchy!(IWICPalette, windows_core::IUnknown);
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWICPalette_Vtbl {
     pub base__: windows_core::IUnknown_Vtbl,
     InitializePredefined: usize,
@@ -2709,8 +2868,8 @@ pub struct IWICPalette_Vtbl {
 }
 impl windows_core::RuntimeName for IWICPalette {}
 pub type WICBitmapDitherType = i32;
-pub const WICBitmapDitherTypeNone: WICBitmapDitherType = 0i32;
+pub const WICBitmapDitherTypeNone: WICBitmapDitherType = 0;
 pub type WICBitmapPaletteType = i32;
-pub const WICBitmapPaletteTypeMedianCut: WICBitmapPaletteType = 1i32;
-pub const WICDecodeMetadataCacheOnDemand: WICDecodeOptions = 0i32;
+pub const WICBitmapPaletteTypeMedianCut: WICBitmapPaletteType = 1;
+pub const WICDecodeMetadataCacheOnDemand: WICDecodeOptions = 0;
 pub type WICDecodeOptions = i32;

@@ -1,15 +1,15 @@
 //! End-to-end interaction fixtures: drive each input control through the
-//! real WinUI event surface and verify the reactor's `on_changed` callback
+//! real WinUI event surface and verify the reactor's widget callbacks
 //! fires and the next render reflects the new state. These complement the
 //! purely-structural `mount_*` fixtures, which only assert initial render.
 
 use windows_core::Interface as _;
 
-use windows_reactor::SymbolGlyph;
-use windows_reactor::core::element::Element;
-use windows_reactor::core::element::{ComboBox, PasswordBox, RadioButtons, Slider, ToggleSwitch};
-use windows_reactor::dsl::{ElementExt, button, check_box, text_block, text_box};
+use windows_reactor::Element;
+use windows_reactor::Symbol;
 use windows_reactor::vstack;
+use windows_reactor::{ComboBox, PasswordBox, RadioButtons, Slider, ToggleSwitch};
+use windows_reactor::{ElementExt, button, check_box, text_block, text_box};
 
 use crate::fixtures::reconciler::{FixtureFuture, cc};
 use crate::harness::Harness;
@@ -21,8 +21,8 @@ pub fn checkbox_toggles_state(h: Harness) -> FixtureFuture {
             vstack((
                 text_block(format!("checked={checked}")),
                 check_box(checked)
-                    .label("agree")
-                    .on_changed(move |v| set.call(v)),
+                    .content("agree")
+                    .on_checked(move |v| set.call(v)),
             ))
             .into()
         }));
@@ -47,7 +47,7 @@ pub fn toggle_switch_changes_state(h: Harness) -> FixtureFuture {
             let (on, set) = cx.use_state(false);
             vstack((
                 text_block(format!("on={on}")),
-                ToggleSwitch::new(on).on_changed(move |v| set.call(v)),
+                ToggleSwitch::new(on).on_toggled(move |v| set.call(v)),
             ))
             .into()
         }));
@@ -74,7 +74,7 @@ pub fn slider_value_changes_state(h: Harness) -> FixtureFuture {
                 text_block(format!("value={}", value as i32)),
                 Slider::new(value)
                     .range(0.0, 100.0)
-                    .on_changed(move |v| set.call(v)),
+                    .on_value_changed(move |v| set.call(v)),
             ))
             .into()
         }));
@@ -99,7 +99,7 @@ pub fn text_field_changes_state(h: Harness) -> FixtureFuture {
             let (text, set) = cx.use_state(String::new());
             vstack((
                 text_block(format!("typed='{text}'")),
-                text_box(text).on_changed(move |v| set.call(v)),
+                text_box(text).on_text_changed(move |v| set.call(v)),
             ))
             .into()
         }));
@@ -190,7 +190,7 @@ pub fn pool_churn_grow_shrink_grow(h: Harness) -> FixtureFuture {
                     button("Empty").on_click(zero),
                 ))
                 .spacing(8.0),
-                windows_reactor::dsl::vstack(items).spacing(2.0),
+                vstack(items).spacing(2.0),
             ))
             .spacing(8.0)
             .into()
@@ -236,11 +236,11 @@ pub fn password_box_changes_state(h: Harness) -> FixtureFuture {
     Box::pin(async move {
         h.mount(cc(|cx| {
             let (value, set) = cx.use_state(String::new());
-            windows_reactor::vstack((
+            vstack((
                 text_block(format!("pwd-len={}", value.len())),
                 PasswordBox::new()
                     .value(value)
-                    .on_changed(move |v| set.call(v)),
+                    .on_password_changed(move |v| set.call(v)),
             ))
             .into()
         }));
@@ -263,7 +263,7 @@ pub fn radio_buttons_change_selection(h: Harness) -> FixtureFuture {
     Box::pin(async move {
         h.mount(cc(|cx| {
             let (idx, set) = cx.use_state(0i32);
-            windows_reactor::vstack((
+            vstack((
                 text_block(format!("radio-idx={idx}")),
                 RadioButtons::new(["Email", "SMS", "None"])
                     .selected_index(idx)
@@ -292,15 +292,13 @@ pub fn radio_buttons_change_selection(h: Harness) -> FixtureFuture {
             initial,
         );
 
-        if let Err(e) = h.set_radio_buttons_selected_index(2) {
-            h.diag(&format!(
-                "radio_buttons_change_selection: driver failed: {e}\nvisual tree:\n{}",
-                h.dump_tree()
-            ));
-        }
+        // Try programmatic selection — this is known to fail reliably
+        // because WinUI RadioButtons.SelectionChanged only fires for real
+        // input events. Silence errors and fall through to the SKIP path.
+        let _ = h.set_radio_buttons_selected_index(2);
         // RadioButtons doesn't reliably fire SelectionChanged for programmatic input.
         let arrived = h
-            .render_until("radio-idx=2 to appear", |h| {
+            .render_until_quiet("radio-idx=2 to appear", |h| {
                 h.find_text("radio-idx=2").is_some()
             })
             .await;
@@ -308,7 +306,7 @@ pub fn radio_buttons_change_selection(h: Harness) -> FixtureFuture {
         if !arrived {
             h.check_skip(
                 "Interaction_RadioButtons_AfterChange",
-                "WinUI RadioButtons.SelectionChanged does not fire reliably for in-process programmatic input; verifiable only via out-of-process UI automation",
+                "programmatic RadioButtons selection not supported in-process",
             );
             return;
         }
@@ -340,7 +338,7 @@ pub fn combo_box_changes_selection(h: Harness) -> FixtureFuture {
     Box::pin(async move {
         h.mount(cc(|cx| {
             let (idx, set) = cx.use_state(-1i32);
-            windows_reactor::vstack((
+            vstack((
                 text_block(format!("combo-idx={idx}")),
                 ComboBox::new(["Red", "Green", "Blue"])
                     .selected_index(idx)
@@ -372,7 +370,7 @@ pub fn button_icon_label_preserved(h: Harness) -> FixtureFuture {
             let (count, set) = cx.use_state(0u32);
             vstack((
                 button(format!("Clicked {count}"))
-                    .icon(SymbolGlyph::Favorite)
+                    .icon(Symbol::Favorite)
                     .on_click(move || set.call(count + 1)),
                 text_block(format!("count={count}")),
             ))
@@ -427,9 +425,9 @@ pub fn button_icon_glyph_change_preserves_text(h: Harness) -> FixtureFuture {
         h.mount(cc(|cx| {
             let (toggled, set) = cx.use_state(false);
             let icon = if toggled {
-                SymbolGlyph::Save
+                Symbol::Save
             } else {
-                SymbolGlyph::Favorite
+                Symbol::Favorite
             };
             vstack((
                 button("Action")

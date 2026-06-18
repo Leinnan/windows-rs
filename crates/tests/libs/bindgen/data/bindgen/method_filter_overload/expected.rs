@@ -12,7 +12,7 @@ pub mod Test {
         windows_core::IInspectable
     );
     impl IFoo {
-        pub fn InsertKeyFrame(&self, progress: f32) -> windows_result::Result<i32> {
+        pub fn InsertKeyFrame(&self, progress: f32) -> windows_core::Result<i32> {
             unsafe {
                 let mut result__ = core::mem::zeroed();
                 (windows_core::Interface::vtable(self).InsertKeyFrame)(
@@ -23,7 +23,7 @@ pub mod Test {
                 .map(|| result__)
             }
         }
-        pub fn Keep(&self) -> windows_result::Result<i32> {
+        pub fn Keep(&self) -> windows_core::Result<i32> {
             unsafe {
                 let mut result__ = core::mem::zeroed();
                 (windows_core::Interface::vtable(self).Keep)(
@@ -38,16 +38,15 @@ pub mod Test {
         const NAME: &'static str = "Test.IFoo";
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct IFoo_Vtbl {
         pub base__: windows_core::IInspectable_Vtbl,
         pub InsertKeyFrame: unsafe extern "system" fn(
             *mut core::ffi::c_void,
             f32,
             *mut i32,
-        ) -> windows_result::HRESULT,
+        ) -> windows_core::HRESULT,
         InsertKeyFrameWithEasingFunction: usize,
         pub Keep:
-            unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_result::HRESULT,
+            unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     }
 }

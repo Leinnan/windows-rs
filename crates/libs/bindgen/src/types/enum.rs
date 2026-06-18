@@ -31,11 +31,11 @@ impl Enum {
             .filter(|field| field.flags().contains(FieldAttributes::Literal))
             .filter(|field| {
                 // In minimal mode, only emit variants explicitly listed in the filter.
-                if let Some(mf) = config.minimal_filter {
-                    let tn = self.def.type_name();
-                    if let Some(variant_set) = mf.enum_variant_filter(tn.namespace(), tn.name()) {
-                        return variant_set.includes(field.name());
-                    }
+                let tn = self.def.type_name();
+                if let Some(variant_set) =
+                    config.filter.enum_variant_filter(tn.namespace(), tn.name())
+                {
+                    return variant_set.includes(field.name());
                 }
                 true
             })
@@ -100,7 +100,7 @@ impl Enum {
             // useful when the enum appears as a generic type argument in an
             // implemented parameterized interface. In minimal mode we skip it
             // unconditionally — the trait default (empty) is sufficient.
-            let name_const = if config.bindgen.style.is_minimal() {
+            let name_const = if config.minimal_closure {
                 quote! {}
             } else {
                 let type_name_bytes =

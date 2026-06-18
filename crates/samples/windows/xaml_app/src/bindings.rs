@@ -7,70 +7,37 @@ windows_core::imp::interface_hierarchy!(
     windows_core::IInspectable
 );
 impl Application {
-    pub fn RemoveUnhandledException(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveUnhandledException)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSuspending(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveSuspending)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn Resuming<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn Resuming<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<windows::Foundation::EventHandler<windows_core::IInspectable>>,
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<windows_core::IInspectable>,
+            ) + Send
+            + 'static,
     {
+        let handler =
+            <windows::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
+                handler(a0, a1);
+                Ok(())
+            });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Resuming)(
+            let token__ = (windows_core::Interface::vtable(self).Resuming)(
                 windows_core::Interface::as_raw(self),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveResuming(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveResuming)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).RemoveResuming,
+            ))
         }
     }
     pub fn Exit(&self) -> windows_core::Result<()> {
         unsafe {
             (windows_core::Interface::vtable(self).Exit)(windows_core::Interface::as_raw(self)).ok()
-        }
-    }
-    pub fn RemoveLeavingBackground(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IApplication2>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLeavingBackground)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveEnteredBackground(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IApplication2>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveEnteredBackground)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
         }
     }
     pub fn new() -> windows_core::Result<Application> {
@@ -328,7 +295,7 @@ impl ApplicationInitializationCallback {
             &ApplicationInitializationCallbackBox::<F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0>(&self, p: P0) -> windows_core::Result<()>
     where
@@ -344,7 +311,6 @@ impl ApplicationInitializationCallback {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ApplicationInitializationCallback_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(
@@ -396,7 +362,6 @@ windows_core::imp::interface_hierarchy!(
     windows_core::IUnknown,
     windows_core::IInspectable
 );
-impl ApplicationInitializationCallbackParams {}
 impl windows_core::RuntimeType for ApplicationInitializationCallbackParams {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_class::<
         Self,
@@ -604,15 +569,6 @@ impl Control {
             .ok()
         }
     }
-    pub fn RemoveIsEnabledChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveIsEnabledChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn ApplyTemplate(&self) -> windows_core::Result<bool> {
         unsafe {
             let mut result__ = core::mem::zeroed();
@@ -799,26 +755,6 @@ impl Control {
             (windows_core::Interface::vtable(this).SetXYFocusDown)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveFocusEngaged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IControl4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveFocusEngaged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveFocusDisengaged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IControl4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveFocusDisengaged)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -1250,59 +1186,33 @@ impl Control {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub fn RemoveLoaded(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLoaded)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveUnloaded(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveUnloaded)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSizeChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveSizeChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn LayoutUpdated<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn LayoutUpdated<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<windows::Foundation::EventHandler<windows_core::IInspectable>>,
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<windows_core::IInspectable>,
+            ) + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
+        let handler =
+            <windows::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
+                handler(a0, a1);
+                Ok(())
+            });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).LayoutUpdated)(
+            let token__ = (windows_core::Interface::vtable(this).LayoutUpdated)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveLayoutUpdated(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLayoutUpdated)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveLayoutUpdated,
+            ))
         }
     }
     pub fn FindName(
@@ -1320,44 +1230,33 @@ impl Control {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub fn RemoveDataContextChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement2>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDataContextChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn Loading<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn Loading<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<
-                windows::Foundation::TypedEventHandler<
-                    FrameworkElement,
-                    windows_core::IInspectable,
-                >,
-            >,
+        F: Fn(windows_core::Ref<FrameworkElement>, windows_core::Ref<windows_core::IInspectable>)
+            + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement3>(self)?;
+        let handler = <windows::Foundation::TypedEventHandler<
+            FrameworkElement,
+            windows_core::IInspectable,
+        >>::new(move |a0, a1| {
+            handler(a0, a1);
+            Ok(())
+        });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Loading)(
+            let token__ = (windows_core::Interface::vtable(this).Loading)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveLoading(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLoading)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveLoading,
+            ))
         }
     }
     pub fn AllowFocusOnInteraction(&self) -> windows_core::Result<bool> {
@@ -1402,34 +1301,36 @@ impl Control {
             .ok()
         }
     }
-    pub fn ActualThemeChanged<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn ActualThemeChanged<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<
-                windows::Foundation::TypedEventHandler<
-                    FrameworkElement,
-                    windows_core::IInspectable,
-                >,
-            >,
+        F: Fn(windows_core::Ref<FrameworkElement>, windows_core::Ref<windows_core::IInspectable>)
+            + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement6>(self)?;
+        let handler = <windows::Foundation::TypedEventHandler<
+            FrameworkElement,
+            windows_core::IInspectable,
+        >>::new(move |a0, a1| {
+            handler(a0, a1);
+            Ok(())
+        });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ActualThemeChanged)(
+            let token__ = (windows_core::Interface::vtable(this).ActualThemeChanged)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveActualThemeChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement6>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveActualThemeChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveActualThemeChanged,
+            ))
         }
     }
     pub fn IsLoaded(&self) -> windows_core::Result<bool> {
@@ -1441,16 +1342,6 @@ impl Control {
                 &mut result__,
             )
             .map(|| result__)
-        }
-    }
-    pub fn RemoveEffectiveViewportChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveEffectiveViewportChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
         }
     }
     pub fn MeasureOverride(
@@ -1732,256 +1623,6 @@ impl Control {
             .ok()
         }
     }
-    pub fn RemoveKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveGotFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGotFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLostFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLostFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragEnter(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragEnter)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragLeave(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragLeave)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragOver(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragOver)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDrop(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDrop)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerPressed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerPressed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerMoved(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerMoved)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerReleased(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerReleased)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerEntered(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerEntered)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerExited(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerExited)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCaptureLost(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerCaptureLost)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerWheelChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerWheelChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDoubleTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDoubleTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveHolding(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveHolding)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveRightTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveRightTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationInertiaStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationInertiaStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationStarted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationDelta(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationDelta)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn Measure(&self, availablesize: windows::Foundation::Size) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement>(self)?;
         unsafe {
@@ -2088,26 +1729,6 @@ impl Control {
             (windows_core::Interface::vtable(this).SetCanDrag)(
                 windows_core::Interface::as_raw(this),
                 value,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDropCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDropCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -2221,56 +1842,6 @@ impl Control {
             .ok()
         }
     }
-    pub fn RemoveContextRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveContextCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayDismissed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayDismissed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyInvoked(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyInvoked)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn KeyTipHorizontalOffset(&self) -> windows_core::Result<f64> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
@@ -2313,81 +1884,11 @@ impl Control {
             .ok()
         }
     }
-    pub fn RemoveGettingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGettingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLosingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLosingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveNoFocusCandidateFound(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveNoFocusCandidateFound)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn StartBringIntoView(&self) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
             (windows_core::Interface::vtable(this).StartBringIntoView)(
                 windows_core::Interface::as_raw(this),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveCharacterReceived(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCharacterReceived)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveProcessKeyboardAccelerators(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveProcessKeyboardAccelerators)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -2436,16 +1937,6 @@ impl Control {
             (windows_core::Interface::vtable(this).SetKeyboardAcceleratorPlacementTarget)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveBringIntoViewRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement8>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveBringIntoViewRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -3103,54 +2594,32 @@ impl FrameworkElement {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub fn RemoveLoaded(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveLoaded)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveUnloaded(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveUnloaded)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSizeChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveSizeChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn LayoutUpdated<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn LayoutUpdated<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<windows::Foundation::EventHandler<windows_core::IInspectable>>,
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<windows_core::IInspectable>,
+            ) + Send
+            + 'static,
     {
+        let handler =
+            <windows::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
+                handler(a0, a1);
+                Ok(())
+            });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LayoutUpdated)(
+            let token__ = (windows_core::Interface::vtable(self).LayoutUpdated)(
                 windows_core::Interface::as_raw(self),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveLayoutUpdated(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveLayoutUpdated)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).RemoveLayoutUpdated,
+            ))
         }
     }
     pub fn FindName(
@@ -3167,44 +2636,33 @@ impl FrameworkElement {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub fn RemoveDataContextChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement2>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDataContextChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn Loading<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn Loading<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<
-                windows::Foundation::TypedEventHandler<
-                    FrameworkElement,
-                    windows_core::IInspectable,
-                >,
-            >,
+        F: Fn(windows_core::Ref<FrameworkElement>, windows_core::Ref<windows_core::IInspectable>)
+            + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement3>(self)?;
+        let handler = <windows::Foundation::TypedEventHandler<
+            FrameworkElement,
+            windows_core::IInspectable,
+        >>::new(move |a0, a1| {
+            handler(a0, a1);
+            Ok(())
+        });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Loading)(
+            let token__ = (windows_core::Interface::vtable(this).Loading)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveLoading(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLoading)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveLoading,
+            ))
         }
     }
     pub fn AllowFocusOnInteraction(&self) -> windows_core::Result<bool> {
@@ -3249,34 +2707,36 @@ impl FrameworkElement {
             .ok()
         }
     }
-    pub fn ActualThemeChanged<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn ActualThemeChanged<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<
-                windows::Foundation::TypedEventHandler<
-                    FrameworkElement,
-                    windows_core::IInspectable,
-                >,
-            >,
+        F: Fn(windows_core::Ref<FrameworkElement>, windows_core::Ref<windows_core::IInspectable>)
+            + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement6>(self)?;
+        let handler = <windows::Foundation::TypedEventHandler<
+            FrameworkElement,
+            windows_core::IInspectable,
+        >>::new(move |a0, a1| {
+            handler(a0, a1);
+            Ok(())
+        });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ActualThemeChanged)(
+            let token__ = (windows_core::Interface::vtable(this).ActualThemeChanged)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveActualThemeChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement6>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveActualThemeChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveActualThemeChanged,
+            ))
         }
     }
     pub fn IsLoaded(&self) -> windows_core::Result<bool> {
@@ -3288,16 +2748,6 @@ impl FrameworkElement {
                 &mut result__,
             )
             .map(|| result__)
-        }
-    }
-    pub fn RemoveEffectiveViewportChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveEffectiveViewportChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
         }
     }
     pub fn new() -> windows_core::Result<FrameworkElement> {
@@ -3621,256 +3071,6 @@ impl FrameworkElement {
             .ok()
         }
     }
-    pub fn RemoveKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveGotFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGotFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLostFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLostFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragEnter(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragEnter)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragLeave(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragLeave)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragOver(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragOver)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDrop(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDrop)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerPressed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerPressed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerMoved(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerMoved)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerReleased(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerReleased)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerEntered(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerEntered)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerExited(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerExited)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCaptureLost(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerCaptureLost)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerWheelChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerWheelChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDoubleTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDoubleTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveHolding(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveHolding)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveRightTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveRightTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationInertiaStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationInertiaStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationStarted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationDelta(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationDelta)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn Measure(&self, availablesize: windows::Foundation::Size) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement>(self)?;
         unsafe {
@@ -3977,26 +3177,6 @@ impl FrameworkElement {
             (windows_core::Interface::vtable(this).SetCanDrag)(
                 windows_core::Interface::as_raw(this),
                 value,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDropCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDropCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -4110,56 +3290,6 @@ impl FrameworkElement {
             .ok()
         }
     }
-    pub fn RemoveContextRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveContextCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayDismissed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayDismissed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyInvoked(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyInvoked)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn KeyTipHorizontalOffset(&self) -> windows_core::Result<f64> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
@@ -4202,81 +3332,11 @@ impl FrameworkElement {
             .ok()
         }
     }
-    pub fn RemoveGettingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGettingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLosingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLosingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveNoFocusCandidateFound(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveNoFocusCandidateFound)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn StartBringIntoView(&self) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
             (windows_core::Interface::vtable(this).StartBringIntoView)(
                 windows_core::Interface::as_raw(this),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveCharacterReceived(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCharacterReceived)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveProcessKeyboardAccelerators(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveProcessKeyboardAccelerators)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -4325,16 +3385,6 @@ impl FrameworkElement {
             (windows_core::Interface::vtable(this).SetKeyboardAcceleratorPlacementTarget)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveBringIntoViewRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement8>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveBringIntoViewRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -4671,7 +3721,6 @@ impl windows_core::RuntimeName for IApplication {
     const NAME: &'static str = "Windows.UI.Xaml.IApplication";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplication_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     Resources: usize,
@@ -4709,7 +3758,6 @@ impl windows_core::RuntimeName for IApplication2 {
     const NAME: &'static str = "Windows.UI.Xaml.IApplication2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplication2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     FocusVisualKind: usize,
@@ -4738,11 +3786,8 @@ impl windows_core::RuntimeName for IApplication3 {
     const NAME: &'static str = "Windows.UI.Xaml.IApplication3";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplication3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    HighContrastAdjustment: usize,
-    SetHighContrastAdjustment: usize,
 }
 windows_core::imp::define_interface!(
     IApplicationFactory,
@@ -4803,7 +3848,6 @@ impl IApplicationFactory_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplicationFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(
@@ -4847,7 +3891,6 @@ impl IApplicationInitializationCallbackParams_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplicationInitializationCallbackParams_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
@@ -5073,7 +4116,6 @@ impl IApplicationOverrides_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplicationOverrides_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub OnActivated: unsafe extern "system" fn(
@@ -5165,7 +4207,6 @@ impl IApplicationOverrides2_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplicationOverrides2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub OnBackgroundActivated: unsafe extern "system" fn(
@@ -5188,7 +4229,6 @@ impl windows_core::RuntimeName for IApplicationStatics {
     const NAME: &'static str = "Windows.UI.Xaml.IApplicationStatics";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IApplicationStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Current: unsafe extern "system" fn(
@@ -5204,7 +4244,6 @@ pub struct IApplicationStatics_Vtbl {
         *mut core::ffi::c_void,
         *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
-    LoadComponentWithResourceLocation: usize,
 }
 windows_core::imp::define_interface!(
     IControl,
@@ -5221,7 +4260,6 @@ impl windows_core::RuntimeName for IControl {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControl";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControl_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub FontSize:
@@ -5294,7 +4332,6 @@ pub struct IControl_Vtbl {
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub ApplyTemplate:
         unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
-    Focus: usize,
 }
 windows_core::imp::define_interface!(
     IControl2,
@@ -5359,7 +4396,6 @@ impl IControl2_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControl2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub IsTextScaleFactorEnabled:
@@ -5430,7 +4466,6 @@ impl IControl3_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControl3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub UseSystemFocusVisuals:
@@ -5453,7 +4488,6 @@ impl windows_core::RuntimeName for IControl4 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControl4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControl4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub IsFocusEngagementEnabled:
@@ -5577,7 +4611,6 @@ impl IControl5_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControl5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub DefaultStyleResourceUri: unsafe extern "system" fn(
@@ -5604,13 +4637,8 @@ impl windows_core::RuntimeName for IControl7 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControl7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControl7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    BackgroundSizing: usize,
-    SetBackgroundSizing: usize,
-    CornerRadius: usize,
-    SetCornerRadius: usize,
 }
 windows_core::imp::define_interface!(
     IControlFactory,
@@ -5671,7 +4699,6 @@ impl IControlFactory_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(
@@ -5696,34 +4723,8 @@ impl windows_core::RuntimeName for IControlOverrides {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlOverrides";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlOverrides_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    OnPointerEntered: usize,
-    OnPointerPressed: usize,
-    OnPointerMoved: usize,
-    OnPointerReleased: usize,
-    OnPointerExited: usize,
-    OnPointerCaptureLost: usize,
-    OnPointerCanceled: usize,
-    OnPointerWheelChanged: usize,
-    OnTapped: usize,
-    OnDoubleTapped: usize,
-    OnHolding: usize,
-    OnRightTapped: usize,
-    OnManipulationStarting: usize,
-    OnManipulationInertiaStarting: usize,
-    OnManipulationStarted: usize,
-    OnManipulationDelta: usize,
-    OnManipulationCompleted: usize,
-    OnKeyUp: usize,
-    OnKeyDown: usize,
-    OnGotFocus: usize,
-    OnLostFocus: usize,
-    OnDragEnter: usize,
-    OnDragLeave: usize,
-    OnDragOver: usize,
-    OnDrop: usize,
 }
 windows_core::imp::define_interface!(
     IControlOverrides6,
@@ -5740,12 +4741,8 @@ impl windows_core::RuntimeName for IControlOverrides6 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlOverrides6";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlOverrides6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    OnPreviewKeyDown: usize,
-    OnPreviewKeyUp: usize,
-    OnCharacterReceived: usize,
 }
 windows_core::imp::define_interface!(
     IControlProtected,
@@ -5844,7 +4841,6 @@ impl IControlProtected_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlProtected_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub DefaultStyleKey: unsafe extern "system" fn(
@@ -5876,29 +4872,8 @@ impl windows_core::RuntimeName for IControlStatics {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlStatics";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    FontSizeProperty: usize,
-    FontFamilyProperty: usize,
-    FontWeightProperty: usize,
-    FontStyleProperty: usize,
-    FontStretchProperty: usize,
-    CharacterSpacingProperty: usize,
-    ForegroundProperty: usize,
-    IsTabStopProperty: usize,
-    IsEnabledProperty: usize,
-    TabIndexProperty: usize,
-    TabNavigationProperty: usize,
-    TemplateProperty: usize,
-    PaddingProperty: usize,
-    HorizontalContentAlignmentProperty: usize,
-    VerticalContentAlignmentProperty: usize,
-    BackgroundProperty: usize,
-    BorderThicknessProperty: usize,
-    BorderBrushProperty: usize,
-    DefaultStyleKeyProperty: usize,
-    FocusStateProperty: usize,
 }
 windows_core::imp::define_interface!(
     IControlStatics2,
@@ -5915,10 +4890,8 @@ impl windows_core::RuntimeName for IControlStatics2 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlStatics2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    IsTextScaleFactorEnabledProperty: usize,
 }
 windows_core::imp::define_interface!(
     IControlStatics3,
@@ -5935,7 +4908,6 @@ impl windows_core::RuntimeName for IControlStatics3 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlStatics3";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlStatics3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     UseSystemFocusVisualsProperty: usize,
@@ -5966,17 +4938,8 @@ impl windows_core::RuntimeName for IControlStatics4 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlStatics4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlStatics4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    IsFocusEngagementEnabledProperty: usize,
-    IsFocusEngagedProperty: usize,
-    RequiresPointerProperty: usize,
-    XYFocusLeftProperty: usize,
-    XYFocusRightProperty: usize,
-    XYFocusUpProperty: usize,
-    XYFocusDownProperty: usize,
-    ElementSoundModeProperty: usize,
 }
 windows_core::imp::define_interface!(
     IControlStatics5,
@@ -5993,7 +4956,6 @@ impl windows_core::RuntimeName for IControlStatics5 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlStatics5";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlStatics5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     DefaultStyleResourceUriProperty: usize,
@@ -6024,11 +4986,8 @@ impl windows_core::RuntimeName for IControlStatics7 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.IControlStatics7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IControlStatics7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    BackgroundSizingProperty: usize,
-    CornerRadiusProperty: usize,
 }
 windows_core::imp::define_interface!(
     IDependencyObject,
@@ -6045,7 +5004,6 @@ impl windows_core::RuntimeName for IDependencyObject {
     const NAME: &'static str = "Windows.UI.Xaml.IDependencyObject";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDependencyObject_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     GetValue: usize,
@@ -6073,11 +5031,8 @@ impl windows_core::RuntimeName for IDependencyObject2 {
     const NAME: &'static str = "Windows.UI.Xaml.IDependencyObject2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDependencyObject2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    RegisterPropertyChangedCallback: usize,
-    UnregisterPropertyChangedCallback: usize,
 }
 windows_core::imp::define_interface!(
     IDependencyObjectFactory,
@@ -6142,7 +5097,6 @@ impl IDependencyObjectFactory_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IDependencyObjectFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(
@@ -6167,7 +5121,6 @@ impl windows_core::RuntimeName for IFrameworkElement {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElement";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElement_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     Triggers: usize,
@@ -6269,7 +5222,6 @@ pub struct IFrameworkElement_Vtbl {
         *mut core::ffi::c_void,
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
-    SetBinding: usize,
 }
 windows_core::imp::define_interface!(
     IFrameworkElement2,
@@ -6286,7 +5238,6 @@ impl windows_core::RuntimeName for IFrameworkElement2 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElement2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElement2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     RequestedTheme: usize,
@@ -6294,7 +5245,6 @@ pub struct IFrameworkElement2_Vtbl {
     DataContextChanged: usize,
     pub RemoveDataContextChanged:
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
-    GetBindingExpression: usize,
 }
 windows_core::imp::define_interface!(
     IFrameworkElement3,
@@ -6365,7 +5315,6 @@ impl IFrameworkElement3_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElement3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Loading: unsafe extern "system" fn(
@@ -6391,7 +5340,6 @@ impl windows_core::RuntimeName for IFrameworkElement4 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElement4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElement4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub AllowFocusOnInteraction:
@@ -6428,7 +5376,6 @@ impl windows_core::RuntimeName for IFrameworkElement6 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElement6";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElement6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     ActualTheme: usize,
@@ -6455,7 +5402,6 @@ impl windows_core::RuntimeName for IFrameworkElement7 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElement7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElement7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub IsLoaded:
@@ -6527,7 +5473,6 @@ impl IFrameworkElementFactory_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(
@@ -6638,7 +5583,6 @@ impl IFrameworkElementOverrides_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementOverrides_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub MeasureOverride: unsafe extern "system" fn(
@@ -6715,7 +5659,6 @@ impl IFrameworkElementOverrides2_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementOverrides2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GoToElementStateCore: unsafe extern "system" fn(
@@ -6770,7 +5713,6 @@ impl IFrameworkElementProtected7_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementProtected7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub InvalidateViewport:
@@ -6791,26 +5733,8 @@ impl windows_core::RuntimeName for IFrameworkElementStatics {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElementStatics";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    TagProperty: usize,
-    LanguageProperty: usize,
-    ActualWidthProperty: usize,
-    ActualHeightProperty: usize,
-    WidthProperty: usize,
-    HeightProperty: usize,
-    MinWidthProperty: usize,
-    MaxWidthProperty: usize,
-    MinHeightProperty: usize,
-    MaxHeightProperty: usize,
-    HorizontalAlignmentProperty: usize,
-    VerticalAlignmentProperty: usize,
-    MarginProperty: usize,
-    NameProperty: usize,
-    DataContextProperty: usize,
-    StyleProperty: usize,
-    FlowDirectionProperty: usize,
 }
 windows_core::imp::define_interface!(
     IFrameworkElementStatics2,
@@ -6827,10 +5751,8 @@ impl windows_core::RuntimeName for IFrameworkElementStatics2 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElementStatics2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    RequestedThemeProperty: usize,
 }
 windows_core::imp::define_interface!(
     IFrameworkElementStatics4,
@@ -6847,16 +5769,8 @@ impl windows_core::RuntimeName for IFrameworkElementStatics4 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElementStatics4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementStatics4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    AllowFocusOnInteractionProperty: usize,
-    FocusVisualMarginProperty: usize,
-    FocusVisualSecondaryThicknessProperty: usize,
-    FocusVisualPrimaryThicknessProperty: usize,
-    FocusVisualSecondaryBrushProperty: usize,
-    FocusVisualPrimaryBrushProperty: usize,
-    AllowFocusWhenDisabledProperty: usize,
 }
 windows_core::imp::define_interface!(
     IFrameworkElementStatics5,
@@ -6905,7 +5819,6 @@ impl IFrameworkElementStatics5_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementStatics5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub DeferTree: unsafe extern "system" fn(
@@ -6928,10 +5841,8 @@ impl windows_core::RuntimeName for IFrameworkElementStatics6 {
     const NAME: &'static str = "Windows.UI.Xaml.IFrameworkElementStatics6";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IFrameworkElementStatics6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    ActualThemeProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBox,
@@ -6948,7 +5859,6 @@ impl windows_core::RuntimeName for ITextBox {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Text: unsafe extern "system" fn(
@@ -7035,7 +5945,6 @@ impl windows_core::RuntimeName for ITextBox2 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Header: unsafe extern "system" fn(
@@ -7085,7 +5994,6 @@ impl windows_core::RuntimeName for ITextBox3 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox3";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     TextCompositionStarted: usize,
@@ -7161,7 +6069,6 @@ impl ITextBox4_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetLinguisticAlternativesAsync: unsafe extern "system" fn(
@@ -7184,11 +6091,8 @@ impl windows_core::RuntimeName for ITextBox5 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox5";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    SelectionHighlightColorWhenNotFocused: usize,
-    SetSelectionHighlightColorWhenNotFocused: usize,
 }
 windows_core::imp::define_interface!(
     ITextBox6,
@@ -7205,7 +6109,6 @@ impl windows_core::RuntimeName for ITextBox6 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox6";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     HorizontalTextAlignment: usize,
@@ -7239,7 +6142,6 @@ impl windows_core::RuntimeName for ITextBox7 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     HandwritingView: usize,
@@ -7264,7 +6166,6 @@ impl windows_core::RuntimeName for ITextBox8 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBox8";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBox8_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CanPasteClipboardContent:
@@ -7357,7 +6258,6 @@ impl ITextBoxFactory_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(
@@ -7382,18 +6282,8 @@ impl windows_core::RuntimeName for ITextBoxStatics {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    TextProperty: usize,
-    MaxLengthProperty: usize,
-    IsReadOnlyProperty: usize,
-    AcceptsReturnProperty: usize,
-    TextAlignmentProperty: usize,
-    TextWrappingProperty: usize,
-    IsSpellCheckEnabledProperty: usize,
-    IsTextPredictionEnabledProperty: usize,
-    InputScopeProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBoxStatics2,
@@ -7410,15 +6300,8 @@ impl windows_core::RuntimeName for ITextBoxStatics2 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    HeaderProperty: usize,
-    HeaderTemplateProperty: usize,
-    PlaceholderTextProperty: usize,
-    SelectionHighlightColorProperty: usize,
-    PreventKeyboardDisplayOnProgrammaticFocusProperty: usize,
-    IsColorFontEnabledProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBoxStatics3,
@@ -7435,11 +6318,8 @@ impl windows_core::RuntimeName for ITextBoxStatics3 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics3";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    DesiredCandidateWindowAlignmentProperty: usize,
-    TextReadingOrderProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBoxStatics5,
@@ -7456,10 +6336,8 @@ impl windows_core::RuntimeName for ITextBoxStatics5 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics5";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    SelectionHighlightColorWhenNotFocusedProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBoxStatics6,
@@ -7476,12 +6354,8 @@ impl windows_core::RuntimeName for ITextBoxStatics6 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics6";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    HorizontalTextAlignmentProperty: usize,
-    CharacterCasingProperty: usize,
-    PlaceholderForegroundProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBoxStatics7,
@@ -7498,11 +6372,8 @@ impl windows_core::RuntimeName for ITextBoxStatics7 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    HandwritingViewProperty: usize,
-    IsHandwritingViewEnabledProperty: usize,
 }
 windows_core::imp::define_interface!(
     ITextBoxStatics8,
@@ -7519,15 +6390,8 @@ impl windows_core::RuntimeName for ITextBoxStatics8 {
     const NAME: &'static str = "Windows.UI.Xaml.Controls.ITextBoxStatics8";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct ITextBoxStatics8_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    CanPasteClipboardContentProperty: usize,
-    CanUndoProperty: usize,
-    CanRedoProperty: usize,
-    SelectionFlyoutProperty: usize,
-    ProofingMenuFlyoutProperty: usize,
-    DescriptionProperty: usize,
 }
 windows_core::imp::define_interface!(
     IUIElement,
@@ -7544,7 +6408,6 @@ impl windows_core::RuntimeName for IUIElement {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub DesiredSize: unsafe extern "system" fn(
@@ -7719,7 +6582,6 @@ impl windows_core::RuntimeName for IUIElement10 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement10";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement10_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ActualOffset: unsafe extern "system" fn(
@@ -7730,11 +6592,6 @@ pub struct IUIElement10_Vtbl {
         *mut core::ffi::c_void,
         *mut windows_numerics::Vector2,
     ) -> windows_core::HRESULT,
-    XamlRoot: usize,
-    SetXamlRoot: usize,
-    UIContext: usize,
-    Shadow: usize,
-    SetShadow: usize,
 }
 windows_core::imp::define_interface!(
     IUIElement2,
@@ -7751,7 +6608,6 @@ impl windows_core::RuntimeName for IUIElement2 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     CompositeMode: usize,
@@ -7774,7 +6630,6 @@ impl windows_core::RuntimeName for IUIElement3 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement3";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     Transform3D: usize,
@@ -7810,7 +6665,6 @@ impl windows_core::RuntimeName for IUIElement4 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     ContextFlyout: usize,
@@ -7870,7 +6724,6 @@ impl windows_core::RuntimeName for IUIElement5 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement5";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     Lights: usize,
@@ -7909,7 +6762,6 @@ pub struct IUIElement5_Vtbl {
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub StartBringIntoView:
         unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
-    StartBringIntoViewWithOptions: usize,
 }
 windows_core::imp::define_interface!(
     IUIElement7,
@@ -7926,7 +6778,6 @@ impl windows_core::RuntimeName for IUIElement7 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     KeyboardAccelerators: usize,
@@ -7942,7 +6793,6 @@ pub struct IUIElement7_Vtbl {
     PreviewKeyUp: usize,
     pub RemovePreviewKeyUp:
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
-    TryInvokeKeyboardAccelerator: usize,
 }
 windows_core::imp::define_interface!(
     IUIElement8,
@@ -7959,7 +6809,6 @@ impl windows_core::RuntimeName for IUIElement8 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement8";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement8_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub KeyTipTarget: unsafe extern "system" fn(
@@ -8000,7 +6849,6 @@ impl windows_core::RuntimeName for IUIElement9 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElement9";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElement9_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CanBeScrollAnchor:
@@ -8094,7 +6942,6 @@ impl IUIElementFactory_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
@@ -8113,7 +6960,6 @@ impl windows_core::RuntimeName for IUIElementOverrides {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementOverrides";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementOverrides_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     OnCreateAutomationPeer: usize,
@@ -8141,14 +6987,12 @@ impl windows_core::RuntimeName for IUIElementOverrides7 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementOverrides7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementOverrides7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetChildrenInTabFocusOrder: unsafe extern "system" fn(
         *mut core::ffi::c_void,
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
-    OnProcessKeyboardAccelerators: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementOverrides8,
@@ -8165,11 +7009,8 @@ impl windows_core::RuntimeName for IUIElementOverrides8 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementOverrides8";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementOverrides8_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    OnKeyboardAcceleratorInvoked: usize,
-    OnBringIntoViewRequested: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementOverrides9,
@@ -8224,7 +7065,6 @@ impl IUIElementOverrides9_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementOverrides9_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub PopulatePropertyInfoOverride: unsafe extern "system" fn(
@@ -8248,49 +7088,8 @@ impl windows_core::RuntimeName for IUIElementStatics {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    KeyDownEvent: usize,
-    KeyUpEvent: usize,
-    PointerEnteredEvent: usize,
-    PointerPressedEvent: usize,
-    PointerMovedEvent: usize,
-    PointerReleasedEvent: usize,
-    PointerExitedEvent: usize,
-    PointerCaptureLostEvent: usize,
-    PointerCanceledEvent: usize,
-    PointerWheelChangedEvent: usize,
-    TappedEvent: usize,
-    DoubleTappedEvent: usize,
-    HoldingEvent: usize,
-    RightTappedEvent: usize,
-    ManipulationStartingEvent: usize,
-    ManipulationInertiaStartingEvent: usize,
-    ManipulationStartedEvent: usize,
-    ManipulationDeltaEvent: usize,
-    ManipulationCompletedEvent: usize,
-    DragEnterEvent: usize,
-    DragLeaveEvent: usize,
-    DragOverEvent: usize,
-    DropEvent: usize,
-    AllowDropProperty: usize,
-    OpacityProperty: usize,
-    ClipProperty: usize,
-    RenderTransformProperty: usize,
-    ProjectionProperty: usize,
-    RenderTransformOriginProperty: usize,
-    IsHitTestVisibleProperty: usize,
-    VisibilityProperty: usize,
-    UseLayoutRoundingProperty: usize,
-    TransitionsProperty: usize,
-    CacheModeProperty: usize,
-    IsTapEnabledProperty: usize,
-    IsDoubleTapEnabledProperty: usize,
-    IsRightTapEnabledProperty: usize,
-    IsHoldingEnabledProperty: usize,
-    ManipulationModeProperty: usize,
-    PointerCapturesProperty: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics10,
@@ -8307,10 +7106,8 @@ impl windows_core::RuntimeName for IUIElementStatics10 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics10";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics10_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    ShadowProperty: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics2,
@@ -8327,10 +7124,8 @@ impl windows_core::RuntimeName for IUIElementStatics2 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics2";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    CompositeModeProperty: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics3,
@@ -8347,12 +7142,8 @@ impl windows_core::RuntimeName for IUIElementStatics3 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics3";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    Transform3DProperty: usize,
-    CanDragProperty: usize,
-    TryStartDirectManipulation: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics4,
@@ -8369,14 +7160,8 @@ impl windows_core::RuntimeName for IUIElementStatics4 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    ContextFlyoutProperty: usize,
-    ExitDisplayModeOnAccessKeyInvokedProperty: usize,
-    IsAccessKeyScopeProperty: usize,
-    AccessKeyScopeOwnerProperty: usize,
-    AccessKeyProperty: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics5,
@@ -8393,20 +7178,8 @@ impl windows_core::RuntimeName for IUIElementStatics5 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics5";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    LightsProperty: usize,
-    KeyTipPlacementModeProperty: usize,
-    KeyTipHorizontalOffsetProperty: usize,
-    KeyTipVerticalOffsetProperty: usize,
-    XYFocusKeyboardNavigationProperty: usize,
-    XYFocusUpNavigationStrategyProperty: usize,
-    XYFocusDownNavigationStrategyProperty: usize,
-    XYFocusLeftNavigationStrategyProperty: usize,
-    XYFocusRightNavigationStrategyProperty: usize,
-    HighContrastAdjustmentProperty: usize,
-    TabFocusNavigationProperty: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics6,
@@ -8423,12 +7196,8 @@ impl windows_core::RuntimeName for IUIElementStatics6 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics6";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    GettingFocusEvent: usize,
-    LosingFocusEvent: usize,
-    NoFocusCandidateFoundEvent: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics7,
@@ -8445,12 +7214,8 @@ impl windows_core::RuntimeName for IUIElementStatics7 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics7";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics7_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    PreviewKeyDownEvent: usize,
-    CharacterReceivedEvent: usize,
-    PreviewKeyUpEvent: usize,
 }
 windows_core::imp::define_interface!(
     IUIElementStatics8,
@@ -8467,7 +7232,6 @@ impl windows_core::RuntimeName for IUIElementStatics8 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics8";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics8_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     BringIntoViewRequestedEvent: usize,
@@ -8495,10 +7259,8 @@ impl windows_core::RuntimeName for IUIElementStatics9 {
     const NAME: &'static str = "Windows.UI.Xaml.IUIElementStatics9";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IUIElementStatics9_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    CanBeScrollAnchorProperty: usize,
 }
 windows_core::imp::define_interface!(
     IWindow,
@@ -8515,7 +7277,6 @@ impl windows_core::RuntimeName for IWindow {
     const NAME: &'static str = "Windows.UI.Xaml.IWindow";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWindow_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Bounds: unsafe extern "system" fn(
@@ -8594,7 +7355,6 @@ impl IWindow2_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWindow2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub SetTitleBar: unsafe extern "system" fn(
@@ -8648,7 +7408,6 @@ impl IWindow3_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWindow3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Compositor: unsafe extern "system" fn(
@@ -8671,10 +7430,8 @@ impl windows_core::RuntimeName for IWindow4 {
     const NAME: &'static str = "Windows.UI.Xaml.IWindow4";
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWindow4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
-    UIContext: usize,
 }
 windows_core::imp::define_interface!(
     IWindowCreatedEventArgs,
@@ -8726,7 +7483,6 @@ impl IWindowCreatedEventArgs_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWindowCreatedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Window: unsafe extern "system" fn(
@@ -8780,7 +7536,6 @@ impl IWindowStatics_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWindowStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Current: unsafe extern "system" fn(
@@ -8996,16 +7751,6 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn RemoveIsEnabledChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IControl>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveIsEnabledChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn ApplyTemplate(&self) -> windows_core::Result<bool> {
         let this = &windows_core::Interface::cast::<IControl>(self)?;
         unsafe {
@@ -9193,26 +7938,6 @@ impl TextBox {
             (windows_core::Interface::vtable(this).SetXYFocusDown)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveFocusEngaged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IControl4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveFocusEngaged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveFocusDisengaged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IControl4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveFocusDisengaged)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -9560,59 +8285,33 @@ impl TextBox {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub fn RemoveLoaded(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLoaded)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveUnloaded(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveUnloaded)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSizeChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveSizeChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn LayoutUpdated<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn LayoutUpdated<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<windows::Foundation::EventHandler<windows_core::IInspectable>>,
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<windows_core::IInspectable>,
+            ) + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
+        let handler =
+            <windows::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
+                handler(a0, a1);
+                Ok(())
+            });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).LayoutUpdated)(
+            let token__ = (windows_core::Interface::vtable(this).LayoutUpdated)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveLayoutUpdated(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLayoutUpdated)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveLayoutUpdated,
+            ))
         }
     }
     pub fn FindName(
@@ -9630,44 +8329,33 @@ impl TextBox {
             .and_then(|| windows_core::Type::from_abi(result__))
         }
     }
-    pub fn RemoveDataContextChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement2>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDataContextChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn Loading<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn Loading<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<
-                windows::Foundation::TypedEventHandler<
-                    FrameworkElement,
-                    windows_core::IInspectable,
-                >,
-            >,
+        F: Fn(windows_core::Ref<FrameworkElement>, windows_core::Ref<windows_core::IInspectable>)
+            + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement3>(self)?;
+        let handler = <windows::Foundation::TypedEventHandler<
+            FrameworkElement,
+            windows_core::IInspectable,
+        >>::new(move |a0, a1| {
+            handler(a0, a1);
+            Ok(())
+        });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Loading)(
+            let token__ = (windows_core::Interface::vtable(this).Loading)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveLoading(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLoading)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveLoading,
+            ))
         }
     }
     pub fn AllowFocusOnInteraction(&self) -> windows_core::Result<bool> {
@@ -9712,34 +8400,36 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn ActualThemeChanged<P0>(&self, handler: P0) -> windows_core::Result<i64>
+    pub fn ActualThemeChanged<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
     where
-        P0: windows_core::Param<
-                windows::Foundation::TypedEventHandler<
-                    FrameworkElement,
-                    windows_core::IInspectable,
-                >,
-            >,
+        F: Fn(windows_core::Ref<FrameworkElement>, windows_core::Ref<windows_core::IInspectable>)
+            + Send
+            + 'static,
     {
         let this = &windows_core::Interface::cast::<IFrameworkElement6>(self)?;
+        let handler = <windows::Foundation::TypedEventHandler<
+            FrameworkElement,
+            windows_core::IInspectable,
+        >>::new(move |a0, a1| {
+            handler(a0, a1);
+            Ok(())
+        });
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ActualThemeChanged)(
+            let token__ = (windows_core::Interface::vtable(this).ActualThemeChanged)(
                 windows_core::Interface::as_raw(this),
-                handler.param().abi(),
+                windows_core::Interface::as_raw(&handler),
                 &mut result__,
             )
-            .map(|| result__)
-        }
-    }
-    pub fn RemoveActualThemeChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement6>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveActualThemeChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                this.clone(),
+                token__,
+                windows_core::Interface::vtable(this).RemoveActualThemeChanged,
+            ))
         }
     }
     pub fn IsLoaded(&self) -> windows_core::Result<bool> {
@@ -9751,16 +8441,6 @@ impl TextBox {
                 &mut result__,
             )
             .map(|| result__)
-        }
-    }
-    pub fn RemoveEffectiveViewportChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IFrameworkElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveEffectiveViewportChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
         }
     }
     pub fn MeasureOverride(
@@ -9999,33 +8679,6 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn RemoveTextChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveTextChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSelectionChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveSelectionChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveContextMenuOpening(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveContextMenuOpening)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn Select(&self, start: i32, length: i32) -> windows_core::Result<()> {
         unsafe {
             (windows_core::Interface::vtable(self).Select)(
@@ -10148,66 +8801,6 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn RemovePaste(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox2>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePaste)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTextCompositionStarted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTextCompositionStarted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTextCompositionChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTextCompositionChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTextCompositionEnded(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTextCompositionEnded)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveCandidateWindowBoundsChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCandidateWindowBoundsChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTextChanging(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTextChanging)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn GetLinguisticAlternativesAsync(
         &self,
     ) -> windows_core::Result<
@@ -10221,36 +8814,6 @@ impl TextBox {
                 &mut result__,
             )
             .and_then(|| windows_core::Type::from_abi(result__))
-        }
-    }
-    pub fn RemoveCopyingToClipboard(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox6>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCopyingToClipboard)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveCuttingToClipboard(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox6>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCuttingToClipboard)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveBeforeTextChanging(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox6>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveBeforeTextChanging)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
         }
     }
     pub fn IsHandwritingViewEnabled(&self) -> windows_core::Result<bool> {
@@ -10327,16 +8890,6 @@ impl TextBox {
             (windows_core::Interface::vtable(this).SetDescription)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSelectionChanging(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<ITextBox8>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveSelectionChanging)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -10633,256 +9186,6 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn RemoveKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveGotFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGotFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLostFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLostFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragEnter(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragEnter)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragLeave(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragLeave)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragOver(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragOver)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDrop(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDrop)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerPressed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerPressed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerMoved(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerMoved)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerReleased(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerReleased)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerEntered(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerEntered)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerExited(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerExited)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCaptureLost(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerCaptureLost)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerWheelChanged(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePointerWheelChanged)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDoubleTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDoubleTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveHolding(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveHolding)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveRightTapped(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveRightTapped)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationInertiaStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationInertiaStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationStarted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationDelta(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationDelta)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveManipulationCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn Measure(&self, availablesize: windows::Foundation::Size) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement>(self)?;
         unsafe {
@@ -10989,26 +9292,6 @@ impl TextBox {
             (windows_core::Interface::vtable(this).SetCanDrag)(
                 windows_core::Interface::as_raw(this),
                 value,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDropCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDropCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -11122,56 +9405,6 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn RemoveContextRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveContextCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayDismissed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayDismissed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyInvoked(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyInvoked)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn KeyTipHorizontalOffset(&self) -> windows_core::Result<f64> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
@@ -11214,81 +9447,11 @@ impl TextBox {
             .ok()
         }
     }
-    pub fn RemoveGettingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGettingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLosingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLosingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveNoFocusCandidateFound(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveNoFocusCandidateFound)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn StartBringIntoView(&self) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
             (windows_core::Interface::vtable(this).StartBringIntoView)(
                 windows_core::Interface::as_raw(this),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveCharacterReceived(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCharacterReceived)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveProcessKeyboardAccelerators(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveProcessKeyboardAccelerators)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -11337,16 +9500,6 @@ impl TextBox {
             (windows_core::Interface::vtable(this).SetKeyboardAcceleratorPlacementTarget)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveBringIntoViewRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement8>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveBringIntoViewRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -11895,231 +10048,6 @@ impl UIElement {
             .ok()
         }
     }
-    pub fn RemoveKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveKeyUp)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveKeyDown)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveGotFocus(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveGotFocus)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLostFocus(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveLostFocus)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragEnter(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveDragEnter)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragLeave(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveDragLeave)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragOver(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveDragOver)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDrop(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveDrop)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerPressed(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerPressed)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerMoved(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerMoved)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerReleased(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerReleased)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerEntered(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerEntered)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerExited(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerExited)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCaptureLost(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerCaptureLost)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerCanceled(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerCanceled)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePointerWheelChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemovePointerWheelChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveTapped(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveTapped)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDoubleTapped(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveDoubleTapped)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveHolding(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveHolding)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveRightTapped(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveRightTapped)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarting(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveManipulationStarting)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationInertiaStarting(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveManipulationInertiaStarting)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationStarted(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveManipulationStarted)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationDelta(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveManipulationDelta)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveManipulationCompleted(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveManipulationCompleted)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn Measure(&self, availablesize: windows::Foundation::Size) -> windows_core::Result<()> {
         unsafe {
             (windows_core::Interface::vtable(self).Measure)(
@@ -12220,26 +10148,6 @@ impl UIElement {
             (windows_core::Interface::vtable(this).SetCanDrag)(
                 windows_core::Interface::as_raw(this),
                 value,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDragStarting(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDragStarting)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveDropCompleted(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement3>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveDropCompleted)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -12353,56 +10261,6 @@ impl UIElement {
             .ok()
         }
     }
-    pub fn RemoveContextRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveContextCanceled(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveContextCanceled)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyDisplayDismissed(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyDisplayDismissed)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveAccessKeyInvoked(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement4>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveAccessKeyInvoked)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn KeyTipHorizontalOffset(&self) -> windows_core::Result<f64> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
@@ -12445,81 +10303,11 @@ impl UIElement {
             .ok()
         }
     }
-    pub fn RemoveGettingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveGettingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveLosingFocus(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveLosingFocus)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveNoFocusCandidateFound(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveNoFocusCandidateFound)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
     pub fn StartBringIntoView(&self) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IUIElement5>(self)?;
         unsafe {
             (windows_core::Interface::vtable(this).StartBringIntoView)(
                 windows_core::Interface::as_raw(this),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveCharacterReceived(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveCharacterReceived)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveProcessKeyboardAccelerators(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveProcessKeyboardAccelerators)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyDown(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyDown)(
-                windows_core::Interface::as_raw(this),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemovePreviewKeyUp(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement7>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemovePreviewKeyUp)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -12568,16 +10356,6 @@ impl UIElement {
             (windows_core::Interface::vtable(this).SetKeyboardAcceleratorPlacementTarget)(
                 windows_core::Interface::as_raw(this),
                 value.param().abi(),
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveBringIntoViewRequested(&self, token: i64) -> windows_core::Result<()> {
-        let this = &windows_core::Interface::cast::<IUIElement8>(self)?;
-        unsafe {
-            (windows_core::Interface::vtable(this).RemoveBringIntoViewRequested)(
-                windows_core::Interface::as_raw(this),
-                token,
             )
             .ok()
         }
@@ -12978,42 +10756,6 @@ impl Window {
                 &mut result__,
             )
             .and_then(|| windows_core::Type::from_abi(result__))
-        }
-    }
-    pub fn RemoveActivated(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveActivated)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveClosed(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveClosed)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveSizeChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveSizeChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
-        }
-    }
-    pub fn RemoveVisibilityChanged(&self, token: i64) -> windows_core::Result<()> {
-        unsafe {
-            (windows_core::Interface::vtable(self).RemoveVisibilityChanged)(
-                windows_core::Interface::as_raw(self),
-                token,
-            )
-            .ok()
         }
     }
     pub fn Activate(&self) -> windows_core::Result<()> {

@@ -15,7 +15,6 @@ use windows_reactor::*;
     non_camel_case_types,
     clippy::upper_case_acronyms,
     clippy::transmute_ptr_to_ptr,
-    clippy::useless_transmute,
     clippy::missing_transmute_annotations,
     clippy::too_many_arguments
 )]
@@ -25,8 +24,10 @@ mod fixtures;
 mod harness;
 mod registry;
 
+use crate::bindings::DispatcherQueue;
+
 fn main() -> Result<()> {
-    let _bootstrap = windows_reactor::bootstrap::initialize()?;
+    bootstrap()?;
     let args: Vec<String> = std::env::args().collect();
 
     if args.iter().any(|a| a == "--list-fixtures") {
@@ -72,7 +73,7 @@ fn run_self_test(filter: Option<String>, slow: bool, interactive: bool) -> Resul
             harness.setup_titlebar(fixtures.len())?;
             harness.activate()?;
 
-            let dispatcher = crate::bindings::DispatcherQueue::GetForCurrentThread()?;
+            let dispatcher = DispatcherQueue::GetForCurrentThread()?;
             exec::spawn_root(run_all(harness, fixtures, slow, interactive), dispatcher);
             Ok(())
         })
@@ -95,12 +96,16 @@ async fn run_all(
         let _ = harness.update_progress(test_index, name);
         let failures_before = harness.failures();
 
-        println!("# Running: {name}");
-        let _ = std::io::stdout().flush();
-
+        let capture = harness.capture_stderr();
         f(harness.clone()).await;
+        let stderr = capture.finish();
+        harness.check_no_reactor_warnings(&format!("{name}_NoWarnings"), &stderr);
 
         let passed = harness.failures() == failures_before;
+        if !passed {
+            println!("# FAILED: {name}");
+            let _ = std::io::stdout().flush();
+        }
         let _ = harness.mark_fixture_result(idx, passed);
 
         if slow {

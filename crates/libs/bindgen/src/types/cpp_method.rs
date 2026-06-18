@@ -260,14 +260,22 @@ impl CppMethod {
         let params = self.write_params(config);
         let generics = self.write_generics();
         let abi_return_type = self.write_return(config);
-        let result = config.write_result();
+        let result = config.write_core();
+
+        // Use pub(crate) when --dead-code is set so the dead_code lint can
+        // detect unused methods. See https://github.com/rust-lang/rust/issues/157961
+        let vis = if config.bindgen.dead_code {
+            quote! { pub(crate) }
+        } else {
+            quote! { pub }
+        };
 
         match self.return_hint {
             ReturnHint::Query(..) => {
                 let where_clause = self.write_where(config, true);
 
                 quote! {
-                    pub unsafe fn #name<#generics T>(&self, #params) -> #result Result<T> #where_clause {
+                    #vis unsafe fn #name<#generics T>(&self, #params) -> #result Result<T> #where_clause {
                         let mut result__ = core::ptr::null_mut();
                         unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).and_then(||windows_core::Type::from_abi(result__)) }
                     }
@@ -277,7 +285,7 @@ impl CppMethod {
                 let where_clause = self.write_where(config, true);
 
                 quote! {
-                    pub unsafe fn #name<#generics T>(&self, #params result__: *mut Option<T>) -> #result Result<()> #where_clause {
+                    #vis unsafe fn #name<#generics T>(&self, #params result__: *mut Option<T>) -> #result Result<()> #where_clause {
                         unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).ok() }
                     }
                 }
@@ -291,7 +299,7 @@ impl CppMethod {
                 let return_type = return_type.write_name(config);
 
                 quote! {
-                    pub unsafe fn #name<#generics>(&self, #params) -> #result Result<#return_type> #where_clause {
+                    #vis unsafe fn #name<#generics>(&self, #params) -> #result Result<#return_type> #where_clause {
                         unsafe {
                             let mut result__ = core::mem::zeroed();
                             (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).#map
@@ -303,7 +311,7 @@ impl CppMethod {
                 let where_clause = self.write_where(config, false);
 
                 quote! {
-                    pub unsafe fn #name<#generics>(&self, #params) -> #result Result<()> #where_clause {
+                    #vis unsafe fn #name<#generics>(&self, #params) -> #result Result<()> #where_clause {
                         unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).ok() }
                     }
                 }
@@ -317,7 +325,7 @@ impl CppMethod {
                     let return_type = return_type.write_name(config);
 
                     quote! {
-                        pub unsafe fn #name<#generics>(&self, #params) -> #result Result<#return_type> #where_clause {
+                        #vis unsafe fn #name<#generics>(&self, #params) -> #result Result<#return_type> #where_clause {
                             unsafe {
                                 let mut result__ = core::mem::zeroed();
                                 (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), #args);
@@ -336,7 +344,7 @@ impl CppMethod {
                     let where_clause = self.write_where(config, false);
 
                     quote! {
-                        pub unsafe fn #name<#generics>(&self, #params) -> #return_type #where_clause {
+                        #vis unsafe fn #name<#generics>(&self, #params) -> #return_type #where_clause {
                             unsafe {
                                 let mut result__ = core::mem::zeroed();
                                 (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), #args);
@@ -351,7 +359,7 @@ impl CppMethod {
                 let where_clause = self.write_where(config, false);
 
                 quote! {
-                    pub unsafe fn #name<#generics>(&self, #params) -> #return_type #where_clause {
+                    #vis unsafe fn #name<#generics>(&self, #params) -> #return_type #where_clause {
                         unsafe {
                             let mut result__ = core::mem::zeroed();
                             (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), &mut result__, #args);
@@ -365,13 +373,13 @@ impl CppMethod {
 
                 if matches!(self.signature.return_type, Type::Void) {
                     quote! {
-                        pub unsafe fn #name<#generics>(&self, #params) #abi_return_type #where_clause {
+                        #vis unsafe fn #name<#generics>(&self, #params) #abi_return_type #where_clause {
                             unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), #args); }
                         }
                     }
                 } else {
                     quote! {
-                        pub unsafe fn #name<#generics>(&self, #params) #abi_return_type #where_clause {
+                        #vis unsafe fn #name<#generics>(&self, #params) #abi_return_type #where_clause {
                             unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), #args) }
                         }
                     }
@@ -481,7 +489,7 @@ impl CppMethod {
             }
         }
 
-        let result = config.write_result();
+        let result = config.write_core();
 
         let return_type = match self.return_hint {
             ReturnHint::Query(..) | ReturnHint::QueryOptional(..) | ReturnHint::ResultVoid => {
@@ -674,7 +682,7 @@ impl CppMethod {
                             // In minimal mode, when the param type is a raw pointer
                             // (not PCWSTR/PCSTR wrapper), the element type matches the
                             // vtable signature — no transmute needed.
-                            if config.minimal_filter.is_some()
+                            if config.bindgen.style.is_minimal()
                                 && matches!(param.ty, Type::PtrConst(..) | Type::PtrMut(..))
                             {
                                 quote! { #map, }
@@ -717,12 +725,12 @@ impl CppMethod {
                         }
                         ParamHint::Blittable => {
                             if matches!(param.ty, Type::PrimitiveOrEnum(_, _)) {
-                                if config.minimal_filter.is_some() {
+                                if config.bindgen.style.is_minimal() {
                                     quote! { #name as _, }
                                 } else {
                                     quote! { #name.0 as _, }
                                 }
-                            } else if config.minimal_filter.is_some() {
+                            } else if config.bindgen.style.is_minimal() {
                                 // In minimal mode, blittable types ARE their ABI
                                 // representation — no transmute needed.
                                 quote! { #name, }

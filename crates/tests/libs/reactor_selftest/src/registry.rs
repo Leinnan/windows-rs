@@ -2,7 +2,7 @@ use crate::fixtures::reconciler::FixtureFuture;
 use crate::fixtures::{
     all_layouts, backdrop, controls, controls_extended, dynamic, error_boundary, event_detachment,
     grid_attached, hooks, interactions, layout, prop_updates, reconciler, reconciler_stress,
-    tooltip,
+    tooltip, universal_props,
 };
 use crate::harness::Harness;
 
@@ -50,6 +50,18 @@ pub static FIXTURES: &[(&str, FixtureFn)] = &[
     ("Reconciler_Mount_ScrollView", controls::mount_scroll_view),
     ("Reconciler_Mount_Viewbox", controls::mount_viewbox),
     ("Reconciler_Mount_Button", controls::mount_button),
+    (
+        "Reconciler_Mount_ButtonAccent",
+        controls::mount_button_accent,
+    ),
+    (
+        "Reconciler_Mount_ButtonSubtle",
+        controls::mount_button_subtle,
+    ),
+    (
+        "Reconciler_Mount_ButtonTextLink",
+        controls::mount_button_text_link,
+    ),
     ("Reconciler_Mount_CheckBox", controls::mount_check_box),
     ("Reconciler_Mount_TextField", controls::mount_text_field),
     (
@@ -98,6 +110,14 @@ pub static FIXTURES: &[(&str, FixtureFn)] = &[
     (
         "Reconciler_Mount_TemplatedListView",
         controls::mount_templated_list_view,
+    ),
+    (
+        "Reconciler_Mount_ReorderableListView",
+        controls::mount_reorderable_list_view,
+    ),
+    (
+        "Reconciler_Mount_ReorderableGridView",
+        controls::mount_reorderable_grid_view,
     ),
     (
         "Reconciler_Mount_TemplatedGridView",
@@ -322,5 +342,26 @@ pub static FIXTURES: &[(&str, FixtureFn)] = &[
     (
         "KeyedStress_TypeMismatch",
         reconciler_stress::positional_type_mismatch,
+    ),
+    // ── Universal prop fixtures (try_universal_prop live coverage) ──────
+    (
+        "UniversalProp_MinMaxSizing",
+        universal_props::min_max_sizing,
+    ),
+    (
+        "UniversalProp_CanvasZIndex",
+        universal_props::canvas_z_index,
+    ),
+    (
+        "UniversalProp_RelativePanelAlignment",
+        universal_props::relative_panel_alignment,
+    ),
+    (
+        "UniversalProp_BgFgPadTransition",
+        universal_props::background_foreground_padding_transition,
+    ),
+    (
+        "UniversalProp_OpacityTransition",
+        universal_props::opacity_transition,
     ),
 ];

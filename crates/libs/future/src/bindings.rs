@@ -19,7 +19,7 @@ impl AsyncActionCompletedHandler {
             &AsyncActionCompletedHandlerBox::<F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0>(&self, asyncinfo: P0, asyncstatus: AsyncStatus) -> windows_core::Result<()>
     where
@@ -36,7 +36,6 @@ impl AsyncActionCompletedHandler {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct AsyncActionCompletedHandler_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(
@@ -112,7 +111,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> AsyncActionProgressHandler<
             &AsyncActionProgressHandlerBox::<TProgress, F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0, P1>(&self, asyncinfo: P0, progressinfo: P1) -> windows_core::Result<()>
     where
@@ -130,7 +129,6 @@ impl<TProgress: windows_core::RuntimeType + 'static> AsyncActionProgressHandler<
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct AsyncActionProgressHandler_Vtbl<TProgress>
 where
     TProgress: windows_core::RuntimeType + 'static,
@@ -240,7 +238,7 @@ impl<TProgress: windows_core::RuntimeType + 'static>
             &AsyncActionWithProgressCompletedHandlerBox::<TProgress, F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0>(&self, asyncinfo: P0, asyncstatus: AsyncStatus) -> windows_core::Result<()>
     where
@@ -257,7 +255,6 @@ impl<TProgress: windows_core::RuntimeType + 'static>
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct AsyncActionWithProgressCompletedHandler_Vtbl<TProgress>
 where
     TProgress: windows_core::RuntimeType + 'static,
@@ -361,7 +358,7 @@ impl<TResult: windows_core::RuntimeType + 'static> AsyncOperationCompletedHandle
             &AsyncOperationCompletedHandlerBox::<TResult, F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0>(&self, asyncinfo: P0, asyncstatus: AsyncStatus) -> windows_core::Result<()>
     where
@@ -378,7 +375,6 @@ impl<TResult: windows_core::RuntimeType + 'static> AsyncOperationCompletedHandle
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct AsyncOperationCompletedHandler_Vtbl<TResult>
 where
     TResult: windows_core::RuntimeType + 'static,
@@ -488,7 +484,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
             &AsyncOperationProgressHandlerBox::<TResult, TProgress, F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0, P1>(&self, asyncinfo: P0, progressinfo: P1) -> windows_core::Result<()>
     where
@@ -506,7 +502,6 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct AsyncOperationProgressHandler_Vtbl<TResult, TProgress>
 where
     TResult: windows_core::RuntimeType + 'static,
@@ -634,7 +629,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
             &AsyncOperationWithProgressCompletedHandlerBox::<TResult, TProgress, F>::VTABLE,
             invoke,
         );
-        unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
     pub fn Invoke<P0>(&self, asyncinfo: P0, asyncstatus: AsyncStatus) -> windows_core::Result<()>
     where
@@ -651,7 +646,6 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct AsyncOperationWithProgressCompletedHandler_Vtbl<TResult, TProgress>
 where
     TResult: windows_core::RuntimeType + 'static,
@@ -729,10 +723,10 @@ impl<
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct AsyncStatus(pub i32);
 impl AsyncStatus {
-    pub const Canceled: Self = Self(2i32);
-    pub const Completed: Self = Self(1i32);
-    pub const Error: Self = Self(3i32);
-    pub const Started: Self = Self(0i32);
+    pub const Canceled: Self = Self(2);
+    pub const Completed: Self = Self(1);
+    pub const Error: Self = Self(3);
+    pub const Started: Self = Self(0);
 }
 impl windows_core::TypeKind for AsyncStatus {
     type TypeKind = windows_core::CopyType;
@@ -902,7 +896,6 @@ impl IAsyncAction_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IAsyncAction_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub SetCompleted: unsafe extern "system" fn(
@@ -1204,7 +1197,6 @@ impl<TProgress: windows_core::RuntimeType + 'static> IAsyncActionWithProgress_Vt
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IAsyncActionWithProgress_Vtbl<TProgress>
 where
     TProgress: windows_core::RuntimeType + 'static,
@@ -1381,7 +1373,6 @@ impl IAsyncInfo_Vtbl {
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IAsyncInfo_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Id: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
@@ -1610,7 +1601,6 @@ impl<TResult: windows_core::RuntimeType + 'static> IAsyncOperation_Vtbl<TResult>
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IAsyncOperation_Vtbl<TResult>
 where
     TResult: windows_core::RuntimeType + 'static,
@@ -1959,7 +1949,6 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
     }
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IAsyncOperationWithProgress_Vtbl<TResult, TProgress>
 where
     TResult: windows_core::RuntimeType + 'static,

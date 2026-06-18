@@ -70,19 +70,19 @@ pub fn load_factory<C: crate::RuntimeName, I: Interface>() -> crate::Result<I> {
 
     let code = unsafe {
         let mut get_com_factory = || {
-            crate::HRESULT(RoGetActivationFactory(
+            RoGetActivationFactory(
                 transmute_copy(&name),
                 &I::IID as *const _ as _,
                 &mut factory as *mut _ as *mut _,
-            ))
+            )
         };
         let mut code = get_com_factory();
 
         // If combase hasn't been loaded yet, load it automatically so that this "just works"
         // for apartment-agnostic code, then retry.
         if code == CO_E_NOTINITIALIZED {
-            let mut cookie = core::ptr::null_mut();
-            CoIncrementMTAUsage(&mut cookie);
+            let mut cookie = null_mut();
+            let _ = CoIncrementMTAUsage(&mut cookie);
 
             code = get_com_factory();
         }
@@ -147,8 +147,8 @@ unsafe fn get_activation_factory(
 unsafe fn delay_load<T>(library: crate::PCSTR, function: crate::PCSTR) -> Option<T> {
     unsafe {
         let library = LoadLibraryExA(
-            library.0,
-            core::ptr::null_mut(),
+            library,
+            null_mut(),
             LOAD_LIBRARY_SEARCH_DEFAULT_DIRS,
         );
 
@@ -156,13 +156,13 @@ unsafe fn delay_load<T>(library: crate::PCSTR, function: crate::PCSTR) -> Option
             return None;
         }
 
-        let address = GetProcAddress(library, function.0);
+        let address = GetProcAddress(library, function);
 
         if address.is_some() {
-            return Some(core::mem::transmute_copy(&address));
+            return Some(transmute_copy(&address));
         }
 
-        FreeLibrary(library);
+        let _ = FreeLibrary(library);
         None
     }
 }

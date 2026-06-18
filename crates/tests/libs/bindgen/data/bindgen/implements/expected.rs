@@ -8,7 +8,6 @@ pub mod Test {
         }
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct IBar_Vtbl {
         pub Bar: unsafe extern "system" fn(*mut core::ffi::c_void) -> i32,
     }
@@ -21,7 +20,6 @@ pub mod Test {
         }
     }
     #[repr(C)]
-    #[doc(hidden)]
     pub struct IFoo_Vtbl {
         pub Foo: unsafe extern "system" fn(*mut core::ffi::c_void) -> i32,
     }
@@ -55,7 +53,7 @@ pub mod Test {
                 vtable: &IFoo_ImplVtbl::<T>::VTABLE as *const _ as *const _,
                 this: this as *const _ as *const _,
             };
-            let this = core::mem::ManuallyDrop::new(windows_core::imp::Box::new(this));
+            let this = core::mem::ManuallyDrop::new(windows_core::imp::box_new(this));
             unsafe { windows_core::ScopedInterface::new(core::mem::transmute(&this.vtable)) }
         }
     }

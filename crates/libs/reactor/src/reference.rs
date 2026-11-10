@@ -344,6 +344,69 @@ impl ElementRef<Image> {
     }
 }
 
+impl ElementRef<ScrollViewer> {
+    /// Reports the scroll position when subscribed and whenever it or the viewport changes.
+    ///
+    /// Offsets, viewport, and extent are in device-independent pixels. Inertial and animated
+    /// scrolling report intermediate positions with `is_intermediate` set.
+    #[must_use]
+    pub fn observe_view(&self, callback: impl Fn(ScrollPosition) + 'static) -> ElementObservation {
+        self.observe(ReferenceObservation::ScrollView(Callback::new(callback)))
+    }
+
+    /// Enqueues a scroll to the given offsets; `None` keeps that axis where it is.
+    ///
+    /// The completion reports whether the viewer accepted the change. Offsets beyond the
+    /// scrollable extent are clamped by the viewer.
+    #[must_use]
+    pub fn request_scroll_to(
+        &self,
+        horizontal_offset: Option<f64>,
+        vertical_offset: Option<f64>,
+        animated: bool,
+        completion: impl Fn(Result<bool, IntegrationError>) + 'static,
+    ) -> bool {
+        self.enqueue(move |object, binding, target| ImperativeRequest::ScrollTo {
+            object,
+            horizontal_offset,
+            vertical_offset,
+            animated,
+            completion: current_completion(target, binding, completion),
+        })
+    }
+}
+
+impl ElementRef<TextBox> {
+    /// Enqueues a selection of `length` UTF-16 units starting at `start`.
+    #[must_use]
+    pub fn request_select(
+        &self,
+        start: u32,
+        length: u32,
+        completion: impl Fn(Result<(), IntegrationError>) + 'static,
+    ) -> bool {
+        self.enqueue(move |object, binding, target| ImperativeRequest::SelectText {
+            object,
+            start,
+            length,
+            completion: current_completion(target, binding, completion),
+        })
+    }
+}
+
+/// The scroll position of a `ScrollViewer`, in device-independent pixels.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct ScrollPosition {
+    pub horizontal_offset: f64,
+    pub vertical_offset: f64,
+    pub viewport_width: f64,
+    pub viewport_height: f64,
+    pub extent_width: f64,
+    pub extent_height: f64,
+    /// The position is still changing: more reports follow.
+    pub is_intermediate: bool,
+}
+
 impl ElementRef<Grid> {
     #[must_use]
     pub fn observe_composition_host(
@@ -536,6 +599,7 @@ enum ReferenceObservation {
     SwapChainPanel(Callback<SwapChainPanelEvent>),
     ImageScale(Callback<f64>),
     CompositionHost(Callback<CompositionHostEvent>),
+    ScrollView(Callback<ScrollPosition>),
 }
 
 impl ObservationRegistration {
@@ -580,6 +644,16 @@ impl ObservationRegistration {
                     ),
                 }
             }
+            ReferenceObservation::ScrollView(callback) => ImperativeRequest::ObserveScrollView {
+                object: binding.object,
+                observation: self.id,
+                callback: current_observation(
+                    Rc::downgrade(target),
+                    binding.id,
+                    self.id,
+                    callback.clone(),
+                ),
+            },
         }
     }
 }
@@ -783,6 +857,24 @@ pub enum ImperativeRequest {
         visual: Option<windows_core::IUnknown>,
         completion: Callback<Result<(), IntegrationError>>,
     },
+    ObserveScrollView {
+        object: ObjectId,
+        observation: u64,
+        callback: Callback<ScrollPosition>,
+    },
+    ScrollTo {
+        object: ObjectId,
+        horizontal_offset: Option<f64>,
+        vertical_offset: Option<f64>,
+        animated: bool,
+        completion: Callback<Result<bool, IntegrationError>>,
+    },
+    SelectText {
+        object: ObjectId,
+        start: u32,
+        length: u32,
+        completion: Callback<Result<(), IntegrationError>>,
+    },
 }
 
 impl ImperativeRequest {
@@ -803,6 +895,11 @@ impl ImperativeRequest {
                 observation,
                 ..
             }
+            | Self::ObserveScrollView {
+                object,
+                observation,
+                ..
+            }
             | Self::RevokeObservation {
                 object,
                 observation,
@@ -819,12 +916,16 @@ impl ImperativeRequest {
             Self::InitializeWebView2 { completion, .. } => {
                 completion.call(Err(IntegrationError::Unavailable));
             }
+            Self::ScrollTo { completion, .. } => {
+                completion.call(Err(IntegrationError::Unavailable));
+            }
 
             Self::RequestSwapChainPanelFrame { completion, .. }
             | Self::Notify { completion, .. }
             | Self::SetSwapChain { completion, .. }
             | Self::SetNativeImageSource { completion, .. }
-            | Self::SetCompositionChildVisual { completion, .. } => {
+            | Self::SetCompositionChildVisual { completion, .. }
+            | Self::SelectText { completion, .. } => {
                 completion.call(Err(IntegrationError::Unavailable));
             }
             _ => {}

@@ -733,6 +733,87 @@ impl WinUiAdapter {
                     },
                 );
             }
+            ImperativeRequest::ObserveScrollView {
+                object,
+                observation,
+                callback,
+            } => {
+                let Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) =
+                    self.handles.get(&object)
+                else {
+                    return Ok(());
+                };
+                let framework = control.cast::<native::IFrameworkElement>()?;
+                callback.call(scroll_view(control, false));
+                let changed_viewer = control.clone();
+                let changed_callback = callback.clone();
+                let changed = control.ViewChanged(move |_, args| {
+                    let is_intermediate = args
+                        .as_ref()
+                        .and_then(|args| args.IsIntermediate().ok())
+                        .unwrap_or(false);
+                    changed_callback.call(scroll_view(&changed_viewer, is_intermediate));
+                })?;
+                // A resize changes the viewport without moving the content.
+                let size_viewer = control.clone();
+                let size = framework.SizeChanged(move |_, _| {
+                    callback.call(scroll_view(&size_viewer, false));
+                })?;
+                self.observations.insert(
+                    (object, observation),
+                    ObservationSubscription::ScrollView {
+                        _changed: changed,
+                        _size: size,
+                    },
+                );
+            }
+            ImperativeRequest::ScrollTo {
+                object,
+                horizontal_offset,
+                vertical_offset,
+                animated,
+                completion,
+            } => {
+                let result = match self.handles.get(&object) {
+                    Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) => {
+                        control.ChangeViewWithOptionalAnimation(
+                            horizontal_offset,
+                            vertical_offset,
+                            None,
+                            !animated,
+                        )
+                    }
+                    _ => Err(windows_core::Error::new(
+                        HRESULT(0x8000000E_u32 as i32),
+                        "scroll viewer unavailable",
+                    )),
+                }
+                .map_err(integration_error);
+                completion.call(result);
+            }
+            ImperativeRequest::SelectText {
+                object,
+                start,
+                length,
+                completion,
+            } => {
+                let result = match self.handles.get(&object) {
+                    Some(Handle::Generated(GeneratedHandle::TextBox(control))) => {
+                        let start = i32::try_from(start).unwrap_or(i32::MAX);
+                        let length = i32::try_from(length).unwrap_or(i32::MAX);
+                        control
+                            .value
+                            .SetSelectionStart(start)
+                            .and_then(|()| control.value.SetSelectionLength(length))
+                    }
+                    _ => Err(windows_core::Error::new(
+                        HRESULT(0x8000000E_u32 as i32),
+                        "text box unavailable",
+                    )),
+                }
+                .map_err(integration_error);
+                completion.call(result);
+            }
             ImperativeRequest::RevokeObservation {
                 object,
                 observation,

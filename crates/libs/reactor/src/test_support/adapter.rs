@@ -1081,8 +1081,12 @@ impl Adapter for RecordingAdapter {
             | ImperativeRequest::Notify { completion, .. }
             | ImperativeRequest::SetSwapChain { completion, .. }
             | ImperativeRequest::SetNativeImageSource { completion, .. }
-            | ImperativeRequest::SetCompositionChildVisual { completion, .. } => {
+            | ImperativeRequest::SetCompositionChildVisual { completion, .. }
+            | ImperativeRequest::SelectText { completion, .. } => {
                 completion.call(Ok(()));
+            }
+            ImperativeRequest::ScrollTo { completion, .. } => {
+                completion.call(Ok(true));
             }
             _ => {}
         }

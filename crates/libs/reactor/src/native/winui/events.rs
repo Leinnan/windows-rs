@@ -279,6 +279,9 @@ impl WinUiAdapter {
             is_left_button_pressed: properties.IsLeftButtonPressed()?,
             is_right_button_pressed: properties.IsRightButtonPressed()?,
             is_middle_button_pressed: properties.IsMiddleButtonPressed()?,
+            is_x_button1_pressed: properties.IsXButton1Pressed()?,
+            is_x_button2_pressed: properties.IsXButton2Pressed()?,
+            wheel_delta: properties.MouseWheelDelta()?,
         })
     }
 

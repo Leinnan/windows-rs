@@ -1441,6 +1441,12 @@ pub struct PointerEventInfo {
     pub is_left_button_pressed: bool,
     pub is_right_button_pressed: bool,
     pub is_middle_button_pressed: bool,
+    /// The first extra mouse button, usually Back.
+    pub is_x_button1_pressed: bool,
+    /// The second extra mouse button, usually Forward.
+    pub is_x_button2_pressed: bool,
+    /// Wheel movement in a wheel event, 120 per notch, positive away from the user; 0 otherwise.
+    pub wheel_delta: i32,
 }
 
 #[derive(Clone, Debug, PartialEq)]

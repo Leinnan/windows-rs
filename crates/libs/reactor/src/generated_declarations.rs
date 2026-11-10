@@ -2468,6 +2468,16 @@ impl Border {
         );
         self
     }
+    pub fn on_pointer_wheel_changed(
+        mut self,
+        callback: impl IntoPayloadCallback<PointerEventInfo>,
+    ) -> Self {
+        self.0 = self.0.event(
+            EventId::PointerWheelChanged,
+            EventValue::PointerEventInfo(callback.into_payload_callback()),
+        );
+        self
+    }
     pub fn on_pointer_capture_lost(mut self, callback: impl IntoUnitCallback) -> Self {
         self.0 = self.0.event(
             EventId::PointerCaptureLost,
@@ -2746,6 +2756,8 @@ impl From<Canvas> for View {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct ScrollViewer(Declaration);
+impl Sealed for ScrollViewer {}
+impl ReferenceElement for ScrollViewer {}
 impl ScrollViewer {
     pub fn new() -> Self {
         let declaration = Declaration::new(ObjectType::ScrollViewer);
@@ -2771,6 +2783,7 @@ impl ScrollViewer {
         );
         self
     }
+    reference_methods!(ScrollViewer);
     visual_methods!();
     /// Rejects values outside this relation's generated type contract.
     ///

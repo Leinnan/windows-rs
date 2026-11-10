@@ -18,6 +18,9 @@ impl ImperativeRequest {
             | Self::SetNativeImageSource { object, .. }
             | Self::ObserveImageScale { object, .. }
             | Self::ObserveCompositionHost { object, .. }
+            | Self::ObserveScrollView { object, .. }
+            | Self::ScrollTo { object, .. }
+            | Self::SelectText { object, .. }
             | Self::RevokeObservation { object, .. }
             | Self::SetCompositionChildVisual { object, .. } => *object,
         }

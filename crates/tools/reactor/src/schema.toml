@@ -383,6 +383,10 @@ adapter = "pointer"
 active_properties = ["capture_pointer_on_press", "focus_on_pointer_release"]
 
 [[objects.events]]
+name = "PointerWheelChanged"
+adapter = "pointer"
+
+[[objects.events]]
 name = "PointerCaptureLost"
 
 [[objects.events]]
@@ -480,6 +484,7 @@ name = "Children"
 
 [[objects]]
 name = "ScrollViewer"
+reference = true
 
 [[objects.properties]]
 name = "HorizontalScrollBarVisibility"

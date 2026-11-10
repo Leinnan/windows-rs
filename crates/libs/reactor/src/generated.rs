@@ -328,6 +328,7 @@ pub enum EventId {
     PointerMoved,
     PointerPressed,
     PointerReleased,
+    PointerWheelChanged,
     PreviewKeyDown,
     SelectedDateChanged,
     SelectedDatesChanged,
@@ -601,6 +602,10 @@ pub fn event_contracts(kind: ObjectType) -> &'static [EventContract] {
             },
             EventContract {
                 id: EventId::PointerReleased,
+                value: ValueType::PointerEventInfo,
+            },
+            EventContract {
+                id: EventId::PointerWheelChanged,
                 value: ValueType::PointerEventInfo,
             },
             EventContract {

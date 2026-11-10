@@ -14293,6 +14293,36 @@ impl IPointerPointProperties {
             .map(|| result__)
         }
     }
+    pub(crate) fn IsXButton1Pressed(&self) -> windows_core::Result<bool> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).IsXButton1Pressed)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn IsXButton2Pressed(&self) -> windows_core::Result<bool> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).IsXButton2Pressed)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn MouseWheelDelta(&self) -> windows_core::Result<i32> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).MouseWheelDelta)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
 }
 #[repr(C)]
 pub struct IPointerPointProperties_Vtbl {
@@ -14311,6 +14341,12 @@ pub struct IPointerPointProperties_Vtbl {
     IsPrimary: usize,
     pub IsRightButtonPressed:
         unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
+    pub IsXButton1Pressed:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
+    pub IsXButton2Pressed:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
+    pub MouseWheelDelta:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
 }
 windows_core::imp::define_interface!(
     IPointerRoutedEventArgs,
@@ -15709,9 +15745,228 @@ impl windows_core::RuntimeType for IScrollViewer {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
+impl IScrollViewer {
+    pub(crate) fn HorizontalOffset(&self) -> windows_core::Result<f64> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).HorizontalOffset)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn ViewportWidth(&self) -> windows_core::Result<f64> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).ViewportWidth)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn ExtentWidth(&self) -> windows_core::Result<f64> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).ExtentWidth)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn VerticalOffset(&self) -> windows_core::Result<f64> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).VerticalOffset)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn ViewportHeight(&self) -> windows_core::Result<f64> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).ViewportHeight)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn ExtentHeight(&self) -> windows_core::Result<f64> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).ExtentHeight)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+    pub(crate) fn ViewChanged<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
+    where
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<ScrollViewerViewChangedEventArgs>,
+            ) + 'static,
+    {
+        let handler: EventHandler<ScrollViewerViewChangedEventArgs> = {
+            let com = windows_core::imp::DelegateBox::<
+                EventHandler<ScrollViewerViewChangedEventArgs>,
+                F,
+            >::new(
+                &EventHandlerBox::<ScrollViewerViewChangedEventArgs, F>::VTABLE,
+                handler,
+            );
+            unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
+        };
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            let token__ = (windows_core::Interface::vtable(self).ViewChanged)(
+                windows_core::Interface::as_raw(self),
+                windows_core::Interface::as_raw(&handler),
+                &mut result__,
+            )
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).RemoveViewChanged,
+            ))
+        }
+    }
+    pub(crate) fn ChangeViewWithOptionalAnimation(
+        &self,
+        horizontaloffset: Option<f64>,
+        verticaloffset: Option<f64>,
+        zoomfactor: Option<f32>,
+        disableanimation: bool,
+    ) -> windows_core::Result<bool> {
+        let horizontaloffset__ =
+            horizontaloffset.map(<windows_reference::IReference<f64> as From<_>>::from);
+        let verticaloffset__ =
+            verticaloffset.map(<windows_reference::IReference<f64> as From<_>>::from);
+        let zoomfactor__ = zoomfactor.map(<windows_reference::IReference<f32> as From<_>>::from);
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).ChangeViewWithOptionalAnimation)(
+                windows_core::Interface::as_raw(self),
+                windows_core::Param::param(horizontaloffset__.as_ref()).abi(),
+                windows_core::Param::param(verticaloffset__.as_ref()).abi(),
+                windows_core::Param::param(zoomfactor__.as_ref()).abi(),
+                disableanimation,
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+}
 #[repr(C)]
 pub struct IScrollViewer_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
+    HorizontalScrollBarVisibility: usize,
+    SetHorizontalScrollBarVisibility: usize,
+    VerticalScrollBarVisibility: usize,
+    SetVerticalScrollBarVisibility: usize,
+    IsHorizontalRailEnabled: usize,
+    SetIsHorizontalRailEnabled: usize,
+    IsVerticalRailEnabled: usize,
+    SetIsVerticalRailEnabled: usize,
+    IsHorizontalScrollChainingEnabled: usize,
+    SetIsHorizontalScrollChainingEnabled: usize,
+    IsVerticalScrollChainingEnabled: usize,
+    SetIsVerticalScrollChainingEnabled: usize,
+    IsZoomChainingEnabled: usize,
+    SetIsZoomChainingEnabled: usize,
+    IsScrollInertiaEnabled: usize,
+    SetIsScrollInertiaEnabled: usize,
+    IsZoomInertiaEnabled: usize,
+    SetIsZoomInertiaEnabled: usize,
+    HorizontalScrollMode: usize,
+    SetHorizontalScrollMode: usize,
+    VerticalScrollMode: usize,
+    SetVerticalScrollMode: usize,
+    ZoomMode: usize,
+    SetZoomMode: usize,
+    HorizontalSnapPointsAlignment: usize,
+    SetHorizontalSnapPointsAlignment: usize,
+    VerticalSnapPointsAlignment: usize,
+    SetVerticalSnapPointsAlignment: usize,
+    HorizontalSnapPointsType: usize,
+    SetHorizontalSnapPointsType: usize,
+    VerticalSnapPointsType: usize,
+    SetVerticalSnapPointsType: usize,
+    ZoomSnapPointsType: usize,
+    SetZoomSnapPointsType: usize,
+    pub HorizontalOffset:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
+    pub ViewportWidth:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
+    ScrollableWidth: usize,
+    ComputedHorizontalScrollBarVisibility: usize,
+    pub ExtentWidth:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
+    pub VerticalOffset:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
+    pub ViewportHeight:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
+    ScrollableHeight: usize,
+    ComputedVerticalScrollBarVisibility: usize,
+    pub ExtentHeight:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
+    MinZoomFactor: usize,
+    SetMinZoomFactor: usize,
+    MaxZoomFactor: usize,
+    SetMaxZoomFactor: usize,
+    ZoomFactor: usize,
+    ZoomSnapPoints: usize,
+    TopLeftHeader: usize,
+    SetTopLeftHeader: usize,
+    LeftHeader: usize,
+    SetLeftHeader: usize,
+    TopHeader: usize,
+    SetTopHeader: usize,
+    ReduceViewportForCoreInputViewOcclusions: usize,
+    SetReduceViewportForCoreInputViewOcclusions: usize,
+    HorizontalAnchorRatio: usize,
+    SetHorizontalAnchorRatio: usize,
+    VerticalAnchorRatio: usize,
+    SetVerticalAnchorRatio: usize,
+    CanContentRenderOutsideBounds: usize,
+    SetCanContentRenderOutsideBounds: usize,
+    AnchorRequested: usize,
+    RemoveAnchorRequested: usize,
+    ViewChanging: usize,
+    RemoveViewChanging: usize,
+    pub ViewChanged: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut i64,
+    ) -> windows_core::HRESULT,
+    pub RemoveViewChanged:
+        unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
+    DirectManipulationStarted: usize,
+    RemoveDirectManipulationStarted: usize,
+    DirectManipulationCompleted: usize,
+    RemoveDirectManipulationCompleted: usize,
+    ScrollToHorizontalOffset: usize,
+    ScrollToVerticalOffset: usize,
+    ZoomToFactor: usize,
+    ChangeView: usize,
+    pub ChangeViewWithOptionalAnimation: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        bool,
+        *mut bool,
+    ) -> windows_core::HRESULT,
 }
 windows_core::imp::define_interface!(
     IScrollViewerStatics,
@@ -15762,6 +16017,33 @@ pub struct IScrollViewerStatics_Vtbl {
         *mut *mut core::ffi::c_void,
     )
         -> windows_core::HRESULT,
+}
+windows_core::imp::define_interface!(
+    IScrollViewerViewChangedEventArgs,
+    IScrollViewerViewChangedEventArgs_Vtbl,
+    0xbf7bb85b_1d46_5004_a370_ecb626630588
+);
+impl windows_core::RuntimeType for IScrollViewerViewChangedEventArgs {
+    const SIGNATURE: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+impl IScrollViewerViewChangedEventArgs {
+    pub(crate) fn IsIntermediate(&self) -> windows_core::Result<bool> {
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(self).IsIntermediate)(
+                windows_core::Interface::as_raw(self),
+                &mut result__,
+            )
+            .map(|| result__)
+        }
+    }
+}
+#[repr(C)]
+pub struct IScrollViewerViewChangedEventArgs_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub IsIntermediate:
+        unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
 windows_core::imp::define_interface!(
     ISelectionChangedEventArgs,
@@ -20138,6 +20420,38 @@ impl IUIElement {
             ))
         }
     }
+    pub(crate) fn PointerWheelChanged<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
+    where
+        F: Fn(
+                windows_core::Ref<windows_core::IInspectable>,
+                windows_core::Ref<PointerRoutedEventArgs>,
+            ) + 'static,
+    {
+        let handler: PointerEventHandler = {
+            let com = windows_core::imp::DelegateBox::<PointerEventHandler, F>::new(
+                &PointerEventHandlerBox::<F>::VTABLE,
+                handler,
+            );
+            unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
+        };
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            let token__ = (windows_core::Interface::vtable(self).PointerWheelChanged)(
+                windows_core::Interface::as_raw(self),
+                windows_core::Interface::as_raw(&handler),
+                &mut result__,
+            )
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).RemovePointerWheelChanged,
+            ))
+        }
+    }
     pub(crate) fn PreviewKeyDown<F>(
         &self,
         handler: F,
@@ -20483,8 +20797,13 @@ pub struct IUIElement_Vtbl {
     ) -> windows_core::HRESULT,
     pub RemovePointerCanceled:
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
-    PointerWheelChanged: usize,
-    RemovePointerWheelChanged: usize,
+    pub PointerWheelChanged: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut i64,
+    ) -> windows_core::HRESULT,
+    pub RemovePointerWheelChanged:
+        unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     Tapped: usize,
     RemoveTapped: usize,
     DoubleTapped: usize,
@@ -26605,6 +26924,34 @@ impl windows_core::RuntimeName for ScrollViewer {
 }
 unsafe impl Send for ScrollViewer {}
 unsafe impl Sync for ScrollViewer {}
+#[repr(transparent)]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ScrollViewerViewChangedEventArgs(windows_core::IUnknown);
+windows_core::imp::interface_hierarchy!(
+    ScrollViewerViewChangedEventArgs,
+    windows_core::IUnknown,
+    windows_core::IInspectable
+);
+impl windows_core::RuntimeType for ScrollViewerViewChangedEventArgs {
+    const SIGNATURE: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::for_class::<Self, IScrollViewerViewChangedEventArgs>();
+}
+unsafe impl windows_core::Interface for ScrollViewerViewChangedEventArgs {
+    type Vtable = <IScrollViewerViewChangedEventArgs as windows_core::Interface>::Vtable;
+    const IID: windows_core::GUID =
+        <IScrollViewerViewChangedEventArgs as windows_core::Interface>::IID;
+}
+impl core::ops::Deref for ScrollViewerViewChangedEventArgs {
+    type Target = IScrollViewerViewChangedEventArgs;
+    fn deref(&self) -> &Self::Target {
+        unsafe { core::mem::transmute(self) }
+    }
+}
+impl windows_core::RuntimeName for ScrollViewerViewChangedEventArgs {
+    const NAME: &'static str = "Microsoft.UI.Xaml.Controls.ScrollViewerViewChangedEventArgs";
+}
+unsafe impl Send for ScrollViewerViewChangedEventArgs {}
+unsafe impl Sync for ScrollViewerViewChangedEventArgs {}
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct ScrollingScrollBarVisibility(pub i32);

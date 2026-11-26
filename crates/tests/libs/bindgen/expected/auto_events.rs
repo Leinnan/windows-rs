@@ -8,7 +8,7 @@ impl windows_core::RuntimeType for CompletedCallback {
         windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl CompletedCallback {
-    pub fn new<F: Fn(i32) + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(i32) + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(
             &CompletedCallbackBox::<F>::VTABLE,
             invoke,
@@ -24,8 +24,10 @@ pub struct CompletedCallback_Vtbl {
         result: i32,
     ) -> windows_core::HRESULT,
 }
-struct CompletedCallbackBox<F: Fn(i32) + 'static>(core::marker::PhantomData<(fn() -> F,)>);
-impl<F: Fn(i32) + 'static> CompletedCallbackBox<F> {
+struct CompletedCallbackBox<F: Fn(i32) + Send + Sync + 'static>(
+    core::marker::PhantomData<(fn() -> F,)>,
+);
+impl<F: Fn(i32) + Send + Sync + 'static> CompletedCallbackBox<F> {
     const VTABLE: CompletedCallback_Vtbl = CompletedCallback_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<CompletedCallback, F>::QueryInterface,
@@ -39,7 +41,7 @@ impl<F: Fn(i32) + 'static> CompletedCallbackBox<F> {
         result: i32,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<CompletedCallback, F>);
             (this.invoke)(result);
             windows_core::HRESULT(0)
@@ -64,10 +66,10 @@ pub struct Handler_Vtbl {
         args: i32,
     ) -> windows_core::HRESULT,
 }
-struct HandlerBox<F: Fn(windows_core::Ref<IFoo>, i32) + 'static>(
+struct HandlerBox<F: Fn(windows_core::Ref<IFoo>, i32) + Send + Sync + 'static>(
     core::marker::PhantomData<(fn() -> F,)>,
 );
-impl<F: Fn(windows_core::Ref<IFoo>, i32) + 'static> HandlerBox<F> {
+impl<F: Fn(windows_core::Ref<IFoo>, i32) + Send + Sync + 'static> HandlerBox<F> {
     const VTABLE: Handler_Vtbl = Handler_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<Handler, F>::QueryInterface,
@@ -82,18 +84,14 @@ impl<F: Fn(windows_core::Ref<IFoo>, i32) + 'static> HandlerBox<F> {
         args: i32,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<Handler, F>);
             (this.invoke)(core::mem::transmute_copy(&sender), args);
             windows_core::HRESULT(0)
         }
     }
 }
-windows_core::imp::define_interface!(IFoo, IFoo_Vtbl, 0x822a1799_57f1_55f1_83d3_8c32e23dea74);
-impl windows_core::RuntimeType for IFoo {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
+windows_core::imp::define_winrt_interface!(IFoo, IFoo_Vtbl, 0x822a1799_57f1_55f1_83d3_8c32e23dea74);
 windows_core::imp::interface_hierarchy!(IFoo, windows_core::IUnknown, windows_core::IInspectable);
 impl IFoo {
     pub fn Bar(&self) -> windows_core::Result<i32> {
@@ -108,7 +106,7 @@ impl IFoo {
     }
     pub fn Click<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, i32) + 'static,
+        F: Fn(windows_core::Ref<Self>, i32) + Send + Sync + 'static,
     {
         let handler: Handler = {
             let com = windows_core::imp::DelegateBox::<Handler, F>::new(

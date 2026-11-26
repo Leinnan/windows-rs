@@ -31,7 +31,7 @@ impl IMFSpatialAudioObjectBuffer {
     pub unsafe fn GetMetadataItems(&self) -> windows_core::Result<super::ISpatialAudioMetadataItems> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetMetadataItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetMetadataItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -101,7 +101,7 @@ impl IMFSpatialAudioObjectBuffer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMFSpatialAudioObjectBuffer_Impl::GetMetadataItems(this) {
                     Ok(ok__) => {
-                        ppmetadataitems.write(core::mem::transmute(ok__));
+                        ppmetadataitems.cast::<super::ISpatialAudioMetadataItems>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -153,7 +153,7 @@ impl IMFSpatialAudioSample {
     pub unsafe fn GetSpatialAudioObjectByIndex(&self, dwindex: super::DWORD) -> windows_core::Result<IMFSpatialAudioObjectBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSpatialAudioObjectByIndex)(windows_core::Interface::as_raw(self), dwindex, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSpatialAudioObjectByIndex)(windows_core::Interface::as_raw(self), dwindex, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -198,7 +198,7 @@ impl IMFSpatialAudioSample_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMFSpatialAudioSample_Impl::GetSpatialAudioObjectByIndex(this, core::mem::transmute_copy(&dwindex)) {
                     Ok(ok__) => {
-                        ppaudioobjbuffer.write(core::mem::transmute(ok__));
+                        ppaudioobjbuffer.cast::<IMFSpatialAudioObjectBuffer>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

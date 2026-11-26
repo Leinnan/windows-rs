@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IImageScanner, IImageScanner_Vtbl, 0x53a88f78_5298_48a0_8da3_8087519665e0);
-impl windows_core::RuntimeType for IImageScanner {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScanner");
-}
+windows_core::imp::define_winrt_interface!(IImageScanner, IImageScanner_Vtbl, 0x53a88f78_5298_48a0_8da3_8087519665e0, b"Windows.Devices.Scanners.IImageScanner");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IImageScanner_Vtbl {
@@ -23,11 +19,7 @@ pub struct IImageScanner_Vtbl {
     #[cfg(not(feature = "Storage_Search"))]
     ScanFilesToFolderAsync: usize,
 }
-windows_core::imp::define_interface!(IImageScannerFeederConfiguration, IImageScannerFeederConfiguration_Vtbl, 0x74bdacee_fa97_4c17_8280_40e39c6dcc67);
-impl windows_core::RuntimeType for IImageScannerFeederConfiguration {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScannerFeederConfiguration");
-}
+windows_core::imp::define_winrt_interface!(IImageScannerFeederConfiguration, IImageScannerFeederConfiguration_Vtbl, 0x74bdacee_fa97_4c17_8280_40e39c6dcc67, b"Windows.Devices.Scanners.IImageScannerFeederConfiguration");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IImageScannerFeederConfiguration_Vtbl {
@@ -65,11 +57,7 @@ pub struct IImageScannerFeederConfiguration_Vtbl {
     pub ScanAhead: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetScanAhead: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IImageScannerFormatConfiguration, IImageScannerFormatConfiguration_Vtbl, 0xae275d11_dadf_4010_bf10_cca5c83dcbb0);
-impl windows_core::RuntimeType for IImageScannerFormatConfiguration {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScannerFormatConfiguration");
-}
+windows_core::imp::define_winrt_interface!(IImageScannerFormatConfiguration, IImageScannerFormatConfiguration_Vtbl, 0xae275d11_dadf_4010_bf10_cca5c83dcbb0, b"Windows.Devices.Scanners.IImageScannerFormatConfiguration");
 windows_core::imp::interface_hierarchy!(IImageScannerFormatConfiguration, windows_core::IUnknown, windows_core::IInspectable);
 impl IImageScannerFormatConfiguration {
     pub fn DefaultFormat(&self) -> windows_core::Result<ImageScannerFormat> {
@@ -157,7 +145,7 @@ impl IImageScannerFormatConfiguration_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IImageScannerFormatConfiguration, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             DefaultFormat: DefaultFormat::<Identity, OFFSET>,
             Format: Format::<Identity, OFFSET>,
             SetFormat: SetFormat::<Identity, OFFSET>,
@@ -177,11 +165,7 @@ pub struct IImageScannerFormatConfiguration_Vtbl {
     pub SetFormat: unsafe extern "system" fn(*mut core::ffi::c_void, ImageScannerFormat) -> windows_core::HRESULT,
     pub IsFormatSupported: unsafe extern "system" fn(*mut core::ffi::c_void, ImageScannerFormat, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IImageScannerPreviewResult, IImageScannerPreviewResult_Vtbl, 0x08b7fe8e_8891_441d_be9c_176fa109c8bb);
-impl windows_core::RuntimeType for IImageScannerPreviewResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScannerPreviewResult");
-}
+windows_core::imp::define_winrt_interface!(IImageScannerPreviewResult, IImageScannerPreviewResult_Vtbl, 0x08b7fe8e_8891_441d_be9c_176fa109c8bb, b"Windows.Devices.Scanners.IImageScannerPreviewResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IImageScannerPreviewResult_Vtbl {
@@ -189,11 +173,7 @@ pub struct IImageScannerPreviewResult_Vtbl {
     pub Succeeded: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub Format: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ImageScannerFormat) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IImageScannerScanResult, IImageScannerScanResult_Vtbl, 0xc91624cd_9037_4e48_84c1_ac0975076bc5);
-impl windows_core::RuntimeType for IImageScannerScanResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScannerScanResult");
-}
+windows_core::imp::define_winrt_interface!(IImageScannerScanResult, IImageScannerScanResult_Vtbl, 0xc91624cd_9037_4e48_84c1_ac0975076bc5, b"Windows.Devices.Scanners.IImageScannerScanResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IImageScannerScanResult_Vtbl {
@@ -203,11 +183,7 @@ pub struct IImageScannerScanResult_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     ScannedFiles: usize,
 }
-windows_core::imp::define_interface!(IImageScannerSourceConfiguration, IImageScannerSourceConfiguration_Vtbl, 0xbfb50055_0b44_4c82_9e89_205f9c234e59);
-impl windows_core::RuntimeType for IImageScannerSourceConfiguration {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScannerSourceConfiguration");
-}
+windows_core::imp::define_winrt_interface!(IImageScannerSourceConfiguration, IImageScannerSourceConfiguration_Vtbl, 0xbfb50055_0b44_4c82_9e89_205f9c234e59, b"Windows.Devices.Scanners.IImageScannerSourceConfiguration");
 windows_core::imp::interface_hierarchy!(IImageScannerSourceConfiguration, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(IImageScannerSourceConfiguration, IImageScannerFormatConfiguration);
 impl IImageScannerSourceConfiguration {
@@ -477,7 +453,7 @@ impl IImageScannerSourceConfiguration_Vtbl {
         unsafe extern "system" fn SetSelectedScanRegion<Identity: IImageScannerSourceConfiguration_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, value: super::super::Foundation::Rect) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IImageScannerSourceConfiguration_Impl::SetSelectedScanRegion(this, core::mem::transmute(&value)).into()
+                IImageScannerSourceConfiguration_Impl::SetSelectedScanRegion(this, &*(&raw const value).cast()).into()
             }
         }
         unsafe extern "system" fn AutoCroppingMode<Identity: IImageScannerSourceConfiguration_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, result__: *mut ImageScannerAutoCroppingMode) -> windows_core::HRESULT {
@@ -579,7 +555,7 @@ impl IImageScannerSourceConfiguration_Vtbl {
         unsafe extern "system" fn SetDesiredResolution<Identity: IImageScannerSourceConfiguration_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, value: ImageScannerResolution) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IImageScannerSourceConfiguration_Impl::SetDesiredResolution(this, core::mem::transmute(&value)).into()
+                IImageScannerSourceConfiguration_Impl::SetDesiredResolution(this, &*(&raw const value).cast()).into()
             }
         }
         unsafe extern "system" fn ActualResolution<Identity: IImageScannerSourceConfiguration_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, result__: *mut ImageScannerResolution) -> windows_core::HRESULT {
@@ -811,7 +787,7 @@ impl IImageScannerSourceConfiguration_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IImageScannerSourceConfiguration, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             MinScanArea: MinScanArea::<Identity, OFFSET>,
             MaxScanArea: MaxScanArea::<Identity, OFFSET>,
             SelectedScanRegion: SelectedScanRegion::<Identity, OFFSET>,
@@ -881,11 +857,7 @@ pub struct IImageScannerSourceConfiguration_Vtbl {
     pub Contrast: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     pub SetContrast: unsafe extern "system" fn(*mut core::ffi::c_void, i32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IImageScannerStatics, IImageScannerStatics_Vtbl, 0xbc57e70e_d804_4477_9fb5_b911b5473897);
-impl windows_core::RuntimeType for IImageScannerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Scanners.IImageScannerStatics");
-}
+windows_core::imp::define_winrt_interface!(IImageScannerStatics, IImageScannerStatics_Vtbl, 0xbc57e70e_d804_4477_9fb5_b911b5473897, b"Windows.Devices.Scanners.IImageScannerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IImageScannerStatics_Vtbl {
@@ -919,19 +891,19 @@ impl ImageScanner {
     pub fn FlatbedConfiguration(&self) -> windows_core::Result<ImageScannerFlatbedConfiguration> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FlatbedConfiguration)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).FlatbedConfiguration)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FeederConfiguration(&self) -> windows_core::Result<ImageScannerFeederConfiguration> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FeederConfiguration)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).FeederConfiguration)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AutoConfiguration(&self) -> windows_core::Result<ImageScannerAutoConfiguration> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AutoConfiguration)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AutoConfiguration)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsPreviewSupported(&self, scansource: ImageScannerScanSource) -> windows_core::Result<bool> {
@@ -947,7 +919,7 @@ impl ImageScanner {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ScanPreviewToStreamAsync)(windows_core::Interface::as_raw(self), scansource, targetstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ScanPreviewToStreamAsync)(windows_core::Interface::as_raw(self), scansource, targetstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Search")]
@@ -957,13 +929,13 @@ impl ImageScanner {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ScanFilesToFolderAsync)(windows_core::Interface::as_raw(self), scansource, storagefolder.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ScanFilesToFolderAsync)(windows_core::Interface::as_raw(self), scansource, storagefolder.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FromIdAsync(deviceid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::IImageScannerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetDeviceSelector() -> windows_core::Result<windows_core::HSTRING> {
@@ -983,6 +955,7 @@ impl windows_core::RuntimeType for ImageScanner {
 unsafe impl windows_core::Interface for ImageScanner {
     type Vtable = <IImageScanner as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IImageScanner as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ImageScanner {
     const NAME: &'static str = "Windows.Devices.Scanners.ImageScanner";
@@ -1022,6 +995,7 @@ impl windows_core::RuntimeType for ImageScannerAutoConfiguration {
 unsafe impl windows_core::Interface for ImageScannerAutoConfiguration {
     type Vtable = <IImageScannerFormatConfiguration as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IImageScannerFormatConfiguration as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ImageScannerAutoConfiguration {
     const NAME: &'static str = "Windows.Devices.Scanners.ImageScannerAutoConfiguration";
@@ -1384,6 +1358,7 @@ impl windows_core::RuntimeType for ImageScannerFeederConfiguration {
 unsafe impl windows_core::Interface for ImageScannerFeederConfiguration {
     type Vtable = <IImageScannerFormatConfiguration as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IImageScannerFormatConfiguration as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ImageScannerFeederConfiguration {
     const NAME: &'static str = "Windows.Devices.Scanners.ImageScannerFeederConfiguration";
@@ -1609,6 +1584,7 @@ impl windows_core::RuntimeType for ImageScannerFlatbedConfiguration {
 unsafe impl windows_core::Interface for ImageScannerFlatbedConfiguration {
     type Vtable = <IImageScannerFormatConfiguration as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IImageScannerFormatConfiguration as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ImageScannerFlatbedConfiguration {
     const NAME: &'static str = "Windows.Devices.Scanners.ImageScannerFlatbedConfiguration";
@@ -1658,6 +1634,7 @@ impl windows_core::RuntimeType for ImageScannerPreviewResult {
 unsafe impl windows_core::Interface for ImageScannerPreviewResult {
     type Vtable = <IImageScannerPreviewResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IImageScannerPreviewResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ImageScannerPreviewResult {
     const NAME: &'static str = "Windows.Devices.Scanners.ImageScannerPreviewResult";
@@ -1686,7 +1663,7 @@ impl ImageScannerScanResult {
     pub fn ScannedFiles(&self) -> windows_core::Result<windows_collections::IVectorView<super::super::Storage::StorageFile>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ScannedFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ScannedFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1696,6 +1673,7 @@ impl windows_core::RuntimeType for ImageScannerScanResult {
 unsafe impl windows_core::Interface for ImageScannerScanResult {
     type Vtable = <IImageScannerScanResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IImageScannerScanResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ImageScannerScanResult {
     const NAME: &'static str = "Windows.Devices.Scanners.ImageScannerScanResult";

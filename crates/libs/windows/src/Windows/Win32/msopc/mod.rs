@@ -23,7 +23,7 @@ impl IOpcCertificateEnumerator {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -99,7 +99,7 @@ impl IOpcCertificateEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcCertificateEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcCertificateEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -137,7 +137,7 @@ impl IOpcCertificateSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcCertificateEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -181,7 +181,7 @@ impl IOpcCertificateSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcCertificateSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        certificateenumerator.write(core::mem::transmute(ok__));
+                        certificateenumerator.cast::<IOpcCertificateEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -218,7 +218,7 @@ impl IOpcDigitalSignature {
     pub unsafe fn GetSignaturePartName(&self) -> windows_core::Result<IOpcPartUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignaturePartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignaturePartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetSignatureMethod(&self, signaturemethod: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -237,13 +237,13 @@ impl IOpcDigitalSignature {
     pub unsafe fn GetSignaturePartReferenceEnumerator(&self) -> windows_core::Result<IOpcSignaturePartReferenceEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignaturePartReferenceEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignaturePartReferenceEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetSignatureRelationshipReferenceEnumerator(&self) -> windows_core::Result<IOpcSignatureRelationshipReferenceEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignatureRelationshipReferenceEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignatureRelationshipReferenceEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetSigningTime(&self, signingtime: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -258,25 +258,25 @@ impl IOpcDigitalSignature {
     pub unsafe fn GetPackageObjectReference(&self) -> windows_core::Result<IOpcSignatureReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageObjectReference)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageObjectReference)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCertificateEnumerator(&self) -> windows_core::Result<IOpcCertificateEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCertificateEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCertificateEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCustomReferenceEnumerator(&self) -> windows_core::Result<IOpcSignatureReferenceEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCustomReferenceEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCustomReferenceEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCustomObjectEnumerator(&self) -> windows_core::Result<IOpcSignatureCustomObjectEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCustomObjectEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCustomObjectEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -354,7 +354,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetSignaturePartName(this) {
                     Ok(ok__) => {
-                        signaturepartname.write(core::mem::transmute(ok__));
+                        signaturepartname.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -396,7 +396,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetSignaturePartReferenceEnumerator(this) {
                     Ok(ok__) => {
-                        partreferenceenumerator.write(core::mem::transmute(ok__));
+                        partreferenceenumerator.cast::<IOpcSignaturePartReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -411,7 +411,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetSignatureRelationshipReferenceEnumerator(this) {
                     Ok(ok__) => {
-                        relationshipreferenceenumerator.write(core::mem::transmute(ok__));
+                        relationshipreferenceenumerator.cast::<IOpcSignatureRelationshipReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -447,7 +447,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetPackageObjectReference(this) {
                     Ok(ok__) => {
-                        packageobjectreference.write(core::mem::transmute(ok__));
+                        packageobjectreference.cast::<IOpcSignatureReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -462,7 +462,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetCertificateEnumerator(this) {
                     Ok(ok__) => {
-                        certificateenumerator.write(core::mem::transmute(ok__));
+                        certificateenumerator.cast::<IOpcCertificateEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -477,7 +477,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetCustomReferenceEnumerator(this) {
                     Ok(ok__) => {
-                        customreferenceenumerator.write(core::mem::transmute(ok__));
+                        customreferenceenumerator.cast::<IOpcSignatureReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -492,7 +492,7 @@ impl IOpcDigitalSignature_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignature_Impl::GetCustomObjectEnumerator(this) {
                     Ok(ok__) => {
-                        customobjectenumerator.write(core::mem::transmute(ok__));
+                        customobjectenumerator.cast::<IOpcSignatureCustomObjectEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -551,13 +551,13 @@ impl IOpcDigitalSignatureEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcDigitalSignature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -613,7 +613,7 @@ impl IOpcDigitalSignatureEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        digitalsignature.write(core::mem::transmute(ok__));
+                        digitalsignature.cast::<IOpcDigitalSignature>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -628,7 +628,7 @@ impl IOpcDigitalSignatureEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcDigitalSignatureEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -658,7 +658,7 @@ impl IOpcDigitalSignatureManager {
     pub unsafe fn GetSignatureOriginPartName(&self) -> windows_core::Result<IOpcPartUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignatureOriginPartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignatureOriginPartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -671,7 +671,7 @@ impl IOpcDigitalSignatureManager {
     pub unsafe fn GetSignatureEnumerator(&self) -> windows_core::Result<IOpcDigitalSignatureEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignatureEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignatureEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -684,7 +684,7 @@ impl IOpcDigitalSignatureManager {
     pub unsafe fn CreateSigningOptions(&self) -> windows_core::Result<IOpcSigningOptions> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateSigningOptions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateSigningOptions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
@@ -704,7 +704,7 @@ impl IOpcDigitalSignatureManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Sign)(windows_core::Interface::as_raw(self), certificate, signingoptions.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Sign)(windows_core::Interface::as_raw(self), certificate, signingoptions.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "urlmon"))]
@@ -714,7 +714,7 @@ impl IOpcDigitalSignatureManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReplaceSignatureXml)(windows_core::Interface::as_raw(self), signaturepartname.param().abi(), newsignaturexml, count, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReplaceSignatureXml)(windows_core::Interface::as_raw(self), signaturepartname.param().abi(), newsignaturexml, count, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -768,7 +768,7 @@ impl IOpcDigitalSignatureManager_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureManager_Impl::GetSignatureOriginPartName(this) {
                     Ok(ok__) => {
-                        signatureoriginpartname.write(core::mem::transmute(ok__));
+                        signatureoriginpartname.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -789,7 +789,7 @@ impl IOpcDigitalSignatureManager_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureManager_Impl::GetSignatureEnumerator(this) {
                     Ok(ok__) => {
-                        signatureenumerator.write(core::mem::transmute(ok__));
+                        signatureenumerator.cast::<IOpcDigitalSignatureEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -810,7 +810,7 @@ impl IOpcDigitalSignatureManager_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureManager_Impl::CreateSigningOptions(this) {
                     Ok(ok__) => {
-                        signingoptions.write(core::mem::transmute(ok__));
+                        signingoptions.cast::<IOpcSigningOptions>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -840,7 +840,7 @@ impl IOpcDigitalSignatureManager_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureManager_Impl::Sign(this, core::mem::transmute_copy(&certificate), core::mem::transmute_copy(&signingoptions)) {
                     Ok(ok__) => {
-                        digitalsignature.write(core::mem::transmute(ok__));
+                        digitalsignature.cast::<IOpcDigitalSignature>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -855,7 +855,7 @@ impl IOpcDigitalSignatureManager_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcDigitalSignatureManager_Impl::ReplaceSignatureXml(this, core::mem::transmute_copy(&signaturepartname), core::mem::transmute_copy(&newsignaturexml), core::mem::transmute_copy(&count)) {
                     Ok(ok__) => {
-                        digitalsignature.write(core::mem::transmute(ok__));
+                        digitalsignature.cast::<IOpcDigitalSignature>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -890,7 +890,7 @@ impl IOpcFactory {
     pub unsafe fn CreatePackageRootUri(&self) -> windows_core::Result<IOpcUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePackageRootUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePackageRootUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -900,7 +900,7 @@ impl IOpcFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePartUri)(windows_core::Interface::as_raw(self), pwzuri.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePartUri)(windows_core::Interface::as_raw(self), pwzuri.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwinbase", feature = "minwindef", feature = "objidlbase", feature = "shared"))]
@@ -910,13 +910,13 @@ impl IOpcFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateStreamOnFile)(windows_core::Interface::as_raw(self), filename.param().abi(), iomode, securityattributes, dwflagsandattributes, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateStreamOnFile)(windows_core::Interface::as_raw(self), filename.param().abi(), iomode, securityattributes, dwflagsandattributes, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn CreatePackage(&self) -> windows_core::Result<IOpcPackage> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePackage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePackage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -926,7 +926,7 @@ impl IOpcFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReadPackageFromStream)(windows_core::Interface::as_raw(self), stream.param().abi(), flags, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReadPackageFromStream)(windows_core::Interface::as_raw(self), stream.param().abi(), flags, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -943,7 +943,7 @@ impl IOpcFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateDigitalSignatureManager)(windows_core::Interface::as_raw(self), package.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateDigitalSignatureManager)(windows_core::Interface::as_raw(self), package.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -992,7 +992,7 @@ impl IOpcFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcFactory_Impl::CreatePackageRootUri(this) {
                     Ok(ok__) => {
-                        rooturi.write(core::mem::transmute(ok__));
+                        rooturi.cast::<IOpcUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1005,9 +1005,9 @@ impl IOpcFactory_Vtbl {
         unsafe extern "system" fn CreatePartUri<Identity: IOpcFactory_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pwzuri: windows_core::PCWSTR, parturi: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcFactory_Impl::CreatePartUri(this, core::mem::transmute(&pwzuri)) {
+                match IOpcFactory_Impl::CreatePartUri(this, &*(&raw const pwzuri).cast()) {
                     Ok(ok__) => {
-                        parturi.write(core::mem::transmute(ok__));
+                        parturi.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1020,9 +1020,9 @@ impl IOpcFactory_Vtbl {
         unsafe extern "system" fn CreateStreamOnFile<Identity: IOpcFactory_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, iomode: OPC_STREAM_IO_MODE, securityattributes: super::LPSECURITY_ATTRIBUTES, dwflagsandattributes: super::DWORD, stream: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcFactory_Impl::CreateStreamOnFile(this, core::mem::transmute(&filename), core::mem::transmute_copy(&iomode), core::mem::transmute_copy(&securityattributes), core::mem::transmute_copy(&dwflagsandattributes)) {
+                match IOpcFactory_Impl::CreateStreamOnFile(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&iomode), core::mem::transmute_copy(&securityattributes), core::mem::transmute_copy(&dwflagsandattributes)) {
                     Ok(ok__) => {
-                        stream.write(core::mem::transmute(ok__));
+                        stream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1037,7 +1037,7 @@ impl IOpcFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcFactory_Impl::CreatePackage(this) {
                     Ok(ok__) => {
-                        package.write(core::mem::transmute(ok__));
+                        package.cast::<IOpcPackage>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1052,7 +1052,7 @@ impl IOpcFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcFactory_Impl::ReadPackageFromStream(this, core::mem::transmute_copy(&stream), core::mem::transmute_copy(&flags)) {
                     Ok(ok__) => {
-                        package.write(core::mem::transmute(ok__));
+                        package.cast::<IOpcPackage>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1073,7 +1073,7 @@ impl IOpcFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcFactory_Impl::CreateDigitalSignatureManager(this, core::mem::transmute_copy(&package)) {
                     Ok(ok__) => {
-                        signaturemanager.write(core::mem::transmute(ok__));
+                        signaturemanager.cast::<IOpcDigitalSignatureManager>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1106,13 +1106,13 @@ impl IOpcPackage {
     pub unsafe fn GetPartSet(&self) -> windows_core::Result<IOpcPartSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPartSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPartSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetRelationshipSet(&self) -> windows_core::Result<IOpcRelationshipSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelationshipSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelationshipSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1134,7 +1134,7 @@ impl IOpcPackage_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPackage_Impl::GetPartSet(this) {
                     Ok(ok__) => {
-                        partset.write(core::mem::transmute(ok__));
+                        partset.cast::<IOpcPartSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1149,7 +1149,7 @@ impl IOpcPackage_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPackage_Impl::GetRelationshipSet(this) {
                     Ok(ok__) => {
-                        relationshipset.write(core::mem::transmute(ok__));
+                        relationshipset.cast::<IOpcRelationshipSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1176,21 +1176,21 @@ impl IOpcPart {
     pub unsafe fn GetRelationshipSet(&self) -> windows_core::Result<IOpcRelationshipSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelationshipSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelationshipSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
     pub unsafe fn GetContentStream(&self) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetContentStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetContentStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
     pub unsafe fn GetName(&self) -> windows_core::Result<IOpcPartUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetContentType(&self, contenttype: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -1235,7 +1235,7 @@ impl IOpcPart_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPart_Impl::GetRelationshipSet(this) {
                     Ok(ok__) => {
-                        relationshipset.write(core::mem::transmute(ok__));
+                        relationshipset.cast::<IOpcRelationshipSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1250,7 +1250,7 @@ impl IOpcPart_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPart_Impl::GetContentStream(this) {
                     Ok(ok__) => {
-                        stream.write(core::mem::transmute(ok__));
+                        stream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1265,7 +1265,7 @@ impl IOpcPart_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPart_Impl::GetName(this) {
                     Ok(ok__) => {
-                        name.write(core::mem::transmute(ok__));
+                        name.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1329,13 +1329,13 @@ impl IOpcPartEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcPart> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1391,7 +1391,7 @@ impl IOpcPartEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPartEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        part.write(core::mem::transmute(ok__));
+                        part.cast::<IOpcPart>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1406,7 +1406,7 @@ impl IOpcPartEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPartEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcPartEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1439,7 +1439,7 @@ impl IOpcPartSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPart)(windows_core::Interface::as_raw(self), name.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPart)(windows_core::Interface::as_raw(self), name.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -1450,7 +1450,7 @@ impl IOpcPartSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePart)(windows_core::Interface::as_raw(self), name.param().abi(), contenttype.param().abi(), compressionoptions, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePart)(windows_core::Interface::as_raw(self), name.param().abi(), contenttype.param().abi(), compressionoptions, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -1473,7 +1473,7 @@ impl IOpcPartSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcPartEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1515,7 +1515,7 @@ impl IOpcPartSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPartSet_Impl::GetPart(this, core::mem::transmute_copy(&name)) {
                     Ok(ok__) => {
-                        part.write(core::mem::transmute(ok__));
+                        part.cast::<IOpcPart>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1528,9 +1528,9 @@ impl IOpcPartSet_Vtbl {
         unsafe extern "system" fn CreatePart<Identity: IOpcPartSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, name: *mut core::ffi::c_void, contenttype: windows_core::PCWSTR, compressionoptions: OPC_COMPRESSION_OPTIONS, part: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcPartSet_Impl::CreatePart(this, core::mem::transmute_copy(&name), core::mem::transmute(&contenttype), core::mem::transmute_copy(&compressionoptions)) {
+                match IOpcPartSet_Impl::CreatePart(this, core::mem::transmute_copy(&name), &*(&raw const contenttype).cast(), core::mem::transmute_copy(&compressionoptions)) {
                     Ok(ok__) => {
-                        part.write(core::mem::transmute(ok__));
+                        part.cast::<IOpcPart>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1566,7 +1566,7 @@ impl IOpcPartSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPartSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        partenumerator.write(core::mem::transmute(ok__));
+                        partenumerator.cast::<IOpcPartEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1617,7 +1617,7 @@ impl IOpcPartUri {
     pub unsafe fn GetSourceUri(&self) -> windows_core::Result<IOpcUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn IsRelationshipsPartUri(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -1668,7 +1668,7 @@ impl IOpcPartUri_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcPartUri_Impl::GetSourceUri(this) {
                     Ok(ok__) => {
-                        sourceuri.write(core::mem::transmute(ok__));
+                        sourceuri.cast::<IOpcUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1719,14 +1719,14 @@ impl IOpcRelationship {
     pub unsafe fn GetSourceUri(&self) -> windows_core::Result<IOpcUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
     pub unsafe fn GetTargetUri(&self) -> windows_core::Result<super::IUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetTargetUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetTargetUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetTargetMode(&self) -> windows_core::Result<OPC_URI_TARGET_MODE> {
@@ -1780,7 +1780,7 @@ impl IOpcRelationship_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationship_Impl::GetSourceUri(this) {
                     Ok(ok__) => {
-                        sourceuri.write(core::mem::transmute(ok__));
+                        sourceuri.cast::<IOpcUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1795,7 +1795,7 @@ impl IOpcRelationship_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationship_Impl::GetTargetUri(this) {
                     Ok(ok__) => {
-                        targeturi.write(core::mem::transmute(ok__));
+                        targeturi.cast::<super::IUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1853,13 +1853,13 @@ impl IOpcRelationshipEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcRelationship> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1915,7 +1915,7 @@ impl IOpcRelationshipEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        relationship.write(core::mem::transmute(ok__));
+                        relationship.cast::<IOpcRelationship>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1930,7 +1930,7 @@ impl IOpcRelationshipEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcRelationshipEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2029,13 +2029,13 @@ impl IOpcRelationshipSelectorEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcRelationshipSelector> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2091,7 +2091,7 @@ impl IOpcRelationshipSelectorEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipSelectorEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        relationshipselector.write(core::mem::transmute(ok__));
+                        relationshipselector.cast::<IOpcRelationshipSelector>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2106,7 +2106,7 @@ impl IOpcRelationshipSelectorEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipSelectorEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcRelationshipSelectorEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2138,7 +2138,7 @@ impl IOpcRelationshipSelectorSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), selector, selectioncriterion.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), selector, selectioncriterion.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Delete<P0>(&self, relationshipselector: P0) -> windows_core::HRESULT
@@ -2150,7 +2150,7 @@ impl IOpcRelationshipSelectorSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcRelationshipSelectorEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2172,9 +2172,9 @@ impl IOpcRelationshipSelectorSet_Vtbl {
         unsafe extern "system" fn Create<Identity: IOpcRelationshipSelectorSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, selector: OPC_RELATIONSHIP_SELECTOR, selectioncriterion: windows_core::PCWSTR, relationshipselector: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcRelationshipSelectorSet_Impl::Create(this, core::mem::transmute_copy(&selector), core::mem::transmute(&selectioncriterion)) {
+                match IOpcRelationshipSelectorSet_Impl::Create(this, core::mem::transmute_copy(&selector), &*(&raw const selectioncriterion).cast()) {
                     Ok(ok__) => {
-                        relationshipselector.write(core::mem::transmute(ok__));
+                        relationshipselector.cast::<IOpcRelationshipSelector>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2195,7 +2195,7 @@ impl IOpcRelationshipSelectorSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipSelectorSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        relationshipselectorenumerator.write(core::mem::transmute(ok__));
+                        relationshipselectorenumerator.cast::<IOpcRelationshipSelectorEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2226,7 +2226,7 @@ impl IOpcRelationshipSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelationship)(windows_core::Interface::as_raw(self), relationshipidentifier.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelationship)(windows_core::Interface::as_raw(self), relationshipidentifier.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -2238,7 +2238,7 @@ impl IOpcRelationshipSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateRelationship)(windows_core::Interface::as_raw(self), relationshipidentifier.param().abi(), relationshiptype.param().abi(), targeturi.param().abi(), targetmode, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateRelationship)(windows_core::Interface::as_raw(self), relationshipidentifier.param().abi(), relationshiptype.param().abi(), targeturi.param().abi(), targetmode, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn DeleteRelationship<P0>(&self, relationshipidentifier: P0) -> windows_core::HRESULT
@@ -2259,7 +2259,7 @@ impl IOpcRelationshipSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcRelationshipEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetEnumeratorForType<P0>(&self, relationshiptype: P0) -> windows_core::Result<IOpcRelationshipEnumerator>
@@ -2268,14 +2268,14 @@ impl IOpcRelationshipSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumeratorForType)(windows_core::Interface::as_raw(self), relationshiptype.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumeratorForType)(windows_core::Interface::as_raw(self), relationshiptype.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
     pub unsafe fn GetRelationshipsContentStream(&self) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelationshipsContentStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelationshipsContentStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2313,9 +2313,9 @@ impl IOpcRelationshipSet_Vtbl {
         unsafe extern "system" fn GetRelationship<Identity: IOpcRelationshipSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, relationshipidentifier: windows_core::PCWSTR, relationship: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcRelationshipSet_Impl::GetRelationship(this, core::mem::transmute(&relationshipidentifier)) {
+                match IOpcRelationshipSet_Impl::GetRelationship(this, &*(&raw const relationshipidentifier).cast()) {
                     Ok(ok__) => {
-                        relationship.write(core::mem::transmute(ok__));
+                        relationship.cast::<IOpcRelationship>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2328,9 +2328,9 @@ impl IOpcRelationshipSet_Vtbl {
         unsafe extern "system" fn CreateRelationship<Identity: IOpcRelationshipSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, relationshipidentifier: windows_core::PCWSTR, relationshiptype: windows_core::PCWSTR, targeturi: *mut core::ffi::c_void, targetmode: OPC_URI_TARGET_MODE, relationship: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcRelationshipSet_Impl::CreateRelationship(this, core::mem::transmute(&relationshipidentifier), core::mem::transmute(&relationshiptype), core::mem::transmute_copy(&targeturi), core::mem::transmute_copy(&targetmode)) {
+                match IOpcRelationshipSet_Impl::CreateRelationship(this, &*(&raw const relationshipidentifier).cast(), &*(&raw const relationshiptype).cast(), core::mem::transmute_copy(&targeturi), core::mem::transmute_copy(&targetmode)) {
                     Ok(ok__) => {
-                        relationship.write(core::mem::transmute(ok__));
+                        relationship.cast::<IOpcRelationship>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2343,13 +2343,13 @@ impl IOpcRelationshipSet_Vtbl {
         unsafe extern "system" fn DeleteRelationship<Identity: IOpcRelationshipSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, relationshipidentifier: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IOpcRelationshipSet_Impl::DeleteRelationship(this, core::mem::transmute(&relationshipidentifier))
+                IOpcRelationshipSet_Impl::DeleteRelationship(this, &*(&raw const relationshipidentifier).cast())
             }
         }
         unsafe extern "system" fn RelationshipExists<Identity: IOpcRelationshipSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, relationshipidentifier: windows_core::PCWSTR, relationshipexists: *mut windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcRelationshipSet_Impl::RelationshipExists(this, core::mem::transmute(&relationshipidentifier)) {
+                match IOpcRelationshipSet_Impl::RelationshipExists(this, &*(&raw const relationshipidentifier).cast()) {
                     Ok(ok__) => {
                         relationshipexists.write(ok__);
                         windows_core::HRESULT(0)
@@ -2366,7 +2366,7 @@ impl IOpcRelationshipSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        relationshipenumerator.write(core::mem::transmute(ok__));
+                        relationshipenumerator.cast::<IOpcRelationshipEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2379,9 +2379,9 @@ impl IOpcRelationshipSet_Vtbl {
         unsafe extern "system" fn GetEnumeratorForType<Identity: IOpcRelationshipSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, relationshiptype: windows_core::PCWSTR, relationshipenumerator: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcRelationshipSet_Impl::GetEnumeratorForType(this, core::mem::transmute(&relationshiptype)) {
+                match IOpcRelationshipSet_Impl::GetEnumeratorForType(this, &*(&raw const relationshiptype).cast()) {
                     Ok(ok__) => {
-                        relationshipenumerator.write(core::mem::transmute(ok__));
+                        relationshipenumerator.cast::<IOpcRelationshipEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2396,7 +2396,7 @@ impl IOpcRelationshipSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcRelationshipSet_Impl::GetRelationshipsContentStream(this) {
                     Ok(ok__) => {
-                        contents.write(core::mem::transmute(ok__));
+                        contents.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2479,13 +2479,13 @@ impl IOpcSignatureCustomObjectEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcSignatureCustomObject> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2541,7 +2541,7 @@ impl IOpcSignatureCustomObjectEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureCustomObjectEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        customobject.write(core::mem::transmute(ok__));
+                        customobject.cast::<IOpcSignatureCustomObject>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2556,7 +2556,7 @@ impl IOpcSignatureCustomObjectEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureCustomObjectEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcSignatureCustomObjectEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2586,7 +2586,7 @@ impl IOpcSignatureCustomObjectSet {
     pub unsafe fn Create(&self, xmlmarkup: *const super::UINT8, count: super::UINT32) -> windows_core::Result<IOpcSignatureCustomObject> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), xmlmarkup, count, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), xmlmarkup, count, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Delete<P0>(&self, customobject: P0) -> windows_core::HRESULT
@@ -2598,7 +2598,7 @@ impl IOpcSignatureCustomObjectSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcSignatureCustomObjectEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2627,7 +2627,7 @@ impl IOpcSignatureCustomObjectSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureCustomObjectSet_Impl::Create(this, core::mem::transmute_copy(&xmlmarkup), core::mem::transmute_copy(&count)) {
                     Ok(ok__) => {
-                        customobject.write(core::mem::transmute(ok__));
+                        customobject.cast::<IOpcSignatureCustomObject>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2648,7 +2648,7 @@ impl IOpcSignatureCustomObjectSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureCustomObjectSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        customobjectenumerator.write(core::mem::transmute(ok__));
+                        customobjectenumerator.cast::<IOpcSignatureCustomObjectEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2678,7 +2678,7 @@ impl IOpcSignaturePartReference {
     pub unsafe fn GetPartName(&self) -> windows_core::Result<IOpcPartUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetContentType(&self, contenttype: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -2730,7 +2730,7 @@ impl IOpcSignaturePartReference_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignaturePartReference_Impl::GetPartName(this) {
                     Ok(ok__) => {
-                        partname.write(core::mem::transmute(ok__));
+                        partname.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2806,13 +2806,13 @@ impl IOpcSignaturePartReferenceEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcSignaturePartReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2868,7 +2868,7 @@ impl IOpcSignaturePartReferenceEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignaturePartReferenceEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        partreference.write(core::mem::transmute(ok__));
+                        partreference.cast::<IOpcSignaturePartReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2883,7 +2883,7 @@ impl IOpcSignaturePartReferenceEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignaturePartReferenceEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcSignaturePartReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2917,7 +2917,7 @@ impl IOpcSignaturePartReferenceSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), parturi.param().abi(), digestmethod.param().abi(), transformmethod, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), parturi.param().abi(), digestmethod.param().abi(), transformmethod, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Delete<P0>(&self, partreference: P0) -> windows_core::HRESULT
@@ -2929,7 +2929,7 @@ impl IOpcSignaturePartReferenceSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcSignaturePartReferenceEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2956,9 +2956,9 @@ impl IOpcSignaturePartReferenceSet_Vtbl {
         unsafe extern "system" fn Create<Identity: IOpcSignaturePartReferenceSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, parturi: *mut core::ffi::c_void, digestmethod: windows_core::PCWSTR, transformmethod: OPC_CANONICALIZATION_METHOD, partreference: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcSignaturePartReferenceSet_Impl::Create(this, core::mem::transmute_copy(&parturi), core::mem::transmute(&digestmethod), core::mem::transmute_copy(&transformmethod)) {
+                match IOpcSignaturePartReferenceSet_Impl::Create(this, core::mem::transmute_copy(&parturi), &*(&raw const digestmethod).cast(), core::mem::transmute_copy(&transformmethod)) {
                     Ok(ok__) => {
-                        partreference.write(core::mem::transmute(ok__));
+                        partreference.cast::<IOpcSignaturePartReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2979,7 +2979,7 @@ impl IOpcSignaturePartReferenceSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignaturePartReferenceSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        partreferenceenumerator.write(core::mem::transmute(ok__));
+                        partreferenceenumerator.cast::<IOpcSignaturePartReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3012,7 +3012,7 @@ impl IOpcSignatureReference {
     pub unsafe fn GetUri(&self) -> windows_core::Result<super::IUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetType(&self, r#type: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -3072,7 +3072,7 @@ impl IOpcSignatureReference_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureReference_Impl::GetUri(this) {
                     Ok(ok__) => {
-                        referenceuri.write(core::mem::transmute(ok__));
+                        referenceuri.cast::<super::IUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3149,13 +3149,13 @@ impl IOpcSignatureReferenceEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcSignatureReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3211,7 +3211,7 @@ impl IOpcSignatureReferenceEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureReferenceEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        reference.write(core::mem::transmute(ok__));
+                        reference.cast::<IOpcSignatureReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3226,7 +3226,7 @@ impl IOpcSignatureReferenceEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureReferenceEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcSignatureReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3262,7 +3262,7 @@ impl IOpcSignatureReferenceSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), referenceuri.param().abi(), referenceid.param().abi(), r#type.param().abi(), digestmethod.param().abi(), transformmethod, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), referenceuri.param().abi(), referenceid.param().abi(), r#type.param().abi(), digestmethod.param().abi(), transformmethod, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Delete<P0>(&self, reference: P0) -> windows_core::HRESULT
@@ -3274,7 +3274,7 @@ impl IOpcSignatureReferenceSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcSignatureReferenceEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3301,9 +3301,9 @@ impl IOpcSignatureReferenceSet_Vtbl {
         unsafe extern "system" fn Create<Identity: IOpcSignatureReferenceSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, referenceuri: *mut core::ffi::c_void, referenceid: windows_core::PCWSTR, r#type: windows_core::PCWSTR, digestmethod: windows_core::PCWSTR, transformmethod: OPC_CANONICALIZATION_METHOD, reference: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcSignatureReferenceSet_Impl::Create(this, core::mem::transmute_copy(&referenceuri), core::mem::transmute(&referenceid), core::mem::transmute(&r#type), core::mem::transmute(&digestmethod), core::mem::transmute_copy(&transformmethod)) {
+                match IOpcSignatureReferenceSet_Impl::Create(this, core::mem::transmute_copy(&referenceuri), &*(&raw const referenceid).cast(), &*(&raw const r#type).cast(), &*(&raw const digestmethod).cast(), core::mem::transmute_copy(&transformmethod)) {
                     Ok(ok__) => {
-                        reference.write(core::mem::transmute(ok__));
+                        reference.cast::<IOpcSignatureReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3324,7 +3324,7 @@ impl IOpcSignatureReferenceSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureReferenceSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        referenceenumerator.write(core::mem::transmute(ok__));
+                        referenceenumerator.cast::<IOpcSignatureReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3354,7 +3354,7 @@ impl IOpcSignatureRelationshipReference {
     pub unsafe fn GetSourceUri(&self) -> windows_core::Result<IOpcUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetDigestMethod(&self, digestmethod: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -3379,7 +3379,7 @@ impl IOpcSignatureRelationshipReference {
     pub unsafe fn GetRelationshipSelectorEnumerator(&self) -> windows_core::Result<IOpcRelationshipSelectorEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelationshipSelectorEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelationshipSelectorEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3417,7 +3417,7 @@ impl IOpcSignatureRelationshipReference_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureRelationshipReference_Impl::GetSourceUri(this) {
                     Ok(ok__) => {
-                        sourceuri.write(core::mem::transmute(ok__));
+                        sourceuri.cast::<IOpcUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3474,7 +3474,7 @@ impl IOpcSignatureRelationshipReference_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureRelationshipReference_Impl::GetRelationshipSelectorEnumerator(this) {
                     Ok(ok__) => {
-                        selectorenumerator.write(core::mem::transmute(ok__));
+                        selectorenumerator.cast::<IOpcRelationshipSelectorEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3518,13 +3518,13 @@ impl IOpcSignatureRelationshipReferenceEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IOpcSignatureRelationshipReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3580,7 +3580,7 @@ impl IOpcSignatureRelationshipReferenceEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureRelationshipReferenceEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        relationshipreference.write(core::mem::transmute(ok__));
+                        relationshipreference.cast::<IOpcSignatureRelationshipReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3595,7 +3595,7 @@ impl IOpcSignatureRelationshipReferenceEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureRelationshipReferenceEnumerator_Impl::Clone(this) {
                     Ok(ok__) => {
-                        copy.write(core::mem::transmute(ok__));
+                        copy.cast::<IOpcSignatureRelationshipReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3630,13 +3630,13 @@ impl IOpcSignatureRelationshipReferenceSet {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), sourceuri.param().abi(), digestmethod.param().abi(), relationshipsigningoption, selectorset.param().abi(), transformmethod, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), sourceuri.param().abi(), digestmethod.param().abi(), relationshipsigningoption, selectorset.param().abi(), transformmethod, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn CreateRelationshipSelectorSet(&self) -> windows_core::Result<IOpcRelationshipSelectorSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateRelationshipSelectorSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateRelationshipSelectorSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Delete<P0>(&self, relationshipreference: P0) -> windows_core::HRESULT
@@ -3648,7 +3648,7 @@ impl IOpcSignatureRelationshipReferenceSet {
     pub unsafe fn GetEnumerator(&self) -> windows_core::Result<IOpcSignatureRelationshipReferenceEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3677,9 +3677,9 @@ impl IOpcSignatureRelationshipReferenceSet_Vtbl {
         unsafe extern "system" fn Create<Identity: IOpcSignatureRelationshipReferenceSet_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, sourceuri: *mut core::ffi::c_void, digestmethod: windows_core::PCWSTR, relationshipsigningoption: OPC_RELATIONSHIPS_SIGNING_OPTION, selectorset: *mut core::ffi::c_void, transformmethod: OPC_CANONICALIZATION_METHOD, relationshipreference: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IOpcSignatureRelationshipReferenceSet_Impl::Create(this, core::mem::transmute_copy(&sourceuri), core::mem::transmute(&digestmethod), core::mem::transmute_copy(&relationshipsigningoption), core::mem::transmute_copy(&selectorset), core::mem::transmute_copy(&transformmethod)) {
+                match IOpcSignatureRelationshipReferenceSet_Impl::Create(this, core::mem::transmute_copy(&sourceuri), &*(&raw const digestmethod).cast(), core::mem::transmute_copy(&relationshipsigningoption), core::mem::transmute_copy(&selectorset), core::mem::transmute_copy(&transformmethod)) {
                     Ok(ok__) => {
-                        relationshipreference.write(core::mem::transmute(ok__));
+                        relationshipreference.cast::<IOpcSignatureRelationshipReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3694,7 +3694,7 @@ impl IOpcSignatureRelationshipReferenceSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureRelationshipReferenceSet_Impl::CreateRelationshipSelectorSet(this) {
                     Ok(ok__) => {
-                        selectorset.write(core::mem::transmute(ok__));
+                        selectorset.cast::<IOpcRelationshipSelectorSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3715,7 +3715,7 @@ impl IOpcSignatureRelationshipReferenceSet_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSignatureRelationshipReferenceSet_Impl::GetEnumerator(this) {
                     Ok(ok__) => {
-                        relationshipreferenceenumerator.write(core::mem::transmute(ok__));
+                        relationshipreferenceenumerator.cast::<IOpcSignatureRelationshipReferenceEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3790,38 +3790,38 @@ impl IOpcSigningOptions {
     pub unsafe fn GetSignaturePartReferenceSet(&self) -> windows_core::Result<IOpcSignaturePartReferenceSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignaturePartReferenceSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignaturePartReferenceSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetSignatureRelationshipReferenceSet(&self) -> windows_core::Result<IOpcSignatureRelationshipReferenceSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignatureRelationshipReferenceSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignatureRelationshipReferenceSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCustomObjectSet(&self) -> windows_core::Result<IOpcSignatureCustomObjectSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCustomObjectSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCustomObjectSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCustomReferenceSet(&self) -> windows_core::Result<IOpcSignatureReferenceSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCustomReferenceSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCustomReferenceSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCertificateSet(&self) -> windows_core::Result<IOpcCertificateSet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCertificateSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCertificateSet)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
     pub unsafe fn GetSignaturePartName(&self) -> windows_core::Result<IOpcPartUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSignaturePartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSignaturePartName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
@@ -3892,7 +3892,7 @@ impl IOpcSigningOptions_Vtbl {
         unsafe extern "system" fn SetSignatureId<Identity: IOpcSigningOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, signatureid: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IOpcSigningOptions_Impl::SetSignatureId(this, core::mem::transmute(&signatureid))
+                IOpcSigningOptions_Impl::SetSignatureId(this, &*(&raw const signatureid).cast())
             }
         }
         unsafe extern "system" fn GetSignatureMethod<Identity: IOpcSigningOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, signaturemethod: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -3904,7 +3904,7 @@ impl IOpcSigningOptions_Vtbl {
         unsafe extern "system" fn SetSignatureMethod<Identity: IOpcSigningOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, signaturemethod: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IOpcSigningOptions_Impl::SetSignatureMethod(this, core::mem::transmute(&signaturemethod))
+                IOpcSigningOptions_Impl::SetSignatureMethod(this, &*(&raw const signaturemethod).cast())
             }
         }
         unsafe extern "system" fn GetDefaultDigestMethod<Identity: IOpcSigningOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, digestmethod: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -3916,7 +3916,7 @@ impl IOpcSigningOptions_Vtbl {
         unsafe extern "system" fn SetDefaultDigestMethod<Identity: IOpcSigningOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, digestmethod: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IOpcSigningOptions_Impl::SetDefaultDigestMethod(this, core::mem::transmute(&digestmethod))
+                IOpcSigningOptions_Impl::SetDefaultDigestMethod(this, &*(&raw const digestmethod).cast())
             }
         }
         unsafe extern "system" fn GetCertificateEmbeddingOption<Identity: IOpcSigningOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, embeddingoption: *mut OPC_CERTIFICATE_EMBEDDING_OPTION) -> windows_core::HRESULT {
@@ -3966,7 +3966,7 @@ impl IOpcSigningOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSigningOptions_Impl::GetSignaturePartReferenceSet(this) {
                     Ok(ok__) => {
-                        partreferenceset.write(core::mem::transmute(ok__));
+                        partreferenceset.cast::<IOpcSignaturePartReferenceSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3981,7 +3981,7 @@ impl IOpcSigningOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSigningOptions_Impl::GetSignatureRelationshipReferenceSet(this) {
                     Ok(ok__) => {
-                        relationshipreferenceset.write(core::mem::transmute(ok__));
+                        relationshipreferenceset.cast::<IOpcSignatureRelationshipReferenceSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3996,7 +3996,7 @@ impl IOpcSigningOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSigningOptions_Impl::GetCustomObjectSet(this) {
                     Ok(ok__) => {
-                        customobjectset.write(core::mem::transmute(ok__));
+                        customobjectset.cast::<IOpcSignatureCustomObjectSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4011,7 +4011,7 @@ impl IOpcSigningOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSigningOptions_Impl::GetCustomReferenceSet(this) {
                     Ok(ok__) => {
-                        customreferenceset.write(core::mem::transmute(ok__));
+                        customreferenceset.cast::<IOpcSignatureReferenceSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4026,7 +4026,7 @@ impl IOpcSigningOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSigningOptions_Impl::GetCertificateSet(this) {
                     Ok(ok__) => {
-                        certificateset.write(core::mem::transmute(ok__));
+                        certificateset.cast::<IOpcCertificateSet>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4041,7 +4041,7 @@ impl IOpcSigningOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcSigningOptions_Impl::GetSignaturePartName(this) {
                     Ok(ok__) => {
-                        signaturepartname.write(core::mem::transmute(ok__));
+                        signaturepartname.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4100,7 +4100,7 @@ impl IOpcUri {
     pub unsafe fn GetRelationshipsPartUri(&self) -> windows_core::Result<IOpcPartUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelationshipsPartUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelationshipsPartUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetRelativeUri<P0>(&self, targetparturi: P0) -> windows_core::Result<super::IUri>
@@ -4109,7 +4109,7 @@ impl IOpcUri {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRelativeUri)(windows_core::Interface::as_raw(self), targetparturi.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRelativeUri)(windows_core::Interface::as_raw(self), targetparturi.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn CombinePartUri<P0>(&self, relativeuri: P0) -> windows_core::Result<IOpcPartUri>
@@ -4118,7 +4118,7 @@ impl IOpcUri {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CombinePartUri)(windows_core::Interface::as_raw(self), relativeuri.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CombinePartUri)(windows_core::Interface::as_raw(self), relativeuri.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -4145,7 +4145,7 @@ impl IOpcUri_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcUri_Impl::GetRelationshipsPartUri(this) {
                     Ok(ok__) => {
-                        relationshipparturi.write(core::mem::transmute(ok__));
+                        relationshipparturi.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4160,7 +4160,7 @@ impl IOpcUri_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcUri_Impl::GetRelativeUri(this, core::mem::transmute_copy(&targetparturi)) {
                     Ok(ok__) => {
-                        relativeuri.write(core::mem::transmute(ok__));
+                        relativeuri.cast::<super::IUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4175,7 +4175,7 @@ impl IOpcUri_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IOpcUri_Impl::CombinePartUri(this, core::mem::transmute_copy(&relativeuri)) {
                     Ok(ok__) => {
-                        combineduri.write(core::mem::transmute(ok__));
+                        combineduri.cast::<IOpcPartUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

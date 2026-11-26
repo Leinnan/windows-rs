@@ -23,7 +23,6 @@ impl CppInterface {
     }
 
     pub fn get_methods(&self, config: &Config) -> Vec<MethodOrName<CppMethod>> {
-        let type_name = self.def.type_name();
         if self.def.methods().any(|method| {
             method
                 .find_attribute("NativeOverrideSlotAttribute")
@@ -42,7 +41,7 @@ impl CppInterface {
             })
             .map(|def| {
                 let method = CppMethod::new(def, config.reader);
-                if method_is_skipped(def, type_name, &method.signature, config) {
+                if !config.plan.includes_method(def, &[]) {
                     MethodOrName::Name(method.def)
                 } else {
                     MethodOrName::Method(method)
@@ -122,11 +121,9 @@ impl CppInterface {
 
     // `_Impl` emission is omitted when this interface or a base has skipped methods.
     pub fn has_skipped_methods(&self, config: &Config) -> bool {
-        let type_name = self.def.type_name();
-        self.def.methods().any(|def| {
-            let method = CppMethod::new(def, config.reader);
-            method_is_skipped(def, type_name, &method.signature, config)
-        })
+        self.def
+            .methods()
+            .any(|def| !config.plan.includes_method(def, &[]))
     }
 
     fn write_cfg(&self, config: &Config) -> (Cfg, TokenStream) {
@@ -196,9 +193,16 @@ impl CppInterface {
                 if let Some(guid) = self.def.guid_attribute() {
                     let guid = config.write_guid_u128(&guid);
 
-                    quote! {
-                        #cfg
-                        windows_core::imp::define_interface!(#name, #vtbl_name, #guid);
+                    if base_interfaces.contains(&Type::Object) {
+                        quote! {
+                            #cfg
+                            windows_core::imp::define_interface!(#name, #vtbl_name, #guid, inspectable);
+                        }
+                    } else {
+                        quote! {
+                            #cfg
+                            windows_core::imp::define_interface!(#name, #vtbl_name, #guid);
+                        }
                     }
                 } else {
                     quote! {
@@ -238,24 +242,20 @@ impl CppInterface {
             // Implementation-only interfaces need ABI slots and `_Impl`, not caller wrappers.
             let suppress_methods = config.bindgen.style.is_minimal()
                 && config.should_implement(self.def.type_name(), false)
-                && matches!(config.filter.type_role(self.type_name()), TypeRole::Shell);
+                && config.plan.selection.is_shell(self.type_name());
 
             let mut methods_tokens = quote! {};
 
             if !suppress_methods {
                 let method_names = &mut MethodNames::new();
-                let virtual_names = &mut MethodNames::new();
 
                 // These methods live in `impl #name`, so references to this
                 // interface are emitted as `Self` (clippy::use_self).
                 let self_config = config.with_self_ty(self.type_name(), &[]);
 
-                for method in methods.iter().filter_map(|method| match &method {
-                    MethodOrName::Method(method) => Some(method),
-                    _ => None,
-                }) {
+                for (method, vname) in named_methods(&methods) {
                     let cfg = method.write_cfg(config, &class_cfg, false);
-                    let method = method.write(&self_config, method_names, virtual_names);
+                    let method = method.write(&self_config, method_names, &vname);
 
                     methods_tokens.combine(quote! {
                         #cfg
@@ -288,26 +288,19 @@ impl CppInterface {
                 let impl_name: TokenStream = format!("{}_Impl", self.def.name()).parse().unwrap();
 
                 let cfg = if config.bindgen.layout.is_package() {
-                    fn combine(
-                        interface: &CppInterface,
-                        dependencies: &mut TypeMap,
-                        config: &Config,
-                    ) {
-                        for method in &interface.get_methods(config) {
+                    let mut dependencies = self.dependencies(config.reader);
+                    let bases = base_interfaces.iter().filter_map(|ty| match ty {
+                        Type::CppInterface(ty) => Some(ty),
+                        _ => None,
+                    });
+
+                    for interface in std::iter::once(self).chain(bases) {
+                        for method in interface.get_methods(config) {
                             if let MethodOrName::Method(method) = method {
                                 dependencies.combine(&method.dependencies);
                             }
                         }
                     }
-
-                    let mut dependencies = self.dependencies(config.reader);
-                    combine(self, &mut dependencies, config);
-
-                    base_interfaces.iter().for_each(|interface| {
-                        if let Type::CppInterface(ty) = interface {
-                            combine(ty, &mut dependencies, config);
-                        }
-                    });
 
                     Cfg::new(&dependencies, config).write(config, false)
                 } else {
@@ -363,7 +356,7 @@ impl CppInterface {
                 let field_base = base_interfaces.last().map(|ty|{
                 match ty {
                     Type::IUnknown => quote! { base__: windows_core::IUnknown_Vtbl::new::<Identity, OFFSET>(), },
-                    Type::Object => quote! { base__: windows_core::IInspectable_Vtbl::new::<Identity, #name, OFFSET>(), },
+                    Type::Object => quote! { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), },
                     Type::CppInterface(ty) => {
                         let ty = ty.write_vtbl_name(config);
                         if has_unknown_base {
@@ -456,7 +449,7 @@ impl CppInterface {
                         #vis fn new<'a, T: #impl_name>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
                             let this = windows_core::ScopedHeap { vtable: &#implvtbl_ident::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
                             let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-                            unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+                            unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
                         }
                     }
                 }

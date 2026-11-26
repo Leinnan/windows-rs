@@ -1,8 +1,23 @@
 use super::*;
 
-/// Material used behind a window's content.
+/// A native system backdrop material for a window or a [`SystemBackdropElement`].
+///
+/// Place a `SystemBackdropElement` before its foreground siblings in a panel. It is an effect
+/// surface, not a content container; WinUI owns its bounds, rounded corners, and connection to
+/// the backdrop. Material appearance and fallback follow Windows settings.
+///
+/// ```rust
+/// use windows_reactor::*;
+///
+/// let panel = Grid::new().children((
+///     SystemBackdropElement::new()
+///         .system_backdrop(SystemBackdrop::Acrylic)
+///         .corner_radius(8.0),
+///     TextBlock::new().text("Foreground content"),
+/// ));
+/// ```
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub enum WindowBackdrop {
+pub enum SystemBackdrop {
     #[default]
     None,
     Mica,
@@ -96,16 +111,19 @@ impl WindowConstraints {
     }
 }
 
-/// Window appearance, client sizing, and initial placement declared by a component.
+/// Window appearance, presentation, client sizing, and initial placement declared by a component.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct WindowVisuals {
-    pub(crate) backdrop: WindowBackdrop,
+    pub(crate) backdrop: SystemBackdrop,
     pub(crate) client_size: Option<(f64, f64)>,
     pub(crate) constraints: Option<WindowConstraints>,
     pub(crate) icon: Option<Rc<str>>,
     pub(crate) theme: WindowTheme,
     pub(crate) initial_position: Option<ScreenPoint>,
     pub(crate) initial_placement: Option<WindowPlacement>,
+    pub(crate) always_on_top: bool,
+    pub(crate) minimizable: Option<bool>,
+    pub(crate) maximizable: Option<bool>,
 }
 
 impl WindowVisuals {
@@ -113,8 +131,28 @@ impl WindowVisuals {
         Self::default()
     }
 
-    pub fn backdrop(mut self, backdrop: WindowBackdrop) -> Self {
+    pub fn backdrop(mut self, backdrop: SystemBackdrop) -> Self {
         self.backdrop = backdrop;
+        self
+    }
+
+    /// Keeps the window above non-topmost windows. Disabled by default.
+    pub fn always_on_top(mut self, value: bool) -> Self {
+        self.always_on_top = value;
+        self
+    }
+
+    /// Enables or disables window minimization. Enabled by default.
+    pub fn minimizable(mut self, value: bool) -> Self {
+        self.minimizable = Some(value);
+        self
+    }
+
+    /// Enables or disables native title-bar maximization. Enabled by default.
+    ///
+    /// Omitting this setting restores the default. This does not change window resizability.
+    pub fn maximizable(mut self, value: bool) -> Self {
+        self.maximizable = Some(value);
         self
     }
 

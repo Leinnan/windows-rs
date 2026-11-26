@@ -1,6 +1,136 @@
 use super::*;
 
 #[test]
+fn repeater_row_root_can_change_control_type() -> Result<()> {
+    for fixture in ["repeater_items", "repeater_virtual"] {
+        process::run(fixture, |ui| {
+            let retained = ui.element("row-1")?;
+            ui.invoke("row-0")?;
+            ui.name("row-0", "Row 0; value 0; clicks 1")?;
+            ui.invoke("toggle-editor")?;
+            ui.gone("row-0")?;
+            ui.value("row-editor", "")?;
+            ui.set_value("row-editor", "draft")?;
+            ui.invoke("rerender")?;
+            ui.value("row-editor", "draft")?;
+            ui.name("drops", "Clicked row 0 drops 1")?;
+            ui.invoke("toggle-editor")?;
+            ui.gone("row-editor")?;
+            ui.name("row-0", "Row 0; value 0; clicks 0")?;
+            ui.invoke("row-0")?;
+            ui.name("row-0", "Row 0; value 0; clicks 1")?;
+            assert!(unsafe {
+                ui.client
+                    .CompareElements(&retained, &ui.element("row-1")?)?
+                    .as_bool()
+            });
+            Ok(())
+        })?;
+    }
+    Ok(())
+}
+
+#[test]
+fn repeater_rows_stretch_to_the_viewport() -> Result<()> {
+    process::run("repeater_virtual", |ui| {
+        let viewport = ui.element("rows")?;
+        let row = ui.element("row-0")?;
+        ui.wait(
+            "stretched row fills the viewport",
+            || unsafe {
+                Ok((
+                    viewport.CurrentBoundingRectangle()?,
+                    row.CurrentBoundingRectangle()?,
+                ))
+            },
+            |(viewport, row)| {
+                let viewport_width = viewport.right - viewport.left;
+                let row_width = row.right - row.left;
+                viewport_width > 0
+                    && (row.left - viewport.left).abs() <= 2
+                    && row_width >= viewport_width * 9 / 10
+            },
+        )?;
+        Ok(())
+    })
+}
+
+#[test]
+fn repeater_creation_and_rendering_follow_visible_changes() -> Result<()> {
+    for fixture in ["repeater_items", "repeater_virtual"] {
+        process::run(fixture, |ui| check_row_work(ui, 128))?;
+    }
+    Ok(())
+}
+
+#[test]
+fn repeater_short_and_mixed_rows_keep_realization_bounded() -> Result<()> {
+    for fixture in ["repeater_short", "repeater_mixed"] {
+        process::run(fixture, |ui| check_row_work(ui, 1_000))?;
+    }
+    Ok(())
+}
+
+fn row_work(ui: &Automation, sample: usize) -> Result<[usize; 3]> {
+    let counter = ui.element("count")?;
+    ui.invoke("count")?;
+    let counts = ui.wait(
+        "row work snapshot",
+        || unsafe { Ok(String::from_utf16_lossy(&counter.CurrentName()?)) },
+        |name| name.starts_with(&format!("{sample}:")),
+    )?;
+    let counts = counts
+        .split(':')
+        .skip(1)
+        .map(str::parse)
+        .collect::<std::result::Result<Vec<usize>, _>>()?;
+    Ok(counts.try_into().unwrap())
+}
+
+fn check_row_work(ui: &Automation, bound: usize) -> Result<()> {
+    ui.name("row-0", "Row 0; value 0; clicks 0")?;
+    let baseline = row_work(ui, 1)?;
+    eprintln!("startup [created, rendered, dropped]: {baseline:?}");
+    assert!(baseline[0] > 0 && baseline[0] < bound, "{baseline:?}");
+    ui.invoke("rerender")?;
+    ui.name("revision", "Revision 1")?;
+    let unchanged = row_work(ui, 2)?;
+    eprintln!("unchanged: {unchanged:?}");
+    // WinUI may realize more viewport/cache rows between snapshots. Each new row renders once.
+    assert!(unchanged[0] < bound, "{unchanged:?}");
+    assert_eq!(unchanged[1] - baseline[1], unchanged[0] - baseline[0]);
+    ui.invoke("change")?;
+    ui.name("row-0", "Row 0; value 1; clicks 0")?;
+    let changed = row_work(ui, 3)?;
+    eprintln!("changed: {changed:?}");
+    assert!(changed[0] < bound, "{changed:?}");
+    assert_eq!(changed[1] - unchanged[1], changed[0] - unchanged[0] + 1);
+    Ok(())
+}
+
+#[test]
+fn repeater_short_and_mixed_rows_realize_during_selection() -> Result<()> {
+    for fixture in ["repeater_layout_short", "repeater_layout_mixed"] {
+        process::run(fixture, |ui| {
+            ui.invoke("load")?;
+            ui.name("row-0", "Row 0; value 0; clicks 0")?;
+            let counter = ui.element("count")?;
+            ui.invoke("count")?;
+            let name = ui.wait(
+                "created rows are counted",
+                || unsafe { Ok(String::from_utf16_lossy(&counter.CurrentName()?)) },
+                |name| name != "Created 0",
+            )?;
+            let created: usize = name.strip_prefix("Created ").unwrap().parse()?;
+            eprintln!("selection created: {created}");
+            assert!(created > 0 && created < 1_000, "{created} rows created");
+            Ok(())
+        })?;
+    }
+    Ok(())
+}
+
+#[test]
 fn repeater_updates_preserve_realized_component_state() -> Result<()> {
     process::run("repeater", |ui| {
         ui.name("row-0", "Row 0; value 0; clicks 0")?;

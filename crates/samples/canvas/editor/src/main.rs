@@ -4,6 +4,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use windows_canvas::*;
 use windows_reactor::*;
+use windows_text::TextFormat;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Kind {
@@ -152,7 +153,7 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Canvas editor");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
         let model = Rc::clone(&self.model);
         let surface = Border::new()
             .on_pointer_pressed(context.callback(Message::Pressed))
@@ -242,7 +243,7 @@ fn draw(ctx: &DrawContext<'_>, model: &RefCell<Model>) -> Result<()> {
         }
     }
 
-    let format = TextFormat::with_weight("Segoe UI", 16.0, CanvasFontWeight::BOLD)?;
+    let format = TextFormat::new("Segoe UI", 16.0).with_weight(windows_text::FontWeight::BOLD);
     let brush = ctx.create_solid_brush(ColorF::WHITE)?;
     let label = format!(
         "{} shape(s)  ·  tool: {}  ·  click to add, left-drag to move, right-click to delete",

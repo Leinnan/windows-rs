@@ -6,6 +6,8 @@ using namespace winrt;
 using namespace Collections;
 using namespace Windows::Foundation::Collections;
 
+#include "read_only.h"
+
 void test()
 {
     Widget widget;
@@ -32,4 +34,22 @@ void test()
     IMap<hstring, int32_t> index = widget.Index(single_threaded_vector(std::move(values)).GetView());
     check(index.Size() == 2);
     check(index.Lookup(L"two") == 1);
+
+    read_only_contract(widget);
+    read_only_marshaling_failure(widget);
+    vector_storage_contract([&](array_view<Inspectable const> values) {
+        return widget.ReadOnly(values);
+    });
+    vector_storage_contract([&](array_view<Inspectable const> values) {
+        return widget.MarshaledVector(values);
+    });
+    vector_storage_contract([&](array_view<Inspectable const> values) {
+        return widget.MarshaledObservableVector(values).as<Vector>();
+    });
+    map_resolution_failure([&](array_view<Inspectable const> values) {
+        return widget.MarshaledMap(values);
+    });
+    map_resolution_failure([&](array_view<Inspectable const> values) {
+        return widget.MarshaledObservableMap(values).as<IMap<uint32_t, Inspectable>>();
+    });
 }

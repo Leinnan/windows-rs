@@ -19,7 +19,7 @@ use std::time::Instant;
 use windows_clang::{Input, Target, projection};
 
 // Also supplies support headers for the WDK capture; independent of WinRT CONTRACTS_VERSION.
-const SDK_VERSION: &str = "10.0.28000.2705";
+const SDK_VERSION: &str = "10.0.28000.2957";
 const SUPPORT_PRELUDE: &str = "#include <intsafe.h>\n";
 const PRELUDE: &str = "#define SECURITY_WIN32
 #define WIN32_NO_STATUS
@@ -131,7 +131,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         headers.truncate(count);
     }
     helpers::ensure_libclang();
-    helpers::assert_libclang_version();
     let include = helpers::nuget_package("microsoft.windows.sdk.cpp", SDK_VERSION)
         .join("c")
         .join("Include")
@@ -272,14 +271,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         references: Some(&references),
     };
     let output = if partial {
-        let projection_started = Instant::now();
         let result = projection::project_partial_with_options(captured, "Windows.Win32", &options)?;
-        if std::env::var_os("WINDOWS_CLANG_PROFILE").is_some() {
-            eprintln!(
-                "clang-profile\tall-targets\tprojection\twall\t1\t{:.6}",
-                projection_started.elapsed().as_secs_f64(),
-            );
-        }
         std::fs::write(
             scratch.join("omissions.txt"),
             result.omissions.join("\n") + "\n",
@@ -1344,6 +1336,10 @@ mod tests {
                 ("MessageBoxW", "user32.dll"),
                 ("DWriteCreateFactory", "dwrite.dll"),
                 ("DecodeRemotePointer", "kernelbase.dll"),
+                (
+                    "GetRuntimeAttestationReport",
+                    "api-ms-win-core-sysinfo-l1-2-8.dll",
+                ),
                 (
                     "OpenTraceFromFile",
                     "api-ms-win-eventing-consumer-l1-1-2.dll",

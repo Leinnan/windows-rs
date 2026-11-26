@@ -63,19 +63,12 @@ impl Method {
                     }
                 }
             }
-            Type::Array(element_type) => {
-                // Pointer-ABI arrays need transmute; value arrays already match their ABI type.
-                let write_result = if element_type.has_pointer_abi() {
-                    quote! { result__.write(core::mem::transmute(ok_data__)); }
-                } else {
-                    quote! { result__.write(ok_data__); }
-                };
-
+            Type::Array(_) => {
                 if noexcept {
                     quote! {
                         let ok__ = #inner(#this #(#invoke_args,)*);
                         let (ok_data__, ok_data_len__) = ok__.into_abi();
-                        #write_result
+                        result__.write(ok_data__.cast());
                         result_size__.write(ok_data_len__);
                         windows_core::HRESULT(0)
                     }
@@ -84,7 +77,7 @@ impl Method {
                         match #inner(#this #(#invoke_args,)*) {
                             Ok(ok__) => {
                                 let (ok_data__, ok_data_len__) = ok__.into_abi();
-                                #write_result
+                                result__.write(ok_data__.cast());
                                 result_size__.write(ok_data_len__);
                                 windows_core::HRESULT(0)
                             }
@@ -98,14 +91,10 @@ impl Method {
                 }
             }
             _ => {
-                // Non-copyable return values need ABI transmute without double-drop.
                 let write_result = if self.signature.return_type.is_copyable(reader) {
                     quote! { result__.write(ok__); }
                 } else {
-                    quote! {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
-                    }
+                    quote! { core::ptr::write(result__.cast(), ok__); }
                 };
 
                 if noexcept {
@@ -173,7 +162,7 @@ impl Method {
                     {
                         quote! { core::mem::transmute_copy(&#name) }
                     } else {
-                        quote! { core::mem::transmute(&#name) }
+                        quote! { &*(&raw const #name).cast() }
                     }
                 } else if param.is_winrt_array() {
                     quote! { windows_core::imp::array_slice_mut(core::mem::transmute_copy(&#name), #abi_size_name) }
@@ -280,7 +269,11 @@ impl Method {
     pub fn write_abi(&self, config: &Config, named_params: bool) -> TokenStream {
         let args = self.signature.params.iter().map(|param| {
             let name = param.write_ident();
-            let abi = param.write_abi(config);
+            let abi = if param.is_input_only() && !param.is_winrt_array() && !param.is_const_ref() {
+                param.write_abi(config)
+            } else {
+                param.write_abi_pointee(config)
+            };
             let abi_size_name: TokenStream = format!("{name}_array_size").parse().unwrap();
 
             if param.is_input_only() {
@@ -323,7 +316,7 @@ impl Method {
         let return_arg = match &self.signature.return_type {
             Type::Void => quote! {},
             Type::Array(ty) => {
-                let ty = ty.write_abi(config);
+                let ty = ty.write_abi_pointee(config);
                 if named_params {
                     quote! { result_size__: *mut u32, result__: *mut *mut #ty }
                 } else {
@@ -331,7 +324,7 @@ impl Method {
                 }
             }
             ty => {
-                let ty = ty.write_abi(config);
+                let ty = ty.write_abi_pointee(config);
                 if named_params {
                     quote! { result__: *mut #ty }
                 } else {
@@ -357,7 +350,7 @@ impl Method {
         interface: Option<&Interface>,
         kind: InterfaceKind,
         method_names: &mut MethodNames,
-        virtual_names: &mut MethodNames,
+        vname: &TokenStream,
         emit_compose: bool,
     ) -> TokenStream {
         let params = if kind == InterfaceKind::Composable {
@@ -388,7 +381,7 @@ impl Method {
                     if param.is_copyable(config.reader) {
                         quote! { #name.len().try_into().unwrap(), #name.as_ptr() }
                     } else {
-                        quote! { #name.len().try_into().unwrap(), core::mem::transmute(#name.as_ptr()) }
+                        quote! { #name.len().try_into().unwrap(), #name.as_ptr().cast() }
                     }
                 } else if param.ireference_inner(config.reader).is_some() {
                     // Sugared `Option<T>` is materialized as `Option<IReference<T>>` in the
@@ -428,10 +421,9 @@ impl Method {
             Type::Void => quote! {},
             ty => {
                 if ty.is_winrt_array() {
-                    let ty = ty.write_name(config);
-                    quote! { windows_core::Array::<#ty>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _ }
+                    quote! { &mut result_size__, &mut result__ }
                 } else {
-                    quote! { &mut result__ }
+                    ty.write_result_arg(config.reader)
                 }
             }
         };
@@ -532,16 +524,34 @@ impl Method {
             TokenStream::new()
         };
 
-        // Prelude statements that materialize IReference<T> wrappers for sugared
-        // `Option<T>` parameters. Bound just outside the unsafe block so the
-        // wrapper is dropped *after* the vtable call returns.
+        // Release owned output values before native code overwrites them. Materialize
+        // IReference<T> input wrappers outside the unsafe block so they outlive the call.
         let prelude = {
             let lines: Vec<_> = params
                 .iter()
                 .enumerate()
                 .filter_map(|(position, param)| {
-                    param.ireference_inner(config.reader)?;
                     let name = param.write_ident();
+                    if param.is_metadata_output_only() {
+                        if param.is_winrt_array_ref() {
+                            return Some(quote! { #name.clear(); });
+                        } else if !param.is_copyable(config.reader) {
+                            let ty = param.write_default(config);
+                            // WinRT defaults are zero-initialized, including generic defaults
+                            // that do not have a Rust Default bound.
+                            let reset = if param.is_winrt_array() {
+                                quote! { #name.fill_with(|| unsafe { core::mem::zeroed() }); }
+                            } else {
+                                quote! { *#name = unsafe { core::mem::zeroed() }; }
+                            };
+                            return Some(quote! {
+                                if core::mem::needs_drop::<#ty>() {
+                                    #reset
+                                }
+                            });
+                        }
+                    }
+                    param.ireference_inner(config.reader)?;
                     let local: TokenStream = format!("{name}__").parse().unwrap();
                     let iref = param.ty.write_name(config);
                     if is_ireference_string(param) {
@@ -638,8 +648,6 @@ impl Method {
             quote! { -> #result Result<#return_type> }
         };
 
-        let vname = virtual_names.add(self.def);
-
         let receiver: TokenStream = if kind == InterfaceKind::Default {
             quote! { self }
         } else {
@@ -663,29 +671,46 @@ impl Method {
                     }
                 }
                 _ if self.signature.return_type.is_winrt_array() => {
+                    let ty = self.signature.return_type.write_name(config);
                     if noexcept {
                         quote! {
-                            let mut result__ = core::mem::MaybeUninit::zeroed();
+                            let mut result__ = core::ptr::null_mut();
+                            let mut result_size__ = 0;
                             let hresult__ = #vcall;
                             #assert_success
-                            result__.assume_init()
+                            windows_core::Array::<#ty>::from_raw_parts(result__.cast(), result_size__)
                         }
                     } else {
                         quote! {
-                            let mut result__ = core::mem::MaybeUninit::zeroed();
+                            let mut result__ = core::ptr::null_mut();
+                            let mut result_size__ = 0;
                             #vcall
-                                .map(|| result__.assume_init())
+                                .map(|| windows_core::Array::<#ty>::from_raw_parts(result__.cast(), result_size__))
                         }
                     }
                 }
                 _ => {
+                    let init = self.signature.return_type.write_result_init(config);
+                    let value = self.signature.return_type.write_result_value(config.reader);
                     if noexcept {
-                        if self.signature.return_type.is_copyable(config.reader) {
+                        if matches!(self.signature.return_type, Type::Generic(_)) {
                             quote! {
-                                let mut result__ = core::mem::zeroed();
+                                #init
                                 let hresult__ = #vcall;
                                 #assert_success
-                                result__
+                                windows_core::imp::Type::from_default_owned(#value).unwrap()
+                            }
+                        } else if self.signature.return_type.is_copyable(config.reader)
+                            || self
+                                .signature
+                                .return_type
+                                .needs_result_storage(config.reader)
+                        {
+                            quote! {
+                                #init
+                                let hresult__ = #vcall;
+                                #assert_success
+                                #value
                             }
                         } else if config
                             .bindgen
@@ -693,18 +718,25 @@ impl Method {
                             .minimal_string_return(&self.signature.return_type)
                         {
                             quote! {
-                                let mut result__ = core::mem::zeroed();
+                                #init
                                 let hresult__ = #vcall;
                                 #assert_success
-                                let hstring: windows_core::HSTRING = core::mem::transmute(result__);
+                                let hstring: windows_core::HSTRING = core::mem::transmute(#value);
                                 hstring.to_string_lossy()
                             }
                         } else {
+                            let abi = self.signature.return_type.write_abi(config);
+                            let name = self.signature.return_type.write_name(config);
+                            let name = if self.signature.return_type.is_interface() {
+                                quote! { Option<#name> }
+                            } else {
+                                name
+                            };
                             quote! {
-                                let mut result__ = core::mem::zeroed();
+                                #init
                                 let hresult__ = #vcall;
                                 #assert_success
-                                core::mem::transmute(result__)
+                                core::mem::transmute::<#abi, #name>(#value)
                             }
                         }
                     } else {
@@ -716,7 +748,7 @@ impl Method {
                             // Explicit type annotation pins `from_abi`'s generic.
                             let iref = self.signature.return_type.write_name(config);
                             quote! {
-                                let mut result__ = core::mem::zeroed();
+                                #init
                                 #vcall.#map.and_then(|r__: #iref| r__.Value())
                             }
                         } else if config
@@ -726,15 +758,15 @@ impl Method {
                         {
                             // In minimal mode, return String instead of HSTRING.
                             quote! {
-                                let mut result__ = core::mem::zeroed();
+                                #init
                                 #vcall.map(|| {
-                                    let hstring: windows_core::HSTRING = core::mem::transmute(result__);
+                                    let hstring: windows_core::HSTRING = core::mem::transmute(#value);
                                     hstring.to_string_lossy()
                                 })
                             }
                         } else {
                             quote! {
-                                let mut result__ = core::mem::zeroed();
+                                #init
                                 #vcall.#map
                             }
                         }
@@ -796,7 +828,7 @@ impl Method {
 
                     // Local minimal delegates accept void closures; other delegates need `Result`.
                     let delegate_is_local_minimal = config.bindgen.style.is_minimal()
-                        && config.references.contains(d.type_name()).is_none();
+                        && !config.plan.external.contains_key(&d.type_name());
 
                     // Replace the delegate slot with the local delegate's raw interface pointer.
                     let event_typed_args: Vec<TokenStream> = typed_args
@@ -855,18 +887,8 @@ impl Method {
                         })
                         .collect();
 
-                    let event_where_clause = {
-                        // Local minimal delegates inline `DelegateBox`; referenced delegates need
-                        // `Send`.
-                        if delegate_is_local_minimal {
-                            quote! {
-                                where #(#other_constraints)* F: Fn #fn_sig_no_return + 'static,
-                            }
-                        } else {
-                            quote! {
-                                where #(#other_constraints)* F: Fn #fn_sig_no_return + Send + 'static,
-                            }
-                        }
+                    let event_where_clause = quote! {
+                        where #(#other_constraints)* F: Fn #fn_sig_no_return + Send + Sync + 'static,
                     };
 
                     // Replace only the delegate parameter declaration with `handler: F`.
@@ -884,8 +906,7 @@ impl Method {
                         .collect();
 
                     let event_prelude = if delegate_is_local_minimal {
-                        // Inline `DelegateBox` so the wrapper's where clause controls the `Send`
-                        // bound.
+                        // Local minimal delegates can omit their public constructor.
                         let boxed_name: TokenStream =
                             format!("{}Box", trim_tick(d.def.name())).parse().unwrap();
                         let generic_names = d.generics.iter().map(|ty| ty.write_name(config));
@@ -1047,7 +1068,7 @@ impl Method {
                                 // Keep `derived__` alive until the factory returns; its owning
                                 // ref is replaced by the delegating ref in `result__`.
                                 let _ = &derived__;
-                                windows_core::imp::Type::from_abi(result__)
+                                windows_core::imp::from_abi(result__)
                             })
                         }
                     }

@@ -1,14 +1,19 @@
 #![windows_subsystem = "windows"]
 
+mod contexts;
+mod tasks;
+
+#[expect(nonstandard_style, clippy::upper_case_acronyms)]
+mod bindings;
+use bindings::*;
+
 use std::alloc::{GlobalAlloc, Layout, System};
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 use std::fmt::Write;
 use std::rc::Rc;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Duration, Instant};
-use windows_reactor::test::*;
 use windows_reactor::*;
-use windows_sys::Win32::{GetCurrentProcess, GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS};
 
 const APP_NAME: &str = "StressPerf.Reactor";
 const COLUMNS: usize = 70;
@@ -17,6 +22,7 @@ const TOTAL_ITEMS: usize = COLUMNS * ROWS;
 
 static ALLOCATIONS: AtomicU64 = AtomicU64::new(0);
 static ALLOCATED_BYTES: AtomicU64 = AtomicU64::new(0);
+static LIVE_BYTES: AtomicU64 = AtomicU64::new(0);
 
 struct CountingAllocator;
 
@@ -26,11 +32,13 @@ unsafe impl GlobalAlloc for CountingAllocator {
         if !pointer.is_null() {
             ALLOCATIONS.fetch_add(1, Ordering::Relaxed);
             ALLOCATED_BYTES.fetch_add(layout.size() as u64, Ordering::Relaxed);
+            LIVE_BYTES.fetch_add(layout.size() as u64, Ordering::Relaxed);
         }
         pointer
     }
 
     unsafe fn dealloc(&self, pointer: *mut u8, layout: Layout) {
+        LIVE_BYTES.fetch_sub(layout.size() as u64, Ordering::Relaxed);
         unsafe { System.dealloc(pointer, layout) };
     }
 
@@ -40,6 +48,13 @@ unsafe impl GlobalAlloc for CountingAllocator {
             ALLOCATIONS.fetch_add(1, Ordering::Relaxed);
             ALLOCATED_BYTES.fetch_add((size - layout.size()) as u64, Ordering::Relaxed);
         }
+        if !pointer.is_null() {
+            if size >= layout.size() {
+                LIVE_BYTES.fetch_add((size - layout.size()) as u64, Ordering::Relaxed);
+            } else {
+                LIVE_BYTES.fetch_sub((layout.size() - size) as u64, Ordering::Relaxed);
+            }
+        }
         pointer
     }
 }
@@ -48,7 +63,19 @@ unsafe impl GlobalAlloc for CountingAllocator {
 static GLOBAL: CountingAllocator = CountingAllocator;
 
 #[derive(Clone, Copy, PartialEq)]
+enum Workload {
+    Grid,
+    Tasks,
+    Contexts,
+}
+
+#[derive(Clone, Copy, PartialEq)]
 struct Options {
+    workload: Workload,
+    context_count: usize,
+    provider_depth: usize,
+    count: usize,
+    cycles: usize,
     duration: Duration,
     headless: bool,
     json: bool,
@@ -58,6 +85,11 @@ struct Options {
 impl Options {
     fn parse() -> Self {
         let mut options = Self {
+            workload: Workload::Grid,
+            context_count: 16,
+            provider_depth: 0,
+            count: 1_000,
+            cycles: 20,
             duration: Duration::from_secs(10),
             headless: false,
             json: false,
@@ -66,6 +98,20 @@ impl Options {
         let mut arguments = std::env::args().skip(1);
         while let Some(argument) = arguments.next() {
             match argument.as_str() {
+                "--workload" => {
+                    options.workload = match arguments.next().unwrap().as_str() {
+                        "grid" => Workload::Grid,
+                        "tasks" => Workload::Tasks,
+                        "contexts" => Workload::Contexts,
+                        value => panic!("unknown workload: {value}"),
+                    };
+                }
+                "--count" => options.count = arguments.next().unwrap().parse().unwrap(),
+                "--cycles" => options.cycles = arguments.next().unwrap().parse().unwrap(),
+                "--contexts" => options.context_count = arguments.next().unwrap().parse().unwrap(),
+                "--provider-depth" => {
+                    options.provider_depth = arguments.next().unwrap().parse().unwrap();
+                }
                 "--duration" => {
                     options.duration =
                         Duration::from_secs(arguments.next().unwrap().parse().unwrap());
@@ -81,6 +127,12 @@ impl Options {
             "percent must be between 0 and 100"
         );
         assert!(!options.duration.is_zero(), "duration must be positive");
+        assert!(options.count >= 2, "count must be at least two");
+        assert!(options.cycles > 0, "cycles must be positive");
+        assert!(
+            options.provider_depth <= options.context_count,
+            "provider depth exceeds context count"
+        );
         options
     }
 }
@@ -468,15 +520,20 @@ impl Metrics {
 
 struct Message;
 
+const TICK: Duration = Duration::from_millis(33);
+
 struct StockGrid {
     cells: Vec<View>,
     data: Vec<StockItem>,
+    finished: bool,
+    frames: ElementRef<SwapChainPanel>,
     metrics: Rc<RefCell<Metrics>>,
     options: Options,
-    _rendering: LiveRenderingSubscription,
+    _rendering: ElementObservation,
     revision: u64,
     source: StockDataSource,
-    _timer: LiveTickSubscription,
+    started: Instant,
+    _timer: ComponentTimer,
 }
 
 impl Component for StockGrid {
@@ -487,51 +544,48 @@ impl Component for StockGrid {
         let source = StockDataSource::new();
         let metrics = Rc::new(RefCell::new(Metrics::default()));
         metrics.borrow_mut().start();
-        let rendering = subscribe_live_rendering({
+        let frames = ElementRef::new();
+        let rendering = frames.observe_surface({
             let metrics = Rc::clone(&metrics);
-            move || metrics.borrow_mut().frame_rendered()
-        })
-        .unwrap();
-        let sender = context.sender();
-        let started = Instant::now();
-        let finished = Rc::new(Cell::new(false));
-        let timer = subscribe_live_interval(Duration::from_millis(33), {
-            let finished = Rc::clone(&finished);
-            let duration = options.duration;
-            let json = options.json;
-            let metrics = Rc::clone(&metrics);
-            let percent = options.percent;
-            move || {
-                if started.elapsed() >= duration {
-                    if finished.replace(true) {
-                        return;
-                    }
-                    let metrics = metrics.borrow();
-                    std::fs::write(report_path("report.txt"), metrics.report(percent)).unwrap();
-                    if json {
-                        std::fs::write(report_path("metrics.json"), metrics.json(percent)).unwrap();
-                    }
-                    schedule_live_test_exit(true).unwrap();
-                } else {
-                    _ = sender.send(Message);
+            move |event| {
+                if matches!(event, SwapChainPanelEvent::Rendering) {
+                    metrics.borrow_mut().frame_rendered();
                 }
             }
-        })
-        .unwrap();
+        });
+        let started = Instant::now();
         let data = source.snapshot();
         Self {
             cells: data.iter().enumerate().map(build_cell).collect(),
             data,
+            finished: false,
+            frames,
             metrics,
             options: *options,
             _rendering: rendering,
             revision: 0,
             source,
-            _timer: timer,
+            started,
+            _timer: context.set_timeout(TICK, Message),
         }
     }
 
-    fn update(&mut self, _message: Message, _context: &ComponentContext<Self>) {
+    fn update(&mut self, _message: Message, context: &ComponentContext<Self>) {
+        if self.finished {
+            return;
+        }
+        if self.started.elapsed() >= self.options.duration {
+            self.finished = true;
+            let metrics = self.metrics.borrow();
+            let percent = self.options.percent;
+            std::fs::write(report_path("report.txt"), metrics.report(percent)).unwrap();
+            if self.options.json {
+                std::fs::write(report_path("metrics.json"), metrics.json(percent)).unwrap();
+            }
+            _ = context.close_window();
+            return;
+        }
+        self._timer = context.set_timeout(TICK, Message);
         let allocation_start = ALLOCATED_BYTES.load(Ordering::Relaxed);
         let started = Instant::now();
         let changed = self.source.update(self.options.percent);
@@ -583,6 +637,10 @@ impl Component for StockGrid {
                         format!("Renders: {}", self.metrics.borrow().render_count),
                     )),
                 ScrollViewer::new().grid_row(1).content(grid),
+                SwapChainPanel::new()
+                    .element_ref(&self.frames)
+                    .width(0.0)
+                    .height(0.0),
             ))
             .into();
         self.metrics.borrow_mut().tree_built(
@@ -639,6 +697,11 @@ fn report_path(extension: &str) -> std::path::PathBuf {
 
 fn main() {
     let options = Options::parse();
+    match options.workload {
+        Workload::Tasks => return tasks::run(options),
+        Workload::Contexts => return contexts::run(options),
+        Workload::Grid => {}
+    }
     App::run_component_with_policy::<StockGrid>(
         options,
         WindowPolicy::new()

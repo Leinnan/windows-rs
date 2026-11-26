@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(ISoundLevelBrokerStatics, ISoundLevelBrokerStatics_Vtbl, 0x6a633961_dbed_464c_a09a_33412f5caa3f);
-impl windows_core::RuntimeType for ISoundLevelBrokerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Media.Core.Preview.ISoundLevelBrokerStatics");
-}
+windows_core::imp::define_winrt_interface!(ISoundLevelBrokerStatics, ISoundLevelBrokerStatics_Vtbl, 0x6a633961_dbed_464c_a09a_33412f5caa3f, b"Windows.Media.Core.Preview.ISoundLevelBrokerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISoundLevelBrokerStatics_Vtbl {
@@ -21,7 +17,7 @@ impl SoundLevelBroker {
     }
     pub fn SoundLevelChanged<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
             handler(a0, a1);

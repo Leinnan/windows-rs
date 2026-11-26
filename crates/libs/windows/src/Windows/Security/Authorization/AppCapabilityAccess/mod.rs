@@ -13,13 +13,13 @@ impl AppCapability {
     pub fn User(&self) -> windows_core::Result<super::super::super::System::User> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).User)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).User)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn RequestAccessAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<AppCapabilityAccessStatus>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RequestAccessAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RequestAccessAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CheckAccess(&self) -> windows_core::Result<AppCapabilityAccessStatus> {
@@ -30,7 +30,7 @@ impl AppCapability {
     }
     pub fn AccessChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<AppCapabilityAccessChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<AppCapabilityAccessChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, AppCapabilityAccessChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -59,7 +59,7 @@ impl AppCapability {
     {
         Self::IAppCapabilityStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestAccessForCapabilitiesAsync)(windows_core::Interface::as_raw(this), capabilitynames.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestAccessForCapabilitiesAsync)(windows_core::Interface::as_raw(this), capabilitynames.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "System")]
@@ -70,13 +70,13 @@ impl AppCapability {
     {
         Self::IAppCapabilityStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestAccessForCapabilitiesForUserAsync)(windows_core::Interface::as_raw(this), user.param().abi(), capabilitynames.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestAccessForCapabilitiesForUserAsync)(windows_core::Interface::as_raw(this), user.param().abi(), capabilitynames.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Create(capabilityname: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IAppCapabilityStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(capabilityname), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(capabilityname), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "System")]
@@ -86,7 +86,7 @@ impl AppCapability {
     {
         Self::IAppCapabilityStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateWithProcessIdForUser)(windows_core::Interface::as_raw(this), user.param().abi(), core::mem::transmute_copy(capabilityname), pid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateWithProcessIdForUser)(windows_core::Interface::as_raw(this), user.param().abi(), core::mem::transmute_copy(capabilityname), pid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IAppCapabilityStatics<R, F: FnOnce(&IAppCapabilityStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -100,6 +100,7 @@ impl windows_core::RuntimeType for AppCapability {
 unsafe impl windows_core::Interface for AppCapability {
     type Vtable = <IAppCapability as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppCapability as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppCapability {
     const NAME: &'static str = "Windows.Security.Authorization.AppCapabilityAccess.AppCapability";
@@ -116,6 +117,7 @@ impl windows_core::RuntimeType for AppCapabilityAccessChangedEventArgs {
 unsafe impl windows_core::Interface for AppCapabilityAccessChangedEventArgs {
     type Vtable = <IAppCapabilityAccessChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppCapabilityAccessChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppCapabilityAccessChangedEventArgs {
     const NAME: &'static str = "Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessChangedEventArgs";
@@ -139,11 +141,7 @@ impl windows_core::RuntimeType for AppCapabilityAccessStatus {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus");
 }
-windows_core::imp::define_interface!(IAppCapability, IAppCapability_Vtbl, 0x4c49d915_8a2a_4295_9437_2df7c396aff4);
-impl windows_core::RuntimeType for IAppCapability {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapability");
-}
+windows_core::imp::define_winrt_interface!(IAppCapability, IAppCapability_Vtbl, 0x4c49d915_8a2a_4295_9437_2df7c396aff4, b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapability");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppCapability_Vtbl {
@@ -158,11 +156,7 @@ pub struct IAppCapability_Vtbl {
     pub AccessChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveAccessChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppCapability2, IAppCapability2_Vtbl, 0x11c7ccb6_c74f_50a3_b960_88008767d939);
-impl windows_core::RuntimeType for IAppCapability2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapability2");
-}
+windows_core::imp::define_winrt_interface!(IAppCapability2, IAppCapability2_Vtbl, 0x11c7ccb6_c74f_50a3_b960_88008767d939, b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapability2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppCapability2_Vtbl {
@@ -170,21 +164,13 @@ pub struct IAppCapability2_Vtbl {
     pub DisplayMessage: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetDisplayMessage: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppCapabilityAccessChangedEventArgs, IAppCapabilityAccessChangedEventArgs_Vtbl, 0x0a578d15_bdd7_457e_8cca_6f53bd2e5944);
-impl windows_core::RuntimeType for IAppCapabilityAccessChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapabilityAccessChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IAppCapabilityAccessChangedEventArgs, IAppCapabilityAccessChangedEventArgs_Vtbl, 0x0a578d15_bdd7_457e_8cca_6f53bd2e5944, b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapabilityAccessChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppCapabilityAccessChangedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(IAppCapabilityStatics, IAppCapabilityStatics_Vtbl, 0x7c353e2a_46ee_44e5_af3d_6ad3fc49bd22);
-impl windows_core::RuntimeType for IAppCapabilityStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapabilityStatics");
-}
+windows_core::imp::define_winrt_interface!(IAppCapabilityStatics, IAppCapabilityStatics_Vtbl, 0x7c353e2a_46ee_44e5_af3d_6ad3fc49bd22, b"Windows.Security.Authorization.AppCapabilityAccess.IAppCapabilityStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppCapabilityStatics_Vtbl {

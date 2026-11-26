@@ -1,10 +1,9 @@
-windows_core::imp::define_interface!(IBase, IBase_Vtbl, 0x4c195fa3_ba8e_5836_826e_7fde3bb2dad9);
-impl windows_core::RuntimeType for IBase {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IBase");
-}
+windows_core::imp::define_winrt_interface!(
+    IBase,
+    IBase_Vtbl,
+    0x4c195fa3_ba8e_5836_826e_7fde3bb2dad9,
+    b"Test.IBase"
+);
 windows_core::imp::interface_hierarchy!(IBase, windows_core::IUnknown, windows_core::IInspectable);
 impl IBase {
     pub fn First(&self) -> windows_core::Result<i32> {
@@ -46,7 +45,7 @@ impl IBase_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IBase, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             First: First::<Identity, OFFSET>,
         }
     }
@@ -59,17 +58,12 @@ pub struct IBase_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub First: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IDerived,
     IDerived_Vtbl,
-    0xe55b3cfe_28ca_5296_a10d_b0d7cb570517
+    0xe55b3cfe_28ca_5296_a10d_b0d7cb570517,
+    b"Test.IDerived"
 );
-impl windows_core::RuntimeType for IDerived {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IDerived");
-}
 windows_core::imp::interface_hierarchy!(
     IDerived,
     windows_core::IUnknown,
@@ -127,7 +121,7 @@ impl IDerived_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IDerived, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Second: Second::<Identity, OFFSET>,
         }
     }

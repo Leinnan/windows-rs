@@ -89,7 +89,7 @@ impl ISpatialAudioClient {
     pub unsafe fn GetSupportedAudioObjectFormatEnumerator(&self) -> windows_core::Result<IAudioFormatEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSupportedAudioObjectFormatEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSupportedAudioObjectFormatEnumerator)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "mmeapi", feature = "shared"))]
@@ -110,7 +110,7 @@ impl ISpatialAudioClient {
         T: windows_core::Interface,
     {
         let mut result__ = core::ptr::null_mut();
-        unsafe { (windows_core::Interface::vtable(self).ActivateSpatialAudioStream)(windows_core::Interface::as_raw(self), activationparams, &T::IID, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+        unsafe { (windows_core::Interface::vtable(self).ActivateSpatialAudioStream)(windows_core::Interface::as_raw(self), activationparams, &T::IID, &mut result__).and_then(|| windows_core::imp::from_abi(result__)) }
     }
 }
 #[repr(C)]
@@ -178,7 +178,7 @@ impl ISpatialAudioClient_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioClient_Impl::GetSupportedAudioObjectFormatEnumerator(this) {
                     Ok(ok__) => {
-                        enumerator.write(core::mem::transmute(ok__));
+                        enumerator.cast::<IAudioFormatEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -441,7 +441,7 @@ impl ISpatialAudioObjectRenderStream {
     pub unsafe fn ActivateSpatialAudioObject(&self, r#type: AudioObjectType) -> windows_core::Result<ISpatialAudioObject> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioObject)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioObject)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -463,7 +463,7 @@ impl ISpatialAudioObjectRenderStream_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioObjectRenderStream_Impl::ActivateSpatialAudioObject(this, core::mem::transmute_copy(&r#type)) {
                     Ok(ok__) => {
-                        audioobject.write(core::mem::transmute(ok__));
+                        audioobject.cast::<ISpatialAudioObject>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -497,7 +497,7 @@ impl ISpatialAudioObjectRenderStreamBase {
         T: windows_core::Interface,
     {
         let mut result__ = core::ptr::null_mut();
-        unsafe { (windows_core::Interface::vtable(self).GetService)(windows_core::Interface::as_raw(self), &T::IID, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+        unsafe { (windows_core::Interface::vtable(self).GetService)(windows_core::Interface::as_raw(self), &T::IID, &mut result__).and_then(|| windows_core::imp::from_abi(result__)) }
     }
     pub unsafe fn Start(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Start)(windows_core::Interface::as_raw(self)) }
@@ -681,7 +681,6 @@ pub struct SpatialAudioClientActivationParams {
 }
 #[repr(C, packed(1))]
 #[cfg(all(feature = "audiosessiontypes", feature = "mmeapi", feature = "shared", feature = "winnt"))]
-#[derive(Default)]
 pub struct SpatialAudioObjectRenderStreamActivationParams {
     pub ObjectFormat: *const super::WAVEFORMATEX,
     pub StaticObjectTypeMask: AudioObjectType,
@@ -691,9 +690,14 @@ pub struct SpatialAudioObjectRenderStreamActivationParams {
     pub EventHandle: super::HANDLE,
     pub NotifyObject: core::mem::ManuallyDrop<Option<ISpatialAudioObjectRenderStreamNotify>>,
 }
+#[cfg(all(feature = "audiosessiontypes", feature = "mmeapi", feature = "shared", feature = "winnt"))]
+impl Default for SpatialAudioObjectRenderStreamActivationParams {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(1))]
 #[cfg(all(feature = "audiosessiontypes", feature = "mmeapi", feature = "shared", feature = "winnt"))]
-#[derive(Default)]
 pub struct SpatialAudioObjectRenderStreamActivationParams2 {
     pub ObjectFormat: *const super::WAVEFORMATEX,
     pub StaticObjectTypeMask: AudioObjectType,
@@ -703,4 +707,10 @@ pub struct SpatialAudioObjectRenderStreamActivationParams2 {
     pub EventHandle: super::HANDLE,
     pub NotifyObject: core::mem::ManuallyDrop<Option<ISpatialAudioObjectRenderStreamNotify>>,
     pub Options: SPATIAL_AUDIO_STREAM_OPTIONS,
+}
+#[cfg(all(feature = "audiosessiontypes", feature = "mmeapi", feature = "shared", feature = "winnt"))]
+impl Default for SpatialAudioObjectRenderStreamActivationParams2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }

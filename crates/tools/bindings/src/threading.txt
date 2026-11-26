@@ -1,5 +1,5 @@
 --out crates/libs/threading/src/bindings.rs
---flat --sys
+--sys
 
 
 --filter
@@ -11,6 +11,13 @@
     CreateThreadpoolCleanupGroup
     CloseThreadpoolCleanupGroup
     CloseThreadpoolCleanupGroupMembers
+    TP_CALLBACK_PRIORITY_HIGH
+    TP_CALLBACK_PRIORITY_LOW
     TP_CALLBACK_PRIORITY_NORMAL
+    CreateThreadpoolTimer
+    SetThreadpoolTimer
+    CloseThreadpoolTimer
     GetCurrentThreadId
+    QueryPerformanceCounter
+    QueryPerformanceFrequency
     Sleep

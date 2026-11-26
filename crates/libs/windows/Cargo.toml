@@ -23,8 +23,9 @@ windows-time = { workspace = true }
 test = false
 doctest = false
 
-[lints]
-workspace = true
+[lints.cargo]
+# Dependencies are used only by the enabled generated API features.
+unused_dependencies = "allow"
 
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
@@ -71,6 +72,7 @@ ApplicationModel_ExtendedExecution = ["ApplicationModel"]
 ApplicationModel_ExtendedExecution_Foreground = ["ApplicationModel_ExtendedExecution"]
 ApplicationModel_Holographic = ["ApplicationModel"]
 ApplicationModel_LockScreen = ["ApplicationModel"]
+ApplicationModel_Overlay = ["ApplicationModel"]
 ApplicationModel_PackageExtensions = ["ApplicationModel"]
 ApplicationModel_Payments = ["ApplicationModel"]
 ApplicationModel_Payments_Provider = ["ApplicationModel_Payments"]

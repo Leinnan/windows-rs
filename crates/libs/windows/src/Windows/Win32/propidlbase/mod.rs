@@ -1,156 +1,288 @@
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypes"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CABOOL {
     pub cElems: super::ULONG,
     pub pElems: *mut super::VARIANT_BOOL,
 }
+#[cfg(all(feature = "shared", feature = "wtypes"))]
+impl Default for CABOOL {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CABSTR {
     pub cElems: super::ULONG,
     pub pElems: *mut windows_core::BSTR,
 }
+#[cfg(feature = "shared")]
+impl Default for CABSTR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypes"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CABSTRBLOB {
     pub cElems: super::ULONG,
     pub pElems: *mut super::BSTRBLOB,
 }
+#[cfg(all(feature = "shared", feature = "wtypes"))]
+impl Default for CABSTRBLOB {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAC {
     pub cElems: super::ULONG,
     pub pElems: *mut super::CHAR,
 }
+#[cfg(feature = "shared")]
+impl Default for CAC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypes"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CACLIPDATA {
     pub cElems: super::ULONG,
     pub pElems: *mut super::CLIPDATA,
 }
+#[cfg(all(feature = "shared", feature = "wtypes"))]
+impl Default for CACLIPDATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "guiddef", feature = "shared"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CACLSID {
     pub cElems: super::ULONG,
     pub pElems: *mut super::CLSID,
 }
+#[cfg(all(feature = "guiddef", feature = "shared"))]
+impl Default for CACLSID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypes"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CACY {
     pub cElems: super::ULONG,
     pub pElems: *mut super::CY,
 }
+#[cfg(all(feature = "shared", feature = "wtypes"))]
+impl Default for CACY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypes"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CADATE {
     pub cElems: super::ULONG,
     pub pElems: *mut super::DATE,
 }
+#[cfg(all(feature = "shared", feature = "wtypes"))]
+impl Default for CADATE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CADBL {
     pub cElems: super::ULONG,
     pub pElems: *mut super::DOUBLE,
 }
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for CADBL {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "minwindef", feature = "shared"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAFILETIME {
     pub cElems: super::ULONG,
     pub pElems: *mut super::FILETIME,
 }
+#[cfg(all(feature = "minwindef", feature = "shared"))]
+impl Default for CAFILETIME {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "minwindef", feature = "shared"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAFLT {
     pub cElems: super::ULONG,
     pub pElems: *mut super::FLOAT,
 }
+#[cfg(all(feature = "minwindef", feature = "shared"))]
+impl Default for CAFLT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAH {
     pub cElems: super::ULONG,
     pub pElems: *mut super::LARGE_INTEGER,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for CAH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAI {
     pub cElems: super::ULONG,
     pub pElems: *mut super::SHORT,
 }
+#[cfg(feature = "shared")]
+impl Default for CAI {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAL {
     pub cElems: super::ULONG,
     pub pElems: *mut super::LONG,
 }
+#[cfg(feature = "shared")]
+impl Default for CAL {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CALPSTR {
     pub cElems: super::ULONG,
     pub pElems: *mut windows_core::PSTR,
 }
+#[cfg(feature = "shared")]
+impl Default for CALPSTR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CALPWSTR {
     pub cElems: super::ULONG,
     pub pElems: *mut windows_core::PWSTR,
 }
+#[cfg(feature = "shared")]
+impl Default for CALPWSTR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "guiddef", feature = "minwindef", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAPROPVARIANT {
     pub cElems: super::ULONG,
     pub pElems: *mut PROPVARIANT,
 }
+#[cfg(all(feature = "guiddef", feature = "minwindef", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for CAPROPVARIANT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CASCODE {
     pub cElems: super::ULONG,
     pub pElems: *mut super::SCODE,
 }
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for CASCODE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAUB {
     pub cElems: super::ULONG,
     pub pElems: *mut super::UCHAR,
 }
+#[cfg(feature = "shared")]
+impl Default for CAUB {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAUH {
     pub cElems: super::ULONG,
     pub pElems: *mut super::ULARGE_INTEGER,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for CAUH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAUI {
     pub cElems: super::ULONG,
     pub pElems: *mut super::USHORT,
 }
+#[cfg(feature = "shared")]
+impl Default for CAUI {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct CAUL {
     pub cElems: super::ULONG,
     pub pElems: *mut super::ULONG,
+}
+#[cfg(feature = "shared")]
+impl Default for CAUL {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 windows_core::imp::define_interface!(IEnumSTATPROPSETSTG, IEnumSTATPROPSETSTG_Vtbl, 0x0000013b_0000_0000_c000_000000000046);
 windows_core::imp::interface_hierarchy!(IEnumSTATPROPSETSTG, windows_core::IUnknown);
@@ -169,7 +301,7 @@ impl IEnumSTATPROPSETSTG {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -221,7 +353,7 @@ impl IEnumSTATPROPSETSTG_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumSTATPROPSETSTG_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumSTATPROPSETSTG>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -262,7 +394,7 @@ impl IEnumSTATPROPSTG {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -314,7 +446,7 @@ impl IEnumSTATPROPSTG_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumSTATPROPSTG_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumSTATPROPSTG>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -345,14 +477,14 @@ impl IPropertySetStorage {
     pub unsafe fn Create(&self, rfmtid: *const super::IID, pclsid: Option<*const super::CLSID>, grfflags: super::DWORD, grfmode: super::DWORD) -> windows_core::Result<IPropertyStorage> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), rfmtid, pclsid.unwrap_or(core::mem::zeroed()) as _, grfflags, grfmode, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), rfmtid, pclsid.unwrap_or(core::mem::zeroed()) as _, grfflags, grfmode, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
     pub unsafe fn Open(&self, rfmtid: *const super::IID, grfmode: super::DWORD) -> windows_core::Result<IPropertyStorage> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Open)(windows_core::Interface::as_raw(self), rfmtid, grfmode, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Open)(windows_core::Interface::as_raw(self), rfmtid, grfmode, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "guiddef")]
@@ -362,7 +494,7 @@ impl IPropertySetStorage {
     pub unsafe fn Enum(&self) -> windows_core::Result<IEnumSTATPROPSETSTG> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Enum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Enum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -399,7 +531,7 @@ impl IPropertySetStorage_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPropertySetStorage_Impl::Create(this, core::mem::transmute_copy(&rfmtid), core::mem::transmute_copy(&pclsid), core::mem::transmute_copy(&grfflags), core::mem::transmute_copy(&grfmode)) {
                     Ok(ok__) => {
-                        ppprstg.write(core::mem::transmute(ok__));
+                        ppprstg.cast::<IPropertyStorage>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -414,7 +546,7 @@ impl IPropertySetStorage_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPropertySetStorage_Impl::Open(this, core::mem::transmute_copy(&rfmtid), core::mem::transmute_copy(&grfmode)) {
                     Ok(ok__) => {
-                        ppprstg.write(core::mem::transmute(ok__));
+                        ppprstg.cast::<IPropertyStorage>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -435,7 +567,7 @@ impl IPropertySetStorage_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPropertySetStorage_Impl::Enum(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumSTATPROPSETSTG>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -496,7 +628,7 @@ impl IPropertyStorage {
     pub unsafe fn Enum(&self) -> windows_core::Result<IEnumSTATPROPSTG> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Enum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Enum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "shared"))]
@@ -630,7 +762,7 @@ impl IPropertyStorage_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPropertyStorage_Impl::Enum(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumSTATPROPSTG>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -754,11 +886,17 @@ pub struct STATPROPSETSTG {
 }
 #[repr(C, packed(8))]
 #[cfg(all(feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct STATPROPSTG {
     pub lpwstrName: super::LPOLESTR,
     pub propid: super::PROPID,
     pub vt: super::VARTYPE,
+}
+#[cfg(all(feature = "wtypes", feature = "wtypesbase"))]
+impl Default for STATPROPSTG {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C, packed(8))]
 #[cfg(feature = "objidlbase")]

@@ -18,23 +18,6 @@ pub enum MethodOrName<M> {
     Name(MethodDef),
 }
 
-// Demote methods when filtered out or when direct dependencies are unavailable.
-pub fn method_is_skipped(
-    def: MethodDef,
-    type_name: TypeName,
-    signature: &Signature,
-    config: &Config,
-) -> bool {
-    let mut direct = TypeMap::new();
-    for ty in signature.types() {
-        direct.insert(ty.clone());
-    }
-    for ty in def.associated_enums(config.reader) {
-        direct.insert(ty);
-    }
-    !direct.included(config) || !config.includes_method(type_name, def)
-}
-
 // The two pieces a vtable/`_Impl` writer needs from a projected method, regardless of
 // whether it is a WinRT `Method` or a Win32/COM `CppMethod`. Lets the shared emitters
 // below iterate `MethodOrName<M>` without caring which generator produced it.
@@ -59,6 +42,20 @@ impl MethodItem for CppMethod {
     fn dependencies(&self) -> &TypeMap {
         &self.dependencies
     }
+}
+
+// Caller names may omit filtered methods, but vtable names must count every slot.
+pub fn named_methods<M: MethodItem>(
+    methods: &[MethodOrName<M>],
+) -> impl Iterator<Item = (&M, TokenStream)> {
+    let mut names = MethodNames::new();
+    methods.iter().filter_map(move |method| match method {
+        MethodOrName::Method(method) => Some((method, names.add(method.def()))),
+        MethodOrName::Name(def) => {
+            names.add(*def);
+            None
+        }
+    })
 }
 
 // Shared `_Vtbl` method-field emitter; callers provide the ABI signature tail.
@@ -180,12 +177,11 @@ impl Interface {
     }
 
     pub fn get_methods(&self, config: &Config) -> Vec<MethodOrName<Method>> {
-        let type_name = self.def.type_name();
         self.def
             .methods()
             .map(|def| {
                 let method = Method::new(def, &self.generics, config.reader);
-                if method_is_skipped(def, type_name, &method.signature, config) {
+                if !config.plan.includes_method(def, &self.generics) {
                     MethodOrName::Name(method.def)
                 } else {
                     MethodOrName::Method(method)
@@ -196,11 +192,9 @@ impl Interface {
 
     // `_Impl` emission is omitted when this interface or a base has skipped methods.
     pub fn has_skipped_methods(&self, config: &Config) -> bool {
-        let type_name = self.def.type_name();
-        self.def.methods().any(|def| {
-            let method = Method::new(def, &self.generics, config.reader);
-            method_is_skipped(def, type_name, &method.signature, config)
-        })
+        self.def
+            .methods()
+            .any(|def| !config.plan.includes_method(def, &self.generics))
     }
 
     fn write_cfg(&self, config: &Config) -> (Cfg, TokenStream) {
@@ -217,7 +211,6 @@ impl Interface {
         let vtbl_name = self.write_vtbl_name(config);
         let is_exclusive = self.is_exclusive();
         let constraints = config.write_generic_constraints(&self.generics);
-        let phantoms = config.write_generic_phantoms(&self.generics);
         let named_phantoms = config.write_generic_named_phantoms(&self.generics);
         let (class_cfg, cfg) = self.write_cfg(config);
 
@@ -271,84 +264,22 @@ impl Interface {
 
             result
         } else {
-            let mut result = if self.generics.is_empty() {
-                let guid = config.write_guid_u128(&self.def.guid_attribute().unwrap());
-
-                // In minimal mode, NAME is only needed for interfaces that are
-                // being implemented (for GetRuntimeClassName). The trait provides
-                // an empty default, so omitting it is safe.
-                let name_const = if config.emit_runtime_name(type_name) {
-                    let type_name_bytes = Literal::byte_string(format!("{type_name}").as_bytes());
-                    quote! {
-                        const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(#type_name_bytes);
-                    }
+            let guid = config.write_guid_u128(&self.def.guid_attribute().unwrap());
+            let runtime_name = if config.emit_runtime_name(type_name) {
+                let arity = self.generics.len();
+                let name = if arity == 0 {
+                    format!("{type_name}")
                 } else {
-                    quote! {}
+                    format!("{type_name}`{arity}")
                 };
-
-                quote! {
-                    #cfg
-                    windows_core::imp::define_interface!(#name, #vtbl_name, #guid);
-                    #cfg
-                    impl windows_core::RuntimeType for #name {
-                        const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-                        #name_const
-                    }
-                }
+                let name = Literal::byte_string(name.as_bytes());
+                quote! { , #name }
             } else {
-                let guid = self.def.guid_attribute().unwrap();
-                let pinterface = Literal::byte_string(format!("pinterface({{{guid}}}").as_bytes());
-
-                let generics = self.generics.iter().map(|generic| {
-                    let name = generic.write_name(config);
-
-                    quote! {
-                        .push_slice(b";").push_other(#name::SIGNATURE)
-                    }
-                });
-
-                // In minimal mode, NAME on parameterized interfaces is only needed
-                // when the interface is implemented (for GetRuntimeClassName via
-                // RUNTIME_CLASS_NAME). Skip it otherwise.
-                let name_const = if config.emit_runtime_name(type_name) {
-                    let arity = self.generics.len();
-                    let name_prefix =
-                        Literal::byte_string(format!("{type_name}`{arity}<").as_bytes());
-                    let name_generics: Vec<_> = self
-                        .generics
-                        .iter()
-                        .enumerate()
-                        .map(|(i, generic)| {
-                            let gen_name = generic.write_name(config);
-                            if i == 0 {
-                                quote! { .push_other(#gen_name::NAME) }
-                            } else {
-                                quote! { .push_slice(b", ").push_other(#gen_name::NAME) }
-                            }
-                        })
-                        .collect();
-                    quote! {
-                        const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new().push_slice(#name_prefix)#(#name_generics)*.push_slice(b">");
-                    }
-                } else {
-                    quote! {}
-                };
-
-                quote! {
-                    #[repr(transparent)]
-                    #[derive(Clone, Debug, Eq, PartialEq)]
-                    pub struct #name(windows_core::IUnknown, #phantoms) where #constraints;
-                    impl<#constraints> windows_core::imp::CanInto<windows_core::IUnknown> for #name {}
-                    impl<#constraints> windows_core::imp::CanInto<windows_core::IInspectable> for #name {}
-                    unsafe impl<#constraints> windows_core::Interface for #name {
-                        type Vtable = #vtbl_name;
-                        const IID: windows_core::GUID = windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-                    }
-                    impl<#constraints> windows_core::RuntimeType for #name {
-                        const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new().push_slice(#pinterface)#(#generics)*.push_slice(b")");
-                        #name_const
-                    }
-                }
+                quote! {}
+            };
+            let mut result = quote! {
+                #cfg
+                windows_core::imp::define_winrt_interface!(#name, #vtbl_name, #guid #runtime_name);
             };
 
             if !is_exclusive && self.generics.is_empty() {
@@ -363,15 +294,12 @@ impl Interface {
                     let interfaces: Vec<_> = required_interfaces
                         .iter()
                         .filter(|ty| {
-                            !config.filter.uses_closure || {
-                                let name = Type::Interface((*ty).clone()).type_name();
-                                config.types.contains_key(&name)
-                                    && config.filter.includes_hierarchy(
-                                        type_name.namespace(),
-                                        type_name.name(),
-                                        ty,
-                                    )
-                            }
+                            config.provides(&Type::Interface((*ty).clone()))
+                                && config.plan.selection.includes_hierarchy(
+                                    type_name.namespace(),
+                                    type_name.name(),
+                                    ty,
+                                )
                         })
                         .map(|ty| ty.write_name(config))
                         .collect();
@@ -386,16 +314,12 @@ impl Interface {
                     let interfaces = required_interfaces
                         .iter()
                         .filter(|ty| {
-                            !config.filter.uses_closure
-                                || {
-                                    let name = Type::Interface((*ty).clone()).type_name();
-                                    config.types.contains_key(&name)
-                                        && config.filter.includes_hierarchy(
-                                            type_name.namespace(),
-                                            type_name.name(),
-                                            ty,
-                                        )
-                                }
+                            config.provides(&Type::Interface((*ty).clone()))
+                                && config.plan.selection.includes_hierarchy(
+                                    type_name.namespace(),
+                                    type_name.name(),
+                                    ty,
+                                )
                         })
                         .map(|ty| {
                     let ty = ty.write_name(config);
@@ -413,22 +337,18 @@ impl Interface {
             // Implementation-only interfaces need ABI slots and `_Impl`, not callable wrappers.
             let minimal = config.bindgen.style.is_minimal();
             let implementation_only = config.should_implement(type_name, false)
-                && matches!(config.filter.type_role(type_name), TypeRole::Shell);
+                && config.plan.selection.is_shell(type_name);
             let suppress_methods = minimal
                 && ((is_exclusive && self.is_factory(config.reader)) || implementation_only);
             let emit_methods = !suppress_methods && (!is_exclusive || minimal);
             if emit_methods {
                 let method_names = &mut MethodNames::new();
-                let virtual_names = &mut MethodNames::new();
                 let mut method_tokens = TokenStream::new();
                 let mut iterable = None;
                 // References to this interface can be emitted as `Self` inside this impl.
                 let self_config = config.with_self_ty(self.type_name(), &self.generics);
 
-                for method in methods.iter().filter_map(|method| match &method {
-                    MethodOrName::Method(method) => Some(method),
-                    _ => None,
-                }) {
+                for (method, vname) in named_methods(&methods) {
                     let cfg = method.write_cfg(config, &class_cfg, false);
 
                     let method = method.write(
@@ -436,7 +356,7 @@ impl Interface {
                         Some(self),
                         InterfaceKind::Default,
                         method_names,
-                        virtual_names,
+                        &vname,
                         true,
                     );
 
@@ -447,20 +367,16 @@ impl Interface {
                 }
 
                 for interface in &required_interfaces {
-                    if !config.bindgen.style.emit_inherited_forwarders() {
+                    if !config.bindgen.style.emit_inherited_forwarders()
+                        || !config.plan.selection.includes_hierarchy(
+                            type_name.namespace(),
+                            type_name.name(),
+                            interface,
+                        )
+                    {
                         continue;
                     }
-                    let virtual_names = &mut MethodNames::new();
-
-                    for method in
-                        interface
-                            .get_methods(config)
-                            .iter()
-                            .filter_map(|method| match &method {
-                                MethodOrName::Method(method) => Some(method),
-                                _ => None,
-                            })
-                    {
+                    for (method, vname) in named_methods(&interface.get_methods(config)) {
                         let cfg = method.write_cfg(config, &class_cfg, false);
                         let def = method.def;
 
@@ -469,7 +385,7 @@ impl Interface {
                             Some(interface),
                             interface.kind,
                             method_names,
-                            virtual_names,
+                            &vname,
                             true,
                         );
 
@@ -552,20 +468,15 @@ impl Interface {
                 let runtime_name = format!("{type_name}");
 
                 let cfg = if config.bindgen.layout.is_package() {
-                    fn combine(interface: &Interface, dependencies: &mut TypeMap, config: &Config) {
-                        for method in &interface.get_methods(config) {
+                    let mut dependencies = self.dependencies(config.reader);
+
+                    for interface in std::iter::once(self).chain(&required_interfaces) {
+                        for method in interface.get_methods(config) {
                             if let MethodOrName::Method(method) = method {
                                 dependencies.combine(&method.dependencies);
                             }
                         }
                     }
-
-                    let mut dependencies = self.dependencies(config.reader);
-                    combine(self, &mut dependencies, config);
-
-                    required_interfaces
-                        .iter()
-                        .for_each(|interface| combine(interface, &mut dependencies, config));
 
                     Cfg::new(&dependencies, config).write(config, false)
                 } else {
@@ -647,7 +558,7 @@ impl Interface {
                     #vis const fn new<Identity: #impl_name <#(#generics,)*>, const OFFSET: isize>() -> Self {
                         #(#impl_methods)*
                         Self {
-                            base__: windows_core::IInspectable_Vtbl::new::<Identity, #name, OFFSET>(),
+                            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
                             #(#field_methods)*
                             #named_phantoms
                         }
@@ -852,5 +763,29 @@ impl Dependencies for Interface {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn definition_identity_agrees_across_collections() {
+        let reader = default_reader(false);
+        let Type::Interface(mut left) = reader
+            .with_full_name("Windows.Foundation.Collections", "IIterable`1")
+            .next()
+            .unwrap()
+        else {
+            panic!();
+        };
+        left.generics = vec![Type::String];
+        let mut right = left.clone();
+        right.generics = vec![Type::U32];
+        assert_eq!(left.cmp(&right), Ordering::Equal);
+        assert_eq!(left, right);
+        assert_eq!(HashSet::from([left.clone(), right.clone()]).len(), 1);
+        assert_eq!(BTreeSet::from([left, right]).len(), 1);
     }
 }

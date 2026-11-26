@@ -1,12 +1,7 @@
 #![doc = include_str!("../readme.md")]
 
 #[cfg_attr(not(feature = "reactor"), allow(dead_code))]
-#[expect(
-    non_snake_case,
-    non_camel_case_types,
-    clippy::upper_case_acronyms,
-    clippy::missing_transmute_annotations
-)]
+#[expect(non_snake_case, non_camel_case_types, clippy::upper_case_acronyms)]
 mod bindings;
 mod controller;
 mod cookie;
@@ -17,6 +12,7 @@ mod event;
 mod handler;
 mod host;
 mod options;
+mod owner;
 mod profile;
 mod protocol;
 #[cfg(feature = "reactor")]

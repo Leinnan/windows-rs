@@ -3,7 +3,7 @@ pub unsafe fn Object() -> windows_core::Result<Tracked> {
     windows_core::link!("test.dll" "system" fn Object(value : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        Object(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        Object(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -12,7 +12,7 @@ pub unsafe fn ObjectVoid() -> windows_core::Result<Tracked> {
     unsafe {
         let mut result__ = core::mem::zeroed();
         ObjectVoid(&mut result__);
-        windows_core::imp::Type::from_abi(result__)
+        windows_core::imp::from_abi(result__)
     }
 }
 #[inline]
@@ -22,9 +22,7 @@ where
 {
     windows_core::link!("test.dll" "system" fn Query(iid : *const windows_core::GUID, value : *mut RawObject) -> windows_core::HRESULT);
     let mut result__ = core::ptr::null_mut();
-    unsafe {
-        Query(&T::IID, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
-    }
+    unsafe { Query(&T::IID, &mut result__).and_then(|| windows_core::imp::from_abi(result__)) }
 }
 pub type ObjectAlias = Tracked;
 pub type OutputSlot = *mut RawObject;
@@ -66,7 +64,7 @@ impl Results {
             (windows_core::Interface::vtable(self).ExplicitObject)(
                 windows_core::Interface::as_raw(self),
                 status,
-                core::mem::transmute(value),
+                value as _,
             )
         }
     }
@@ -77,7 +75,7 @@ impl Results {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Reserved(&self, reserved: Option<usize>) -> windows_core::Result<Tracked> {
@@ -88,7 +86,7 @@ impl Results {
                 reserved.unwrap_or(core::mem::zeroed()) as _,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Required(&self) -> windows_core::Result<Tracked> {
@@ -98,7 +96,7 @@ impl Results {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Number(&self) -> windows_core::Result<u32> {
@@ -118,7 +116,7 @@ impl Results {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             );
-            windows_core::imp::Type::from_abi(result__)
+            windows_core::imp::from_abi(result__)
         }
     }
     pub unsafe fn Query<T>(&self) -> windows_core::Result<T>
@@ -132,7 +130,7 @@ impl Results {
                 &T::IID,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn OptionalStorage<T>(&self, result__: *mut Option<T>) -> windows_core::Result<()>
@@ -182,7 +180,7 @@ impl Results {
                 input,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn TypedefSlot(&self) -> windows_core::Result<Tracked> {
@@ -192,7 +190,7 @@ impl Results {
                 windows_core::Interface::as_raw(self),
                 core::ptr::from_mut::<*mut core::ffi::c_void>(&mut result__).cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -331,7 +329,7 @@ impl Results_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Results_Impl::Object(this) {
                     Ok(ok__) => {
-                        value.write(core::mem::transmute(ok__));
+                        value.cast::<ObjectAlias>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -351,7 +349,7 @@ impl Results_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Results_Impl::Reserved(this, core::mem::transmute_copy(&reserved)) {
                     Ok(ok__) => {
-                        value.write(core::mem::transmute(ok__));
+                        value.cast::<Tracked>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -370,7 +368,7 @@ impl Results_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Results_Impl::Required(this) {
                     Ok(ok__) => {
-                        value.write(core::mem::transmute(ok__));
+                        value.cast::<Tracked>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -485,7 +483,7 @@ impl Results_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Results_Impl::ReadThenFail(this, core::mem::transmute_copy(&input)) {
                     Ok(ok__) => {
-                        value.write(core::mem::transmute(ok__));
+                        value.cast::<Tracked>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -504,7 +502,7 @@ impl Results_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Results_Impl::TypedefSlot(this) {
                     Ok(ok__) => {
-                        value.write(core::mem::transmute(ok__));
+                        value.cast::<Tracked>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

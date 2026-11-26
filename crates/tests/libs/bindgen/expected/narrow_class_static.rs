@@ -1,14 +1,9 @@
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IWidget,
     IWidget_Vtbl,
-    0x05cda87c_844a_5686_8429_f335c8ee6276
+    0x05cda87c_844a_5686_8429_f335c8ee6276,
+    b"Test.IWidget"
 );
-impl windows_core::RuntimeType for IWidget {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IWidget");
-}
 windows_core::imp::interface_hierarchy!(
     IWidget,
     windows_core::IUnknown,
@@ -54,7 +49,7 @@ impl IWidget_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IWidget, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Read: Read::<Identity, OFFSET>,
         }
     }
@@ -67,17 +62,12 @@ pub struct IWidget_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Read: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IWidgetFactory,
     IWidgetFactory_Vtbl,
-    0x700b4fee_2a77_5b8b_a9f0_0480f5faeb5d
+    0x700b4fee_2a77_5b8b_a9f0_0480f5faeb5d,
+    b"Test.IWidgetFactory"
 );
-impl windows_core::RuntimeType for IWidgetFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IWidgetFactory");
-}
 windows_core::imp::interface_hierarchy!(
     IWidgetFactory,
     windows_core::IUnknown,
@@ -92,7 +82,7 @@ impl IWidgetFactory {
                 value,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -117,7 +107,6 @@ windows_core::imp::interface_hierarchy!(
     windows_core::IInspectable,
     IWidget
 );
-windows_core::imp::required_hierarchy!(Widget, IWidgetFactory);
 impl Widget {
     pub fn Read(&self) -> windows_core::Result<i32> {
         unsafe {
@@ -137,7 +126,7 @@ impl Widget {
                 value,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IWidgetFactory<R, F: FnOnce(&IWidgetFactory) -> windows_core::Result<R>>(
@@ -155,6 +144,7 @@ impl windows_core::RuntimeType for Widget {
 unsafe impl windows_core::Interface for Widget {
     type Vtable = <IWidget as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWidget as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for Widget {
     const NAME: &'static str = "Test.Widget";

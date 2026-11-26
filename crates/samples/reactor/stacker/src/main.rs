@@ -4,13 +4,13 @@
 #![windows_subsystem = "windows"]
 
 use std::time::*;
-use windows_canvas::TextAlignment;
 use windows_canvas::*;
 use windows_composition::Visual as CompositionVisual;
 use windows_composition::*;
 use windows_core::*;
 use windows_reactor::View as ReactorView;
 use windows_reactor::*;
+use windows_text::{ParagraphAlignment, TextAlignment, TextFormat, WordWrapping};
 
 const COLS: usize = 8;
 const ROWS: usize = 16;
@@ -418,7 +418,11 @@ impl Scene {
         }
     }
 
-    fn commit(&mut self, settlement: &Settlement, sender: LocalSender<Message>) -> Result<()> {
+    fn commit(
+        &mut self,
+        settlement: &Settlement,
+        sender: ComponentCompletion<Message>,
+    ) -> Result<()> {
         for (x, y) in cells(settlement.piece.kind, settlement.piece.rot) {
             let row = (settlement.piece.row + y) as usize;
             let col = (settlement.piece.col + x) as usize;
@@ -474,7 +478,9 @@ impl Scene {
             let id = self.next_fade;
             self.next_fade = self.next_fade.wrapping_add(1);
             let completion = batch.on_completed(move || {
-                _ = sender.send(Message::FadeCompleted(id));
+                _ = sender
+                    .clone()
+                    .complete_with(move || Message::FadeCompleted(id));
             });
             batch.end();
             let completion = completion?;
@@ -536,7 +542,8 @@ impl Scene {
             let overlay = if label.is_some() {
                 Some((
                     session.create_solid_brush(ColorF::from_rgb8(235, 239, 242))?,
-                    TextFormat::new_bold("Segoe UI Variable", cell * 0.62)?
+                    TextFormat::new("Segoe UI Variable", cell * 0.62)
+                        .with_weight(windows_text::FontWeight::BOLD)
                         .with_alignment(TextAlignment::Center)
                         .with_paragraph_alignment(ParagraphAlignment::Center)
                         .with_word_wrapping(WordWrapping::NoWrap),
@@ -626,7 +633,7 @@ impl Stacker {
     fn settle(&mut self, context: &ComponentContext<Self>) {
         let settlement = self.game.settle();
         if let Some(scene) = &mut self.scene
-            && let Err(error) = scene.commit(&settlement, context.sender())
+            && let Err(error) = scene.commit(&settlement, context.completion())
         {
             eprintln!("failed to animate cleared Stacker rows: {error}");
             scene.rebuild(&self.game.board);
@@ -762,9 +769,9 @@ impl Component for Stacker {
         context.window_visuals(
             WindowVisuals::new()
                 .backdrop(if inactive {
-                    WindowBackdrop::None
+                    SystemBackdrop::None
                 } else {
-                    WindowBackdrop::Acrylic
+                    SystemBackdrop::Acrylic
                 })
                 .client_size(520.0, 760.0)
                 .constraints(WindowConstraints {

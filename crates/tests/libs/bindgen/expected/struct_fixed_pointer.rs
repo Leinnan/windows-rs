@@ -14,16 +14,20 @@ impl Default for Addresses {
     }
 }
 #[repr(C)]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DeepOnly {
     pub deep: *mut *const __windows_bindgen_Pointer64<*mut Point>,
+}
+impl Default for DeepOnly {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Point {
     pub value: i32,
 }
-#[doc = r" A fixed 64-bit address, not a native Rust pointer."]
 #[doc(hidden)]
 #[repr(C)]
 pub struct __windows_bindgen_Pointer64<P> {

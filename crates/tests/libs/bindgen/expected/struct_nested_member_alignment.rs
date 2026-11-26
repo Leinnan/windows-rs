@@ -35,9 +35,9 @@ pub struct Named_Child {
     #[doc(hidden)]
     pub __padding_1: [core::mem::MaybeUninit<u8>; {
         let offset = 0usize;
-        let alignment =::core::mem::align_of::<u8>();
-        let offset = ((offset + alignment - 1) & !(alignment - 1)) +::core::mem::size_of::<u8>();
-        let natural =::core::mem::align_of::<u32>();
+        let alignment = ::core::mem::align_of::<u8>();
+        let offset = ((offset + alignment - 1) & !(alignment - 1)) + ::core::mem::size_of::<u8>();
+        let natural = ::core::mem::align_of::<u32>();
         let required = if natural < 8 { 8 } else { natural };
         ((offset + required - 1) & !(required - 1)) - ((offset + natural - 1) & !(natural - 1))
     }],
@@ -66,9 +66,9 @@ pub struct Outer_0 {
     #[doc(hidden)]
     pub __padding_1: [core::mem::MaybeUninit<u8>; {
         let offset = 0usize;
-        let alignment =::core::mem::align_of::<u8>();
-        let offset = ((offset + alignment - 1) & !(alignment - 1)) +::core::mem::size_of::<u8>();
-        let natural =::core::mem::align_of::<u32>();
+        let alignment = ::core::mem::align_of::<u8>();
+        let offset = ((offset + alignment - 1) & !(alignment - 1)) + ::core::mem::size_of::<u8>();
+        let natural = ::core::mem::align_of::<u32>();
         let required = if natural < 8 { 8 } else { natural };
         ((offset + required - 1) & !(required - 1)) - ((offset + natural - 1) & !(natural - 1))
     }],
@@ -80,9 +80,14 @@ impl Default for Outer_0 {
     }
 }
 #[repr(C)]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct PointerOnly {
     pub value: *mut PointerOnly_Child,
+}
+impl Default for PointerOnly {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C, align(8))]
 #[derive(Clone, Copy)]
@@ -90,7 +95,7 @@ pub struct PointerOnly_Child {
     #[doc(hidden)]
     pub __padding_0: [core::mem::MaybeUninit<u8>; {
         let offset = 0usize;
-        let natural =::core::mem::align_of::<u32>();
+        let natural = ::core::mem::align_of::<u32>();
         let required = if natural < 8 { 8 } else { natural };
         ((offset + required - 1) & !(required - 1)) - ((offset + natural - 1) & !(natural - 1))
     }],
@@ -101,3 +106,5 @@ impl Default for PointerOnly_Child {
         unsafe { core::mem::zeroed() }
     }
 }
+pub const align_of: u32 = 99;
+pub const size_of: u32 = 99;

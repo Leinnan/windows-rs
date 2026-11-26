@@ -2,7 +2,7 @@
 #[inline]
 pub unsafe fn CreateOleAdviseHolder(ppoaholder: *mut Option<super::LPOLEADVISEHOLDER>) -> windows_core::HRESULT {
     windows_core::link!("ole32.dll" "system" fn CreateOleAdviseHolder(ppoaholder : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { CreateOleAdviseHolder(core::mem::transmute(ppoaholder)) }
+    unsafe { CreateOleAdviseHolder(ppoaholder as _) }
 }
 #[cfg(all(feature = "minwindef", feature = "objidl", feature = "oleidl", feature = "shared"))]
 #[inline]
@@ -295,14 +295,14 @@ pub unsafe fn OleGetClipboard() -> windows_core::Result<super::LPDATAOBJECT> {
     windows_core::link!("ole32.dll" "system" fn OleGetClipboard(ppdataobj : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        OleGetClipboard(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        OleGetClipboard(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(feature = "objidl")]
 #[inline]
 pub unsafe fn OleGetClipboardWithEnterpriseInfo(dataobject: *mut Option<super::IDataObject>, dataenterpriseid: *mut windows_core::PWSTR, sourcedescription: *mut windows_core::PWSTR, targetdescription: *mut windows_core::PWSTR, datadescription: *mut windows_core::PWSTR) -> windows_core::HRESULT {
     windows_core::link!("ole32.dll" "system" fn OleGetClipboardWithEnterpriseInfo(dataobject : *mut *mut core::ffi::c_void, dataenterpriseid : *mut windows_core::PWSTR, sourcedescription : *mut windows_core::PWSTR, targetdescription : *mut windows_core::PWSTR, datadescription : *mut windows_core::PWSTR) -> windows_core::HRESULT);
-    unsafe { OleGetClipboardWithEnterpriseInfo(core::mem::transmute(dataobject), dataenterpriseid as _, sourcedescription as _, targetdescription as _, datadescription as _) }
+    unsafe { OleGetClipboardWithEnterpriseInfo(dataobject as _, dataenterpriseid as _, sourcedescription as _, targetdescription as _, datadescription as _) }
 }
 #[cfg(all(feature = "guiddef", feature = "minwindef", feature = "wtypesbase"))]
 #[inline]
@@ -407,7 +407,7 @@ pub unsafe fn OleRegEnumFormatEtc(clsid: *const super::IID, dwdirection: super::
     windows_core::link!("ole32.dll" "system" fn OleRegEnumFormatEtc(clsid : *const super::IID, dwdirection : super::DWORD, ppenum : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        OleRegEnumFormatEtc(clsid, dwdirection, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        OleRegEnumFormatEtc(clsid, dwdirection, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "guiddef", feature = "oleidl"))]
@@ -416,7 +416,7 @@ pub unsafe fn OleRegEnumVerbs(clsid: *const super::IID) -> windows_core::Result<
     windows_core::link!("ole32.dll" "system" fn OleRegEnumVerbs(clsid : *const super::IID, ppenum : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        OleRegEnumVerbs(clsid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        OleRegEnumVerbs(clsid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "guiddef", feature = "shared"))]
@@ -576,9 +576,15 @@ pub const OLEIVERB_SHOW: i32 = -1;
 pub const OLEIVERB_UIACTIVATE: i32 = -4;
 #[repr(C, packed(8))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct OLESTREAM {
     pub lpstbl: LPOLESTREAMVTBL,
+}
+#[cfg(feature = "shared")]
+impl Default for OLESTREAM {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[cfg(all(feature = "guiddef", feature = "shared", feature = "winnt", feature = "wtypesbase"))]
 pub type OLESTREAMQUERYCONVERTOLELINKCALLBACK = Option<unsafe extern "system" fn(pclsid: super::LPCLSID, szclass: super::LPOLESTR, sztopicname: super::LPOLESTR, szitemname: super::LPOLESTR, szuncname: super::LPOLESTR, linkupdatingoption: super::ULONG, pvcontext: super::PVOID) -> windows_core::HRESULT>;

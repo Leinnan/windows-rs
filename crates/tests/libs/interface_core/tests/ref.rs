@@ -5,6 +5,14 @@ pub const S_FALSE: HRESULT = HRESULT(1);
 pub const E_INVALIDARG: HRESULT = HRESULT(0x80070057_u32 as _);
 pub const E_POINTER: HRESULT = HRESULT(0x80004003_u32 as _);
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(transparent)]
+struct CopyValue(u32);
+
+impl imp::TypeKind for CopyValue {
+    type TypeKind = imp::CopyType;
+}
+
 #[interface("09428a59-5b40-4e4c-9175-e7a78514316d")]
 unsafe trait ITest: IUnknown {
     // TODO: compile error if param type is not Ref/OutRef and is not Copy
@@ -14,6 +22,7 @@ unsafe trait ITest: IUnknown {
     unsafe fn interface(&self, input: Ref<ITest>, output: OutRef<ITest>) -> HRESULT;
     unsafe fn required_input(&self, input: Ref<ITest>, output: OutRef<ITest>) -> HRESULT;
     unsafe fn optional_output(&self, input: Ref<ITest>, output: OutRef<ITest>) -> HRESULT;
+    unsafe fn copy(&self, input: CopyValue, output: OutRef<CopyValue>, write: bool) -> HRESULT;
 
     unsafe fn result_usize(&self, input: usize, output: OutRef<usize>) -> Result<()>;
     unsafe fn result_hstring(&self, input: Ref<HSTRING>, output: OutRef<HSTRING>) -> Result<()>;
@@ -47,6 +56,14 @@ impl ITest_Impl for Test_Impl {
             S_FALSE
         } else {
             unsafe { self.interface(input, output) }
+        }
+    }
+
+    unsafe fn copy(&self, input: CopyValue, output: OutRef<CopyValue>, write: bool) -> HRESULT {
+        if write {
+            output.write(input).into()
+        } else {
+            S_FALSE
         }
     }
 
@@ -86,6 +103,8 @@ fn test() {
         // `output` will be dropped before receiving value, avoiding a leak.
         assert_eq!(test.hstring(h!("hello"), &mut output), S_OK);
         assert_eq!(&output, h!("hello"));
+        assert_eq!(test.hstring(h!("replacement"), Some(&mut output)), S_OK);
+        assert_eq!(&output, h!("replacement"));
 
         let mut output = None;
         assert_eq!(test.interface(&test, &mut output), S_OK);
@@ -96,8 +115,26 @@ fn test() {
         assert_eq!(output.as_ref(), Some(&test));
 
         assert_eq!(test.optional_output(&test, None), S_FALSE);
+        assert_eq!(test.optional_output(None, Some(&mut output)), S_OK);
+        assert!(output.is_none());
         assert_eq!(test.optional_output(&test, &mut output), S_OK);
         assert_eq!(output, Some(test));
+    }
+}
+
+#[test]
+fn copy_output_without_default() {
+    unsafe {
+        let test: ITest = Test.into();
+        let mut output = CopyValue(7);
+
+        assert_eq!(test.copy(CopyValue(123), &mut output, true), S_OK);
+        assert_eq!(output, CopyValue(123));
+        assert_eq!(test.copy(CopyValue(0), Some(&mut output), false), S_FALSE);
+        assert_eq!(output, CopyValue(123));
+        assert_eq!(test.copy(CopyValue(456), Some(&mut output), true), S_OK);
+        assert_eq!(output, CopyValue(456));
+        assert_eq!(test.copy(CopyValue(0), None, true), E_POINTER);
     }
 }
 

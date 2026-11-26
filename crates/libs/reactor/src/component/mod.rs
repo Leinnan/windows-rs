@@ -21,7 +21,7 @@ use expand::*;
 use scope::*;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct ComponentId {
+pub(crate) struct ComponentId {
     index: u32,
     generation: u32,
 }
@@ -75,9 +75,9 @@ trait ErasedFactory {
         id: ComponentId,
         queues: ComponentQueues,
         reference: ElementRef,
-        services: Arc<dyn ComponentServices>,
-        ui_services: Rc<dyn ComponentUiServices>,
-        contexts: &HashMap<ContextId, ContextValue>,
+        services: Arc<ComponentServices>,
+        ui_services: Rc<WindowServices>,
+        contexts: &ContextEnvironment,
     ) -> (Box<dyn ErasedComponent>, ComponentRender);
     fn input(&self) -> &dyn Any;
 }
@@ -96,28 +96,23 @@ impl<C: Component> ErasedFactory for TypedFactory<C> {
         id: ComponentId,
         queues: ComponentQueues,
         reference: ElementRef,
-        services: Arc<dyn ComponentServices>,
-        ui_services: Rc<dyn ComponentUiServices>,
-        contexts: &HashMap<ContextId, ContextValue>,
+        services: Arc<ComponentServices>,
+        ui_services: Rc<WindowServices>,
+        contexts: &ContextEnvironment,
     ) -> (Box<dyn ErasedComponent>, ComponentRender) {
-        let sender = ComponentSender {
-            component: id,
-            queue: queues.shared,
-            marker: PhantomData,
-        };
         let local_sender = LocalSender {
             component: id,
             queue: queues.local,
-            wake: Arc::clone(&sender.queue),
+            wake: queues.shared,
             marker: PhantomData,
         };
-        let tasks = Arc::new(Mutex::new(Vec::new()));
+        let tasks = Rc::new(RefCell::new(Vec::new()));
         let context: ComponentContext<C> = ComponentContext {
+            input: &self.input,
             reference: reference.clone(),
             local_sender: local_sender.clone(),
-            sender: sender.clone(),
             services: Arc::clone(&services),
-            tasks: Arc::clone(&tasks),
+            tasks: Rc::clone(&tasks),
             ui_services: Rc::clone(&ui_services),
         };
         let component = C::create(&self.input, &context);
@@ -126,7 +121,6 @@ impl<C: Component> ErasedFactory for TypedFactory<C> {
             input: self.input.clone(),
             view: None,
             local_sender,
-            sender,
             services,
             tasks,
             ui_services,
@@ -166,42 +160,22 @@ impl From<ComponentNode> for View {
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
-pub struct ComponentDrain {
+pub(crate) struct ComponentDrain {
     pub dispatched: usize,
     pub dropped: usize,
     pub mutations: usize,
 }
 
 /// Coordinates component scopes with retained runtime updates.
-///
-/// The adapter is exposed read-only. Native protocol methods cannot be called through the host.
-///
-/// ```compile_fail
-/// use windows_reactor::{Adapter, ComponentHost};
-///
-/// fn pop<A: Adapter>(host: &ComponentHost<A>) {
-///     host.adapter().pop_native_event();
-/// }
-/// ```
-///
-/// ```compile_fail
-/// use windows_reactor::{Adapter, ComponentHost};
-///
-/// fn apply<A: Adapter>(host: &mut ComponentHost<A>) {
-///     let _ = host.adapter_mut().apply(&[]);
-/// }
-/// ```
-pub struct ComponentHost<A: Adapter> {
-    context_consumers: HashMap<ContextId, HashSet<ComponentId>>,
-    contexts: HashMap<ContextId, ContextValue>,
+pub(crate) struct ComponentHost {
     keys: HashMap<Key, ComponentId>,
     order: Vec<ComponentId>,
     queue: SharedQueue,
     local_queue: LocalQueue,
-    continuation_waker: Option<Rc<dyn Fn()>>,
-    runtime: Runtime<A>,
-    services: Arc<dyn ComponentServices>,
-    ui_services: Rc<dyn ComponentUiServices>,
+    continuation: Option<UiCallback>,
+    runtime: Runtime,
+    services: Arc<ComponentServices>,
+    ui_services: Rc<WindowServices>,
     window_color_scheme: WindowObserverLifetime<ColorScheme>,
     window_size: WindowObserverLifetime<WindowSize>,
     window_placement: WindowObserverLifetime<WindowPlacement>,
@@ -221,10 +195,10 @@ pub struct ComponentHost<A: Adapter> {
 /// Plans batches with `step` and applies each one without holding `state`, so a native callback
 /// raised during the application, such as a forced layout realizing virtualized rows, can borrow
 /// the host to plan and apply its own batches. Stops when `step` plans nothing or the host is gone.
-pub(crate) fn drive_host<S, A: Adapter + Clone>(
+pub(crate) fn drive_host<S>(
     state: &RefCell<S>,
-    host: impl Fn(&mut S) -> Option<&mut ComponentHost<A>>,
-    mut step: impl FnMut(&mut ComponentHost<A>) -> Option<NativeBatch>,
+    host: impl Fn(&mut S) -> Option<&mut ComponentHost>,
+    mut step: impl FnMut(&mut ComponentHost) -> Option<NativeBatch>,
 ) {
     loop {
         let (batch, mut adapter) = {
@@ -253,13 +227,13 @@ pub(crate) struct DrainState {
     limit: usize,
 }
 
-impl<A: Adapter> Drop for ComponentHost<A> {
+impl Drop for ComponentHost {
     fn drop(&mut self) {
         self.shutdown();
     }
 }
 
-impl<A: Adapter> ComponentHost<A> {
+impl ComponentHost {
     pub(crate) fn update_root(&mut self, node: ComponentNode) {
         let key = node.key.as_ref().unwrap();
         let id = *self.keys.get(key).unwrap();
@@ -298,21 +272,19 @@ impl<A: Adapter> ComponentHost<A> {
     }
 
     pub(crate) fn mount_with_all_services(
-        adapter: A,
-        services: Arc<dyn ComponentServices>,
-        ui_services: Rc<dyn ComponentUiServices>,
+        adapter: SharedWinUiAdapter,
+        services: Arc<ComponentServices>,
+        ui_services: Rc<WindowServices>,
         components: impl IntoIterator<Item = ComponentNode>,
     ) -> Self {
         let queue = Arc::new(Mutex::new(MessageQueue::default()));
         let local_queue = Rc::new(RefCell::new(VecDeque::new()));
         let mut host = Self {
-            context_consumers: HashMap::new(),
-            contexts: HashMap::new(),
             keys: HashMap::new(),
             order: Vec::new(),
             queue,
             local_queue,
-            continuation_waker: None,
+            continuation: None,
             runtime: Runtime::new(adapter),
             services,
             ui_services,
@@ -329,35 +301,18 @@ impl<A: Adapter> ComponentHost<A> {
         let mut declarations = Vec::new();
         let mut keys = HashSet::new();
         let mut expansion = ExpansionState::default();
+        let contexts = ContextEnvironment::default();
         for node in components {
             let key = node
                 .key
                 .clone()
                 .expect("component roots require explicit keys");
             assert!(keys.insert(key.clone()), "duplicate key {key:?}");
-            let contexts = host.contexts.clone();
-            let (id, render) = host.create_scope(None, node, contexts.clone(), HashSet::new());
+            let (id, render) = host.create_scope(None, node, Rc::clone(&contexts));
             host.order.push(id);
             host.keys.insert(key, id);
-            let view = expansion.push_render(
-                id,
-                render,
-                OwnedContextEnvironment {
-                    contexts: contexts.clone(),
-                    provided: HashSet::new(),
-                },
-            );
-            let provided = HashSet::new();
-            let view = host.expand_view(
-                id,
-                view,
-                &ContextEnvironment {
-                    contexts: &contexts,
-                    provided: &provided,
-                },
-                0,
-                &mut expansion,
-            );
+            let view = expansion.push_render(id, render, Rc::clone(&contexts));
+            let view = host.expand_view(id, view, &contexts, 0, &mut expansion);
             declarations.push(keyed(host.scope(id).unwrap().key.clone(), view));
         }
         let root: View = Grid::new().keyed_children(declarations).into();
@@ -365,45 +320,40 @@ impl<A: Adapter> ComponentHost<A> {
         host.runtime.update(root.clone());
         host.refresh_roots(&root);
         for pending in expansion.pending {
-            let environment = *pending.environment;
             host.scope_mut(pending.id).unwrap().window = pending.window;
-            host.scope_mut(pending.id).unwrap().contexts = environment.contexts;
-            host.scope_mut(pending.id).unwrap().provided_contexts = environment.provided;
+            host.scope_mut(pending.id).unwrap().contexts = pending.environment;
+            host.scope_mut(pending.id).unwrap().dependencies = pending.dependencies;
             pending
                 .effects
                 .commit(&mut host.scope_mut(pending.id).unwrap().effects);
-            host.replace_dependencies(pending.id, pending.dependencies);
         }
         host.publish_committed_window(publication);
         host
     }
 
-    pub fn runtime(&self) -> &Runtime<A> {
+    pub fn runtime(&self) -> &Runtime {
         &self.runtime
     }
 
-    pub(crate) fn runtime_mut_internal(&mut self) -> &mut Runtime<A> {
-        &mut self.runtime
-    }
-
-    pub fn set_waker(&mut self, waker: impl Fn() + Send + Sync + 'static) {
+    /// Routes every source of drain work (messages, native events, imperative requests, and
+    /// continuations past the drain budget) to the window's drain callback.
+    pub(crate) fn set_drain(&mut self, drain: &UiCallback) {
+        self.runtime.adapter().set_event_drain(drain.clone());
+        self.runtime.set_imperative_drain(drain.clone());
+        self.continuation = Some(drain.clone());
         let mut queue = self.queue.lock().unwrap();
         if queue.closed {
             return;
         }
-        let waker = Arc::new(waker);
-        queue.waker = Some(waker.clone());
+        let wake = drain.clone();
+        queue.waker = Some(Arc::new(move || wake.wake()));
         let wake = (!queue.messages.is_empty() || !self.local_queue.borrow().is_empty())
             && !queue.wake_pending;
         queue.wake_pending |= wake;
         drop(queue);
         if wake {
-            waker();
+            drain.wake();
         }
-    }
-
-    pub(crate) fn set_continuation_waker(&mut self, waker: impl Fn() + 'static) {
-        self.continuation_waker = Some(Rc::new(waker));
     }
 
     pub(crate) fn begin_drain(&mut self, limit: usize) -> DrainState {
@@ -420,8 +370,8 @@ impl<A: Adapter> ComponentHost<A> {
     pub(crate) fn drain_step(&mut self, state: &mut DrainState) -> Option<NativeBatch> {
         loop {
             if state.active_event.is_none() && state.processed >= state.limit {
-                if let Some(waker) = self.continuation_waker.clone() {
-                    waker();
+                if let Some(drain) = &self.continuation {
+                    drain.wake();
                 }
                 return None;
             }
@@ -441,15 +391,11 @@ impl<A: Adapter> ComponentHost<A> {
                             .map(|message| (message.component, None, message.value))
                     } else {
                         queue.messages.pop_front().map(|message| {
-                            let value: Box<dyn Any> = match message.value {
-                                MessageValue::Send(value) => value,
-                                MessageValue::Local(factory) => factory(),
+                            let value = match message.value {
+                                MessageValue::Send(value) => LocalMessageValue::Message(value),
+                                MessageValue::Local(factory) => LocalMessageValue::Factory(factory),
                             };
-                            (
-                                message.component,
-                                message.control,
-                                LocalMessageValue::Message(value),
-                            )
+                            (message.component, message.control, value)
                         })
                     }
                 })
@@ -471,12 +417,15 @@ impl<A: Adapter> ComponentHost<A> {
                     state.report.dropped += 1;
                     continue;
                 }
-                let contexts = self.scope(component).unwrap().contexts.clone();
+                let contexts = Rc::clone(&self.scope(component).unwrap().contexts);
                 let scope = self.scope_mut(component).unwrap();
                 let reference = scope.reference.clone();
                 let render = match value {
                     LocalMessageValue::Message(value) => {
                         Some(scope.component.dispatch(value, reference, &contexts))
+                    }
+                    LocalMessageValue::Factory(factory) => {
+                        Some(scope.component.dispatch(factory(), reference, &contexts))
                     }
                     LocalMessageValue::Input(node) => {
                         scope
@@ -570,11 +519,17 @@ impl<A: Adapter> ComponentHost<A> {
     }
 
     fn shutdown(&mut self) {
+        let (messages, waker) = {
+            let mut queue = self.queue.lock().unwrap_or_else(|error| error.into_inner());
+            queue.closed = true;
+            queue.wake_pending = false;
+            (std::mem::take(&mut queue.messages), queue.waker.take())
+        };
+        let local_messages = std::mem::take(&mut *self.local_queue.borrow_mut());
+
         self.window_color_scheme = WindowObserverLifetime::default();
         self.window_size = WindowObserverLifetime::default();
         self.window_placement = WindowObserverLifetime::default();
-        self.context_consumers.clear();
-        self.contexts.clear();
         self.keys.clear();
         self.order.clear();
         self.virtual_rows.clear();
@@ -584,19 +539,12 @@ impl<A: Adapter> ComponentHost<A> {
             effects.discard();
         }
         self.free_scopes.clear();
-        self.local_queue.borrow_mut().clear();
-
-        let controls = {
-            let mut queue = self.queue.lock().unwrap_or_else(|error| error.into_inner());
-            queue.closed = true;
-            queue.wake_pending = false;
-            queue.waker = None;
-            queue
-                .messages
-                .drain(..)
-                .filter_map(|message| message.control)
-                .collect::<Vec<_>>()
-        };
+        drop(local_messages);
+        drop(waker);
+        let controls = messages
+            .into_iter()
+            .filter_map(|message| message.control)
+            .collect::<Vec<_>>();
         let mut scopes = Vec::new();
         for (index, slot) in self.scopes.iter_mut().enumerate().rev() {
             let Some(mut scope) = slot.scope.take() else {
@@ -616,11 +564,7 @@ impl<A: Adapter> ComponentHost<A> {
         }
         for mut scope in scopes {
             scope.component.cancel_tasks();
-            for effect in scope.effects.iter_mut().rev() {
-                if let Some(cleanup) = effect.cleanup.take() {
-                    cleanup();
-                }
-            }
+            cleanup_effects(&mut scope.effects);
             drop(scope);
         }
     }
@@ -639,13 +583,3 @@ impl<A: Adapter> ComponentHost<A> {
         }
     }
 }
-
-#[cfg(test)]
-#[path = "../tests/component/mod.rs"]
-mod tests;
-
-#[cfg(any(test, feature = "test"))]
-#[path = "../test_support/component.rs"]
-mod test_support;
-#[cfg(test)]
-pub use test_support::*;

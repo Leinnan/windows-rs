@@ -94,12 +94,15 @@ pub fn load_factory<C: crate::RuntimeName, I: Interface>() -> crate::Result<I> {
 
     // Reg-free activation should only be attempted if the class is not registered.
     // It should not be attempted if the class is registered but fails to activate.
-    if code == REGDB_E_CLASSNOTREG
-        && let Some(i) = search_path(C::NAME, |library| unsafe {
+    if code == REGDB_E_CLASSNOTREG {
+        if let Some(i) = search_path(C::NAME, |library| unsafe {
             get_activation_factory(library, &name)
-        })
-    {
-        return i.cast();
+        }) {
+            if I::IID == IGenericFactory::IID {
+                return Ok(unsafe { I::from_raw(i.into_raw()) });
+            }
+            return i.cast();
+        }
     }
 
     Err(crate::Error::from_hresult(code))
@@ -138,7 +141,7 @@ unsafe fn get_activation_factory(
             delay_load::<DllGetActivationFactory>(library, crate::s!("DllGetActivationFactory"))
                 .ok_or_else(crate::Error::from_thread)?;
         let mut abi = null_mut();
-        function(transmute_copy(name), &mut abi).and_then(|| Type::from_abi(abi))
+        function(transmute_copy(name), &mut abi).and_then(|| from_abi(abi))
     }
 }
 

@@ -1,15 +1,15 @@
 [package]
 name = "windows-strings"
-version = "0.100.0"
+version = "0.100.1"
 edition = "2024"
-rust-version = "1.95"
+rust-version = "1.85"
 license = "MIT OR Apache-2.0"
 description = "Windows string types"
 repository = "https://github.com/microsoft/windows-rs"
 categories = ["os::windows-apis"]
 readme = "readme.md"
 
-[dependencies]
+[target.'cfg(windows)'.dependencies]
 windows-link = { workspace = true }
 
 [features]

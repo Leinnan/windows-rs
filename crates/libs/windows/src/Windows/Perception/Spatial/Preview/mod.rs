@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(ISpatialGraphInteropFrameOfReferencePreview, ISpatialGraphInteropFrameOfReferencePreview_Vtbl, 0xa8271b23_735f_5729_a98e_e64ed189abc5);
-impl windows_core::RuntimeType for ISpatialGraphInteropFrameOfReferencePreview {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Perception.Spatial.Preview.ISpatialGraphInteropFrameOfReferencePreview");
-}
+windows_core::imp::define_winrt_interface!(ISpatialGraphInteropFrameOfReferencePreview, ISpatialGraphInteropFrameOfReferencePreview_Vtbl, 0xa8271b23_735f_5729_a98e_e64ed189abc5, b"Windows.Perception.Spatial.Preview.ISpatialGraphInteropFrameOfReferencePreview");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpatialGraphInteropFrameOfReferencePreview_Vtbl {
@@ -11,11 +7,7 @@ pub struct ISpatialGraphInteropFrameOfReferencePreview_Vtbl {
     pub NodeId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::GUID) -> windows_core::HRESULT,
     pub CoordinateSystemToNodeTransform: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_numerics::Matrix4x4) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpatialGraphInteropPreviewStatics, ISpatialGraphInteropPreviewStatics_Vtbl, 0xc042644c_20d8_4ed0_aef7_6805b8e53f55);
-impl windows_core::RuntimeType for ISpatialGraphInteropPreviewStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Perception.Spatial.Preview.ISpatialGraphInteropPreviewStatics");
-}
+windows_core::imp::define_winrt_interface!(ISpatialGraphInteropPreviewStatics, ISpatialGraphInteropPreviewStatics_Vtbl, 0xc042644c_20d8_4ed0_aef7_6805b8e53f55, b"Windows.Perception.Spatial.Preview.ISpatialGraphInteropPreviewStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpatialGraphInteropPreviewStatics_Vtbl {
@@ -28,11 +20,7 @@ pub struct ISpatialGraphInteropPreviewStatics_Vtbl {
     CreateCoordinateSystemForNodeWithPositionAndOrientation: usize,
     pub CreateLocatorForNode: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpatialGraphInteropPreviewStatics2, ISpatialGraphInteropPreviewStatics2_Vtbl, 0x2490b15f_6cbd_4b1e_b765_31e462a32df2);
-impl windows_core::RuntimeType for ISpatialGraphInteropPreviewStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Perception.Spatial.Preview.ISpatialGraphInteropPreviewStatics2");
-}
+windows_core::imp::define_winrt_interface!(ISpatialGraphInteropPreviewStatics2, ISpatialGraphInteropPreviewStatics2_Vtbl, 0x2490b15f_6cbd_4b1e_b765_31e462a32df2, b"Windows.Perception.Spatial.Preview.ISpatialGraphInteropPreviewStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpatialGraphInteropPreviewStatics2_Vtbl {
@@ -52,7 +40,7 @@ impl SpatialGraphInteropFrameOfReferencePreview {
     pub fn CoordinateSystem(&self) -> windows_core::Result<super::SpatialCoordinateSystem> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CoordinateSystem)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CoordinateSystem)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn NodeId(&self) -> windows_core::Result<windows_core::GUID> {
@@ -74,6 +62,7 @@ impl windows_core::RuntimeType for SpatialGraphInteropFrameOfReferencePreview {
 unsafe impl windows_core::Interface for SpatialGraphInteropFrameOfReferencePreview {
     type Vtable = <ISpatialGraphInteropFrameOfReferencePreview as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISpatialGraphInteropFrameOfReferencePreview as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SpatialGraphInteropFrameOfReferencePreview {
     const NAME: &'static str = "Windows.Perception.Spatial.Preview.SpatialGraphInteropFrameOfReferencePreview";
@@ -85,26 +74,26 @@ impl SpatialGraphInteropPreview {
     pub fn CreateCoordinateSystemForNode(nodeid: windows_core::GUID) -> windows_core::Result<super::SpatialCoordinateSystem> {
         Self::ISpatialGraphInteropPreviewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCoordinateSystemForNode)(windows_core::Interface::as_raw(this), nodeid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCoordinateSystemForNode)(windows_core::Interface::as_raw(this), nodeid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateCoordinateSystemForNodeWithPosition(nodeid: windows_core::GUID, relativeposition: windows_numerics::Vector3) -> windows_core::Result<super::SpatialCoordinateSystem> {
         Self::ISpatialGraphInteropPreviewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCoordinateSystemForNodeWithPosition)(windows_core::Interface::as_raw(this), nodeid, relativeposition, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCoordinateSystemForNodeWithPosition)(windows_core::Interface::as_raw(this), nodeid, relativeposition, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Foundation_Numerics")]
     pub fn CreateCoordinateSystemForNodeWithPositionAndOrientation(nodeid: windows_core::GUID, relativeposition: windows_numerics::Vector3, relativeorientation: super::super::super::Foundation::Numerics::Quaternion) -> windows_core::Result<super::SpatialCoordinateSystem> {
         Self::ISpatialGraphInteropPreviewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCoordinateSystemForNodeWithPositionAndOrientation)(windows_core::Interface::as_raw(this), nodeid, relativeposition, relativeorientation, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCoordinateSystemForNodeWithPositionAndOrientation)(windows_core::Interface::as_raw(this), nodeid, relativeposition, relativeorientation, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateLocatorForNode(nodeid: windows_core::GUID) -> windows_core::Result<super::SpatialLocator> {
         Self::ISpatialGraphInteropPreviewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateLocatorForNode)(windows_core::Interface::as_raw(this), nodeid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateLocatorForNode)(windows_core::Interface::as_raw(this), nodeid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryCreateFrameOfReference<P0>(coordinatesystem: P0) -> windows_core::Result<SpatialGraphInteropFrameOfReferencePreview>
@@ -113,7 +102,7 @@ impl SpatialGraphInteropPreview {
     {
         Self::ISpatialGraphInteropPreviewStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryCreateFrameOfReference)(windows_core::Interface::as_raw(this), coordinatesystem.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryCreateFrameOfReference)(windows_core::Interface::as_raw(this), coordinatesystem.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryCreateFrameOfReferenceWithPosition<P0>(coordinatesystem: P0, relativeposition: windows_numerics::Vector3) -> windows_core::Result<SpatialGraphInteropFrameOfReferencePreview>
@@ -122,7 +111,7 @@ impl SpatialGraphInteropPreview {
     {
         Self::ISpatialGraphInteropPreviewStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryCreateFrameOfReferenceWithPosition)(windows_core::Interface::as_raw(this), coordinatesystem.param().abi(), relativeposition, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryCreateFrameOfReferenceWithPosition)(windows_core::Interface::as_raw(this), coordinatesystem.param().abi(), relativeposition, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Foundation_Numerics")]
@@ -132,7 +121,7 @@ impl SpatialGraphInteropPreview {
     {
         Self::ISpatialGraphInteropPreviewStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryCreateFrameOfReferenceWithPositionAndOrientation)(windows_core::Interface::as_raw(this), coordinatesystem.param().abi(), relativeposition, relativeorientation, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryCreateFrameOfReferenceWithPositionAndOrientation)(windows_core::Interface::as_raw(this), coordinatesystem.param().abi(), relativeposition, relativeorientation, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ISpatialGraphInteropPreviewStatics<R, F: FnOnce(&ISpatialGraphInteropPreviewStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {

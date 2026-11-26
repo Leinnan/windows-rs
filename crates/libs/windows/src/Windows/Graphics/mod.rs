@@ -39,11 +39,7 @@ impl windows_core::RuntimeType for DisplayId {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"struct(Windows.Graphics.DisplayId;u8)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.DisplayId");
 }
-windows_core::imp::define_interface!(IGeometrySource2D, IGeometrySource2D_Vtbl, 0xcaff7902_670c_4181_a624_da977203b845);
-impl windows_core::RuntimeType for IGeometrySource2D {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.IGeometrySource2D");
-}
+windows_core::imp::define_winrt_interface!(IGeometrySource2D, IGeometrySource2D_Vtbl, 0xcaff7902_670c_4181_a624_da977203b845, b"Windows.Graphics.IGeometrySource2D");
 windows_core::imp::interface_hierarchy!(IGeometrySource2D, windows_core::IUnknown, windows_core::IInspectable);
 impl windows_core::RuntimeName for IGeometrySource2D {
     const NAME: &'static str = "Windows.Graphics.IGeometrySource2D";
@@ -51,7 +47,7 @@ impl windows_core::RuntimeName for IGeometrySource2D {
 pub trait IGeometrySource2D_Impl: windows_core::IUnknownImpl {}
 impl IGeometrySource2D_Vtbl {
     pub const fn new<Identity: IGeometrySource2D_Impl, const OFFSET: isize>() -> Self {
-        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, IGeometrySource2D, OFFSET>() }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>() }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<IGeometrySource2D as windows_core::Interface>::IID

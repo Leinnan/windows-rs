@@ -1,12 +1,8 @@
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     Callable,
     Callable_Vtbl,
     0xc6166a85_543a_5b5a_9324_0fd34a07698b
 );
-impl windows_core::RuntimeType for Callable {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     Callable,
     windows_core::IUnknown,
@@ -49,7 +45,7 @@ impl Constructed {
                 &mut None::<windows_core::IInspectable> as *mut _ as _,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IConstructedFactory<R, F: FnOnce(&IConstructedFactory) -> windows_core::Result<R>>(
@@ -67,6 +63,7 @@ impl windows_core::RuntimeType for Constructed {
 unsafe impl windows_core::Interface for Constructed {
     type Vtable = <IConstructed as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IConstructed as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl core::ops::Deref for Constructed {
     type Target = IConstructed;
@@ -77,15 +74,11 @@ impl core::ops::Deref for Constructed {
 impl windows_core::RuntimeName for Constructed {
     const NAME: &'static str = "Test.Constructed";
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IConstructed,
     IConstructed_Vtbl,
     0xe372f62b_40ef_530c_a87a_efcdd0ceab3b
 );
-impl windows_core::RuntimeType for IConstructed {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     IConstructed,
     windows_core::IUnknown,
@@ -95,15 +88,11 @@ windows_core::imp::interface_hierarchy!(
 pub struct IConstructed_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IConstructedFactory,
     IConstructedFactory_Vtbl,
     0x212e4b12_3d77_5712_8556_c828917a66a0
 );
-impl windows_core::RuntimeType for IConstructedFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     IConstructedFactory,
     windows_core::IUnknown,
@@ -118,6 +107,9 @@ impl IConstructedFactory {
     where
         P0: windows_core::Param<windows_core::IInspectable>,
     {
+        if core::mem::needs_drop::<Option<windows_core::IInspectable>>() {
+            *inner = unsafe { core::mem::zeroed() };
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).CreateInstance)(
@@ -126,7 +118,7 @@ impl IConstructedFactory {
                 inner as *mut _ as _,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -140,15 +132,11 @@ pub struct IConstructedFactory_Vtbl {
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IMemberOnly,
     IMemberOnly_Vtbl,
     0x1b61d9b4_47b8_5fea_9b61_d77788fcb639
 );
-impl windows_core::RuntimeType for IMemberOnly {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     IMemberOnly,
     windows_core::IUnknown,
@@ -181,17 +169,12 @@ pub struct IMemberOnly_Vtbl {
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     pub SetValue: unsafe extern "system" fn(*mut core::ffi::c_void, i32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     Implemented,
     Implemented_Vtbl,
-    0x6df5563f_dd6b_5b44_bf76_ca328373a0a3
+    0x6df5563f_dd6b_5b44_bf76_ca328373a0a3,
+    b"Test.Implemented"
 );
-impl windows_core::RuntimeType for Implemented {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.Implemented");
-}
 windows_core::imp::interface_hierarchy!(
     Implemented,
     windows_core::IUnknown,
@@ -225,7 +208,7 @@ impl Implemented_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, Implemented, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Invoke: Invoke::<Identity, OFFSET>,
         }
     }
@@ -255,6 +238,7 @@ impl windows_core::RuntimeType for MemberOnly {
 unsafe impl windows_core::Interface for MemberOnly {
     type Vtable = <IMemberOnly as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IMemberOnly as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl core::ops::Deref for MemberOnly {
     type Target = IMemberOnly;

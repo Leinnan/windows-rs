@@ -1,11 +1,11 @@
 #![doc = include_str!("../readme.md")]
 
 mod arches;
+mod binding_plan;
 mod cli;
 mod config;
 mod derive;
 mod derive_writer;
-mod filter;
 mod format;
 mod guid;
 mod implements;
@@ -14,6 +14,7 @@ mod package_writer;
 mod param;
 mod paths;
 mod references;
+mod selection;
 mod signature;
 mod tables;
 mod tokens;
@@ -25,17 +26,18 @@ mod value;
 mod winmd;
 
 use arches::*;
+use binding_plan::*;
 pub use cli::bindgen;
 use config::*;
 use derive::*;
 use derive_writer::*;
-use filter::*;
 use guid::*;
 use implements::*;
 use io::*;
 use package_writer::*;
 use param::*;
 use references::*;
+use selection::*;
 use signature::*;
 use std::cmp::Ordering;
 use std::collections::*;
@@ -54,16 +56,6 @@ mod method_names;
 mod type_closure;
 use method_names::*;
 use type_closure::*;
-
-fn report_timing(output: &Path, phase: &str, elapsed: std::time::Duration) {
-    if std::env::var_os("WINDOWS_BINDGEN_TIMINGS").is_some() {
-        eprintln!(
-            "windows-bindgen timing `{}` {phase}: {:.3} ms",
-            output.display(),
-            elapsed.as_secs_f64() * 1_000.0
-        );
-    }
-}
 
 /// Creates a new [`Bindgen`] builder for generating Windows API bindings.
 pub fn builder() -> Bindgen {
@@ -87,7 +79,7 @@ pub struct Bindgen {
     input: Vec<Input>,
     input_default: bool,
     filter: Vec<String>,
-    output: PathBuf,
+    output: Option<PathBuf>,
     derive: Vec<String>,
     implement: Option<Vec<String>>,
     compose: Vec<String>,
@@ -105,11 +97,11 @@ enum Input {
 /// Output layout for the generated bindings.
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 enum Layout {
-    /// One Rust module per metadata namespace (the default).
+    /// A single flat list of items (the default).
     #[default]
-    Modules,
-    /// A single flat list of items (no namespace modules).
     Flat,
+    /// One Rust module per metadata namespace.
+    Modules,
     /// One file per namespace + `Cargo.toml` features.
     Package,
 }
@@ -126,17 +118,17 @@ impl Layout {
 /// Code-style mode for the generated bindings.
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 enum Style {
-    /// Full-fidelity bindings (the default).
+    /// Minimal bindings (no class wrappers, inherited forwarders, or handle ergonomics;
+    /// auto-revoke events).
     #[default]
-    Default,
+    Minimal,
+    /// Full-fidelity bindings.
+    Full,
     /// Raw / sys-style bindings.
     Sys {
         /// When `true`, emit `extern { fn ... }` instead of `link!` macros.
         extern_fns: bool,
     },
-    /// Minimal-mode bindings (drop class wrappers, inherited forwarders,
-    /// handle ergonomics; auto-revoke events).
-    Minimal,
 }
 
 impl Style {
@@ -198,18 +190,25 @@ impl Bindgen {
     }
 
     /// Adds a `.winmd` file or directory.
+    ///
+    /// Explicit inputs replace the bundled metadata. Call [`Bindgen::input_default`] to include
+    /// the bundled metadata alongside them.
     pub fn input(&mut self, input: impl AsRef<Path>) -> &mut Self {
         self.input.push(Input::Path(input.as_ref().to_path_buf()));
         self
     }
 
     /// Adds the default Windows metadata.
+    ///
+    /// Included automatically when no explicit inputs are supplied.
     pub fn input_default(&mut self) -> &mut Self {
         self.input_default = true;
         self
     }
 
     /// Adds a `.winmd` file from memory.
+    ///
+    /// Uses the same default metadata behavior as [`Bindgen::input`].
     pub fn input_bytes(&mut self, input: &[u8]) -> &mut Self {
         self.input.push(Input::Bytes(input.to_vec()));
         self
@@ -240,25 +239,69 @@ impl Bindgen {
     }
 
     /// Sets the generated Rust file.
+    ///
+    /// Defaults to `bindings.rs` in the runtime `OUT_DIR` directory. An explicit path is required
+    /// when `OUT_DIR` is unset or empty, and always when generating a package.
     pub fn output(&mut self, output: impl AsRef<Path>) -> &mut Self {
-        self.output = output.as_ref().to_path_buf();
+        self.output = Some(output.as_ref().to_path_buf());
         self
     }
 
-    /// Add a filter rule to include or exclude APIs.
+    /// Adds a filter rule to include or exclude APIs.
     ///
-    /// Use a function, constant, type, or namespace name, or select members with
-    /// `Namespace.Type::Member`. Property and event names select their accessor pairs.
-    /// Prefix a qualified name with `!` to exclude it from a namespace selection.
-    /// Signature dependencies are included automatically. See [`bindgen`] for filter examples.
+    /// See the [crate documentation](crate) for an example table. The same syntax applies to
+    /// [`Bindgen::filters`], [`Bindgen::filter_file`], and [`bindgen`]'s `--filter` arguments.
+    ///
+    /// # Names and groups
+    ///
+    /// Select a function, constant, type, or namespace. Bare names match across namespaces;
+    /// qualify a name to restrict it to one namespace. Dots and `::` both separate path segments.
+    /// Namespace selections include descendant namespaces. The bundled Win32 metadata uses
+    /// `Windows.Win32`, not the subsystem namespaces used by the umbrella crates' Cargo features.
+    ///
+    /// Groups abbreviate separate selections and may nest: `Windows::Foundation::{Uri, AsyncStatus}`.
+    /// Trailing commas are allowed. `*` wildcards are not supported.
+    ///
+    /// # Members and dependencies
+    ///
+    /// A bare type selects all its members. Use `Type::Member` or `Type::{Member, OtherMember}`
+    /// for a subset. Members may be methods, properties, events, or enum variants.
+    /// Use native member or overload names, not renamed Rust methods. Property and event names
+    /// select their accessor pairs; requesting an event's `add_` method also selects its `remove_`
+    /// method. `Class::CreateInstance` selects a WinRT class's default constructor.
+    ///
+    /// Signature dependencies are included automatically, but interfaces reached only through
+    /// signatures can be name-only declarations. Select their methods explicitly to call them.
+    /// `Type::{}` requests the type without requesting its methods or enum variants; it does not
+    /// remove methods selected elsewhere. In minimal mode, a COM interface selected this way can
+    /// use [`Bindgen::implement`] to emit its implementation trait and vtable without caller wrappers.
+    ///
+    /// # Combining rules
+    ///
+    /// Prefix a selection with `!` to exclude it. More specific type/namespace rules take precedence;
+    /// exclusions win ties regardless of argument order. Member and enum-variant selections narrow
+    /// whole-type selections, also regardless of order. Excluded members and variants win over
+    /// included ones, except that implementation traits require the interface's complete method ABI.
+    /// Named [`Bindgen::implement`] selectors reject method-level inclusions or exclusions on matching
+    /// interfaces. Select the whole interface or use `Interface::{}` instead.
+    /// [`Bindgen::implement_all`] allows member filters, but emits the complete method ABI for
+    /// implemented interfaces.
+    ///
+    /// Chained members (`Type::Read::Write`), trailing separators (`Type::`), and empty entries
+    /// inside a group (`Type::{Read,,Write}`) are rejected. Use `Type::{Read, Write}` for several
+    /// members or `Type::{}` for a name-only selection.
     pub fn filter(&mut self, filter: &str) -> &mut Self {
         self.filters(std::iter::once(filter))
     }
 
     /// Adds filter rules from a text file.
+    ///
+    /// Uses [`Bindgen::filter`] syntax, with whitespace separating filters outside groups.
+    /// Groups may span lines. Lines beginning with `//` after optional whitespace are comments;
+    /// inline comments require a separate `//` token followed by whitespace or the end of the line.
     #[track_caller]
     pub fn filter_file(&mut self, input: impl AsRef<Path>) -> &mut Self {
-        self.filters(cli::read_tokens(input))
+        self.filters(cli::read_tokens(input, true))
     }
 
     /// Adds filter rules from text files.
@@ -288,12 +331,15 @@ impl Bindgen {
         self
     }
 
-    /// Add an extra trait for types to derive.
+    /// Specifies extra derives as `Type=Trait,OtherTrait`, for example `SYSTEMTIME=Debug`.
+    ///
+    /// The type may be a bare or dotted qualified name and must be included in the generated
+    /// bindings. Later entries for the same type replace earlier lists.
     pub fn derive(&mut self, derive: &str) -> &mut Self {
         self.derives(std::iter::once(derive))
     }
 
-    /// Add multiple extra traits for types to derive.
+    /// Specifies extra derives for multiple types, using the syntax of [`Bindgen::derive`].
     pub fn derives<I, S>(&mut self, derives: I) -> &mut Self
     where
         I: IntoIterator<Item = S>,
@@ -315,13 +361,15 @@ impl Bindgen {
         self
     }
 
-    /// Avoid the default namespace-to-module conversion.
+    /// Nest items in one Rust module per metadata namespace instead of a single flat list.
+    ///
+    /// Use this when the selected APIs define the same name in more than one namespace.
     #[track_caller]
-    pub fn flat(&mut self) -> &mut Self {
+    pub fn modules(&mut self) -> &mut Self {
         if matches!(self.layout, Layout::Package) {
-            panic!("cannot combine `--package` and `--flat`");
+            panic!("cannot combine `--package` and `--modules`");
         }
-        self.layout = Layout::Flat;
+        self.layout = Layout::Modules;
         self
     }
 
@@ -332,14 +380,17 @@ impl Bindgen {
     /// Generate bindings as a package with one file per namespace.
     #[track_caller]
     pub fn package(&mut self) -> &mut Self {
-        if matches!(self.layout, Layout::Flat) {
-            panic!("cannot combine `--package` and `--flat`");
+        if matches!(self.layout, Layout::Modules) {
+            panic!("cannot combine `--package` and `--modules`");
         }
         self.layout = Layout::Package;
         self
     }
 
     /// Includes implementation traits for every native and WinRT interface in scope.
+    ///
+    /// Unlike [`Bindgen::implement`], allows method-level filters. Implemented interfaces still
+    /// emit their complete method ABI.
     #[track_caller]
     pub fn implement_all(&mut self) -> &mut Self {
         match &self.implement {
@@ -352,8 +403,14 @@ impl Bindgen {
 
     /// Includes implementation traits for a native or WinRT interface or namespace prefix.
     ///
-    /// The name may be a fully-qualified type name (`Namespace.Name`) or a namespace prefix that
-    /// matches every type defined under it.
+    /// Use a dotted qualified name (`Windows.Win32.ISequentialStream`) or a namespace prefix.
+    /// Unlike filters, bare interface names are not resolved. The interface must be included in
+    /// the generated bindings, directly or as a dependency; this does not select it.
+    /// Required base interface implementations are included unless excluded or supplied by a
+    /// referenced crate.
+    ///
+    /// Method-level inclusions or exclusions on matching interfaces or their required bases cause
+    /// [`Bindgen::write`] to panic. Select the whole interface or use `Interface::{}` instead.
     #[track_caller]
     pub fn implement(&mut self, name: &str) -> &mut Self {
         assert!(
@@ -378,7 +435,7 @@ impl Bindgen {
         self
     }
 
-    /// Selects a composable WinRT class as a minimal-mode composition target.
+    /// Selects a composable WinRT class as a composition target.
     ///
     /// The class and its composable factory methods must also be selected by a filter.
     #[track_caller]
@@ -392,7 +449,7 @@ impl Bindgen {
         self
     }
 
-    /// Selects multiple composable WinRT classes as minimal-mode composition targets.
+    /// Selects multiple composable WinRT classes as composition targets.
     pub fn composes<I, S>(&mut self, names: I) -> &mut Self
     where
         I: IntoIterator<Item = S>,
@@ -404,40 +461,40 @@ impl Bindgen {
         self
     }
 
-    /// Generate raw or sys-style Rust bindings.
+    /// Generate raw or sys-style Rust bindings using `windows-link`.
     ///
-    /// Mutually exclusive with [`Bindgen::minimal`]; panics if `minimal` was
-    /// already selected.
+    /// Mutually exclusive with [`Bindgen::full`].
     #[track_caller]
     pub fn sys(&mut self) -> &mut Self {
         let extern_fns = matches!(self.style, Style::Sys { extern_fns: true });
-        if matches!(self.style, Style::Minimal) {
-            panic!("cannot combine `--sys` and `--minimal`");
+        if matches!(self.style, Style::Full) {
+            panic!("cannot combine `--sys` and `--full`");
         }
         self.style = Style::Sys { extern_fns };
         self
     }
 
-    /// Generate minimal-mode Rust bindings.
+    /// Generate full-fidelity Rust bindings.
     ///
-    /// Implementation traits require [`Bindgen::implement`] or [`Bindgen::implement_all`].
+    /// Adds per-class wrapper methods, inherited interface forwarders, handle ergonomics,
+    /// free-function wrappers, and implementation traits for interfaces not marked `ExclusiveTo`.
+    /// Use [`Bindgen::implement`] or [`Bindgen::implement_all`] for `ExclusiveTo` interfaces; an
+    /// explicit selection replaces the full-mode default.
     ///
-    /// Drops per-class wrapper methods, inherited interface forwarders, handle
-    /// ergonomics, and free-function wrappers.
-    ///
-    /// Mutually exclusive with `--sys`.
+    /// Mutually exclusive with [`Bindgen::sys`].
     #[track_caller]
-    pub fn minimal(&mut self) -> &mut Self {
+    pub fn full(&mut self) -> &mut Self {
         if matches!(self.style, Style::Sys { .. }) {
-            panic!("cannot combine `--sys` and `--minimal`");
+            panic!("cannot combine `--sys` and `--full`");
         }
-        self.style = Style::Minimal;
+        self.style = Style::Full;
         self
     }
 
     /// Generate `extern` declarations rather than `link!` macros for sys-style Rust bindings.
     ///
-    /// Only valid in combination with [`Bindgen::sys`]; panics otherwise.
+    /// Call after [`Bindgen::sys`]; panics otherwise.
+    /// DLL and entry-point selection are left to the caller's import libraries, including ordinals.
     #[track_caller]
     pub fn extern_fns(&mut self) -> &mut Self {
         match &mut self.style {
@@ -456,18 +513,40 @@ impl Bindgen {
     }
 
     /// Generate the bindings.
+    ///
+    /// Without an explicit output, writes `OUT_DIR/bindings.rs`. Use distinct explicit paths for
+    /// multiple output files. Does not emit Cargo dependency-tracking directives.
+    ///
+    /// Resolves declarations on demand, including dependencies of selected APIs. Errors in unused
+    /// declarations may not be reported.
+    ///
+    /// Panics if input processing, code generation, or writing the output fails.
     #[track_caller]
     pub fn write(&self) {
-        let total = std::time::Instant::now();
-
         // Validate before setting up reader and reference state.
+        let default_output;
+        let output = if let Some(output) = &self.output {
+            output.as_path()
+        } else {
+            assert!(
+                !self.layout.is_package(),
+                "package output is required (call `.output()` or pass `--out`)"
+            );
+            let directory = std::env::var_os("OUT_DIR")
+                .filter(|value| !value.is_empty())
+                .unwrap_or_else(|| {
+                    panic!("output is required (set `OUT_DIR`, call `.output()` or pass `--out`)")
+                });
+            default_output = PathBuf::from(directory).join("bindings.rs");
+            &default_output
+        };
         assert!(
-            !self.output.as_os_str().is_empty(),
+            !output.as_os_str().is_empty(),
             "output is required (call `.output()` or pass `--out`)"
         );
         assert!(
             self.compose.is_empty() || self.style.is_minimal(),
-            "`compose` requires `minimal`"
+            "`compose` cannot be combined with `--full` or `--sys`"
         );
 
         let mut include: Vec<&str> = vec![];
@@ -486,7 +565,6 @@ impl Bindgen {
         let sys = self.style.is_sys();
         let link = if sys { "windows_link" } else { "windows_core" };
 
-        let phase = std::time::Instant::now();
         let reader_storage;
         let reader = if self.input.is_empty() {
             default_reader(sys)
@@ -499,9 +577,7 @@ impl Bindgen {
             };
             &reader_storage
         };
-        report_timing(&self.output, "metadata", phase.elapsed());
 
-        let phase = std::time::Instant::now();
         let mut references: Vec<ReferenceStage> = Vec::new();
 
         if !sys {
@@ -567,15 +643,13 @@ impl Bindgen {
                     ][..],
                 ),
             ] {
-                if reader.contains_key(probe_namespace) {
+                if reader.contains_namespace(probe_namespace) {
                     let filtered: Vec<&str> = paths
                         .iter()
                         .copied()
                         .filter(|path| {
-                            if let Some((namespace, name)) = path.rsplit_once('.')
-                                && let Some(ns_map) = reader.get(namespace)
-                            {
-                                return ns_map.contains_key(name);
+                            if let Some((namespace, name)) = path.rsplit_once('.') {
+                                return reader.contains_name(namespace, name);
                             }
                             false
                         })
@@ -594,10 +668,8 @@ impl Bindgen {
         });
 
         let references = References::new(reader, references);
-        report_timing(&self.output, "references", phase.elapsed());
 
-        let phase = std::time::Instant::now();
-        let (filter, types) = {
+        let plan = {
             let mut all_parsed = Vec::new();
             for entry in &include {
                 all_parsed.extend(filter_parser::parse_filter_entry(entry));
@@ -611,58 +683,41 @@ impl Bindgen {
             }
             let resolved = filter_parser::resolve_entries(reader, &all_parsed);
 
-            let mut filter = Filter::from_resolved(reader, &resolved);
-
-            // Precise filters use bottom-up closure; broad filters and packages scan top-down.
-            let types = if !filter.has_broad_filter && !self.layout.is_package() {
-                filter.uses_closure = true;
-                TypeClosure::build(
-                    reader,
-                    &mut filter,
-                    &references,
-                    implements.as_ref(),
-                    self.style,
-                )
-            } else {
-                TypeMap::filter(reader, &filter, &references, self.style.is_sys())
-            };
-
-            (filter, types)
+            BindingPlan::new(
+                reader,
+                &resolved,
+                references,
+                implements.as_ref(),
+                self.style,
+            )
         };
-        report_timing(&self.output, "selection", phase.elapsed());
 
-        let phase = std::time::Instant::now();
-        let derive = Derive::new(reader, &types, &derive_str);
-        if let Some(implements) = &implements {
-            filter.validate_implements(implements);
-        }
+        let derive = Derive::new(reader, &plan.types, &derive_str);
 
-        let event_only_delegates = compute_event_only_delegates(&types, reader);
-
+        let shadowed_prelude = Config::shadowed_prelude(&plan.types);
         let config = Config {
             bindgen: self,
             reader,
-            types: &types,
-            references: &references,
-            filter: &filter,
+            plan: &plan,
             derive: &derive,
             implement: implements.as_ref(),
             link,
             namespace: "",
-            event_only_delegates: &event_only_delegates,
+            shadowed_prelude: &shadowed_prelude,
+            event_only_delegates: &HashSet::new(),
             self_ty: None,
             self_generics: Vec::new(),
             prunable: std::sync::Arc::new(BTreeSet::new()),
         };
-        let filter_config = Config {
-            implement: None,
-            ..config.clone()
+        let event_only_delegates = compute_event_only_delegates(&config);
+        let config = Config {
+            event_only_delegates: &event_only_delegates,
+            ..config
         };
-
         for target in &self.compose {
             let class = composition_target(reader, target);
             assert!(
-                types.contains_key(&class.type_name()),
+                plan.types.contains_key(&class.type_name()),
                 "composition target `{target}` is not selected by the filter"
             );
             assert!(
@@ -670,20 +725,19 @@ impl Bindgen {
                     .required_interfaces(reader)
                     .iter()
                     .filter(|interface| interface.kind == InterfaceKind::Composable)
-                    .filter(|interface| types.contains_key(&interface.def.type_name()))
-                    .any(|interface| interface
-                        .get_methods(&filter_config)
-                        .iter()
-                        .any(|method| matches!(method, MethodOrName::Method(_)))),
+                    .filter(|interface| plan.types.contains_key(&interface.def.type_name()))
+                    .any(|interface| interface.def.methods().any(|method| {
+                        plan.selection
+                            .includes_method(interface.type_name(), method)
+                            && plan.includes_method(method, &interface.generics)
+                    })),
                 "composition target `{target}` has no composable factory method selected by the \
                  filter"
             );
         }
 
-        let tree = TypeTree::new(&types, self.layout.is_flat());
-        report_timing(&self.output, "planning", phase.elapsed());
-        config.write(tree);
-        report_timing(&self.output, "total", total.elapsed());
+        let tree = TypeTree::new(&plan.types, self.layout.is_flat());
+        config.write(tree, output);
     }
 }
 
@@ -796,11 +850,11 @@ fn expand_input(input: &[Input], input_default: bool) -> Vec<File> {
 }
 
 /// Finds delegates used only as event-handler parameters.
-fn compute_event_only_delegates(types: &TypeMap, reader: &Reader) -> HashSet<TypeName> {
+fn compute_event_only_delegates(config: &Config) -> HashSet<TypeName> {
     let mut event_delegates: HashSet<TypeName> = HashSet::new();
     let mut non_event_delegates: HashSet<TypeName> = HashSet::new();
 
-    for type_set in types.values() {
+    for type_set in config.plan.types.values() {
         for ty in type_set {
             let (methods, generics): (Box<dyn Iterator<Item = MethodDef>>, &[Type]) = match ty {
                 Type::Interface(i) => (Box::new(i.def.methods()), &i.generics),
@@ -808,10 +862,13 @@ fn compute_event_only_delegates(types: &TypeMap, reader: &Reader) -> HashSet<Typ
             };
 
             for method in methods {
+                let sig = method.method_signature(generics, config.reader);
+                if !config.plan.includes_method(method, generics) {
+                    continue;
+                }
                 let is_event_add = method.flags().contains(MethodAttributes::SpecialName)
                     && method.name().starts_with("add_");
 
-                let sig = method.method_signature(generics, reader);
                 for param in &sig.params {
                     if let Type::Delegate(d) = &param.ty {
                         if is_event_add {

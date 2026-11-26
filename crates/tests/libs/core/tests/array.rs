@@ -1,5 +1,5 @@
 #![cfg(windows)]
-use windows::core::Array;
+use windows_core::Array;
 
 #[test]
 fn empty() {
@@ -16,6 +16,16 @@ fn with_len() {
     assert!(empty[0] == 0);
     assert!(empty[1] == 0);
     assert!(empty[2] == 0);
+}
+
+#[test]
+fn generic_from_slice() {
+    fn from_slice<T: windows_core::imp::Type>(values: &[T::Default]) -> Array<T> {
+        Array::from_slice(values)
+    }
+
+    let array = from_slice::<i32>(&[1, 2, 3]);
+    assert_eq!(array.as_slice(), &[1, 2, 3]);
 }
 
 #[test]

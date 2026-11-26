@@ -1,14 +1,9 @@
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     Interface,
     Interface_Vtbl,
-    0xf7039fad_567f_5194_8150_4a7613a4b64c
+    0xf7039fad_567f_5194_8150_4a7613a4b64c,
+    b"Test.Interface"
 );
-impl windows_core::RuntimeType for Interface {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.Interface");
-}
 windows_core::imp::interface_hierarchy!(
     Interface,
     windows_core::IUnknown,
@@ -53,8 +48,7 @@ impl Interface_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Interface_Impl::GetName(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -71,11 +65,11 @@ impl Interface_Vtbl {
             unsafe {
                 let this: &Identity =
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                Interface_Impl::SetName(this, core::mem::transmute(&value)).into()
+                Interface_Impl::SetName(this, &*(&raw const value).cast()).into()
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, Interface, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetName: GetName::<Identity, OFFSET>,
             SetName: SetName::<Identity, OFFSET>,
         }

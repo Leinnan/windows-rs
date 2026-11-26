@@ -17,7 +17,7 @@ impl ActionEntity {
     pub fn DisplayInfo(&self) -> windows_core::Result<ActionEntityDisplayInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DisplayInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DisplayInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -38,6 +38,7 @@ impl windows_core::RuntimeType for ActionEntity {
 unsafe impl windows_core::Interface for ActionEntity {
     type Vtable = <IActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.ActionEntity";
@@ -67,6 +68,7 @@ impl windows_core::RuntimeType for ActionEntityDisplayInfo {
 unsafe impl windows_core::Interface for ActionEntityDisplayInfo {
     type Vtable = <IActionEntityDisplayInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionEntityDisplayInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionEntityDisplayInfo {
     const NAME: &'static str = "Windows.AI.Actions.ActionEntityDisplayInfo";
@@ -82,25 +84,25 @@ impl ActionEntityFactory {
     pub fn CreateFileEntity(&self, path: &windows_core::HSTRING) -> windows_core::Result<FileActionEntity> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateFileEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(path), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateFileEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(path), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateDocumentEntity(&self, path: &windows_core::HSTRING) -> windows_core::Result<DocumentActionEntity> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateDocumentEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(path), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateDocumentEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(path), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreatePhotoEntity(&self, path: &windows_core::HSTRING) -> windows_core::Result<PhotoActionEntity> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePhotoEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(path), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePhotoEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(path), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateTextEntity(&self, text: &windows_core::HSTRING) -> windows_core::Result<TextActionEntity> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateTextEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(text), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateTextEntity)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(text), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateRemoteFileEntity<P2>(&self, sourceid: &windows_core::HSTRING, filekind: RemoteFileKind, sourceuri: P2, fileid: &windows_core::HSTRING, contenttype: &windows_core::HSTRING, driveid: &windows_core::HSTRING, accountid: &windows_core::HSTRING, extension: &windows_core::HSTRING) -> windows_core::Result<RemoteFileActionEntity>
@@ -110,28 +112,28 @@ impl ActionEntityFactory {
         let this = &windows_core::Interface::cast::<IActionEntityFactory3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateRemoteFileEntity)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(sourceid), filekind, sourceuri.param().abi(), core::mem::transmute_copy(fileid), core::mem::transmute_copy(contenttype), core::mem::transmute_copy(driveid), core::mem::transmute_copy(accountid), core::mem::transmute_copy(extension), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateRemoteFileEntity)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(sourceid), filekind, sourceuri.param().abi(), core::mem::transmute_copy(fileid), core::mem::transmute_copy(contenttype), core::mem::transmute_copy(driveid), core::mem::transmute_copy(accountid), core::mem::transmute_copy(extension), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateTextEntityWithTextFormat(&self, text: &windows_core::HSTRING, textformat: ActionEntityTextFormat) -> windows_core::Result<TextActionEntity> {
         let this = &windows_core::Interface::cast::<IActionEntityFactory3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateTextEntityWithTextFormat)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(text), textformat, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateTextEntityWithTextFormat)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(text), textformat, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateStreamingTextActionEntityWriter(&self, textformat: ActionEntityTextFormat) -> windows_core::Result<StreamingTextActionEntityWriter> {
         let this = &windows_core::Interface::cast::<IActionEntityFactory3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateStreamingTextActionEntityWriter)(windows_core::Interface::as_raw(this), textformat, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateStreamingTextActionEntityWriter)(windows_core::Interface::as_raw(this), textformat, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateTableEntity(&self, data: &[windows_core::HSTRING], columncount: u32) -> windows_core::Result<TableActionEntity> {
         let this = &windows_core::Interface::cast::<IActionEntityFactory4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateTableEntity)(windows_core::Interface::as_raw(this), data.len().try_into().unwrap(), core::mem::transmute(data.as_ptr()), columncount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateTableEntity)(windows_core::Interface::as_raw(this), data.len().try_into().unwrap(), data.as_ptr().cast(), columncount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "ApplicationModel_Contacts")]
@@ -142,7 +144,7 @@ impl ActionEntityFactory {
         let this = &windows_core::Interface::cast::<IActionEntityFactory4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateContactEntity)(windows_core::Interface::as_raw(this), contact.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateContactEntity)(windows_core::Interface::as_raw(this), contact.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateUriEntity<P0>(&self, uri: P0) -> windows_core::Result<UriActionEntity>
@@ -152,21 +154,21 @@ impl ActionEntityFactory {
         let this = &windows_core::Interface::cast::<IActionEntityFactory5>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateUriEntity)(windows_core::Interface::as_raw(this), uri.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateUriEntity)(windows_core::Interface::as_raw(this), uri.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateArrayEntity(&self, kind: ActionEntityKind, entities: &[Option<ActionEntity>]) -> windows_core::Result<ArrayActionEntity> {
         let this = &windows_core::Interface::cast::<IActionEntityFactory5>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateArrayEntity)(windows_core::Interface::as_raw(this), kind, entities.len().try_into().unwrap(), core::mem::transmute(entities.as_ptr()), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateArrayEntity)(windows_core::Interface::as_raw(this), kind, entities.len().try_into().unwrap(), entities.as_ptr().cast(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateDateTimeEntity(&self, datetime: windows_time::DateTime) -> windows_core::Result<DateTimeActionEntity> {
         let this = &windows_core::Interface::cast::<IActionEntityFactory6>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateDateTimeEntity)(windows_core::Interface::as_raw(this), datetime, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateDateTimeEntity)(windows_core::Interface::as_raw(this), datetime, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "ApplicationModel_Appointments")]
@@ -177,7 +179,7 @@ impl ActionEntityFactory {
         let this = &windows_core::Interface::cast::<IActionEntityFactory6>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateAppointmentEntity)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(sourceid), appointment.param().abi(), attendees.len().try_into().unwrap(), core::mem::transmute(attendees.as_ptr()), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateAppointmentEntity)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(sourceid), appointment.param().abi(), attendees.len().try_into().unwrap(), attendees.as_ptr().cast(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateCustomTextEntity<P2>(&self, kind: &windows_core::HSTRING, keyphrase: &windows_core::HSTRING, props: P2) -> windows_core::Result<CustomTextActionEntity>
@@ -187,14 +189,14 @@ impl ActionEntityFactory {
         let this = &windows_core::Interface::cast::<IActionEntityFactory7>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCustomTextEntity)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(kind), core::mem::transmute_copy(keyphrase), props.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCustomTextEntity)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(kind), core::mem::transmute_copy(keyphrase), props.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateArrayEntityWithCustomKind(&self, elementkind: ActionEntityKind, customkind: &windows_core::HSTRING, entities: &[Option<ActionEntity>]) -> windows_core::Result<ArrayActionEntity> {
         let this = &windows_core::Interface::cast::<IActionEntityFactory7>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateArrayEntityWithCustomKind)(windows_core::Interface::as_raw(this), elementkind, core::mem::transmute_copy(customkind), entities.len().try_into().unwrap(), core::mem::transmute(entities.as_ptr()), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateArrayEntityWithCustomKind)(windows_core::Interface::as_raw(this), elementkind, core::mem::transmute_copy(customkind), entities.len().try_into().unwrap(), entities.as_ptr().cast(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Close(&self) -> windows_core::Result<()> {
@@ -208,6 +210,7 @@ impl windows_core::RuntimeType for ActionEntityFactory {
 unsafe impl windows_core::Interface for ActionEntityFactory {
     type Vtable = <IActionEntityFactory2 as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionEntityFactory2 as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionEntityFactory {
     const NAME: &'static str = "Windows.AI.Actions.ActionEntityFactory";
@@ -277,6 +280,7 @@ impl windows_core::RuntimeType for ActionFeedback {
 unsafe impl windows_core::Interface for ActionFeedback {
     type Vtable = <IActionFeedback as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionFeedback as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionFeedback {
     const NAME: &'static str = "Windows.AI.Actions.ActionFeedback";
@@ -306,7 +310,7 @@ impl ActionInvocationContext {
     pub fn EntityFactory(&self) -> windows_core::Result<ActionEntityFactory> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EntityFactory)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EntityFactory)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetInputEntity<P1>(&self, inputname: &windows_core::HSTRING, inputvalue: P1) -> windows_core::Result<()>
@@ -317,8 +321,9 @@ impl ActionInvocationContext {
     }
     pub fn GetInputEntities(&self) -> windows_core::Result<windows_core::Array<NamedActionEntity>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetInputEntities)(windows_core::Interface::as_raw(self), windows_core::Array::<NamedActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetInputEntities)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<NamedActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetOutputEntity<P1>(&self, outputname: &windows_core::HSTRING, outputvalue: P1) -> windows_core::Result<()>
@@ -329,8 +334,9 @@ impl ActionInvocationContext {
     }
     pub fn GetOutputEntities(&self) -> windows_core::Result<windows_core::Array<NamedActionEntity>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetOutputEntities)(windows_core::Interface::as_raw(self), windows_core::Array::<NamedActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetOutputEntities)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<NamedActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn Result(&self) -> windows_core::Result<ActionInvocationResult> {
@@ -363,7 +369,7 @@ impl ActionInvocationContext {
         let this = &windows_core::Interface::cast::<IActionInvocationContext2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).HelpDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).HelpDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ActionId(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -391,6 +397,7 @@ impl windows_core::RuntimeType for ActionInvocationContext {
 unsafe impl windows_core::Interface for ActionInvocationContext {
     type Vtable = <IActionInvocationContext as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionInvocationContext as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionInvocationContext {
     const NAME: &'static str = "Windows.AI.Actions.ActionInvocationContext";
@@ -433,7 +440,7 @@ impl ActionInvocationHelpDetails {
     pub fn HelpUri(&self) -> windows_core::Result<super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).HelpUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).HelpUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetHelpUri<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -453,7 +460,7 @@ impl ActionInvocationHelpDetails {
     }
     pub fn Changed<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<IActionInvocationHelpDetails2>(self)?;
         let handler = <super::super::Foundation::TypedEventHandler<Self, windows_core::IInspectable>>::new(move |a0, a1| {
@@ -477,6 +484,7 @@ impl windows_core::RuntimeType for ActionInvocationHelpDetails {
 unsafe impl windows_core::Interface for ActionInvocationHelpDetails {
     type Vtable = <IActionInvocationHelpDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionInvocationHelpDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionInvocationHelpDetails {
     const NAME: &'static str = "Windows.AI.Actions.ActionInvocationHelpDetails";
@@ -524,26 +532,26 @@ impl ActionRuntime {
     pub fn ActionCatalog(&self) -> windows_core::Result<Hosting::ActionCatalog> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActionCatalog)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActionCatalog)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn EntityFactory(&self) -> windows_core::Result<ActionEntityFactory> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EntityFactory)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EntityFactory)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateInvocationContext(&self, actionid: &windows_core::HSTRING) -> windows_core::Result<ActionInvocationContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateInvocationContext)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(actionid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateInvocationContext)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(actionid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateActionFeedback(&self, feedbackkind: ActionFeedbackKind) -> windows_core::Result<ActionFeedback> {
         let this = &windows_core::Interface::cast::<IActionRuntime2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateActionFeedback)(windows_core::Interface::as_raw(this), feedbackkind, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateActionFeedback)(windows_core::Interface::as_raw(this), feedbackkind, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetActionAvailability(&self, actionid: &windows_core::HSTRING, isavailable: bool) -> windows_core::Result<()> {
@@ -562,14 +570,14 @@ impl ActionRuntime {
         let this = &windows_core::Interface::cast::<IActionRuntime3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInvocationContextWithWindowId)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(actionid), invokerwindowid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInvocationContextWithWindowId)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(actionid), invokerwindowid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetActionEntityById(&self, entityid: &windows_core::HSTRING) -> windows_core::Result<ActionEntity> {
         let this = &windows_core::Interface::cast::<IActionRuntime3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetActionEntityById)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(entityid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetActionEntityById)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(entityid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn LatestSupportedSchemaVersion(&self) -> windows_core::Result<u32> {
@@ -583,20 +591,20 @@ impl ActionRuntime {
         let this = &windows_core::Interface::cast::<IActionRuntime4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetActionInvocationContextFromToken)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetActionInvocationContextFromToken)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CustomEntityStore(&self) -> windows_core::Result<CustomActionEntityStore> {
         let this = &windows_core::Interface::cast::<IActionRuntime5>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CustomEntityStore)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CustomEntityStore)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDefault() -> windows_core::Result<Self> {
         Self::IActionRuntimeStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetDefault)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetDefault)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Close(&self) -> windows_core::Result<()> {
@@ -614,6 +622,7 @@ impl windows_core::RuntimeType for ActionRuntime {
 unsafe impl windows_core::Interface for ActionRuntime {
     type Vtable = <IActionRuntime as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IActionRuntime as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ActionRuntime {
     const NAME: &'static str = "Windows.AI.Actions.ActionRuntime";
@@ -637,7 +646,7 @@ impl AppointmentActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -657,32 +666,35 @@ impl AppointmentActionEntity {
     pub fn Appointment(&self) -> windows_core::Result<super::super::ApplicationModel::Appointments::Appointment> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Appointment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Appointment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAttendees(&self) -> windows_core::Result<windows_core::Array<ContactActionEntity>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetAttendees)(windows_core::Interface::as_raw(self), windows_core::Array::<ContactActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetAttendees)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<ContactActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn GetPresentedFiles(&self) -> windows_core::Result<windows_core::Array<RemoteFileActionEntity>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetPresentedFiles)(windows_core::Interface::as_raw(self), windows_core::Array::<RemoteFileActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetPresentedFiles)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<RemoteFileActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetPresentedFiles(&self, files: &[Option<RemoteFileActionEntity>]) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).SetPresentedFiles)(windows_core::Interface::as_raw(self), files.len().try_into().unwrap(), core::mem::transmute(files.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(self).SetPresentedFiles)(windows_core::Interface::as_raw(self), files.len().try_into().unwrap(), files.as_ptr().cast()).ok() }
     }
     pub fn GetSharedFiles(&self) -> windows_core::Result<windows_core::Array<RemoteFileActionEntity>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetSharedFiles)(windows_core::Interface::as_raw(self), windows_core::Array::<RemoteFileActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetSharedFiles)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<RemoteFileActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetSharedFiles(&self, files: &[Option<RemoteFileActionEntity>]) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).SetSharedFiles)(windows_core::Interface::as_raw(self), files.len().try_into().unwrap(), core::mem::transmute(files.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(self).SetSharedFiles)(windows_core::Interface::as_raw(self), files.len().try_into().unwrap(), files.as_ptr().cast()).ok() }
     }
     pub fn Close(&self) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<super::super::Foundation::IClosable>(self)?;
@@ -695,6 +707,7 @@ impl windows_core::RuntimeType for AppointmentActionEntity {
 unsafe impl windows_core::Interface for AppointmentActionEntity {
     type Vtable = <IAppointmentActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppointmentActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppointmentActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.AppointmentActionEntity";
@@ -718,7 +731,7 @@ impl ArrayActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -736,8 +749,9 @@ impl ArrayActionEntity {
     }
     pub fn GetAll(&self) -> windows_core::Result<windows_core::Array<ActionEntity>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetAll)(windows_core::Interface::as_raw(self), windows_core::Array::<ActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetAll)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<ActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn CustomElementKind(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -758,6 +772,7 @@ impl windows_core::RuntimeType for ArrayActionEntity {
 unsafe impl windows_core::Interface for ArrayActionEntity {
     type Vtable = <IArrayActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IArrayActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ArrayActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.ArrayActionEntity";
@@ -781,7 +796,7 @@ impl ContactActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -799,7 +814,7 @@ impl ContactActionEntity {
     pub fn Contact(&self) -> windows_core::Result<super::super::ApplicationModel::Contacts::Contact> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Contact)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Contact)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -809,6 +824,7 @@ impl windows_core::RuntimeType for ContactActionEntity {
 unsafe impl windows_core::Interface for ContactActionEntity {
     type Vtable = <IContactActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IContactActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ContactActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.ContactActionEntity";
@@ -838,7 +854,7 @@ impl CustomActionEntityStore {
         unsafe { (windows_core::Interface::vtable(self).Insert)(windows_core::Interface::as_raw(self), entity.param().abi()).ok() }
     }
     pub fn InsertMany(&self, entities: &[Option<CustomTextActionEntity>]) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).InsertMany)(windows_core::Interface::as_raw(self), entities.len().try_into().unwrap(), core::mem::transmute(entities.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(self).InsertMany)(windows_core::Interface::as_raw(self), entities.len().try_into().unwrap(), entities.as_ptr().cast()).ok() }
     }
     pub fn Delete(&self, kind: &windows_core::HSTRING) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).Delete)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(kind)).ok() }
@@ -850,6 +866,7 @@ impl windows_core::RuntimeType for CustomActionEntityStore {
 unsafe impl windows_core::Interface for CustomActionEntityStore {
     type Vtable = <ICustomActionEntityStore as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICustomActionEntityStore as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CustomActionEntityStore {
     const NAME: &'static str = "Windows.AI.Actions.CustomActionEntityStore";
@@ -873,7 +890,7 @@ impl CustomTextActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -902,7 +919,7 @@ impl CustomTextActionEntity {
     pub fn Properties(&self) -> windows_core::Result<windows_collections::IMapView<windows_core::HSTRING, windows_core::IInspectable>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Properties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Properties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -912,6 +929,7 @@ impl windows_core::RuntimeType for CustomTextActionEntity {
 unsafe impl windows_core::Interface for CustomTextActionEntity {
     type Vtable = <ICustomTextActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICustomTextActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CustomTextActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.CustomTextActionEntity";
@@ -935,7 +953,7 @@ impl DateTimeActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -962,6 +980,7 @@ impl windows_core::RuntimeType for DateTimeActionEntity {
 unsafe impl windows_core::Interface for DateTimeActionEntity {
     type Vtable = <IDateTimeActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDateTimeActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for DateTimeActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.DateTimeActionEntity";
@@ -985,7 +1004,7 @@ impl DocumentActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1012,6 +1031,7 @@ impl windows_core::RuntimeType for DocumentActionEntity {
 unsafe impl windows_core::Interface for DocumentActionEntity {
     type Vtable = <IDocumentActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDocumentActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for DocumentActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.DocumentActionEntity";
@@ -1035,7 +1055,7 @@ impl FileActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1062,17 +1082,14 @@ impl windows_core::RuntimeType for FileActionEntity {
 unsafe impl windows_core::Interface for FileActionEntity {
     type Vtable = <IFileActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IFileActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for FileActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.FileActionEntity";
 }
 unsafe impl Send for FileActionEntity {}
 unsafe impl Sync for FileActionEntity {}
-windows_core::imp::define_interface!(IActionEntity, IActionEntity_Vtbl, 0x445e700f_2122_5668_9a16_4cab2982c5f4);
-impl windows_core::RuntimeType for IActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IActionEntity, IActionEntity_Vtbl, 0x445e700f_2122_5668_9a16_4cab2982c5f4, b"Windows.AI.Actions.IActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntity_Vtbl {
@@ -1080,43 +1097,27 @@ pub struct IActionEntity_Vtbl {
     pub Kind: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ActionEntityKind) -> windows_core::HRESULT,
     pub DisplayInfo: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntity2, IActionEntity2_Vtbl, 0x98fe136d_dd3a_58c1_af76_feb4e19dce9e);
-impl windows_core::RuntimeType for IActionEntity2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntity2");
-}
+windows_core::imp::define_winrt_interface!(IActionEntity2, IActionEntity2_Vtbl, 0x98fe136d_dd3a_58c1_af76_feb4e19dce9e, b"Windows.AI.Actions.IActionEntity2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntity2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Id: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntityDisplayInfo, IActionEntityDisplayInfo_Vtbl, 0x057a9ede_03e1_55c6_acba_c7056216735a);
-impl windows_core::RuntimeType for IActionEntityDisplayInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityDisplayInfo");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityDisplayInfo, IActionEntityDisplayInfo_Vtbl, 0x057a9ede_03e1_55c6_acba_c7056216735a, b"Windows.AI.Actions.IActionEntityDisplayInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityDisplayInfo_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Title: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntityFactory, IActionEntityFactory_Vtbl, 0x9cb752a0_5bf8_5be2_916e_b00eff80088d);
-impl windows_core::RuntimeType for IActionEntityFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory, IActionEntityFactory_Vtbl, 0x9cb752a0_5bf8_5be2_916e_b00eff80088d, b"Windows.AI.Actions.IActionEntityFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(IActionEntityFactory2, IActionEntityFactory2_Vtbl, 0xea2fb6a5_ec6d_5180_9d30_bc663b84e7b8);
-impl windows_core::RuntimeType for IActionEntityFactory2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory2");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory2, IActionEntityFactory2_Vtbl, 0xea2fb6a5_ec6d_5180_9d30_bc663b84e7b8, b"Windows.AI.Actions.IActionEntityFactory2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory2_Vtbl {
@@ -1126,11 +1127,7 @@ pub struct IActionEntityFactory2_Vtbl {
     pub CreatePhotoEntity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateTextEntity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntityFactory3, IActionEntityFactory3_Vtbl, 0x4910e689_00b5_56bb_9c65_0fcc76215283);
-impl windows_core::RuntimeType for IActionEntityFactory3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory3");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory3, IActionEntityFactory3_Vtbl, 0x4910e689_00b5_56bb_9c65_0fcc76215283, b"Windows.AI.Actions.IActionEntityFactory3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory3_Vtbl {
@@ -1139,11 +1136,7 @@ pub struct IActionEntityFactory3_Vtbl {
     pub CreateTextEntityWithTextFormat: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, ActionEntityTextFormat, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateStreamingTextActionEntityWriter: unsafe extern "system" fn(*mut core::ffi::c_void, ActionEntityTextFormat, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntityFactory4, IActionEntityFactory4_Vtbl, 0x332eda05_de0e_5a58_b318_a2ad771f013d);
-impl windows_core::RuntimeType for IActionEntityFactory4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory4");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory4, IActionEntityFactory4_Vtbl, 0x332eda05_de0e_5a58_b318_a2ad771f013d, b"Windows.AI.Actions.IActionEntityFactory4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory4_Vtbl {
@@ -1154,11 +1147,7 @@ pub struct IActionEntityFactory4_Vtbl {
     #[cfg(not(feature = "ApplicationModel_Contacts"))]
     CreateContactEntity: usize,
 }
-windows_core::imp::define_interface!(IActionEntityFactory5, IActionEntityFactory5_Vtbl, 0xb59faab1_cfe4_564a_a5ba_53ad7ff6f924);
-impl windows_core::RuntimeType for IActionEntityFactory5 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory5");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory5, IActionEntityFactory5_Vtbl, 0xb59faab1_cfe4_564a_a5ba_53ad7ff6f924, b"Windows.AI.Actions.IActionEntityFactory5");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory5_Vtbl {
@@ -1166,11 +1155,7 @@ pub struct IActionEntityFactory5_Vtbl {
     pub CreateUriEntity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateArrayEntity: unsafe extern "system" fn(*mut core::ffi::c_void, ActionEntityKind, u32, *const ActionEntity, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntityFactory6, IActionEntityFactory6_Vtbl, 0xda7123da_5639_590f_a2db_c3b5e221f3b6);
-impl windows_core::RuntimeType for IActionEntityFactory6 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory6");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory6, IActionEntityFactory6_Vtbl, 0xda7123da_5639_590f_a2db_c3b5e221f3b6, b"Windows.AI.Actions.IActionEntityFactory6");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory6_Vtbl {
@@ -1181,11 +1166,7 @@ pub struct IActionEntityFactory6_Vtbl {
     #[cfg(not(feature = "ApplicationModel_Appointments"))]
     CreateAppointmentEntity: usize,
 }
-windows_core::imp::define_interface!(IActionEntityFactory7, IActionEntityFactory7_Vtbl, 0xb814b8d5_c9b2_51b5_a342_9fe054d8a1eb);
-impl windows_core::RuntimeType for IActionEntityFactory7 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactory7");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactory7, IActionEntityFactory7_Vtbl, 0xb814b8d5_c9b2_51b5_a342_9fe054d8a1eb, b"Windows.AI.Actions.IActionEntityFactory7");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactory7_Vtbl {
@@ -1193,32 +1174,20 @@ pub struct IActionEntityFactory7_Vtbl {
     pub CreateCustomTextEntity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateArrayEntityWithCustomKind: unsafe extern "system" fn(*mut core::ffi::c_void, ActionEntityKind, *mut core::ffi::c_void, u32, *const ActionEntity, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionEntityFactoryFactory, IActionEntityFactoryFactory_Vtbl, 0xc9147d8f_88a0_5ec0_a564_47e2a1081412);
-impl windows_core::RuntimeType for IActionEntityFactoryFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionEntityFactoryFactory");
-}
+windows_core::imp::define_winrt_interface!(IActionEntityFactoryFactory, IActionEntityFactoryFactory_Vtbl, 0xc9147d8f_88a0_5ec0_a564_47e2a1081412, b"Windows.AI.Actions.IActionEntityFactoryFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionEntityFactoryFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(IActionFeedback, IActionFeedback_Vtbl, 0xa12ee7ab_2454_56c9_bbdf_c089457fbc5e);
-impl windows_core::RuntimeType for IActionFeedback {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionFeedback");
-}
+windows_core::imp::define_winrt_interface!(IActionFeedback, IActionFeedback_Vtbl, 0xa12ee7ab_2454_56c9_bbdf_c089457fbc5e, b"Windows.AI.Actions.IActionFeedback");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionFeedback_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub FeedbackKind: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ActionFeedbackKind) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionInvocationContext, IActionInvocationContext_Vtbl, 0xc32b622e_86e1_5eba_9661_605910104978);
-impl windows_core::RuntimeType for IActionInvocationContext {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionInvocationContext");
-}
+windows_core::imp::define_winrt_interface!(IActionInvocationContext, IActionInvocationContext_Vtbl, 0xc32b622e_86e1_5eba_9661_605910104978, b"Windows.AI.Actions.IActionInvocationContext");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionInvocationContext_Vtbl {
@@ -1233,11 +1202,7 @@ pub struct IActionInvocationContext_Vtbl {
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
     pub SetExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::HRESULT) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionInvocationContext2, IActionInvocationContext2_Vtbl, 0x7c843086_9279_5bcd_8f2e_d15121e7a827);
-impl windows_core::RuntimeType for IActionInvocationContext2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionInvocationContext2");
-}
+windows_core::imp::define_winrt_interface!(IActionInvocationContext2, IActionInvocationContext2_Vtbl, 0x7c843086_9279_5bcd_8f2e_d15121e7a827, b"Windows.AI.Actions.IActionInvocationContext2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionInvocationContext2_Vtbl {
@@ -1250,11 +1215,7 @@ pub struct IActionInvocationContext2_Vtbl {
     pub ActionId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub InvokerAppUserModelId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionInvocationHelpDetails, IActionInvocationHelpDetails_Vtbl, 0x5430f272_078f_5722_8f7d_90cf8ddd595e);
-impl windows_core::RuntimeType for IActionInvocationHelpDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionInvocationHelpDetails");
-}
+windows_core::imp::define_winrt_interface!(IActionInvocationHelpDetails, IActionInvocationHelpDetails_Vtbl, 0x5430f272_078f_5722_8f7d_90cf8ddd595e, b"Windows.AI.Actions.IActionInvocationHelpDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionInvocationHelpDetails_Vtbl {
@@ -1270,11 +1231,7 @@ pub struct IActionInvocationHelpDetails_Vtbl {
     pub HelpUriDescription: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetHelpUriDescription: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionInvocationHelpDetails2, IActionInvocationHelpDetails2_Vtbl, 0x307f6ba5_5fda_59f1_9722_1859801ad550);
-impl windows_core::RuntimeType for IActionInvocationHelpDetails2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionInvocationHelpDetails2");
-}
+windows_core::imp::define_winrt_interface!(IActionInvocationHelpDetails2, IActionInvocationHelpDetails2_Vtbl, 0x307f6ba5_5fda_59f1_9722_1859801ad550, b"Windows.AI.Actions.IActionInvocationHelpDetails2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionInvocationHelpDetails2_Vtbl {
@@ -1282,11 +1239,7 @@ pub struct IActionInvocationHelpDetails2_Vtbl {
     pub Changed: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionRuntime, IActionRuntime_Vtbl, 0x206efa2c_c909_508a_b4b0_9482be96db9c);
-impl windows_core::RuntimeType for IActionRuntime {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntime");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntime, IActionRuntime_Vtbl, 0x206efa2c_c909_508a_b4b0_9482be96db9c, b"Windows.AI.Actions.IActionRuntime");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntime_Vtbl {
@@ -1298,11 +1251,7 @@ pub struct IActionRuntime_Vtbl {
     pub EntityFactory: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateInvocationContext: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionRuntime2, IActionRuntime2_Vtbl, 0x2da4d2c0_e593_5350_8143_15bb24f63411);
-impl windows_core::RuntimeType for IActionRuntime2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntime2");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntime2, IActionRuntime2_Vtbl, 0x2da4d2c0_e593_5350_8143_15bb24f63411, b"Windows.AI.Actions.IActionRuntime2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntime2_Vtbl {
@@ -1311,11 +1260,7 @@ pub struct IActionRuntime2_Vtbl {
     pub SetActionAvailability: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, bool) -> windows_core::HRESULT,
     pub GetActionAvailability: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionRuntime3, IActionRuntime3_Vtbl, 0xf020c3c0_caec_5928_ad00_81069b80fbc1);
-impl windows_core::RuntimeType for IActionRuntime3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntime3");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntime3, IActionRuntime3_Vtbl, 0xf020c3c0_caec_5928_ad00_81069b80fbc1, b"Windows.AI.Actions.IActionRuntime3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntime3_Vtbl {
@@ -1327,54 +1272,34 @@ pub struct IActionRuntime3_Vtbl {
     pub GetActionEntityById: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub LatestSupportedSchemaVersion: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionRuntime4, IActionRuntime4_Vtbl, 0x06851dcd_c743_5c7f_88a1_bbaeb02f5e28);
-impl windows_core::RuntimeType for IActionRuntime4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntime4");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntime4, IActionRuntime4_Vtbl, 0x06851dcd_c743_5c7f_88a1_bbaeb02f5e28, b"Windows.AI.Actions.IActionRuntime4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntime4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetActionInvocationContextFromToken: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionRuntime5, IActionRuntime5_Vtbl, 0xc2e995b1_52a9_5f3a_bebb_a04655e96218);
-impl windows_core::RuntimeType for IActionRuntime5 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntime5");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntime5, IActionRuntime5_Vtbl, 0xc2e995b1_52a9_5f3a_bebb_a04655e96218, b"Windows.AI.Actions.IActionRuntime5");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntime5_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CustomEntityStore: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionRuntimeFactory, IActionRuntimeFactory_Vtbl, 0xd3f366e9_8dc9_50a0_8040_e5c14fa609d6);
-impl windows_core::RuntimeType for IActionRuntimeFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntimeFactory");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntimeFactory, IActionRuntimeFactory_Vtbl, 0xd3f366e9_8dc9_50a0_8040_e5c14fa609d6, b"Windows.AI.Actions.IActionRuntimeFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntimeFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(IActionRuntimeStatics, IActionRuntimeStatics_Vtbl, 0x2c697aab_55f2_55aa_9d63_a73ec190cecd);
-impl windows_core::RuntimeType for IActionRuntimeStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IActionRuntimeStatics");
-}
+windows_core::imp::define_winrt_interface!(IActionRuntimeStatics, IActionRuntimeStatics_Vtbl, 0x2c697aab_55f2_55aa_9d63_a73ec190cecd, b"Windows.AI.Actions.IActionRuntimeStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IActionRuntimeStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetDefault: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppointmentActionEntity, IAppointmentActionEntity_Vtbl, 0x29daa00e_b474_581c_b555_6187d1aa8231);
-impl windows_core::RuntimeType for IAppointmentActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IAppointmentActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IAppointmentActionEntity, IAppointmentActionEntity_Vtbl, 0x29daa00e_b474_581c_b555_6187d1aa8231, b"Windows.AI.Actions.IAppointmentActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppointmentActionEntity_Vtbl {
@@ -1390,11 +1315,7 @@ pub struct IAppointmentActionEntity_Vtbl {
     pub GetSharedFiles: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32, *mut *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetSharedFiles: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const RemoteFileActionEntity) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IArrayActionEntity, IArrayActionEntity_Vtbl, 0x45798e78_1059_5311_8a1b_de0081a4ca3b);
-impl windows_core::RuntimeType for IArrayActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IArrayActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IArrayActionEntity, IArrayActionEntity_Vtbl, 0x45798e78_1059_5311_8a1b_de0081a4ca3b, b"Windows.AI.Actions.IArrayActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IArrayActionEntity_Vtbl {
@@ -1402,22 +1323,14 @@ pub struct IArrayActionEntity_Vtbl {
     pub ElementKind: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ActionEntityKind) -> windows_core::HRESULT,
     pub GetAll: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32, *mut *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IArrayActionEntity2, IArrayActionEntity2_Vtbl, 0x7366e049_7fe8_5df9_bbca_cea5c0f3d316);
-impl windows_core::RuntimeType for IArrayActionEntity2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IArrayActionEntity2");
-}
+windows_core::imp::define_winrt_interface!(IArrayActionEntity2, IArrayActionEntity2_Vtbl, 0x7366e049_7fe8_5df9_bbca_cea5c0f3d316, b"Windows.AI.Actions.IArrayActionEntity2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IArrayActionEntity2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CustomElementKind: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IContactActionEntity, IContactActionEntity_Vtbl, 0x458c3e07_5892_5485_bd9b_8f7a540c9501);
-impl windows_core::RuntimeType for IContactActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IContactActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IContactActionEntity, IContactActionEntity_Vtbl, 0x458c3e07_5892_5485_bd9b_8f7a540c9501, b"Windows.AI.Actions.IContactActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IContactActionEntity_Vtbl {
@@ -1427,11 +1340,7 @@ pub struct IContactActionEntity_Vtbl {
     #[cfg(not(feature = "ApplicationModel_Contacts"))]
     Contact: usize,
 }
-windows_core::imp::define_interface!(ICustomActionEntityStore, ICustomActionEntityStore_Vtbl, 0xfa7b44d0_1762_5828_9938_e7cae5199e01);
-impl windows_core::RuntimeType for ICustomActionEntityStore {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.ICustomActionEntityStore");
-}
+windows_core::imp::define_winrt_interface!(ICustomActionEntityStore, ICustomActionEntityStore_Vtbl, 0xfa7b44d0_1762_5828_9938_e7cae5199e01, b"Windows.AI.Actions.ICustomActionEntityStore");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomActionEntityStore_Vtbl {
@@ -1441,21 +1350,13 @@ pub struct ICustomActionEntityStore_Vtbl {
     pub InsertMany: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const CustomTextActionEntity) -> windows_core::HRESULT,
     pub Delete: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICustomActionEntityStoreFactory, ICustomActionEntityStoreFactory_Vtbl, 0xd8b46bdb_68a5_5e07_9113_abb9241aaab1);
-impl windows_core::RuntimeType for ICustomActionEntityStoreFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.ICustomActionEntityStoreFactory");
-}
+windows_core::imp::define_winrt_interface!(ICustomActionEntityStoreFactory, ICustomActionEntityStoreFactory_Vtbl, 0xd8b46bdb_68a5_5e07_9113_abb9241aaab1, b"Windows.AI.Actions.ICustomActionEntityStoreFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomActionEntityStoreFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(ICustomTextActionEntity, ICustomTextActionEntity_Vtbl, 0x50eaac95_1d6c_54b0_8963_e38dea3f6aec);
-impl windows_core::RuntimeType for ICustomTextActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.ICustomTextActionEntity");
-}
+windows_core::imp::define_winrt_interface!(ICustomTextActionEntity, ICustomTextActionEntity_Vtbl, 0x50eaac95_1d6c_54b0_8963_e38dea3f6aec, b"Windows.AI.Actions.ICustomTextActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomTextActionEntity_Vtbl {
@@ -1464,44 +1365,28 @@ pub struct ICustomTextActionEntity_Vtbl {
     pub KeyPhrase: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Properties: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IDateTimeActionEntity, IDateTimeActionEntity_Vtbl, 0xfd5a0880_eeae_553a_bfed_a9229d57447d);
-impl windows_core::RuntimeType for IDateTimeActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IDateTimeActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IDateTimeActionEntity, IDateTimeActionEntity_Vtbl, 0xfd5a0880_eeae_553a_bfed_a9229d57447d, b"Windows.AI.Actions.IDateTimeActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDateTimeActionEntity_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub DateTime: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::DateTime) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IDocumentActionEntity, IDocumentActionEntity_Vtbl, 0x56715297_960b_59ff_af4b_ece1098b2e36);
-impl windows_core::RuntimeType for IDocumentActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IDocumentActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IDocumentActionEntity, IDocumentActionEntity_Vtbl, 0x56715297_960b_59ff_af4b_ece1098b2e36, b"Windows.AI.Actions.IDocumentActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDocumentActionEntity_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub FullPath: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IFileActionEntity, IFileActionEntity_Vtbl, 0xf20ab43f_4c80_5904_bd42_3e6248babfcf);
-impl windows_core::RuntimeType for IFileActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IFileActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IFileActionEntity, IFileActionEntity_Vtbl, 0xf20ab43f_4c80_5904_bd42_3e6248babfcf, b"Windows.AI.Actions.IFileActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IFileActionEntity_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub FullPath: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INamedActionEntity, INamedActionEntity_Vtbl, 0x1aaebeef_435b_5a0d_8182_05fe4dd47712);
-impl windows_core::RuntimeType for INamedActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.INamedActionEntity");
-}
+windows_core::imp::define_winrt_interface!(INamedActionEntity, INamedActionEntity_Vtbl, 0x1aaebeef_435b_5a0d_8182_05fe4dd47712, b"Windows.AI.Actions.INamedActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INamedActionEntity_Vtbl {
@@ -1511,22 +1396,14 @@ pub struct INamedActionEntity_Vtbl {
     pub Entity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetEntity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPhotoActionEntity, IPhotoActionEntity_Vtbl, 0x425123b3_20ef_51a6_b35f_8414384765c5);
-impl windows_core::RuntimeType for IPhotoActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IPhotoActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IPhotoActionEntity, IPhotoActionEntity_Vtbl, 0x425123b3_20ef_51a6_b35f_8414384765c5, b"Windows.AI.Actions.IPhotoActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPhotoActionEntity_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub FullPath: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRemoteFileActionEntity, IRemoteFileActionEntity_Vtbl, 0xa5d8ec21_a2bd_545a_abfc_d7aa79fd0b81);
-impl windows_core::RuntimeType for IRemoteFileActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IRemoteFileActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IRemoteFileActionEntity, IRemoteFileActionEntity_Vtbl, 0xa5d8ec21_a2bd_545a_abfc_d7aa79fd0b81, b"Windows.AI.Actions.IRemoteFileActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoteFileActionEntity_Vtbl {
@@ -1540,11 +1417,7 @@ pub struct IRemoteFileActionEntity_Vtbl {
     pub AccountId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Extension: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRemoteFileActionEntity2, IRemoteFileActionEntity2_Vtbl, 0x9cc8cc54_77d8_5537_83c4_6f18c1bc9f67);
-impl windows_core::RuntimeType for IRemoteFileActionEntity2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IRemoteFileActionEntity2");
-}
+windows_core::imp::define_winrt_interface!(IRemoteFileActionEntity2, IRemoteFileActionEntity2_Vtbl, 0x9cc8cc54_77d8_5537_83c4_6f18c1bc9f67, b"Windows.AI.Actions.IRemoteFileActionEntity2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoteFileActionEntity2_Vtbl {
@@ -1558,11 +1431,7 @@ pub struct IRemoteFileActionEntity2_Vtbl {
     pub SetContributors: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const ContactActionEntity) -> windows_core::HRESULT,
     pub GetContributors: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32, *mut *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IStreamingTextActionEntity, IStreamingTextActionEntity_Vtbl, 0x44cd8a16_abc9_5703_b4bf_6fe8b7a802fd);
-impl windows_core::RuntimeType for IStreamingTextActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IStreamingTextActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IStreamingTextActionEntity, IStreamingTextActionEntity_Vtbl, 0x44cd8a16_abc9_5703_b4bf_6fe8b7a802fd, b"Windows.AI.Actions.IStreamingTextActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStreamingTextActionEntity_Vtbl {
@@ -1573,11 +1442,7 @@ pub struct IStreamingTextActionEntity_Vtbl {
     pub TextChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveTextChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IStreamingTextActionEntityTextChangedArgs, IStreamingTextActionEntityTextChangedArgs_Vtbl, 0x2c62011f_3e06_588b_a3bd_d726bd82fb13);
-impl windows_core::RuntimeType for IStreamingTextActionEntityTextChangedArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IStreamingTextActionEntityTextChangedArgs");
-}
+windows_core::imp::define_winrt_interface!(IStreamingTextActionEntityTextChangedArgs, IStreamingTextActionEntityTextChangedArgs_Vtbl, 0x2c62011f_3e06_588b_a3bd_d726bd82fb13, b"Windows.AI.Actions.IStreamingTextActionEntityTextChangedArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStreamingTextActionEntityTextChangedArgs_Vtbl {
@@ -1585,11 +1450,7 @@ pub struct IStreamingTextActionEntityTextChangedArgs_Vtbl {
     pub Text: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub IsComplete: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IStreamingTextActionEntityWriter, IStreamingTextActionEntityWriter_Vtbl, 0x6bce2f76_a8af_5ff2_833c_108737ba0f42);
-impl windows_core::RuntimeType for IStreamingTextActionEntityWriter {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IStreamingTextActionEntityWriter");
-}
+windows_core::imp::define_winrt_interface!(IStreamingTextActionEntityWriter, IStreamingTextActionEntityWriter_Vtbl, 0x6bce2f76_a8af_5ff2_833c_108737ba0f42, b"Windows.AI.Actions.IStreamingTextActionEntityWriter");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStreamingTextActionEntityWriter_Vtbl {
@@ -1598,11 +1459,7 @@ pub struct IStreamingTextActionEntityWriter_Vtbl {
     pub TextFormat: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ActionEntityTextFormat) -> windows_core::HRESULT,
     pub SetText: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ITableActionEntity, ITableActionEntity_Vtbl, 0x0f252cdb_ba24_5dbb_9d17_1b300773d141);
-impl windows_core::RuntimeType for ITableActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.ITableActionEntity");
-}
+windows_core::imp::define_winrt_interface!(ITableActionEntity, ITableActionEntity_Vtbl, 0x0f252cdb_ba24_5dbb_9d17_1b300773d141, b"Windows.AI.Actions.ITableActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ITableActionEntity_Vtbl {
@@ -1611,33 +1468,21 @@ pub struct ITableActionEntity_Vtbl {
     pub RowCount: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
     pub ColumnCount: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ITextActionEntity, ITextActionEntity_Vtbl, 0x3c4ec25f_5adb_5f73_b8f3_080fbeadd612);
-impl windows_core::RuntimeType for ITextActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.ITextActionEntity");
-}
+windows_core::imp::define_winrt_interface!(ITextActionEntity, ITextActionEntity_Vtbl, 0x3c4ec25f_5adb_5f73_b8f3_080fbeadd612, b"Windows.AI.Actions.ITextActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ITextActionEntity_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Text: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ITextActionEntity2, ITextActionEntity2_Vtbl, 0x7c500889_cf08_51e7_beca_f0bbc7a7486c);
-impl windows_core::RuntimeType for ITextActionEntity2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.ITextActionEntity2");
-}
+windows_core::imp::define_winrt_interface!(ITextActionEntity2, ITextActionEntity2_Vtbl, 0x7c500889_cf08_51e7_beca_f0bbc7a7486c, b"Windows.AI.Actions.ITextActionEntity2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ITextActionEntity2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub TextFormat: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ActionEntityTextFormat) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUriActionEntity, IUriActionEntity_Vtbl, 0xa81cde77_bc25_532d_905e_b0725c5bcd4e);
-impl windows_core::RuntimeType for IUriActionEntity {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.IUriActionEntity");
-}
+windows_core::imp::define_winrt_interface!(IUriActionEntity, IUriActionEntity_Vtbl, 0xa81cde77_bc25_532d_905e_b0725c5bcd4e, b"Windows.AI.Actions.IUriActionEntity");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUriActionEntity_Vtbl {
@@ -1666,7 +1511,7 @@ impl NamedActionEntity {
     pub fn Entity(&self) -> windows_core::Result<ActionEntity> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Entity)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Entity)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetEntity<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1682,6 +1527,7 @@ impl windows_core::RuntimeType for NamedActionEntity {
 unsafe impl windows_core::Interface for NamedActionEntity {
     type Vtable = <INamedActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INamedActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NamedActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.NamedActionEntity";
@@ -1705,7 +1551,7 @@ impl PhotoActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1732,6 +1578,7 @@ impl windows_core::RuntimeType for PhotoActionEntity {
 unsafe impl windows_core::Interface for PhotoActionEntity {
     type Vtable = <IPhotoActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPhotoActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PhotoActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.PhotoActionEntity";
@@ -1755,7 +1602,7 @@ impl RemoteFileActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1784,7 +1631,7 @@ impl RemoteFileActionEntity {
     pub fn SourceUri(&self) -> windows_core::Result<super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SourceUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FileId(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1832,7 +1679,7 @@ impl RemoteFileActionEntity {
         let this = &windows_core::Interface::cast::<IRemoteFileActionEntity2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Creator)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Creator)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetCreator<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1846,7 +1693,7 @@ impl RemoteFileActionEntity {
         let this = &windows_core::Interface::cast::<IRemoteFileActionEntity2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).LastUpdatedTime)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(this).LastUpdatedTime)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetLastUpdatedTime(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -1856,13 +1703,14 @@ impl RemoteFileActionEntity {
     }
     pub fn SetContributors(&self, contributors: &[Option<ContactActionEntity>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IRemoteFileActionEntity2>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).SetContributors)(windows_core::Interface::as_raw(this), contributors.len().try_into().unwrap(), core::mem::transmute(contributors.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).SetContributors)(windows_core::Interface::as_raw(this), contributors.len().try_into().unwrap(), contributors.as_ptr().cast()).ok() }
     }
     pub fn GetContributors(&self) -> windows_core::Result<windows_core::Array<ContactActionEntity>> {
         let this = &windows_core::Interface::cast::<IRemoteFileActionEntity2>(self)?;
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(this).GetContributors)(windows_core::Interface::as_raw(this), windows_core::Array::<ContactActionEntity>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(this).GetContributors)(windows_core::Interface::as_raw(this), &mut result_size__, &mut result__).map(|| windows_core::Array::<ContactActionEntity>::from_raw_parts(result__.cast(), result_size__))
         }
     }
 }
@@ -1872,6 +1720,7 @@ impl windows_core::RuntimeType for RemoteFileActionEntity {
 unsafe impl windows_core::Interface for RemoteFileActionEntity {
     type Vtable = <IRemoteFileActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IRemoteFileActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for RemoteFileActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.RemoteFileActionEntity";
@@ -1910,7 +1759,7 @@ impl StreamingTextActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1944,7 +1793,7 @@ impl StreamingTextActionEntity {
     }
     pub fn TextChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<StreamingTextActionEntityTextChangedArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<StreamingTextActionEntityTextChangedArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, StreamingTextActionEntityTextChangedArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -1963,6 +1812,7 @@ impl windows_core::RuntimeType for StreamingTextActionEntity {
 unsafe impl windows_core::Interface for StreamingTextActionEntity {
     type Vtable = <IStreamingTextActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IStreamingTextActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for StreamingTextActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.StreamingTextActionEntity";
@@ -1993,6 +1843,7 @@ impl windows_core::RuntimeType for StreamingTextActionEntityTextChangedArgs {
 unsafe impl windows_core::Interface for StreamingTextActionEntityTextChangedArgs {
     type Vtable = <IStreamingTextActionEntityTextChangedArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IStreamingTextActionEntityTextChangedArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for StreamingTextActionEntityTextChangedArgs {
     const NAME: &'static str = "Windows.AI.Actions.StreamingTextActionEntityTextChangedArgs";
@@ -2012,7 +1863,7 @@ impl StreamingTextActionEntityWriter {
     pub fn ReaderEntity(&self) -> windows_core::Result<StreamingTextActionEntity> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReaderEntity)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReaderEntity)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn TextFormat(&self) -> windows_core::Result<ActionEntityTextFormat> {
@@ -2031,6 +1882,7 @@ impl windows_core::RuntimeType for StreamingTextActionEntityWriter {
 unsafe impl windows_core::Interface for StreamingTextActionEntityWriter {
     type Vtable = <IStreamingTextActionEntityWriter as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IStreamingTextActionEntityWriter as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for StreamingTextActionEntityWriter {
     const NAME: &'static str = "Windows.AI.Actions.StreamingTextActionEntityWriter";
@@ -2054,7 +1906,7 @@ impl TableActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2070,8 +1922,9 @@ impl TableActionEntity {
     }
     pub fn GetTextContent(&self) -> windows_core::Result<windows_core::Array<windows_core::HSTRING>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetTextContent)(windows_core::Interface::as_raw(self), windows_core::Array::<windows_core::HSTRING>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetTextContent)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<windows_core::HSTRING>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn RowCount(&self) -> windows_core::Result<u32> {
@@ -2093,6 +1946,7 @@ impl windows_core::RuntimeType for TableActionEntity {
 unsafe impl windows_core::Interface for TableActionEntity {
     type Vtable = <ITableActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ITableActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for TableActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.TableActionEntity";
@@ -2116,7 +1970,7 @@ impl TextActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2150,6 +2004,7 @@ impl windows_core::RuntimeType for TextActionEntity {
 unsafe impl windows_core::Interface for TextActionEntity {
     type Vtable = <ITextActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ITextActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for TextActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.TextActionEntity";
@@ -2173,7 +2028,7 @@ impl UriActionEntity {
         let this = &windows_core::Interface::cast::<IActionEntity>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DisplayInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2190,7 +2045,7 @@ impl UriActionEntity {
     pub fn Uri(&self) -> windows_core::Result<super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Uri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Uri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2200,6 +2055,7 @@ impl windows_core::RuntimeType for UriActionEntity {
 unsafe impl windows_core::Interface for UriActionEntity {
     type Vtable = <IUriActionEntity as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUriActionEntity as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UriActionEntity {
     const NAME: &'static str = "Windows.AI.Actions.UriActionEntity";

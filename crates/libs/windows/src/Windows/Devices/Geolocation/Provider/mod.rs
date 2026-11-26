@@ -27,7 +27,7 @@ impl GeolocationProvider {
     }
     pub fn IsOverriddenChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -46,17 +46,14 @@ impl windows_core::RuntimeType for GeolocationProvider {
 unsafe impl windows_core::Interface for GeolocationProvider {
     type Vtable = <IGeolocationProvider as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IGeolocationProvider as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for GeolocationProvider {
     const NAME: &'static str = "Windows.Devices.Geolocation.Provider.GeolocationProvider";
 }
 unsafe impl Send for GeolocationProvider {}
 unsafe impl Sync for GeolocationProvider {}
-windows_core::imp::define_interface!(IGeolocationProvider, IGeolocationProvider_Vtbl, 0xe4cf071d_3f64_509f_8dc2_0b74a059829d);
-impl windows_core::RuntimeType for IGeolocationProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Geolocation.Provider.IGeolocationProvider");
-}
+windows_core::imp::define_winrt_interface!(IGeolocationProvider, IGeolocationProvider_Vtbl, 0xe4cf071d_3f64_509f_8dc2_0b74a059829d, b"Windows.Devices.Geolocation.Provider.IGeolocationProvider");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IGeolocationProvider_Vtbl {

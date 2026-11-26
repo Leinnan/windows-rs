@@ -1,8 +1,13 @@
+windows_core::link!("ole32.dll" "system" fn CoGetApartmentType(papttype : *mut APTTYPE, paptqualifier : *mut APTTYPEQUALIFIER) -> windows_core::HRESULT);
 windows_core::link!("ole32.dll" "system" fn CoTaskMemAlloc(cb : SIZE_T) -> LPVOID);
 windows_core::link!("ole32.dll" "system" fn CoTaskMemFree(pv : LPVOID));
 windows_core::link!("webview2loader.dll" "system" fn CreateCoreWebView2Environment(environmentcreatedhandler : *mut core::ffi::c_void) -> windows_core::HRESULT);
 windows_core::link!("webview2loader.dll" "system" fn CreateCoreWebView2EnvironmentWithOptions(browserexecutablefolder : windows_core::PCWSTR, userdatafolder : windows_core::PCWSTR, environmentoptions : *mut core::ffi::c_void, environmentcreatedhandler : *mut core::ffi::c_void) -> windows_core::HRESULT);
 windows_core::link!("shlwapi.dll" "system" fn SHCreateMemStream(pinit : *const BYTE, cbinit : UINT) -> Option < IStream >);
+pub type APTTYPE = i32;
+pub type APTTYPEQUALIFIER = i32;
+pub const APTTYPE_MAINSTA: APTTYPE = 3;
+pub const APTTYPE_STA: APTTYPE = 0;
 pub type BYTE = u8;
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -54,7 +59,7 @@ impl ICoreWebView2 {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn Source(&self) -> windows_core::Result<windows_core::PWSTR> {
@@ -376,7 +381,7 @@ impl ICoreWebView2 {
                 eventname.param().abi(),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn Stop(&self) -> windows_core::HRESULT {
@@ -950,7 +955,7 @@ impl ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler_Vtbl {
                 ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler_Impl::Invoke(
                     this,
                     core::mem::transmute_copy(&errorcode),
-                    core::mem::transmute(&result),
+                    &*(&raw const result).cast(),
                 )
             }
         }
@@ -1071,7 +1076,7 @@ impl ICoreWebView2CallDevToolsProtocolMethodCompletedHandler_Vtbl {
                 ICoreWebView2CallDevToolsProtocolMethodCompletedHandler_Impl::Invoke(
                     this,
                     core::mem::transmute_copy(&errorcode),
-                    core::mem::transmute(&result),
+                    &*(&raw const result).cast(),
                 )
             }
         }
@@ -1474,7 +1479,7 @@ impl ICoreWebView2Controller {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2043,7 +2048,7 @@ impl ICoreWebView2CookieList {
                 index,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2088,7 +2093,7 @@ impl ICoreWebView2CookieManager {
                 path.param().abi(),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn GetCookies<P0, P1>(&self, uri: P0, handler: P1) -> windows_core::HRESULT
@@ -2777,7 +2782,7 @@ impl ICoreWebView2DownloadStartingEventArgs {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn Cancel(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -2844,7 +2849,7 @@ impl ICoreWebView2DownloadStartingEventArgs {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2987,7 +2992,7 @@ impl ICoreWebView2Environment {
                 headers.param().abi(),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3045,7 +3050,7 @@ impl ICoreWebView2Environment10 {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn CreateCoreWebView2ControllerWithOptions<P1, P2>(
@@ -3125,7 +3130,7 @@ impl ICoreWebView2Environment2 {
                 headers.param().abi(),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3417,7 +3422,7 @@ impl ICoreWebView2EnvironmentOptions_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 ICoreWebView2EnvironmentOptions_Impl::SetAdditionalBrowserArguments(
                     this,
-                    core::mem::transmute(&value),
+                    &*(&raw const value).cast(),
                 )
             }
         }
@@ -3453,10 +3458,7 @@ impl ICoreWebView2EnvironmentOptions_Vtbl {
             unsafe {
                 let this: &Identity =
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                ICoreWebView2EnvironmentOptions_Impl::SetLanguage(
-                    this,
-                    core::mem::transmute(&value),
-                )
+                ICoreWebView2EnvironmentOptions_Impl::SetLanguage(this, &*(&raw const value).cast())
             }
         }
         unsafe extern "system" fn TargetCompatibleBrowserVersion<
@@ -3493,7 +3495,7 @@ impl ICoreWebView2EnvironmentOptions_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 ICoreWebView2EnvironmentOptions_Impl::SetTargetCompatibleBrowserVersion(
                     this,
-                    core::mem::transmute(&value),
+                    &*(&raw const value).cast(),
                 )
             }
         }
@@ -3756,7 +3758,7 @@ impl ICoreWebView2ExecuteScriptCompletedHandler_Vtbl {
                 ICoreWebView2ExecuteScriptCompletedHandler_Impl::Invoke(
                     this,
                     core::mem::transmute_copy(&errorcode),
-                    core::mem::transmute(&result),
+                    &*(&raw const result).cast(),
                 )
             }
         }
@@ -3963,7 +3965,7 @@ impl ICoreWebView2HttpRequestHeaders {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3994,7 +3996,7 @@ impl ICoreWebView2Interop2 {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -4439,7 +4441,7 @@ impl ICoreWebView2NewWindowRequestedEventArgs {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -4601,7 +4603,7 @@ impl ICoreWebView2PermissionRequestedEventArgs {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -5820,7 +5822,7 @@ impl ICoreWebView2WebResourceRequest {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -5861,7 +5863,7 @@ impl ICoreWebView2WebResourceRequestedEventArgs {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn SetResponse<P0>(&self, response: P0) -> windows_core::HRESULT
@@ -6154,7 +6156,7 @@ impl ICoreWebView2_13 {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6453,7 +6455,7 @@ impl ICoreWebView2_2 {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub(crate) unsafe fn Environment(&self) -> windows_core::Result<ICoreWebView2Environment> {
@@ -6463,7 +6465,7 @@ impl ICoreWebView2_2 {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6985,6 +6987,7 @@ pub struct RECT {
     pub right: LONG,
     pub bottom: LONG,
 }
+pub const RPC_E_WRONG_THREAD: windows_core::HRESULT = windows_core::HRESULT(0x8001010E_u32 as _);
 pub type SIZE_T = usize;
 pub type UINT = u32;
 pub type UINT32 = u32;

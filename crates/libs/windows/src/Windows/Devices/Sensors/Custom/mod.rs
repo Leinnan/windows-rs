@@ -6,7 +6,7 @@ impl CustomSensor {
     pub fn GetCurrentReading(&self) -> windows_core::Result<CustomSensorReading> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrentReading)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrentReading)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn MinimumReportInterval(&self) -> windows_core::Result<u32> {
@@ -32,7 +32,7 @@ impl CustomSensor {
     }
     pub fn ReadingChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CustomSensorReadingChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CustomSensorReadingChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CustomSensorReadingChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -71,7 +71,7 @@ impl CustomSensor {
     pub fn FromIdAsync(sensorid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::ICustomSensorStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(sensorid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(sensorid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICustomSensorStatics<R, F: FnOnce(&ICustomSensorStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -85,6 +85,7 @@ impl windows_core::RuntimeType for CustomSensor {
 unsafe impl windows_core::Interface for CustomSensor {
     type Vtable = <ICustomSensor as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICustomSensor as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CustomSensor {
     const NAME: &'static str = "Windows.Devices.Sensors.Custom.CustomSensor";
@@ -105,14 +106,14 @@ impl CustomSensorReading {
     pub fn Properties(&self) -> windows_core::Result<windows_collections::IMapView<windows_core::HSTRING, windows_core::IInspectable>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Properties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Properties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PerformanceCount(&self) -> windows_core::Result<windows_time::TimeSpan> {
         let this = &windows_core::Interface::cast::<ICustomSensorReading2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PerformanceCount)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(this).PerformanceCount)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
 }
@@ -122,6 +123,7 @@ impl windows_core::RuntimeType for CustomSensorReading {
 unsafe impl windows_core::Interface for CustomSensorReading {
     type Vtable = <ICustomSensorReading as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICustomSensorReading as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CustomSensorReading {
     const NAME: &'static str = "Windows.Devices.Sensors.Custom.CustomSensorReading";
@@ -136,7 +138,7 @@ impl CustomSensorReadingChangedEventArgs {
     pub fn Reading(&self) -> windows_core::Result<CustomSensorReading> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Reading)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Reading)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -146,17 +148,14 @@ impl windows_core::RuntimeType for CustomSensorReadingChangedEventArgs {
 unsafe impl windows_core::Interface for CustomSensorReadingChangedEventArgs {
     type Vtable = <ICustomSensorReadingChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICustomSensorReadingChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CustomSensorReadingChangedEventArgs {
     const NAME: &'static str = "Windows.Devices.Sensors.Custom.CustomSensorReadingChangedEventArgs";
 }
 unsafe impl Send for CustomSensorReadingChangedEventArgs {}
 unsafe impl Sync for CustomSensorReadingChangedEventArgs {}
-windows_core::imp::define_interface!(ICustomSensor, ICustomSensor_Vtbl, 0xa136f9ad_4034_4b4d_99dd_531aac649c09);
-impl windows_core::RuntimeType for ICustomSensor {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Sensors.Custom.ICustomSensor");
-}
+windows_core::imp::define_winrt_interface!(ICustomSensor, ICustomSensor_Vtbl, 0xa136f9ad_4034_4b4d_99dd_531aac649c09, b"Windows.Devices.Sensors.Custom.ICustomSensor");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomSensor_Vtbl {
@@ -169,11 +168,7 @@ pub struct ICustomSensor_Vtbl {
     pub ReadingChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveReadingChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICustomSensor2, ICustomSensor2_Vtbl, 0x20db3111_ec58_4d9f_bfbd_e77825088510);
-impl windows_core::RuntimeType for ICustomSensor2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Sensors.Custom.ICustomSensor2");
-}
+windows_core::imp::define_winrt_interface!(ICustomSensor2, ICustomSensor2_Vtbl, 0x20db3111_ec58_4d9f_bfbd_e77825088510, b"Windows.Devices.Sensors.Custom.ICustomSensor2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomSensor2_Vtbl {
@@ -182,11 +177,7 @@ pub struct ICustomSensor2_Vtbl {
     pub ReportLatency: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
     pub MaxBatchSize: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICustomSensorReading, ICustomSensorReading_Vtbl, 0x64004f4d_446a_4366_a87a_5f963268ec53);
-impl windows_core::RuntimeType for ICustomSensorReading {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Sensors.Custom.ICustomSensorReading");
-}
+windows_core::imp::define_winrt_interface!(ICustomSensorReading, ICustomSensorReading_Vtbl, 0x64004f4d_446a_4366_a87a_5f963268ec53, b"Windows.Devices.Sensors.Custom.ICustomSensorReading");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomSensorReading_Vtbl {
@@ -194,33 +185,21 @@ pub struct ICustomSensorReading_Vtbl {
     pub Timestamp: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::DateTime) -> windows_core::HRESULT,
     pub Properties: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICustomSensorReading2, ICustomSensorReading2_Vtbl, 0x223c98ea_bf73_4992_9a48_d3c897594ccb);
-impl windows_core::RuntimeType for ICustomSensorReading2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Sensors.Custom.ICustomSensorReading2");
-}
+windows_core::imp::define_winrt_interface!(ICustomSensorReading2, ICustomSensorReading2_Vtbl, 0x223c98ea_bf73_4992_9a48_d3c897594ccb, b"Windows.Devices.Sensors.Custom.ICustomSensorReading2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomSensorReading2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub PerformanceCount: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICustomSensorReadingChangedEventArgs, ICustomSensorReadingChangedEventArgs_Vtbl, 0x6b202023_cffd_4cc1_8ff0_e21823d76fcc);
-impl windows_core::RuntimeType for ICustomSensorReadingChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Sensors.Custom.ICustomSensorReadingChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICustomSensorReadingChangedEventArgs, ICustomSensorReadingChangedEventArgs_Vtbl, 0x6b202023_cffd_4cc1_8ff0_e21823d76fcc, b"Windows.Devices.Sensors.Custom.ICustomSensorReadingChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomSensorReadingChangedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Reading: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICustomSensorStatics, ICustomSensorStatics_Vtbl, 0x992052cf_f422_4c7d_836b_e7dc74a7124b);
-impl windows_core::RuntimeType for ICustomSensorStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Sensors.Custom.ICustomSensorStatics");
-}
+windows_core::imp::define_winrt_interface!(ICustomSensorStatics, ICustomSensorStatics_Vtbl, 0x992052cf_f422_4c7d_836b_e7dc74a7124b, b"Windows.Devices.Sensors.Custom.ICustomSensorStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICustomSensorStatics_Vtbl {

@@ -60,7 +60,7 @@ fn box_property_value(
     value: &PropertyValue,
     conversion: Conversion,
 ) -> Option<Result<Option<IInspectable>, WinUiError>> {
-    fn boxed<T: windows_core::RuntimeType + Clone + 'static>(
+    fn boxed<T: windows_core::RuntimeType + Clone + Send + Sync + 'static>(
         value: T,
     ) -> Result<Option<IInspectable>, WinUiError> {
         Ok(Some(windows_reference::IReference::from(value).into()))
@@ -112,14 +112,16 @@ fn box_property_value(
         }
         (PropertyValue::SelectionIndex(value), _) => native_selection_index(*value).and_then(boxed),
         (PropertyValue::StringList(values), _) => {
-            let values: Vec<Option<IInspectable>> = values
+            let values = values
                 .iter()
-                .map(|value| Some(windows_reference::IReference::from(value.as_ref()).into()))
-                .collect();
-            let values: IVector<IInspectable> = values.into();
-            object(values.cast::<IInspectable>())
+                .map(|value| Some(windows_reference::IReference::from(value.as_ref()).into()));
+            // Stock string boxes support cross-thread access and release; the vector is immutable.
+            object(unsafe { IVector::from_read_only_unchecked(values) })
         }
         (PropertyValue::ThemeTransitions(values), _) => theme_transitions(values),
+        (PropertyValue::SystemBackdrop(value), _) => {
+            system_backdrop(*value).map(|value| value.map(Into::into))
+        }
         (PropertyValue::Enum { kind, variant }, _) => {
             Ok(Some(GeneratedHandle::box_enum(kind, variant)))
         }
@@ -127,10 +129,37 @@ fn box_property_value(
     })
 }
 
+pub(super) fn system_backdrop(
+    value: SystemBackdrop,
+) -> Result<Option<native::SystemBackdrop>, WinUiError> {
+    Ok(Some(match value {
+        SystemBackdrop::None => return Ok(None),
+        SystemBackdrop::Mica | SystemBackdrop::MicaAlt => {
+            let mica = native::MicaBackdrop::new()?;
+            mica.SetKind(match value {
+                SystemBackdrop::Mica => native::MicaKind::Base,
+                SystemBackdrop::MicaAlt => native::MicaKind::BaseAlt,
+                _ => unreachable!(),
+            })?;
+            mica.cast()?
+        }
+        SystemBackdrop::Acrylic => native::DesktopAcrylicBackdrop::new()?.cast()?,
+    }))
+}
+
 fn theme_transitions(values: &[ThemeTransition]) -> Result<Option<IInspectable>, WinUiError> {
     let collection = native::TransitionCollection::new()?;
     for value in values {
         let transition = match value {
+            ThemeTransition::AddDelete => {
+                native::AddDeleteThemeTransition::new()?.cast::<native::Transition>()?
+            }
+            ThemeTransition::Content => {
+                native::ContentThemeTransition::new()?.cast::<native::Transition>()?
+            }
+            ThemeTransition::Entrance => {
+                native::EntranceThemeTransition::new()?.cast::<native::Transition>()?
+            }
             ThemeTransition::Reposition => {
                 native::RepositionThemeTransition::new()?.cast::<native::Transition>()?
             }

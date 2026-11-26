@@ -3,11 +3,38 @@
     non_snake_case,
     non_camel_case_types,
     non_upper_case_globals,
-    clippy::upper_case_acronyms,
-    clippy::missing_transmute_annotations
+    clippy::upper_case_acronyms
 )]
 
 include!(concat!(env!("OUT_DIR"), "/compile_fixtures.rs"));
+
+#[cfg(all(test, windows, miri))]
+mod abi_exports;
+
+#[cfg(all(test, windows))]
+mod abi_tests;
+
+#[cfg(test)]
+mod record_tests;
+
+#[cfg(all(test, windows))]
+mod ownership_tests;
+
+#[test]
+fn formatting_preserves_string_constants() {
+    let text = unsafe {
+        let ptr = format_tokens::TEXT.as_ptr();
+        let mut len = 0;
+        while *ptr.add(len) != 0 {
+            len += 1;
+        }
+        core::slice::from_raw_parts(ptr, len)
+    };
+    assert_eq!(
+        String::from_utf16(text).unwrap(),
+        "macro ! (call ) , ; :: * mut \"quoted\" \\ end"
+    );
+}
 
 #[test]
 fn associated_enum_storage_and_sign_extension() {
@@ -31,6 +58,12 @@ fn associated_enum_native_calls() {
 
 #[cfg(test)]
 mod com_results_tests;
+
+#[cfg(test)]
+mod delegate_tests;
+
+#[cfg(test)]
+mod interface_tests;
 
 #[cfg(test)]
 mod provenance_tests;
@@ -63,15 +96,21 @@ fn enum_constants_use_explicit_values() {
 #[test]
 fn residual_contracts_borrow_objects() {
     use buffer_contracts::*;
-    use std::{cell::Cell, rc::Rc};
+    use std::{
+        cell::Cell,
+        sync::{
+            Arc,
+            atomic::{AtomicBool, Ordering},
+        },
+    };
     use windows_core::{Interface, Ref, implement};
 
     #[implement(Tracked)]
-    struct Object(Rc<Cell<bool>>);
+    struct Object(Arc<AtomicBool>);
     impl Tracked_Impl for Object_Impl {}
     impl Drop for Object {
         fn drop(&mut self) {
-            self.0.set(true);
+            self.0.store(true, Ordering::Relaxed);
         }
     }
 
@@ -100,7 +139,7 @@ fn residual_contracts_borrow_objects() {
         }
     }
 
-    let dropped = Rc::new(Cell::new(false));
+    let dropped = Arc::new(AtomicBool::new(false));
     let object: Tracked = Object(dropped.clone()).into();
     let consumer = Consumer {
         calls: Cell::new(0),
@@ -115,9 +154,9 @@ fn residual_contracts_borrow_objects() {
         contracts.Unspecified(None::<&Tracked>);
     }
     assert_eq!(consumer.calls.get(), 5);
-    assert!(!dropped.get());
+    assert!(!dropped.load(Ordering::Relaxed));
     drop(object);
-    assert!(dropped.get());
+    assert!(dropped.load(Ordering::Relaxed));
 }
 
 #[test]
@@ -167,6 +206,7 @@ const _: unsafe fn() -> i32 = package_arches::Windows::Win32::split_legacy::SetW
 
 #[test]
 fn nested_member_alignment() {
+    use core::mem::{align_of, size_of};
     use struct_nested_member_alignment::*;
 
     const {
@@ -319,10 +359,12 @@ fn named_bitfield_storage() {
     enumerated.set_Flag(true);
     assert_eq!((enumerated.Signed(), enumerated.Flag()), (-3, true));
     let mut union = ScopedUnion { All: 0x4000 };
-    union.set_Signed(-3);
-    union.set_Flag(true);
-    assert_eq!((union.Signed(), union.Flag()), (-3, true));
-    assert_eq!(unsafe { union.All }, 0x403d);
+    unsafe {
+        union.set_Signed(-3);
+        union.set_Flag(true);
+        assert_eq!((union.Signed(), union.Flag()), (-3, true));
+        assert_eq!(union.All, 0x403d);
+    }
     let mut typed = Typed {
         storage: Byte(0xa0),
     };

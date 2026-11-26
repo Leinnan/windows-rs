@@ -22,6 +22,7 @@ impl windows_core::RuntimeType for CharacterGrouping {
 unsafe impl windows_core::Interface for CharacterGrouping {
     type Vtable = <ICharacterGrouping as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICharacterGrouping as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CharacterGrouping {
     const NAME: &'static str = "Windows.Globalization.Collation.CharacterGrouping";
@@ -50,21 +51,21 @@ impl CharacterGroupings {
     pub fn Create(language: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::ICharacterGroupingsFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(language), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(language), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn First(&self) -> windows_core::Result<windows_collections::IIterator<CharacterGrouping>> {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<CharacterGrouping>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAt(&self, index: u32) -> windows_core::Result<CharacterGrouping> {
         let this = &windows_core::Interface::cast::<windows_collections::IVectorView<CharacterGrouping>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -86,6 +87,9 @@ impl CharacterGroupings {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<CharacterGrouping>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVectorView<CharacterGrouping>>(self)?;
+        if core::mem::needs_drop::<Option<CharacterGrouping>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -102,6 +106,7 @@ impl windows_core::RuntimeType for CharacterGroupings {
 unsafe impl windows_core::Interface for CharacterGroupings {
     type Vtable = <ICharacterGroupings as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICharacterGroupings as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CharacterGroupings {
     const NAME: &'static str = "Windows.Globalization.Collation.CharacterGroupings";
@@ -122,11 +127,7 @@ impl IntoIterator for &CharacterGroupings {
         windows_collections::BufferedIterator::new(self.First().unwrap())
     }
 }
-windows_core::imp::define_interface!(ICharacterGrouping, ICharacterGrouping_Vtbl, 0xfae761bb_805d_4bb0_95bb_c1f7c3e8eb8e);
-impl windows_core::RuntimeType for ICharacterGrouping {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Globalization.Collation.ICharacterGrouping");
-}
+windows_core::imp::define_winrt_interface!(ICharacterGrouping, ICharacterGrouping_Vtbl, 0xfae761bb_805d_4bb0_95bb_c1f7c3e8eb8e, b"Windows.Globalization.Collation.ICharacterGrouping");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICharacterGrouping_Vtbl {
@@ -134,22 +135,14 @@ pub struct ICharacterGrouping_Vtbl {
     pub First: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Label: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICharacterGroupings, ICharacterGroupings_Vtbl, 0xb8d20a75_d4cf_4055_80e5_ce169c226496);
-impl windows_core::RuntimeType for ICharacterGroupings {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Globalization.Collation.ICharacterGroupings");
-}
+windows_core::imp::define_winrt_interface!(ICharacterGroupings, ICharacterGroupings_Vtbl, 0xb8d20a75_d4cf_4055_80e5_ce169c226496, b"Windows.Globalization.Collation.ICharacterGroupings");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICharacterGroupings_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Lookup: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICharacterGroupingsFactory, ICharacterGroupingsFactory_Vtbl, 0x99ea9fd9_886d_4401_9f98_69c82d4c2f78);
-impl windows_core::RuntimeType for ICharacterGroupingsFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Globalization.Collation.ICharacterGroupingsFactory");
-}
+windows_core::imp::define_winrt_interface!(ICharacterGroupingsFactory, ICharacterGroupingsFactory_Vtbl, 0x99ea9fd9_886d_4401_9f98_69c82d4c2f78, b"Windows.Globalization.Collation.ICharacterGroupingsFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICharacterGroupingsFactory_Vtbl {

@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IOcrEngine, IOcrEngine_Vtbl, 0x5a14bc41_5b76_3140_b680_8825562683ac);
-impl windows_core::RuntimeType for IOcrEngine {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Media.Ocr.IOcrEngine");
-}
+windows_core::imp::define_winrt_interface!(IOcrEngine, IOcrEngine_Vtbl, 0x5a14bc41_5b76_3140_b680_8825562683ac, b"Windows.Media.Ocr.IOcrEngine");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IOcrEngine_Vtbl {
@@ -16,11 +12,7 @@ pub struct IOcrEngine_Vtbl {
     #[cfg(not(feature = "Globalization"))]
     RecognizerLanguage: usize,
 }
-windows_core::imp::define_interface!(IOcrEngineStatics, IOcrEngineStatics_Vtbl, 0x5bffa85a_3384_3540_9940_699120d428a8);
-impl windows_core::RuntimeType for IOcrEngineStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Media.Ocr.IOcrEngineStatics");
-}
+windows_core::imp::define_winrt_interface!(IOcrEngineStatics, IOcrEngineStatics_Vtbl, 0x5bffa85a_3384_3540_9940_699120d428a8, b"Windows.Media.Ocr.IOcrEngineStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IOcrEngineStatics_Vtbl {
@@ -40,11 +32,7 @@ pub struct IOcrEngineStatics_Vtbl {
     TryCreateFromLanguage: usize,
     pub TryCreateFromUserProfileLanguages: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IOcrLine, IOcrLine_Vtbl, 0x0043a16f_e31f_3a24_899c_d444bd088124);
-impl windows_core::RuntimeType for IOcrLine {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Media.Ocr.IOcrLine");
-}
+windows_core::imp::define_winrt_interface!(IOcrLine, IOcrLine_Vtbl, 0x0043a16f_e31f_3a24_899c_d444bd088124, b"Windows.Media.Ocr.IOcrLine");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IOcrLine_Vtbl {
@@ -52,11 +40,7 @@ pub struct IOcrLine_Vtbl {
     pub Words: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Text: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IOcrResult, IOcrResult_Vtbl, 0x9bd235b2_175b_3d6a_92e2_388c206e2f63);
-impl windows_core::RuntimeType for IOcrResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Media.Ocr.IOcrResult");
-}
+windows_core::imp::define_winrt_interface!(IOcrResult, IOcrResult_Vtbl, 0x9bd235b2_175b_3d6a_92e2_388c206e2f63, b"Windows.Media.Ocr.IOcrResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IOcrResult_Vtbl {
@@ -65,11 +49,7 @@ pub struct IOcrResult_Vtbl {
     pub TextAngle: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Text: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IOcrWord, IOcrWord_Vtbl, 0x3c2a477a_5cd9_3525_ba2a_23d1e0a68a1d);
-impl windows_core::RuntimeType for IOcrWord {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Media.Ocr.IOcrWord");
-}
+windows_core::imp::define_winrt_interface!(IOcrWord, IOcrWord_Vtbl, 0x3c2a477a_5cd9_3525_ba2a_23d1e0a68a1d, b"Windows.Media.Ocr.IOcrWord");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IOcrWord_Vtbl {
@@ -89,14 +69,14 @@ impl OcrEngine {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RecognizeAsync)(windows_core::Interface::as_raw(self), bitmap.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RecognizeAsync)(windows_core::Interface::as_raw(self), bitmap.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Globalization")]
     pub fn RecognizerLanguage(&self) -> windows_core::Result<super::super::Globalization::Language> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RecognizerLanguage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RecognizerLanguage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn MaxImageDimension() -> windows_core::Result<u32> {
@@ -109,7 +89,7 @@ impl OcrEngine {
     pub fn AvailableRecognizerLanguages() -> windows_core::Result<windows_collections::IVectorView<super::super::Globalization::Language>> {
         Self::IOcrEngineStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).AvailableRecognizerLanguages)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).AvailableRecognizerLanguages)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Globalization")]
@@ -129,13 +109,13 @@ impl OcrEngine {
     {
         Self::IOcrEngineStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryCreateFromLanguage)(windows_core::Interface::as_raw(this), language.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryCreateFromLanguage)(windows_core::Interface::as_raw(this), language.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryCreateFromUserProfileLanguages() -> windows_core::Result<Self> {
         Self::IOcrEngineStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryCreateFromUserProfileLanguages)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryCreateFromUserProfileLanguages)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IOcrEngineStatics<R, F: FnOnce(&IOcrEngineStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -149,6 +129,7 @@ impl windows_core::RuntimeType for OcrEngine {
 unsafe impl windows_core::Interface for OcrEngine {
     type Vtable = <IOcrEngine as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IOcrEngine as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for OcrEngine {
     const NAME: &'static str = "Windows.Media.Ocr.OcrEngine";
@@ -163,7 +144,7 @@ impl OcrLine {
     pub fn Words(&self) -> windows_core::Result<windows_collections::IVectorView<OcrWord>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Words)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Words)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Text(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -179,6 +160,7 @@ impl windows_core::RuntimeType for OcrLine {
 unsafe impl windows_core::Interface for OcrLine {
     type Vtable = <IOcrLine as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IOcrLine as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for OcrLine {
     const NAME: &'static str = "Windows.Media.Ocr.OcrLine";
@@ -193,13 +175,13 @@ impl OcrResult {
     pub fn Lines(&self) -> windows_core::Result<windows_collections::IVectorView<OcrLine>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Lines)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Lines)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn TextAngle(&self) -> windows_core::Result<f64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TextAngle)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
+            (windows_core::Interface::vtable(self).TextAngle)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
         }
     }
     pub fn Text(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -215,6 +197,7 @@ impl windows_core::RuntimeType for OcrResult {
 unsafe impl windows_core::Interface for OcrResult {
     type Vtable = <IOcrResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IOcrResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for OcrResult {
     const NAME: &'static str = "Windows.Media.Ocr.OcrResult";
@@ -245,6 +228,7 @@ impl windows_core::RuntimeType for OcrWord {
 unsafe impl windows_core::Interface for OcrWord {
     type Vtable = <IOcrWord as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IOcrWord as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for OcrWord {
     const NAME: &'static str = "Windows.Media.Ocr.OcrWord";

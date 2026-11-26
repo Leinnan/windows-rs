@@ -337,7 +337,7 @@ impl IPortableDeviceValues {
     pub unsafe fn GetIUnknownValue(&self, key: *const super::PROPERTYKEY) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetIUnknownValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetIUnknownValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "wtypes"))]
@@ -367,7 +367,7 @@ impl IPortableDeviceValues {
     pub unsafe fn GetIPortableDeviceValuesValue(&self, key: *const super::PROPERTYKEY) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetIPortableDeviceValuesValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetIPortableDeviceValuesValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "wtypes"))]
@@ -381,7 +381,7 @@ impl IPortableDeviceValues {
     pub unsafe fn GetIPortableDevicePropVariantCollectionValue(&self, key: *const super::PROPERTYKEY) -> windows_core::Result<IPortableDevicePropVariantCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetIPortableDevicePropVariantCollectionValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetIPortableDevicePropVariantCollectionValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "wtypes"))]
@@ -395,7 +395,7 @@ impl IPortableDeviceValues {
     pub unsafe fn GetIPortableDeviceKeyCollectionValue(&self, key: *const super::PROPERTYKEY) -> windows_core::Result<IPortableDeviceKeyCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetIPortableDeviceKeyCollectionValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetIPortableDeviceKeyCollectionValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "wtypes"))]
@@ -409,7 +409,7 @@ impl IPortableDeviceValues {
     pub unsafe fn GetIPortableDeviceValuesCollectionValue(&self, key: *const super::PROPERTYKEY) -> windows_core::Result<IPortableDeviceValuesCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetIPortableDeviceValuesCollectionValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetIPortableDeviceValuesCollectionValue)(windows_core::Interface::as_raw(self), key, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "wtypes"))]
@@ -669,7 +669,7 @@ impl IPortableDeviceValues_Vtbl {
         unsafe extern "system" fn SetStringValue<Identity: IPortableDeviceValues_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, key: *const super::PROPERTYKEY, value: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IPortableDeviceValues_Impl::SetStringValue(this, core::mem::transmute_copy(&key), core::mem::transmute(&value))
+                IPortableDeviceValues_Impl::SetStringValue(this, core::mem::transmute_copy(&key), &*(&raw const value).cast())
             }
         }
         unsafe extern "system" fn GetStringValue<Identity: IPortableDeviceValues_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, key: *const super::PROPERTYKEY, pvalue: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -785,7 +785,7 @@ impl IPortableDeviceValues_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPortableDeviceValues_Impl::GetIUnknownValue(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        ppvalue.write(core::mem::transmute(ok__));
+                        ppvalue.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -830,7 +830,7 @@ impl IPortableDeviceValues_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPortableDeviceValues_Impl::GetIPortableDeviceValuesValue(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        ppvalue.write(core::mem::transmute(ok__));
+                        ppvalue.cast::<IPortableDeviceValues>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -851,7 +851,7 @@ impl IPortableDeviceValues_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPortableDeviceValues_Impl::GetIPortableDevicePropVariantCollectionValue(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        ppvalue.write(core::mem::transmute(ok__));
+                        ppvalue.cast::<IPortableDevicePropVariantCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -872,7 +872,7 @@ impl IPortableDeviceValues_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPortableDeviceValues_Impl::GetIPortableDeviceKeyCollectionValue(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        ppvalue.write(core::mem::transmute(ok__));
+                        ppvalue.cast::<IPortableDeviceKeyCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -893,7 +893,7 @@ impl IPortableDeviceValues_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPortableDeviceValues_Impl::GetIPortableDeviceValuesCollectionValue(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        ppvalue.write(core::mem::transmute(ok__));
+                        ppvalue.cast::<IPortableDeviceValuesCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -988,7 +988,7 @@ impl IPortableDeviceValuesCollection {
     pub unsafe fn GetAt(&self, dwindex: super::DWORD) -> windows_core::Result<IPortableDeviceValues> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAt)(windows_core::Interface::as_raw(self), dwindex, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAt)(windows_core::Interface::as_raw(self), dwindex, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Add<P0>(&self, pvalues: P0) -> windows_core::HRESULT
@@ -1046,7 +1046,7 @@ impl IPortableDeviceValuesCollection_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPortableDeviceValuesCollection_Impl::GetAt(this, core::mem::transmute_copy(&dwindex)) {
                     Ok(ok__) => {
-                        ppvalues.write(core::mem::transmute(ok__));
+                        ppvalues.cast::<IPortableDeviceValues>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1096,7 +1096,7 @@ impl IWpdSerializer {
     pub unsafe fn GetIPortableDeviceValuesFromBuffer(&self, pbuffer: *const super::BYTE, dwinputbufferlength: super::DWORD) -> windows_core::Result<IPortableDeviceValues> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetIPortableDeviceValuesFromBuffer)(windows_core::Interface::as_raw(self), pbuffer, dwinputbufferlength, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetIPortableDeviceValuesFromBuffer)(windows_core::Interface::as_raw(self), pbuffer, dwinputbufferlength, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -1157,7 +1157,7 @@ impl IWpdSerializer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWpdSerializer_Impl::GetIPortableDeviceValuesFromBuffer(this, core::mem::transmute_copy(&pbuffer), core::mem::transmute_copy(&dwinputbufferlength)) {
                     Ok(ok__) => {
-                        ppparams.write(core::mem::transmute(ok__));
+                        ppparams.cast::<IPortableDeviceValues>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

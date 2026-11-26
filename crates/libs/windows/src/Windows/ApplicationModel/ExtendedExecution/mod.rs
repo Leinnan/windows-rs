@@ -47,6 +47,7 @@ impl windows_core::RuntimeType for ExtendedExecutionRevokedEventArgs {
 unsafe impl windows_core::Interface for ExtendedExecutionRevokedEventArgs {
     type Vtable = <IExtendedExecutionRevokedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IExtendedExecutionRevokedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ExtendedExecutionRevokedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.ExtendedExecution.ExtendedExecutionRevokedEventArgs";
@@ -113,7 +114,7 @@ impl ExtendedExecutionSession {
     }
     pub fn Revoked<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<ExtendedExecutionRevokedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<ExtendedExecutionRevokedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<windows_core::IInspectable, ExtendedExecutionRevokedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -128,7 +129,7 @@ impl ExtendedExecutionSession {
     pub fn RequestExtensionAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<ExtendedExecutionResult>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RequestExtensionAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RequestExtensionAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -138,28 +139,21 @@ impl windows_core::RuntimeType for ExtendedExecutionSession {
 unsafe impl windows_core::Interface for ExtendedExecutionSession {
     type Vtable = <IExtendedExecutionSession as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IExtendedExecutionSession as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ExtendedExecutionSession {
     const NAME: &'static str = "Windows.ApplicationModel.ExtendedExecution.ExtendedExecutionSession";
 }
 unsafe impl Send for ExtendedExecutionSession {}
 unsafe impl Sync for ExtendedExecutionSession {}
-windows_core::imp::define_interface!(IExtendedExecutionRevokedEventArgs, IExtendedExecutionRevokedEventArgs_Vtbl, 0xbfbc9f16_63b5_4c0b_aad6_828af5373ec3);
-impl windows_core::RuntimeType for IExtendedExecutionRevokedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.ExtendedExecution.IExtendedExecutionRevokedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IExtendedExecutionRevokedEventArgs, IExtendedExecutionRevokedEventArgs_Vtbl, 0xbfbc9f16_63b5_4c0b_aad6_828af5373ec3, b"Windows.ApplicationModel.ExtendedExecution.IExtendedExecutionRevokedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IExtendedExecutionRevokedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Reason: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ExtendedExecutionRevokedReason) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IExtendedExecutionSession, IExtendedExecutionSession_Vtbl, 0xaf908a2d_118b_48f1_9308_0c4fc41e200f);
-impl windows_core::RuntimeType for IExtendedExecutionSession {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.ExtendedExecution.IExtendedExecutionSession");
-}
+windows_core::imp::define_winrt_interface!(IExtendedExecutionSession, IExtendedExecutionSession_Vtbl, 0xaf908a2d_118b_48f1_9308_0c4fc41e200f, b"Windows.ApplicationModel.ExtendedExecution.IExtendedExecutionSession");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IExtendedExecutionSession_Vtbl {

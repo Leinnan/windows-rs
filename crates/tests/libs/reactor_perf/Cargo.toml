@@ -5,8 +5,8 @@ edition = "2024"
 publish = false
 
 [dependencies]
-windows-reactor = { workspace = true, features = ["test"] }
-windows-sys = { workspace = true, features = ["processthreadsapi", "psapi"] }
+windows-reactor = { workspace = true }
+windows-link = { workspace = true }
 
 [build-dependencies]
 windows-reactor-setup = { workspace = true }

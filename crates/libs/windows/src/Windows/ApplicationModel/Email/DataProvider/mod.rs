@@ -5,7 +5,7 @@ windows_core::imp::interface_hierarchy!(EmailDataProviderConnection, windows_cor
 impl EmailDataProviderConnection {
     pub fn MailboxSyncRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxSyncManagerSyncRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxSyncManagerSyncRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxSyncManagerSyncRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -19,7 +19,7 @@ impl EmailDataProviderConnection {
     }
     pub fn DownloadMessageRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxDownloadMessageRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxDownloadMessageRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxDownloadMessageRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -33,7 +33,7 @@ impl EmailDataProviderConnection {
     }
     pub fn DownloadAttachmentRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxDownloadAttachmentRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxDownloadAttachmentRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxDownloadAttachmentRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -47,7 +47,7 @@ impl EmailDataProviderConnection {
     }
     pub fn CreateFolderRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxCreateFolderRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxCreateFolderRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxCreateFolderRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -61,7 +61,7 @@ impl EmailDataProviderConnection {
     }
     pub fn DeleteFolderRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxDeleteFolderRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxDeleteFolderRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxDeleteFolderRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -75,7 +75,7 @@ impl EmailDataProviderConnection {
     }
     pub fn EmptyFolderRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxEmptyFolderRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxEmptyFolderRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxEmptyFolderRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -89,7 +89,7 @@ impl EmailDataProviderConnection {
     }
     pub fn MoveFolderRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxMoveFolderRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxMoveFolderRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxMoveFolderRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -103,7 +103,7 @@ impl EmailDataProviderConnection {
     }
     pub fn UpdateMeetingResponseRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxUpdateMeetingResponseRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxUpdateMeetingResponseRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxUpdateMeetingResponseRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -117,7 +117,7 @@ impl EmailDataProviderConnection {
     }
     pub fn ForwardMeetingRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxForwardMeetingRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxForwardMeetingRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxForwardMeetingRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -131,7 +131,7 @@ impl EmailDataProviderConnection {
     }
     pub fn ProposeNewTimeForMeetingRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxProposeNewTimeForMeetingRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxProposeNewTimeForMeetingRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxProposeNewTimeForMeetingRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -145,7 +145,7 @@ impl EmailDataProviderConnection {
     }
     pub fn SetAutoReplySettingsRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxSetAutoReplySettingsRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxSetAutoReplySettingsRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxSetAutoReplySettingsRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -159,7 +159,7 @@ impl EmailDataProviderConnection {
     }
     pub fn GetAutoReplySettingsRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxGetAutoReplySettingsRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxGetAutoReplySettingsRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxGetAutoReplySettingsRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -173,7 +173,7 @@ impl EmailDataProviderConnection {
     }
     pub fn ResolveRecipientsRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxResolveRecipientsRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxResolveRecipientsRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxResolveRecipientsRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -187,7 +187,7 @@ impl EmailDataProviderConnection {
     }
     pub fn ValidateCertificatesRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxValidateCertificatesRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxValidateCertificatesRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxValidateCertificatesRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -201,7 +201,7 @@ impl EmailDataProviderConnection {
     }
     pub fn ServerSearchReadBatchRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxServerSearchReadBatchRequestEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<EmailMailboxServerSearchReadBatchRequestEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, EmailMailboxServerSearchReadBatchRequestEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -223,6 +223,7 @@ impl windows_core::RuntimeType for EmailDataProviderConnection {
 unsafe impl windows_core::Interface for EmailDataProviderConnection {
     type Vtable = <IEmailDataProviderConnection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailDataProviderConnection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailDataProviderConnection {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailDataProviderConnection";
@@ -237,7 +238,7 @@ impl EmailDataProviderTriggerDetails {
     pub fn Connection(&self) -> windows_core::Result<EmailDataProviderConnection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -247,6 +248,7 @@ impl windows_core::RuntimeType for EmailDataProviderTriggerDetails {
 unsafe impl windows_core::Interface for EmailDataProviderTriggerDetails {
     type Vtable = <IEmailDataProviderTriggerDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailDataProviderTriggerDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailDataProviderTriggerDetails {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailDataProviderTriggerDetails";
@@ -282,13 +284,13 @@ impl EmailMailboxCreateFolderRequest {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), folder.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), folder.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self, status: super::EmailMailboxCreateFolderStatus) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), status, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), status, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -298,6 +300,7 @@ impl windows_core::RuntimeType for EmailMailboxCreateFolderRequest {
 unsafe impl windows_core::Interface for EmailMailboxCreateFolderRequest {
     type Vtable = <IEmailMailboxCreateFolderRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxCreateFolderRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxCreateFolderRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxCreateFolderRequest";
@@ -312,13 +315,13 @@ impl EmailMailboxCreateFolderRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxCreateFolderRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -328,6 +331,7 @@ impl windows_core::RuntimeType for EmailMailboxCreateFolderRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxCreateFolderRequestEventArgs {
     type Vtable = <IEmailMailboxCreateFolderRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxCreateFolderRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxCreateFolderRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxCreateFolderRequestEventArgs";
@@ -354,13 +358,13 @@ impl EmailMailboxDeleteFolderRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self, status: super::EmailMailboxDeleteFolderStatus) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), status, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), status, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -370,6 +374,7 @@ impl windows_core::RuntimeType for EmailMailboxDeleteFolderRequest {
 unsafe impl windows_core::Interface for EmailMailboxDeleteFolderRequest {
     type Vtable = <IEmailMailboxDeleteFolderRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxDeleteFolderRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxDeleteFolderRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxDeleteFolderRequest";
@@ -384,13 +389,13 @@ impl EmailMailboxDeleteFolderRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxDeleteFolderRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -400,6 +405,7 @@ impl windows_core::RuntimeType for EmailMailboxDeleteFolderRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxDeleteFolderRequestEventArgs {
     type Vtable = <IEmailMailboxDeleteFolderRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxDeleteFolderRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxDeleteFolderRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxDeleteFolderRequestEventArgs";
@@ -432,13 +438,13 @@ impl EmailMailboxDownloadAttachmentRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -448,6 +454,7 @@ impl windows_core::RuntimeType for EmailMailboxDownloadAttachmentRequest {
 unsafe impl windows_core::Interface for EmailMailboxDownloadAttachmentRequest {
     type Vtable = <IEmailMailboxDownloadAttachmentRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxDownloadAttachmentRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxDownloadAttachmentRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxDownloadAttachmentRequest";
@@ -462,13 +469,13 @@ impl EmailMailboxDownloadAttachmentRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxDownloadAttachmentRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -478,6 +485,7 @@ impl windows_core::RuntimeType for EmailMailboxDownloadAttachmentRequestEventArg
 unsafe impl windows_core::Interface for EmailMailboxDownloadAttachmentRequestEventArgs {
     type Vtable = <IEmailMailboxDownloadAttachmentRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxDownloadAttachmentRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxDownloadAttachmentRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxDownloadAttachmentRequestEventArgs";
@@ -504,13 +512,13 @@ impl EmailMailboxDownloadMessageRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -520,6 +528,7 @@ impl windows_core::RuntimeType for EmailMailboxDownloadMessageRequest {
 unsafe impl windows_core::Interface for EmailMailboxDownloadMessageRequest {
     type Vtable = <IEmailMailboxDownloadMessageRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxDownloadMessageRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxDownloadMessageRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxDownloadMessageRequest";
@@ -534,13 +543,13 @@ impl EmailMailboxDownloadMessageRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxDownloadMessageRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -550,6 +559,7 @@ impl windows_core::RuntimeType for EmailMailboxDownloadMessageRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxDownloadMessageRequestEventArgs {
     type Vtable = <IEmailMailboxDownloadMessageRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxDownloadMessageRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxDownloadMessageRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxDownloadMessageRequestEventArgs";
@@ -576,13 +586,13 @@ impl EmailMailboxEmptyFolderRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self, status: super::EmailMailboxEmptyFolderStatus) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), status, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), status, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -592,6 +602,7 @@ impl windows_core::RuntimeType for EmailMailboxEmptyFolderRequest {
 unsafe impl windows_core::Interface for EmailMailboxEmptyFolderRequest {
     type Vtable = <IEmailMailboxEmptyFolderRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxEmptyFolderRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxEmptyFolderRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxEmptyFolderRequest";
@@ -606,13 +617,13 @@ impl EmailMailboxEmptyFolderRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxEmptyFolderRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -622,6 +633,7 @@ impl windows_core::RuntimeType for EmailMailboxEmptyFolderRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxEmptyFolderRequestEventArgs {
     type Vtable = <IEmailMailboxEmptyFolderRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxEmptyFolderRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxEmptyFolderRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxEmptyFolderRequestEventArgs";
@@ -648,7 +660,7 @@ impl EmailMailboxForwardMeetingRequest {
     pub fn Recipients(&self) -> windows_core::Result<windows_collections::IVectorView<super::EmailRecipient>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Recipients)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Recipients)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Subject(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -678,13 +690,13 @@ impl EmailMailboxForwardMeetingRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -694,6 +706,7 @@ impl windows_core::RuntimeType for EmailMailboxForwardMeetingRequest {
 unsafe impl windows_core::Interface for EmailMailboxForwardMeetingRequest {
     type Vtable = <IEmailMailboxForwardMeetingRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxForwardMeetingRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxForwardMeetingRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxForwardMeetingRequest";
@@ -708,13 +721,13 @@ impl EmailMailboxForwardMeetingRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxForwardMeetingRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -724,6 +737,7 @@ impl windows_core::RuntimeType for EmailMailboxForwardMeetingRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxForwardMeetingRequestEventArgs {
     type Vtable = <IEmailMailboxForwardMeetingRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxForwardMeetingRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxForwardMeetingRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxForwardMeetingRequestEventArgs";
@@ -753,13 +767,13 @@ impl EmailMailboxGetAutoReplySettingsRequest {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), autoreplysettings.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), autoreplysettings.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -769,6 +783,7 @@ impl windows_core::RuntimeType for EmailMailboxGetAutoReplySettingsRequest {
 unsafe impl windows_core::Interface for EmailMailboxGetAutoReplySettingsRequest {
     type Vtable = <IEmailMailboxGetAutoReplySettingsRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxGetAutoReplySettingsRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxGetAutoReplySettingsRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxGetAutoReplySettingsRequest";
@@ -783,13 +798,13 @@ impl EmailMailboxGetAutoReplySettingsRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxGetAutoReplySettingsRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -799,6 +814,7 @@ impl windows_core::RuntimeType for EmailMailboxGetAutoReplySettingsRequestEventA
 unsafe impl windows_core::Interface for EmailMailboxGetAutoReplySettingsRequestEventArgs {
     type Vtable = <IEmailMailboxGetAutoReplySettingsRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxGetAutoReplySettingsRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxGetAutoReplySettingsRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxGetAutoReplySettingsRequestEventArgs";
@@ -837,13 +853,13 @@ impl EmailMailboxMoveFolderRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -853,6 +869,7 @@ impl windows_core::RuntimeType for EmailMailboxMoveFolderRequest {
 unsafe impl windows_core::Interface for EmailMailboxMoveFolderRequest {
     type Vtable = <IEmailMailboxMoveFolderRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxMoveFolderRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxMoveFolderRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxMoveFolderRequest";
@@ -867,13 +884,13 @@ impl EmailMailboxMoveFolderRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxMoveFolderRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -883,6 +900,7 @@ impl windows_core::RuntimeType for EmailMailboxMoveFolderRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxMoveFolderRequestEventArgs {
     type Vtable = <IEmailMailboxMoveFolderRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxMoveFolderRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxMoveFolderRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxMoveFolderRequestEventArgs";
@@ -933,13 +951,13 @@ impl EmailMailboxProposeNewTimeForMeetingRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -949,6 +967,7 @@ impl windows_core::RuntimeType for EmailMailboxProposeNewTimeForMeetingRequest {
 unsafe impl windows_core::Interface for EmailMailboxProposeNewTimeForMeetingRequest {
     type Vtable = <IEmailMailboxProposeNewTimeForMeetingRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxProposeNewTimeForMeetingRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxProposeNewTimeForMeetingRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxProposeNewTimeForMeetingRequest";
@@ -963,13 +982,13 @@ impl EmailMailboxProposeNewTimeForMeetingRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxProposeNewTimeForMeetingRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -979,6 +998,7 @@ impl windows_core::RuntimeType for EmailMailboxProposeNewTimeForMeetingRequestEv
 unsafe impl windows_core::Interface for EmailMailboxProposeNewTimeForMeetingRequestEventArgs {
     type Vtable = <IEmailMailboxProposeNewTimeForMeetingRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxProposeNewTimeForMeetingRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxProposeNewTimeForMeetingRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxProposeNewTimeForMeetingRequestEventArgs";
@@ -999,7 +1019,7 @@ impl EmailMailboxResolveRecipientsRequest {
     pub fn Recipients(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Recipients)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Recipients)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportCompletedAsync<P0>(&self, resolutionresults: P0) -> windows_core::Result<windows_future::IAsyncAction>
@@ -1008,13 +1028,13 @@ impl EmailMailboxResolveRecipientsRequest {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), resolutionresults.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), resolutionresults.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1024,6 +1044,7 @@ impl windows_core::RuntimeType for EmailMailboxResolveRecipientsRequest {
 unsafe impl windows_core::Interface for EmailMailboxResolveRecipientsRequest {
     type Vtable = <IEmailMailboxResolveRecipientsRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxResolveRecipientsRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxResolveRecipientsRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxResolveRecipientsRequest";
@@ -1038,13 +1059,13 @@ impl EmailMailboxResolveRecipientsRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxResolveRecipientsRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1054,6 +1075,7 @@ impl windows_core::RuntimeType for EmailMailboxResolveRecipientsRequestEventArgs
 unsafe impl windows_core::Interface for EmailMailboxResolveRecipientsRequestEventArgs {
     type Vtable = <IEmailMailboxResolveRecipientsRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxResolveRecipientsRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxResolveRecipientsRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxResolveRecipientsRequestEventArgs";
@@ -1086,7 +1108,7 @@ impl EmailMailboxServerSearchReadBatchRequest {
     pub fn Options(&self) -> windows_core::Result<super::EmailQueryOptions> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Options)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Options)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SuggestedBatchSize(&self) -> windows_core::Result<u32> {
@@ -1101,19 +1123,19 @@ impl EmailMailboxServerSearchReadBatchRequest {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SaveMessageAsync)(windows_core::Interface::as_raw(self), message.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SaveMessageAsync)(windows_core::Interface::as_raw(self), message.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self, batchstatus: super::EmailBatchStatus) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), batchstatus, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), batchstatus, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1123,6 +1145,7 @@ impl windows_core::RuntimeType for EmailMailboxServerSearchReadBatchRequest {
 unsafe impl windows_core::Interface for EmailMailboxServerSearchReadBatchRequest {
     type Vtable = <IEmailMailboxServerSearchReadBatchRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxServerSearchReadBatchRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxServerSearchReadBatchRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxServerSearchReadBatchRequest";
@@ -1137,13 +1160,13 @@ impl EmailMailboxServerSearchReadBatchRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxServerSearchReadBatchRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1153,6 +1176,7 @@ impl windows_core::RuntimeType for EmailMailboxServerSearchReadBatchRequestEvent
 unsafe impl windows_core::Interface for EmailMailboxServerSearchReadBatchRequestEventArgs {
     type Vtable = <IEmailMailboxServerSearchReadBatchRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxServerSearchReadBatchRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxServerSearchReadBatchRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxServerSearchReadBatchRequestEventArgs";
@@ -1173,19 +1197,19 @@ impl EmailMailboxSetAutoReplySettingsRequest {
     pub fn AutoReplySettings(&self) -> windows_core::Result<super::EmailMailboxAutoReplySettings> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AutoReplySettings)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AutoReplySettings)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1195,6 +1219,7 @@ impl windows_core::RuntimeType for EmailMailboxSetAutoReplySettingsRequest {
 unsafe impl windows_core::Interface for EmailMailboxSetAutoReplySettingsRequest {
     type Vtable = <IEmailMailboxSetAutoReplySettingsRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxSetAutoReplySettingsRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxSetAutoReplySettingsRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxSetAutoReplySettingsRequest";
@@ -1209,13 +1234,13 @@ impl EmailMailboxSetAutoReplySettingsRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxSetAutoReplySettingsRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1225,6 +1250,7 @@ impl windows_core::RuntimeType for EmailMailboxSetAutoReplySettingsRequestEventA
 unsafe impl windows_core::Interface for EmailMailboxSetAutoReplySettingsRequestEventArgs {
     type Vtable = <IEmailMailboxSetAutoReplySettingsRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxSetAutoReplySettingsRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxSetAutoReplySettingsRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxSetAutoReplySettingsRequestEventArgs";
@@ -1245,13 +1271,13 @@ impl EmailMailboxSyncManagerSyncRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1261,6 +1287,7 @@ impl windows_core::RuntimeType for EmailMailboxSyncManagerSyncRequest {
 unsafe impl windows_core::Interface for EmailMailboxSyncManagerSyncRequest {
     type Vtable = <IEmailMailboxSyncManagerSyncRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxSyncManagerSyncRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxSyncManagerSyncRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxSyncManagerSyncRequest";
@@ -1275,13 +1302,13 @@ impl EmailMailboxSyncManagerSyncRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxSyncManagerSyncRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1291,6 +1318,7 @@ impl windows_core::RuntimeType for EmailMailboxSyncManagerSyncRequestEventArgs {
 unsafe impl windows_core::Interface for EmailMailboxSyncManagerSyncRequestEventArgs {
     type Vtable = <IEmailMailboxSyncManagerSyncRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxSyncManagerSyncRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxSyncManagerSyncRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxSyncManagerSyncRequestEventArgs";
@@ -1341,13 +1369,13 @@ impl EmailMailboxUpdateMeetingResponseRequest {
     pub fn ReportCompletedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1357,6 +1385,7 @@ impl windows_core::RuntimeType for EmailMailboxUpdateMeetingResponseRequest {
 unsafe impl windows_core::Interface for EmailMailboxUpdateMeetingResponseRequest {
     type Vtable = <IEmailMailboxUpdateMeetingResponseRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxUpdateMeetingResponseRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxUpdateMeetingResponseRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxUpdateMeetingResponseRequest";
@@ -1371,13 +1400,13 @@ impl EmailMailboxUpdateMeetingResponseRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxUpdateMeetingResponseRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1387,6 +1416,7 @@ impl windows_core::RuntimeType for EmailMailboxUpdateMeetingResponseRequestEvent
 unsafe impl windows_core::Interface for EmailMailboxUpdateMeetingResponseRequestEventArgs {
     type Vtable = <IEmailMailboxUpdateMeetingResponseRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxUpdateMeetingResponseRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxUpdateMeetingResponseRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxUpdateMeetingResponseRequestEventArgs";
@@ -1408,7 +1438,7 @@ impl EmailMailboxValidateCertificatesRequest {
     pub fn Certificates(&self) -> windows_core::Result<windows_collections::IVectorView<super::super::super::Security::Cryptography::Certificates::Certificate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportCompletedAsync<P0>(&self, validationstatuses: P0) -> windows_core::Result<windows_future::IAsyncAction>
@@ -1417,13 +1447,13 @@ impl EmailMailboxValidateCertificatesRequest {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), validationstatuses.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportCompletedAsync)(windows_core::Interface::as_raw(self), validationstatuses.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ReportFailedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ReportFailedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1433,6 +1463,7 @@ impl windows_core::RuntimeType for EmailMailboxValidateCertificatesRequest {
 unsafe impl windows_core::Interface for EmailMailboxValidateCertificatesRequest {
     type Vtable = <IEmailMailboxValidateCertificatesRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxValidateCertificatesRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxValidateCertificatesRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxValidateCertificatesRequest";
@@ -1447,13 +1478,13 @@ impl EmailMailboxValidateCertificatesRequestEventArgs {
     pub fn Request(&self) -> windows_core::Result<EmailMailboxValidateCertificatesRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1463,17 +1494,14 @@ impl windows_core::RuntimeType for EmailMailboxValidateCertificatesRequestEventA
 unsafe impl windows_core::Interface for EmailMailboxValidateCertificatesRequestEventArgs {
     type Vtable = <IEmailMailboxValidateCertificatesRequestEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IEmailMailboxValidateCertificatesRequestEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for EmailMailboxValidateCertificatesRequestEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Email.DataProvider.EmailMailboxValidateCertificatesRequestEventArgs";
 }
 unsafe impl Send for EmailMailboxValidateCertificatesRequestEventArgs {}
 unsafe impl Sync for EmailMailboxValidateCertificatesRequestEventArgs {}
-windows_core::imp::define_interface!(IEmailDataProviderConnection, IEmailDataProviderConnection_Vtbl, 0x3b9c9dc7_37b2_4bf0_ae30_7b644a1c96e1);
-impl windows_core::RuntimeType for IEmailDataProviderConnection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailDataProviderConnection");
-}
+windows_core::imp::define_winrt_interface!(IEmailDataProviderConnection, IEmailDataProviderConnection_Vtbl, 0x3b9c9dc7_37b2_4bf0_ae30_7b644a1c96e1, b"Windows.ApplicationModel.Email.DataProvider.IEmailDataProviderConnection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailDataProviderConnection_Vtbl {
@@ -1510,22 +1538,14 @@ pub struct IEmailDataProviderConnection_Vtbl {
     pub RemoveServerSearchReadBatchRequested: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub Start: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailDataProviderTriggerDetails, IEmailDataProviderTriggerDetails_Vtbl, 0x8f3e4e50_341e_45f3_bba0_84a005e1319a);
-impl windows_core::RuntimeType for IEmailDataProviderTriggerDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailDataProviderTriggerDetails");
-}
+windows_core::imp::define_winrt_interface!(IEmailDataProviderTriggerDetails, IEmailDataProviderTriggerDetails_Vtbl, 0x8f3e4e50_341e_45f3_bba0_84a005e1319a, b"Windows.ApplicationModel.Email.DataProvider.IEmailDataProviderTriggerDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailDataProviderTriggerDetails_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Connection: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxCreateFolderRequest, IEmailMailboxCreateFolderRequest_Vtbl, 0x184d3775_c921_4c39_a309_e16c9f22b04b);
-impl windows_core::RuntimeType for IEmailMailboxCreateFolderRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxCreateFolderRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxCreateFolderRequest, IEmailMailboxCreateFolderRequest_Vtbl, 0x184d3775_c921_4c39_a309_e16c9f22b04b, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxCreateFolderRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxCreateFolderRequest_Vtbl {
@@ -1536,11 +1556,7 @@ pub struct IEmailMailboxCreateFolderRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, super::EmailMailboxCreateFolderStatus, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxCreateFolderRequestEventArgs, IEmailMailboxCreateFolderRequestEventArgs_Vtbl, 0x03e4c02c_241c_4ea9_a68f_ff20bc5afc85);
-impl windows_core::RuntimeType for IEmailMailboxCreateFolderRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxCreateFolderRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxCreateFolderRequestEventArgs, IEmailMailboxCreateFolderRequestEventArgs_Vtbl, 0x03e4c02c_241c_4ea9_a68f_ff20bc5afc85, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxCreateFolderRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxCreateFolderRequestEventArgs_Vtbl {
@@ -1548,11 +1564,7 @@ pub struct IEmailMailboxCreateFolderRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxDeleteFolderRequest, IEmailMailboxDeleteFolderRequest_Vtbl, 0x9469e88a_a931_4779_923d_09a3ea292e29);
-impl windows_core::RuntimeType for IEmailMailboxDeleteFolderRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDeleteFolderRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxDeleteFolderRequest, IEmailMailboxDeleteFolderRequest_Vtbl, 0x9469e88a_a931_4779_923d_09a3ea292e29, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDeleteFolderRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxDeleteFolderRequest_Vtbl {
@@ -1562,11 +1574,7 @@ pub struct IEmailMailboxDeleteFolderRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, super::EmailMailboxDeleteFolderStatus, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxDeleteFolderRequestEventArgs, IEmailMailboxDeleteFolderRequestEventArgs_Vtbl, 0xb4d32d06_2332_4678_8378_28b579336846);
-impl windows_core::RuntimeType for IEmailMailboxDeleteFolderRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDeleteFolderRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxDeleteFolderRequestEventArgs, IEmailMailboxDeleteFolderRequestEventArgs_Vtbl, 0xb4d32d06_2332_4678_8378_28b579336846, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDeleteFolderRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxDeleteFolderRequestEventArgs_Vtbl {
@@ -1574,11 +1582,7 @@ pub struct IEmailMailboxDeleteFolderRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxDownloadAttachmentRequest, IEmailMailboxDownloadAttachmentRequest_Vtbl, 0x0b1dbbb4_750c_48e1_bce4_8d589684ffbc);
-impl windows_core::RuntimeType for IEmailMailboxDownloadAttachmentRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadAttachmentRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxDownloadAttachmentRequest, IEmailMailboxDownloadAttachmentRequest_Vtbl, 0x0b1dbbb4_750c_48e1_bce4_8d589684ffbc, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadAttachmentRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxDownloadAttachmentRequest_Vtbl {
@@ -1589,11 +1593,7 @@ pub struct IEmailMailboxDownloadAttachmentRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxDownloadAttachmentRequestEventArgs, IEmailMailboxDownloadAttachmentRequestEventArgs_Vtbl, 0xccddc46d_ffa8_4877_9f9d_fed7bcaf4104);
-impl windows_core::RuntimeType for IEmailMailboxDownloadAttachmentRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadAttachmentRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxDownloadAttachmentRequestEventArgs, IEmailMailboxDownloadAttachmentRequestEventArgs_Vtbl, 0xccddc46d_ffa8_4877_9f9d_fed7bcaf4104, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadAttachmentRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxDownloadAttachmentRequestEventArgs_Vtbl {
@@ -1601,11 +1601,7 @@ pub struct IEmailMailboxDownloadAttachmentRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxDownloadMessageRequest, IEmailMailboxDownloadMessageRequest_Vtbl, 0x497b4187_5b4d_4b23_816c_f3842beb753e);
-impl windows_core::RuntimeType for IEmailMailboxDownloadMessageRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadMessageRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxDownloadMessageRequest, IEmailMailboxDownloadMessageRequest_Vtbl, 0x497b4187_5b4d_4b23_816c_f3842beb753e, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadMessageRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxDownloadMessageRequest_Vtbl {
@@ -1615,11 +1611,7 @@ pub struct IEmailMailboxDownloadMessageRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxDownloadMessageRequestEventArgs, IEmailMailboxDownloadMessageRequestEventArgs_Vtbl, 0x470409ad_d0a0_4a5b_bb2a_37621039c53e);
-impl windows_core::RuntimeType for IEmailMailboxDownloadMessageRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadMessageRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxDownloadMessageRequestEventArgs, IEmailMailboxDownloadMessageRequestEventArgs_Vtbl, 0x470409ad_d0a0_4a5b_bb2a_37621039c53e, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxDownloadMessageRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxDownloadMessageRequestEventArgs_Vtbl {
@@ -1627,11 +1619,7 @@ pub struct IEmailMailboxDownloadMessageRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxEmptyFolderRequest, IEmailMailboxEmptyFolderRequest_Vtbl, 0xfe4b03ab_f86d_46d9_b4ce_bc8a6d9e9268);
-impl windows_core::RuntimeType for IEmailMailboxEmptyFolderRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxEmptyFolderRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxEmptyFolderRequest, IEmailMailboxEmptyFolderRequest_Vtbl, 0xfe4b03ab_f86d_46d9_b4ce_bc8a6d9e9268, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxEmptyFolderRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxEmptyFolderRequest_Vtbl {
@@ -1641,11 +1629,7 @@ pub struct IEmailMailboxEmptyFolderRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, super::EmailMailboxEmptyFolderStatus, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxEmptyFolderRequestEventArgs, IEmailMailboxEmptyFolderRequestEventArgs_Vtbl, 0x7183f484_985a_4ac0_b33f_ee0e2627a3c0);
-impl windows_core::RuntimeType for IEmailMailboxEmptyFolderRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxEmptyFolderRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxEmptyFolderRequestEventArgs, IEmailMailboxEmptyFolderRequestEventArgs_Vtbl, 0x7183f484_985a_4ac0_b33f_ee0e2627a3c0, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxEmptyFolderRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxEmptyFolderRequestEventArgs_Vtbl {
@@ -1653,11 +1637,7 @@ pub struct IEmailMailboxEmptyFolderRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxForwardMeetingRequest, IEmailMailboxForwardMeetingRequest_Vtbl, 0x616d6af1_70d4_4832_b869_b80542ae9be8);
-impl windows_core::RuntimeType for IEmailMailboxForwardMeetingRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxForwardMeetingRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxForwardMeetingRequest, IEmailMailboxForwardMeetingRequest_Vtbl, 0x616d6af1_70d4_4832_b869_b80542ae9be8, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxForwardMeetingRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxForwardMeetingRequest_Vtbl {
@@ -1672,11 +1652,7 @@ pub struct IEmailMailboxForwardMeetingRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxForwardMeetingRequestEventArgs, IEmailMailboxForwardMeetingRequestEventArgs_Vtbl, 0x2bd8f33a_2974_4759_a5a5_58f44d3c0275);
-impl windows_core::RuntimeType for IEmailMailboxForwardMeetingRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxForwardMeetingRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxForwardMeetingRequestEventArgs, IEmailMailboxForwardMeetingRequestEventArgs_Vtbl, 0x2bd8f33a_2974_4759_a5a5_58f44d3c0275, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxForwardMeetingRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxForwardMeetingRequestEventArgs_Vtbl {
@@ -1684,11 +1660,7 @@ pub struct IEmailMailboxForwardMeetingRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxGetAutoReplySettingsRequest, IEmailMailboxGetAutoReplySettingsRequest_Vtbl, 0x9b380789_1e88_4e01_84cc_1386ad9a2c2f);
-impl windows_core::RuntimeType for IEmailMailboxGetAutoReplySettingsRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxGetAutoReplySettingsRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxGetAutoReplySettingsRequest, IEmailMailboxGetAutoReplySettingsRequest_Vtbl, 0x9b380789_1e88_4e01_84cc_1386ad9a2c2f, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxGetAutoReplySettingsRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxGetAutoReplySettingsRequest_Vtbl {
@@ -1698,11 +1670,7 @@ pub struct IEmailMailboxGetAutoReplySettingsRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxGetAutoReplySettingsRequestEventArgs, IEmailMailboxGetAutoReplySettingsRequestEventArgs_Vtbl, 0xd79f55c2_fd45_4004_8a91_9bacf38b7022);
-impl windows_core::RuntimeType for IEmailMailboxGetAutoReplySettingsRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxGetAutoReplySettingsRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxGetAutoReplySettingsRequestEventArgs, IEmailMailboxGetAutoReplySettingsRequestEventArgs_Vtbl, 0xd79f55c2_fd45_4004_8a91_9bacf38b7022, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxGetAutoReplySettingsRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxGetAutoReplySettingsRequestEventArgs_Vtbl {
@@ -1710,11 +1678,7 @@ pub struct IEmailMailboxGetAutoReplySettingsRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxMoveFolderRequest, IEmailMailboxMoveFolderRequest_Vtbl, 0x10ba2856_4a95_4068_91cc_67cc7acf454f);
-impl windows_core::RuntimeType for IEmailMailboxMoveFolderRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxMoveFolderRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxMoveFolderRequest, IEmailMailboxMoveFolderRequest_Vtbl, 0x10ba2856_4a95_4068_91cc_67cc7acf454f, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxMoveFolderRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxMoveFolderRequest_Vtbl {
@@ -1726,11 +1690,7 @@ pub struct IEmailMailboxMoveFolderRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxMoveFolderRequestEventArgs, IEmailMailboxMoveFolderRequestEventArgs_Vtbl, 0x38623020_14ba_4c88_8698_7239e3c8aaa7);
-impl windows_core::RuntimeType for IEmailMailboxMoveFolderRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxMoveFolderRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxMoveFolderRequestEventArgs, IEmailMailboxMoveFolderRequestEventArgs_Vtbl, 0x38623020_14ba_4c88_8698_7239e3c8aaa7, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxMoveFolderRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxMoveFolderRequestEventArgs_Vtbl {
@@ -1738,11 +1698,7 @@ pub struct IEmailMailboxMoveFolderRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxProposeNewTimeForMeetingRequest, IEmailMailboxProposeNewTimeForMeetingRequest_Vtbl, 0x5aeff152_9799_4f9f_a399_ff07f3eef04e);
-impl windows_core::RuntimeType for IEmailMailboxProposeNewTimeForMeetingRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxProposeNewTimeForMeetingRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxProposeNewTimeForMeetingRequest, IEmailMailboxProposeNewTimeForMeetingRequest_Vtbl, 0x5aeff152_9799_4f9f_a399_ff07f3eef04e, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxProposeNewTimeForMeetingRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxProposeNewTimeForMeetingRequest_Vtbl {
@@ -1756,11 +1712,7 @@ pub struct IEmailMailboxProposeNewTimeForMeetingRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxProposeNewTimeForMeetingRequestEventArgs, IEmailMailboxProposeNewTimeForMeetingRequestEventArgs_Vtbl, 0xfb480b98_33ad_4a67_8251_0f9c249b6a20);
-impl windows_core::RuntimeType for IEmailMailboxProposeNewTimeForMeetingRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxProposeNewTimeForMeetingRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxProposeNewTimeForMeetingRequestEventArgs, IEmailMailboxProposeNewTimeForMeetingRequestEventArgs_Vtbl, 0xfb480b98_33ad_4a67_8251_0f9c249b6a20, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxProposeNewTimeForMeetingRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxProposeNewTimeForMeetingRequestEventArgs_Vtbl {
@@ -1768,11 +1720,7 @@ pub struct IEmailMailboxProposeNewTimeForMeetingRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxResolveRecipientsRequest, IEmailMailboxResolveRecipientsRequest_Vtbl, 0xefa4cf70_7b39_4c9b_811e_41eaf43a332d);
-impl windows_core::RuntimeType for IEmailMailboxResolveRecipientsRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxResolveRecipientsRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxResolveRecipientsRequest, IEmailMailboxResolveRecipientsRequest_Vtbl, 0xefa4cf70_7b39_4c9b_811e_41eaf43a332d, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxResolveRecipientsRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxResolveRecipientsRequest_Vtbl {
@@ -1782,11 +1730,7 @@ pub struct IEmailMailboxResolveRecipientsRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxResolveRecipientsRequestEventArgs, IEmailMailboxResolveRecipientsRequestEventArgs_Vtbl, 0x260f9e02_b2cf_40f8_8c28_e3ed43b1e89a);
-impl windows_core::RuntimeType for IEmailMailboxResolveRecipientsRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxResolveRecipientsRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxResolveRecipientsRequestEventArgs, IEmailMailboxResolveRecipientsRequestEventArgs_Vtbl, 0x260f9e02_b2cf_40f8_8c28_e3ed43b1e89a, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxResolveRecipientsRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxResolveRecipientsRequestEventArgs_Vtbl {
@@ -1794,11 +1738,7 @@ pub struct IEmailMailboxResolveRecipientsRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxServerSearchReadBatchRequest, IEmailMailboxServerSearchReadBatchRequest_Vtbl, 0x090eebdf_5a96_41d3_8ad8_34912f9aa60e);
-impl windows_core::RuntimeType for IEmailMailboxServerSearchReadBatchRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxServerSearchReadBatchRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxServerSearchReadBatchRequest, IEmailMailboxServerSearchReadBatchRequest_Vtbl, 0x090eebdf_5a96_41d3_8ad8_34912f9aa60e, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxServerSearchReadBatchRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxServerSearchReadBatchRequest_Vtbl {
@@ -1812,11 +1752,7 @@ pub struct IEmailMailboxServerSearchReadBatchRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, super::EmailBatchStatus, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxServerSearchReadBatchRequestEventArgs, IEmailMailboxServerSearchReadBatchRequestEventArgs_Vtbl, 0x14101b4e_ed9e_45d1_ad7a_cc9b7f643ae2);
-impl windows_core::RuntimeType for IEmailMailboxServerSearchReadBatchRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxServerSearchReadBatchRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxServerSearchReadBatchRequestEventArgs, IEmailMailboxServerSearchReadBatchRequestEventArgs_Vtbl, 0x14101b4e_ed9e_45d1_ad7a_cc9b7f643ae2, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxServerSearchReadBatchRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxServerSearchReadBatchRequestEventArgs_Vtbl {
@@ -1824,11 +1760,7 @@ pub struct IEmailMailboxServerSearchReadBatchRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxSetAutoReplySettingsRequest, IEmailMailboxSetAutoReplySettingsRequest_Vtbl, 0x75a422d0_a88e_4e54_8dc7_c243186b774e);
-impl windows_core::RuntimeType for IEmailMailboxSetAutoReplySettingsRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSetAutoReplySettingsRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxSetAutoReplySettingsRequest, IEmailMailboxSetAutoReplySettingsRequest_Vtbl, 0x75a422d0_a88e_4e54_8dc7_c243186b774e, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSetAutoReplySettingsRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxSetAutoReplySettingsRequest_Vtbl {
@@ -1838,11 +1770,7 @@ pub struct IEmailMailboxSetAutoReplySettingsRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxSetAutoReplySettingsRequestEventArgs, IEmailMailboxSetAutoReplySettingsRequestEventArgs_Vtbl, 0x09da11ad_d7ca_4087_ac86_53fa67f76246);
-impl windows_core::RuntimeType for IEmailMailboxSetAutoReplySettingsRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSetAutoReplySettingsRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxSetAutoReplySettingsRequestEventArgs, IEmailMailboxSetAutoReplySettingsRequestEventArgs_Vtbl, 0x09da11ad_d7ca_4087_ac86_53fa67f76246, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSetAutoReplySettingsRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxSetAutoReplySettingsRequestEventArgs_Vtbl {
@@ -1850,11 +1778,7 @@ pub struct IEmailMailboxSetAutoReplySettingsRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxSyncManagerSyncRequest, IEmailMailboxSyncManagerSyncRequest_Vtbl, 0x4e10e8e4_7e67_405a_b673_dc60c91090fc);
-impl windows_core::RuntimeType for IEmailMailboxSyncManagerSyncRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSyncManagerSyncRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxSyncManagerSyncRequest, IEmailMailboxSyncManagerSyncRequest_Vtbl, 0x4e10e8e4_7e67_405a_b673_dc60c91090fc, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSyncManagerSyncRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxSyncManagerSyncRequest_Vtbl {
@@ -1863,11 +1787,7 @@ pub struct IEmailMailboxSyncManagerSyncRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxSyncManagerSyncRequestEventArgs, IEmailMailboxSyncManagerSyncRequestEventArgs_Vtbl, 0x439a031a_8fcc_4ae5_b9b5_d434e0a65aa8);
-impl windows_core::RuntimeType for IEmailMailboxSyncManagerSyncRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSyncManagerSyncRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxSyncManagerSyncRequestEventArgs, IEmailMailboxSyncManagerSyncRequestEventArgs_Vtbl, 0x439a031a_8fcc_4ae5_b9b5_d434e0a65aa8, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxSyncManagerSyncRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxSyncManagerSyncRequestEventArgs_Vtbl {
@@ -1875,11 +1795,7 @@ pub struct IEmailMailboxSyncManagerSyncRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxUpdateMeetingResponseRequest, IEmailMailboxUpdateMeetingResponseRequest_Vtbl, 0x5b99ac93_b2cf_4888_ba4f_306b6b66df30);
-impl windows_core::RuntimeType for IEmailMailboxUpdateMeetingResponseRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxUpdateMeetingResponseRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxUpdateMeetingResponseRequest, IEmailMailboxUpdateMeetingResponseRequest_Vtbl, 0x5b99ac93_b2cf_4888_ba4f_306b6b66df30, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxUpdateMeetingResponseRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxUpdateMeetingResponseRequest_Vtbl {
@@ -1893,11 +1809,7 @@ pub struct IEmailMailboxUpdateMeetingResponseRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxUpdateMeetingResponseRequestEventArgs, IEmailMailboxUpdateMeetingResponseRequestEventArgs_Vtbl, 0x6898d761_56c9_4f17_be31_66fda94ba159);
-impl windows_core::RuntimeType for IEmailMailboxUpdateMeetingResponseRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxUpdateMeetingResponseRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxUpdateMeetingResponseRequestEventArgs, IEmailMailboxUpdateMeetingResponseRequestEventArgs_Vtbl, 0x6898d761_56c9_4f17_be31_66fda94ba159, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxUpdateMeetingResponseRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxUpdateMeetingResponseRequestEventArgs_Vtbl {
@@ -1905,11 +1817,7 @@ pub struct IEmailMailboxUpdateMeetingResponseRequestEventArgs_Vtbl {
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxValidateCertificatesRequest, IEmailMailboxValidateCertificatesRequest_Vtbl, 0xa94d3931_e11a_4f97_b81a_187a70a8f41a);
-impl windows_core::RuntimeType for IEmailMailboxValidateCertificatesRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxValidateCertificatesRequest");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxValidateCertificatesRequest, IEmailMailboxValidateCertificatesRequest_Vtbl, 0xa94d3931_e11a_4f97_b81a_187a70a8f41a, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxValidateCertificatesRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxValidateCertificatesRequest_Vtbl {
@@ -1922,11 +1830,7 @@ pub struct IEmailMailboxValidateCertificatesRequest_Vtbl {
     pub ReportCompletedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ReportFailedAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IEmailMailboxValidateCertificatesRequestEventArgs, IEmailMailboxValidateCertificatesRequestEventArgs_Vtbl, 0x2583bf17_02ff_49fe_a73c_03f37566c691);
-impl windows_core::RuntimeType for IEmailMailboxValidateCertificatesRequestEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxValidateCertificatesRequestEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IEmailMailboxValidateCertificatesRequestEventArgs, IEmailMailboxValidateCertificatesRequestEventArgs_Vtbl, 0x2583bf17_02ff_49fe_a73c_03f37566c691, b"Windows.ApplicationModel.Email.DataProvider.IEmailMailboxValidateCertificatesRequestEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IEmailMailboxValidateCertificatesRequestEventArgs_Vtbl {

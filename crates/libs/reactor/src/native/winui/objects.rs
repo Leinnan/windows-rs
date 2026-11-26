@@ -34,23 +34,28 @@ impl WinUiAdapter {
                     let item_event = Rc::clone(&item_invoked);
                     let item_queue = Rc::clone(&self.event_queue);
                     let item_texts = Rc::clone(&self.tree_node_texts);
-                    let _item_invoked = value.ItemInvoked(move |_, args| {
-                        let args = args.unwrap();
-                        let node = args
-                            .InvokedItem()
-                            .and_then(|value| value.cast::<native::ITreeViewNode>())
-                            .unwrap();
-                        let identity = com_identity(&node).unwrap();
-                        let value = item_texts.borrow().get(&identity).cloned().unwrap();
-                        Self::dispatch(
-                            &item_event,
-                            &item_queue,
-                            object,
-                            EventId::ItemInvoked,
-                            None,
-                            value,
-                        );
-                    })?;
+                    let _item_invoked =
+                        value.ItemInvoked(local::handler::<
+                            _,
+                            native::TreeViewItemInvokedEventArgs,
+                            _,
+                        >(move |_, args| {
+                            let args = args.unwrap();
+                            let node = args
+                                .InvokedItem()
+                                .and_then(|value| value.cast::<native::ITreeViewNode>())
+                                .unwrap();
+                            let identity = com_identity(&node).unwrap();
+                            let value = item_texts.borrow().get(&identity).cloned().unwrap();
+                            Self::dispatch(
+                                &item_event,
+                                &item_queue,
+                                object,
+                                EventId::ItemInvoked,
+                                None,
+                                value,
+                            );
+                        }))?;
                     Handle::TreeView(NativeTreeView {
                         value,
                         item_invoked,
@@ -77,7 +82,7 @@ impl WinUiAdapter {
                             Some(data_string("Visible")),
                         ),
                     ]);
-                    Handle::Data(values.into())
+                    Handle::Data(IObservableMap::from_marshaled(values)?)
                 }
                 _ => unreachable!("generated object was not created"),
             }
@@ -339,8 +344,8 @@ impl WinUiAdapter {
         }
     }
 
-    /// Drops all adapter state for an object whose handle was just removed. Destroy, retirement
-    /// completion, and replacement all end an object's native lifetime through this path.
+    /// Drops all adapter state for an object whose handle was just removed. Destroy and
+    /// replacement both end an object's native lifetime through this path.
     pub(super) fn release_object(
         &mut self,
         object: ObjectId,
@@ -357,6 +362,10 @@ impl WinUiAdapter {
             for completion in initialization.completions {
                 completion.call(Err(IntegrationError::Unavailable));
             }
+        }
+        let scrolls = self.scroll_requests.borrow_mut().remove(&object);
+        if let Some(requests) = scrolls {
+            requests.cancel();
         }
         self.event_queue.items.borrow_mut().remove(&object);
         match handle {
@@ -517,12 +526,16 @@ impl WinUiAdapter {
             })?;
             let callback = accelerator.callback.clone();
             value
-                .Invoked(move |_, args| {
+                .Invoked(local::handler::<
+                    _,
+                    native::KeyboardAcceleratorInvokedEventArgs,
+                    _,
+                >(move |_, args| {
                     if let Some(args) = args.as_ref() {
                         _ = args.SetHandled(true);
                     }
                     callback.call(());
-                })?
+                }))?
                 .into_token();
             values.Append(&value)?;
         }

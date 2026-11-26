@@ -12,7 +12,7 @@ substitute for Rust borrowing, `Box`, or `Option`.
 
 ```toml
 [dependencies]
-windows-reference = "0.100"
+windows-reference = "0.101"
 ```
 
 ```rust
@@ -27,6 +27,8 @@ assert_eq!(value.Value().unwrap(), 42);
 The generic type determines the interface identity: `IReference<i32>` and `IReference<u32>` are
 different interfaces. An `IReference<T>` contains a present value; a surrounding nullable interface
 represents absence.
+
+Boxing requires `T: Send + Sync`; reading an existing native `IReference<T>` does not.
 
 Cloning the interface retains the same object. `Value()` retrieves the value through a fallible
 interface call; propagate its result in application code. Read once at the boundary, then continue

@@ -74,42 +74,4 @@ where
     })))
 }
 
-pub(super) struct ContextEnvironment<'a> {
-    pub(super) contexts: &'a HashMap<ContextId, ContextValue>,
-    pub(super) provided: &'a HashSet<ContextId>,
-}
-
-pub(super) struct OwnedContextEnvironment {
-    pub(super) contexts: HashMap<ContextId, ContextValue>,
-    pub(super) provided: HashSet<ContextId>,
-}
-
-impl<A: Adapter> ComponentHost<A> {
-    pub(super) fn replace_dependencies(
-        &mut self,
-        id: ComponentId,
-        dependencies: HashSet<ContextId>,
-    ) {
-        let previous = std::mem::replace(
-            &mut self.scope_mut(id).unwrap().dependencies,
-            dependencies.clone(),
-        );
-        for context in previous.difference(&dependencies) {
-            let remove = if let Some(consumers) = self.context_consumers.get_mut(context) {
-                consumers.remove(&id);
-                consumers.is_empty()
-            } else {
-                false
-            };
-            if remove {
-                self.context_consumers.remove(context);
-            }
-        }
-        for context in dependencies.difference(&previous) {
-            self.context_consumers
-                .entry(*context)
-                .or_default()
-                .insert(id);
-        }
-    }
-}
+pub(super) type ContextEnvironment = Rc<HashMap<ContextId, ContextValue>>;

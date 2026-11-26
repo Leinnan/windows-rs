@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IPlatformTelemetryClientStatics, IPlatformTelemetryClientStatics_Vtbl, 0x9bf3f25d_d5c3_4eea_8dbe_9c8dbb0d9d8f);
-impl windows_core::RuntimeType for IPlatformTelemetryClientStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.Diagnostics.Telemetry.IPlatformTelemetryClientStatics");
-}
+windows_core::imp::define_winrt_interface!(IPlatformTelemetryClientStatics, IPlatformTelemetryClientStatics_Vtbl, 0x9bf3f25d_d5c3_4eea_8dbe_9c8dbb0d9d8f, b"Windows.System.Diagnostics.Telemetry.IPlatformTelemetryClientStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPlatformTelemetryClientStatics_Vtbl {
@@ -10,22 +6,14 @@ pub struct IPlatformTelemetryClientStatics_Vtbl {
     pub Register: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub RegisterWithSettings: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPlatformTelemetryRegistrationResult, IPlatformTelemetryRegistrationResult_Vtbl, 0x4d8518ab_2292_49bd_a15a_3d71d2145112);
-impl windows_core::RuntimeType for IPlatformTelemetryRegistrationResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.Diagnostics.Telemetry.IPlatformTelemetryRegistrationResult");
-}
+windows_core::imp::define_winrt_interface!(IPlatformTelemetryRegistrationResult, IPlatformTelemetryRegistrationResult_Vtbl, 0x4d8518ab_2292_49bd_a15a_3d71d2145112, b"Windows.System.Diagnostics.Telemetry.IPlatformTelemetryRegistrationResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPlatformTelemetryRegistrationResult_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut PlatformTelemetryRegistrationStatus) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPlatformTelemetryRegistrationSettings, IPlatformTelemetryRegistrationSettings_Vtbl, 0x819a8582_ca19_415e_bb79_9c224bfa3a73);
-impl windows_core::RuntimeType for IPlatformTelemetryRegistrationSettings {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.Diagnostics.Telemetry.IPlatformTelemetryRegistrationSettings");
-}
+windows_core::imp::define_winrt_interface!(IPlatformTelemetryRegistrationSettings, IPlatformTelemetryRegistrationSettings_Vtbl, 0x819a8582_ca19_415e_bb79_9c224bfa3a73, b"Windows.System.Diagnostics.Telemetry.IPlatformTelemetryRegistrationSettings");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPlatformTelemetryRegistrationSettings_Vtbl {
@@ -40,7 +28,7 @@ impl PlatformTelemetryClient {
     pub fn Register(id: &windows_core::HSTRING) -> windows_core::Result<PlatformTelemetryRegistrationResult> {
         Self::IPlatformTelemetryClientStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Register)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(id), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Register)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(id), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn RegisterWithSettings<P1>(id: &windows_core::HSTRING, settings: P1) -> windows_core::Result<PlatformTelemetryRegistrationResult>
@@ -49,7 +37,7 @@ impl PlatformTelemetryClient {
     {
         Self::IPlatformTelemetryClientStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RegisterWithSettings)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(id), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RegisterWithSettings)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(id), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IPlatformTelemetryClientStatics<R, F: FnOnce(&IPlatformTelemetryClientStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -78,6 +66,7 @@ impl windows_core::RuntimeType for PlatformTelemetryRegistrationResult {
 unsafe impl windows_core::Interface for PlatformTelemetryRegistrationResult {
     type Vtable = <IPlatformTelemetryRegistrationResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPlatformTelemetryRegistrationResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PlatformTelemetryRegistrationResult {
     const NAME: &'static str = "Windows.System.Diagnostics.Telemetry.PlatformTelemetryRegistrationResult";
@@ -121,6 +110,7 @@ impl windows_core::RuntimeType for PlatformTelemetryRegistrationSettings {
 unsafe impl windows_core::Interface for PlatformTelemetryRegistrationSettings {
     type Vtable = <IPlatformTelemetryRegistrationSettings as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPlatformTelemetryRegistrationSettings as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PlatformTelemetryRegistrationSettings {
     const NAME: &'static str = "Windows.System.Diagnostics.Telemetry.PlatformTelemetryRegistrationSettings";

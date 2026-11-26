@@ -59,6 +59,19 @@ impl CppConst {
             .field
             .field_type(enclosing, config.reader)
             .to_const_type();
+        if self.is_enum_member
+            && (config.plan.selection.excludes_type_name(self.type_name())
+                || config
+                    .plan
+                    .selection
+                    .enum_variant_filter(
+                        field_ty.type_name().namespace(),
+                        field_ty.type_name().name(),
+                    )
+                    .is_some_and(|variants| !variants.includes(self.field.name())))
+        {
+            return quote! {};
+        }
         let tn = field_ty.type_name().name();
         let name = if enclosing.is_none() && !tn.is_empty() && self.field.name() == tn {
             to_ident(&format!("{tn}_"))
@@ -381,26 +394,32 @@ fn wide_int_cast(value: &Value) -> TokenStream {
     }
 }
 
-impl Dependencies for CppConst {
-    fn combine(&self, dependencies: &mut TypeMap, reader: &Reader) {
+impl CppConst {
+    /// The type spelled by the generated constant, if it names one.
+    pub fn value_type(&self, reader: &Reader) -> Option<Type> {
         if let windows_metadata::Type::ClassName(type_name)
         | windows_metadata::Type::ValueName(type_name) = self.field.ty()
             && type_name.namespace.is_empty()
         {
-            return;
+            return None;
         }
 
         let ty = self.field.field_type(None, reader).to_const_type();
 
-        // String constants emit PCWSTR/PCSTR in the generated code, so we
-        // need those types in the dependency closure (not Type::String).
-        if ty == Type::String {
-            if is_ansi_encoding(self.field) {
-                Type::PCSTR.combine(dependencies, reader);
-            } else {
-                Type::PCWSTR.combine(dependencies, reader);
-            }
+        // String constants emit PCWSTR/PCSTR, not Type::String.
+        Some(if ty != Type::String {
+            ty
+        } else if is_ansi_encoding(self.field) {
+            Type::PCSTR
         } else {
+            Type::PCWSTR
+        })
+    }
+}
+
+impl Dependencies for CppConst {
+    fn combine(&self, dependencies: &mut TypeMap, reader: &Reader) {
+        if let Some(ty) = self.value_type(reader) {
             ty.combine(dependencies, reader);
         }
     }

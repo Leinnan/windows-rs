@@ -66,7 +66,7 @@ impl ICertExit_Vtbl {
         unsafe extern "system" fn Initialize<Identity: ICertExit_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, strconfig: *mut core::ffi::c_void, peventmask: *mut super::LONG) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match ICertExit_Impl::Initialize(this, core::mem::transmute(&strconfig)) {
+                match ICertExit_Impl::Initialize(this, &*(&raw const strconfig).cast()) {
                     Ok(ok__) => {
                         peventmask.write(ok__);
                         windows_core::HRESULT(0)
@@ -89,7 +89,7 @@ impl ICertExit_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICertExit_Impl::GetDescription(this) {
                     Ok(ok__) => {
-                        pstrdescription.write(core::mem::transmute(ok__));
+                        pstrdescription.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -129,7 +129,7 @@ impl ICertExit2 {
     pub unsafe fn GetManageModule(&self) -> windows_core::Result<super::ICertManageModule> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetManageModule)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetManageModule)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -155,7 +155,7 @@ impl ICertExit2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICertExit2_Impl::GetManageModule(this) {
                     Ok(ok__) => {
-                        ppmanagemodule.write(core::mem::transmute(ok__));
+                        ppmanagemodule.cast::<super::ICertManageModule>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

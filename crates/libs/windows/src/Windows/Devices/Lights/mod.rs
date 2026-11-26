@@ -1,10 +1,6 @@
 #[cfg(feature = "Devices_Lights_Effects")]
 pub mod Effects;
-windows_core::imp::define_interface!(ILamp, ILamp_Vtbl, 0x047d5b9a_ea45_4b2b_b1a2_14dff00bde7b);
-impl windows_core::RuntimeType for ILamp {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILamp");
-}
+windows_core::imp::define_winrt_interface!(ILamp, ILamp_Vtbl, 0x047d5b9a_ea45_4b2b_b1a2_14dff00bde7b, b"Windows.Devices.Lights.ILamp");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILamp_Vtbl {
@@ -26,11 +22,7 @@ pub struct ILamp_Vtbl {
     pub AvailabilityChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveAvailabilityChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILampArray, ILampArray_Vtbl, 0x7ace9787_c8a0_4e95_a1e0_d58676538649);
-impl windows_core::RuntimeType for ILampArray {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILampArray");
-}
+windows_core::imp::define_winrt_interface!(ILampArray, ILampArray_Vtbl, 0x7ace9787_c8a0_4e95_a1e0_d58676538649, b"Windows.Devices.Lights.ILampArray");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILampArray_Vtbl {
@@ -92,11 +84,7 @@ pub struct ILampArray_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     RequestMessageAsync: usize,
 }
-windows_core::imp::define_interface!(ILampArray2, ILampArray2_Vtbl, 0x050c181f_60a8_4711_a1af_1b1b4c658ea2);
-impl windows_core::RuntimeType for ILampArray2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILampArray2");
-}
+windows_core::imp::define_winrt_interface!(ILampArray2, ILampArray2_Vtbl, 0x050c181f_60a8_4711_a1af_1b1b4c658ea2, b"Windows.Devices.Lights.ILampArray2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILampArray2_Vtbl {
@@ -105,11 +93,7 @@ pub struct ILampArray2_Vtbl {
     pub AvailabilityChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveAvailabilityChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILampArrayStatics, ILampArrayStatics_Vtbl, 0x7bb8c98d_5fc1_452d_bb1f_4ad410d398ff);
-impl windows_core::RuntimeType for ILampArrayStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILampArrayStatics");
-}
+windows_core::imp::define_winrt_interface!(ILampArrayStatics, ILampArrayStatics_Vtbl, 0x7bb8c98d_5fc1_452d_bb1f_4ad410d398ff, b"Windows.Devices.Lights.ILampArrayStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILampArrayStatics_Vtbl {
@@ -117,22 +101,14 @@ pub struct ILampArrayStatics_Vtbl {
     pub GetDeviceSelector: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub FromIdAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILampAvailabilityChangedEventArgs, ILampAvailabilityChangedEventArgs_Vtbl, 0x4f6e3ded_07a2_499d_9260_67e304532ba4);
-impl windows_core::RuntimeType for ILampAvailabilityChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILampAvailabilityChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ILampAvailabilityChangedEventArgs, ILampAvailabilityChangedEventArgs_Vtbl, 0x4f6e3ded_07a2_499d_9260_67e304532ba4, b"Windows.Devices.Lights.ILampAvailabilityChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILampAvailabilityChangedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub IsAvailable: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILampInfo, ILampInfo_Vtbl, 0x30bb521c_0acf_49da_8c10_150b9cf62713);
-impl windows_core::RuntimeType for ILampInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILampInfo");
-}
+windows_core::imp::define_winrt_interface!(ILampInfo, ILampInfo_Vtbl, 0x30bb521c_0acf_49da_8c10_150b9cf62713, b"Windows.Devices.Lights.ILampInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILampInfo_Vtbl {
@@ -154,11 +130,7 @@ pub struct ILampInfo_Vtbl {
     GetNearestSupportedColor: usize,
     pub UpdateLatency: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::TimeSpan) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILampStatics, ILampStatics_Vtbl, 0xa822416c_8885_401e_b821_8e8b38a8e8ec);
-impl windows_core::RuntimeType for ILampStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Lights.ILampStatics");
-}
+windows_core::imp::define_winrt_interface!(ILampStatics, ILampStatics_Vtbl, 0xa822416c_8885_401e_b821_8e8b38a8e8ec, b"Windows.Devices.Lights.ILampStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILampStatics_Vtbl {
@@ -220,7 +192,7 @@ impl Lamp {
     }
     pub fn AvailabilityChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<LampAvailabilityChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<LampAvailabilityChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, LampAvailabilityChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -241,13 +213,13 @@ impl Lamp {
     pub fn FromIdAsync(deviceid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::ILampStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetDefaultAsync() -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::ILampStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ILampStatics<R, F: FnOnce(&ILampStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -261,6 +233,7 @@ impl windows_core::RuntimeType for Lamp {
 unsafe impl windows_core::Interface for Lamp {
     type Vtable = <ILamp as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILamp as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for Lamp {
     const NAME: &'static str = "Windows.Devices.Lights.Lamp";
@@ -353,20 +326,22 @@ impl LampArray {
     pub fn GetLampInfo(&self, lampindex: i32) -> windows_core::Result<LampInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetLampInfo)(windows_core::Interface::as_raw(self), lampindex, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetLampInfo)(windows_core::Interface::as_raw(self), lampindex, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "System")]
     pub fn GetIndicesForKey(&self, key: super::super::System::VirtualKey) -> windows_core::Result<windows_core::Array<i32>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetIndicesForKey)(windows_core::Interface::as_raw(self), key, windows_core::Array::<i32>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetIndicesForKey)(windows_core::Interface::as_raw(self), key, &mut result_size__, &mut result__).map(|| windows_core::Array::<i32>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn GetIndicesForPurposes(&self, purposes: LampPurposes) -> windows_core::Result<windows_core::Array<i32>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetIndicesForPurposes)(windows_core::Interface::as_raw(self), purposes, windows_core::Array::<i32>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetIndicesForPurposes)(windows_core::Interface::as_raw(self), purposes, &mut result_size__, &mut result__).map(|| windows_core::Array::<i32>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     #[cfg(feature = "UI")]
@@ -404,14 +379,14 @@ impl LampArray {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SendMessageAsync)(windows_core::Interface::as_raw(self), messageid, message.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SendMessageAsync)(windows_core::Interface::as_raw(self), messageid, message.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
     pub fn RequestMessageAsync(&self, messageid: i32) -> windows_core::Result<windows_future::IAsyncOperation<super::super::Storage::Streams::IBuffer>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RequestMessageAsync)(windows_core::Interface::as_raw(self), messageid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RequestMessageAsync)(windows_core::Interface::as_raw(self), messageid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsAvailable(&self) -> windows_core::Result<bool> {
@@ -423,7 +398,7 @@ impl LampArray {
     }
     pub fn AvailabilityChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ILampArray2>(self)?;
         let handler = <super::super::Foundation::TypedEventHandler<Self, windows_core::IInspectable>>::new(move |a0, a1| {
@@ -445,7 +420,7 @@ impl LampArray {
     pub fn FromIdAsync(deviceid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::ILampArrayStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ILampArrayStatics<R, F: FnOnce(&ILampArrayStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -459,6 +434,7 @@ impl windows_core::RuntimeType for LampArray {
 unsafe impl windows_core::Interface for LampArray {
     type Vtable = <ILampArray as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILampArray as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LampArray {
     const NAME: &'static str = "Windows.Devices.Lights.LampArray";
@@ -509,6 +485,7 @@ impl windows_core::RuntimeType for LampAvailabilityChangedEventArgs {
 unsafe impl windows_core::Interface for LampAvailabilityChangedEventArgs {
     type Vtable = <ILampAvailabilityChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILampAvailabilityChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LampAvailabilityChangedEventArgs {
     const NAME: &'static str = "Windows.Devices.Lights.LampAvailabilityChangedEventArgs";
@@ -566,7 +543,7 @@ impl LampInfo {
     pub fn FixedColor(&self) -> windows_core::Result<super::super::UI::Color> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FixedColor)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<super::super::UI::Color>| r__.Value())
+            (windows_core::Interface::vtable(self).FixedColor)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<super::super::UI::Color>| r__.Value())
         }
     }
     #[cfg(feature = "UI")]
@@ -589,6 +566,7 @@ impl windows_core::RuntimeType for LampInfo {
 unsafe impl windows_core::Interface for LampInfo {
     type Vtable = <ILampInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILampInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LampInfo {
     const NAME: &'static str = "Windows.Devices.Lights.LampInfo";

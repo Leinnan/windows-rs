@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IRadialControllerIndependentInputSource, IRadialControllerIndependentInputSource_Vtbl, 0x3d577ef6_4cee_11e6_b535_001bdc06ab3b);
-impl windows_core::RuntimeType for IRadialControllerIndependentInputSource {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Core.IRadialControllerIndependentInputSource");
-}
+windows_core::imp::define_winrt_interface!(IRadialControllerIndependentInputSource, IRadialControllerIndependentInputSource_Vtbl, 0x3d577ef6_4cee_11e6_b535_001bdc06ab3b, b"Windows.UI.Input.Core.IRadialControllerIndependentInputSource");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRadialControllerIndependentInputSource_Vtbl {
@@ -13,11 +9,7 @@ pub struct IRadialControllerIndependentInputSource_Vtbl {
     #[cfg(not(feature = "UI_Core"))]
     Dispatcher: usize,
 }
-windows_core::imp::define_interface!(IRadialControllerIndependentInputSource2, IRadialControllerIndependentInputSource2_Vtbl, 0x7073aad8_35f3_4eeb_8751_be4d0a66faf4);
-impl windows_core::RuntimeType for IRadialControllerIndependentInputSource2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Core.IRadialControllerIndependentInputSource2");
-}
+windows_core::imp::define_winrt_interface!(IRadialControllerIndependentInputSource2, IRadialControllerIndependentInputSource2_Vtbl, 0x7073aad8_35f3_4eeb_8751_be4d0a66faf4, b"Windows.UI.Input.Core.IRadialControllerIndependentInputSource2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRadialControllerIndependentInputSource2_Vtbl {
@@ -27,11 +19,7 @@ pub struct IRadialControllerIndependentInputSource2_Vtbl {
     #[cfg(not(feature = "System"))]
     DispatcherQueue: usize,
 }
-windows_core::imp::define_interface!(IRadialControllerIndependentInputSourceStatics, IRadialControllerIndependentInputSourceStatics_Vtbl, 0x3d577ef5_4cee_11e6_b535_001bdc06ab3b);
-impl windows_core::RuntimeType for IRadialControllerIndependentInputSourceStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Core.IRadialControllerIndependentInputSourceStatics");
-}
+windows_core::imp::define_winrt_interface!(IRadialControllerIndependentInputSourceStatics, IRadialControllerIndependentInputSourceStatics_Vtbl, 0x3d577ef5_4cee_11e6_b535_001bdc06ab3b, b"Windows.UI.Input.Core.IRadialControllerIndependentInputSourceStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRadialControllerIndependentInputSourceStatics_Vtbl {
@@ -49,14 +37,14 @@ impl RadialControllerIndependentInputSource {
     pub fn Controller(&self) -> windows_core::Result<super::RadialController> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Controller)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Controller)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "UI_Core")]
     pub fn Dispatcher(&self) -> windows_core::Result<super::super::Core::CoreDispatcher> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Dispatcher)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Dispatcher)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "System")]
@@ -64,7 +52,7 @@ impl RadialControllerIndependentInputSource {
         let this = &windows_core::Interface::cast::<IRadialControllerIndependentInputSource2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DispatcherQueue)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DispatcherQueue)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "ApplicationModel_Core")]
@@ -74,7 +62,7 @@ impl RadialControllerIndependentInputSource {
     {
         Self::IRadialControllerIndependentInputSourceStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateForView)(windows_core::Interface::as_raw(this), view.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateForView)(windows_core::Interface::as_raw(this), view.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IRadialControllerIndependentInputSourceStatics<R, F: FnOnce(&IRadialControllerIndependentInputSourceStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -88,6 +76,7 @@ impl windows_core::RuntimeType for RadialControllerIndependentInputSource {
 unsafe impl windows_core::Interface for RadialControllerIndependentInputSource {
     type Vtable = <IRadialControllerIndependentInputSource as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IRadialControllerIndependentInputSource as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for RadialControllerIndependentInputSource {
     const NAME: &'static str = "Windows.UI.Input.Core.RadialControllerIndependentInputSource";

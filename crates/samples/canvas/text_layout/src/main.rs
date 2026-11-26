@@ -5,8 +5,9 @@ use std::rc::Rc;
 use windows_canvas::Brush;
 use windows_canvas::*;
 use windows_reactor::{
-    App, Component, ComponentContext, View, ViewContext, WindowBackdrop, WindowVisuals,
+    App, Component, ComponentContext, SystemBackdrop, View, ViewContext, WindowVisuals,
 };
+use windows_text::{TextFormat, TextLayout, TextMetrics, WordWrapping};
 
 const TEXT: &str = "TextLayout shapes this paragraph and measures it, then draws it without \
 re-shaping. Resize the window and the text reflows to fit the box, redrawing only when the size \
@@ -39,29 +40,25 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Text Layout");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
         let resources = Rc::clone(&self.resources);
         canvas(move |ctx| {
             ctx.clear(ColorF::from_rgb8(16, 20, 28));
 
             if ctx.device_changed() {
                 let format =
-                    TextFormat::new("Segoe UI", 28.0)?.with_word_wrapping(WordWrapping::Wrap);
-                let layout = TextLayout::new(
-                    TEXT,
-                    &format,
-                    ctx.width - 2.0 * MARGIN,
-                    ctx.height - 2.0 * MARGIN,
-                )?;
+                    TextFormat::new("Segoe UI", 28.0).with_word_wrapping(WordWrapping::Wrap);
+                let width = (ctx.width - 2.0 * MARGIN).max(0.0);
+                let height = (ctx.height - 2.0 * MARGIN).max(0.0);
+                let layout = TextLayout::new(TEXT, &format, width, height);
                 let metrics = layout.metrics();
 
                 let readout = format!(
                     "{} lines  -  {:.0} x {:.0} px",
                     metrics.line_count, metrics.width, metrics.height
                 );
-                let label_format = TextFormat::new("Consolas", 16.0)?;
-                let label =
-                    TextLayout::new(&readout, &label_format, ctx.width - 2.0 * MARGIN, MARGIN)?;
+                let label_format = TextFormat::new("Consolas", 16.0);
+                let label = TextLayout::new(&readout, &label_format, width, MARGIN);
 
                 *resources.borrow_mut() = Some(Resources {
                     layout,

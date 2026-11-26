@@ -17,12 +17,15 @@ mod bindings {
 mod accessibility;
 mod application;
 mod automation;
+mod backdrop;
 mod background;
 mod canvas;
+mod context;
 mod controlled;
 mod dialog;
 mod dialog_theme;
 mod drag;
+mod events;
 mod flyout;
 mod image;
 mod keyboard;
@@ -33,7 +36,10 @@ mod pointer;
 mod process;
 mod reference;
 mod repeater;
+mod resources;
 mod retirement;
+mod scale;
+mod scroll;
 mod selection;
 mod smoke;
 mod surface;
@@ -48,6 +54,74 @@ use automation::*;
 use pointer::*;
 
 type Result<T = ()> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
+
+#[test]
+fn webview_callback_ownership() -> Result<()> {
+    process::run_to_exit("webview-callbacks")
+}
+
+#[test]
+fn winui_collection_source_contracts() -> Result<()> {
+    process::run_to_exit("collection-contracts")
+}
+
+#[test]
+fn winui_read_only_vector_live_consumers() -> Result<()> {
+    const BUTTON: i32 = 50000;
+    const SELECTION_ITEM_PATTERN: i32 = 10010;
+    for fixture in [
+        "collection-live-mutable",
+        "collection-live-read-only",
+        "collection-live-shared",
+        "collection-live-trusted",
+    ] {
+        process::run(fixture, |ui| {
+            ui.name("state", "Mounted")?;
+            for revision in 0..2 {
+                if revision > 0 {
+                    ui.invoke("replace")?;
+                    ui.name("state", "Replaced")?;
+                }
+                ui.invoke("select")?;
+                ui.selected_name("native-radio", &format!("Radio {revision} 1"))?;
+                unsafe {
+                    let combo = ui
+                        .element("native-combo")?
+                        .GetCurrentPatternAs::<IUIAutomationExpandCollapsePattern>(
+                            EXPAND_COLLAPSE_PATTERN,
+                        )?;
+                    combo.Expand().ok()?;
+                    selection::select_item(ui, "native-combo", &format!("Combo {revision} 2"))?;
+                    ui.selected_name("native-combo", &format!("Combo {revision} 2"))?;
+                    combo.Collapse().ok()?;
+                }
+                selection::select_item(ui, "native-radio", &format!("Radio {revision} 2"))?;
+                ui.selected_name("native-radio", &format!("Radio {revision} 2"))?;
+                unsafe {
+                    ui.named(BUTTON, &format!("Crumb {revision} 0"))?
+                        .GetCurrentPatternAs::<IUIAutomationInvokePattern>(INVOKE_PATTERN)?
+                        .Invoke()
+                        .ok()?;
+                }
+                ui.invoke("suggest")?;
+                ui.name("state", "Suggestions")?;
+                unsafe {
+                    ui.named(LIST_ITEM, &format!("Suggest {revision} 1"))?
+                        .GetCurrentPatternAs::<IUIAutomationSelectionItemPattern>(
+                            SELECTION_ITEM_PATTERN,
+                        )?
+                        .Select()
+                        .ok()?;
+                }
+            }
+            ui.invoke("clear")?;
+            ui.name("state", "Cleared")?;
+            ui.invoke("verify")?;
+            ui.name("state", "Verified")
+        })?;
+    }
+    Ok(())
+}
 
 #[test]
 fn text_box_native_edit_and_controlled_reset() -> Result<()> {
@@ -130,6 +204,52 @@ fn queued_clicks_reach_the_callback_they_fired_under() -> Result<()> {
         ui.pointer_clicks(5)?;
         ui.name("clicks", "Clicks 5")?;
         ui.name_stays("clicks", "Clicks 5", Duration::from_millis(500))
+    })
+}
+
+#[test]
+fn pointer_delivery_modes_preserve_routing_and_queued_order() -> Result<()> {
+    process::run("pointer-routing", |ui| {
+        for (index, expected) in [
+            "parent, queued",
+            "routed, parent",
+            "routed",
+            "parent, queued",
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            if index == 0 {
+                ui.pointer_enter("routing-target", "routing-entered", "Entered 1")?;
+            } else {
+                ui.invoke("mode")?;
+                ui.name("mode-state", &format!("Mode {}", index % 3))?;
+                ui.pointer_move("routing-target", 0.5, 0.5)?;
+            }
+            ui.pointer_clicks(1)?;
+            ui.name("calls", expected)?;
+        }
+        Ok(())
+    })
+}
+
+#[test]
+fn pointer_cursor_follows_declarations_under_a_stationary_pointer() -> Result<()> {
+    process::run("pointer-cursor", |ui| {
+        ui.pointer_enter("cursor-inner", "cursor-entered", "Entered 1")?;
+        system_cursor(ui, "SizeWestEast", IDC_SIZEWE)?;
+        // Invoke changes declarations without moving the pointer.
+        ui.invoke("inner-cursor")?;
+        ui.name("cursor-state", "Inner None; outer Hand")?;
+        system_cursor(ui, "inherited Hand", IDC_HAND)?;
+        ui.invoke("inner-cursor")?;
+        ui.name("cursor-state", "Inner Some(IBeam); outer Hand")?;
+        system_cursor(ui, "IBeam", IDC_IBEAM)?;
+        ui.pointer_move("cursor-outer", 0.5, 0.5)?;
+        system_cursor(ui, "Hand", IDC_HAND)?;
+        ui.invoke("outer-cursor")?;
+        ui.name("cursor-state", "Inner Some(IBeam); outer None")?;
+        system_cursor(ui, "Arrow", IDC_ARROW)
     })
 }
 

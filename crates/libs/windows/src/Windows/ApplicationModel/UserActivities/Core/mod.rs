@@ -6,7 +6,7 @@ impl CoreUserActivityManager {
     {
         Self::ICoreUserActivityManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateUserActivitySessionInBackground)(windows_core::Interface::as_raw(this), activity.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateUserActivitySessionInBackground)(windows_core::Interface::as_raw(this), activity.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn DeleteUserActivitySessionsInTimeRangeAsync<P0>(channel: P0, starttime: windows_time::DateTime, endtime: windows_time::DateTime) -> windows_core::Result<windows_future::IAsyncAction>
@@ -15,7 +15,7 @@ impl CoreUserActivityManager {
     {
         Self::ICoreUserActivityManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DeleteUserActivitySessionsInTimeRangeAsync)(windows_core::Interface::as_raw(this), channel.param().abi(), starttime, endtime, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DeleteUserActivitySessionsInTimeRangeAsync)(windows_core::Interface::as_raw(this), channel.param().abi(), starttime, endtime, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreUserActivityManagerStatics<R, F: FnOnce(&ICoreUserActivityManagerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -26,11 +26,7 @@ impl CoreUserActivityManager {
 impl windows_core::RuntimeName for CoreUserActivityManager {
     const NAME: &'static str = "Windows.ApplicationModel.UserActivities.Core.CoreUserActivityManager";
 }
-windows_core::imp::define_interface!(ICoreUserActivityManagerStatics, ICoreUserActivityManagerStatics_Vtbl, 0xca3adb02_a4be_4d4d_bfa8_6795f4264efb);
-impl windows_core::RuntimeType for ICoreUserActivityManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.UserActivities.Core.ICoreUserActivityManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(ICoreUserActivityManagerStatics, ICoreUserActivityManagerStatics_Vtbl, 0xca3adb02_a4be_4d4d_bfa8_6795f4264efb, b"Windows.ApplicationModel.UserActivities.Core.ICoreUserActivityManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreUserActivityManagerStatics_Vtbl {

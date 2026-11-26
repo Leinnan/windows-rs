@@ -1,10 +1,6 @@
 #[cfg(feature = "Devices_Pwm_Provider")]
 pub mod Provider;
-windows_core::imp::define_interface!(IPwmController, IPwmController_Vtbl, 0xc45f5c85_d2e8_42cf_9bd6_cf5ed029e6a7);
-impl windows_core::RuntimeType for IPwmController {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Pwm.IPwmController");
-}
+windows_core::imp::define_winrt_interface!(IPwmController, IPwmController_Vtbl, 0xc45f5c85_d2e8_42cf_9bd6_cf5ed029e6a7, b"Windows.Devices.Pwm.IPwmController");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPwmController_Vtbl {
@@ -16,11 +12,7 @@ pub struct IPwmController_Vtbl {
     pub MaxFrequency: unsafe extern "system" fn(*mut core::ffi::c_void, *mut f64) -> windows_core::HRESULT,
     pub OpenPin: unsafe extern "system" fn(*mut core::ffi::c_void, i32, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPwmControllerStatics, IPwmControllerStatics_Vtbl, 0x4263bda1_8946_4404_bd48_81dd124af4d9);
-impl windows_core::RuntimeType for IPwmControllerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Pwm.IPwmControllerStatics");
-}
+windows_core::imp::define_winrt_interface!(IPwmControllerStatics, IPwmControllerStatics_Vtbl, 0x4263bda1_8946_4404_bd48_81dd124af4d9, b"Windows.Devices.Pwm.IPwmControllerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPwmControllerStatics_Vtbl {
@@ -30,22 +22,14 @@ pub struct IPwmControllerStatics_Vtbl {
     #[cfg(not(feature = "Devices_Pwm_Provider"))]
     GetControllersAsync: usize,
 }
-windows_core::imp::define_interface!(IPwmControllerStatics2, IPwmControllerStatics2_Vtbl, 0x44fc5b1f_f119_4bdd_97ad_f76ef986736d);
-impl windows_core::RuntimeType for IPwmControllerStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Pwm.IPwmControllerStatics2");
-}
+windows_core::imp::define_winrt_interface!(IPwmControllerStatics2, IPwmControllerStatics2_Vtbl, 0x44fc5b1f_f119_4bdd_97ad_f76ef986736d, b"Windows.Devices.Pwm.IPwmControllerStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPwmControllerStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetDefaultAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPwmControllerStatics3, IPwmControllerStatics3_Vtbl, 0xb2581871_0229_4344_ae3f_9b7cd0e66b94);
-impl windows_core::RuntimeType for IPwmControllerStatics3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Pwm.IPwmControllerStatics3");
-}
+windows_core::imp::define_winrt_interface!(IPwmControllerStatics3, IPwmControllerStatics3_Vtbl, 0xb2581871_0229_4344_ae3f_9b7cd0e66b94, b"Windows.Devices.Pwm.IPwmControllerStatics3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPwmControllerStatics3_Vtbl {
@@ -54,11 +38,7 @@ pub struct IPwmControllerStatics3_Vtbl {
     pub GetDeviceSelectorFromFriendlyName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub FromIdAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPwmPin, IPwmPin_Vtbl, 0x22972dc8_c6cf_4821_b7f9_c6454fb6af79);
-impl windows_core::RuntimeType for IPwmPin {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Pwm.IPwmPin");
-}
+windows_core::imp::define_winrt_interface!(IPwmPin, IPwmPin_Vtbl, 0x22972dc8_c6cf_4821_b7f9_c6454fb6af79, b"Windows.Devices.Pwm.IPwmPin");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPwmPin_Vtbl {
@@ -110,7 +90,7 @@ impl PwmController {
     pub fn OpenPin(&self, pinnumber: i32) -> windows_core::Result<PwmPin> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).OpenPin)(windows_core::Interface::as_raw(self), pinnumber, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).OpenPin)(windows_core::Interface::as_raw(self), pinnumber, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Devices_Pwm_Provider")]
@@ -120,13 +100,13 @@ impl PwmController {
     {
         Self::IPwmControllerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetControllersAsync)(windows_core::Interface::as_raw(this), provider.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetControllersAsync)(windows_core::Interface::as_raw(this), provider.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetDefaultAsync() -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::IPwmControllerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetDeviceSelector() -> windows_core::Result<windows_core::HSTRING> {
@@ -144,7 +124,7 @@ impl PwmController {
     pub fn FromIdAsync(deviceid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::IPwmControllerStatics3(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IPwmControllerStatics<R, F: FnOnce(&IPwmControllerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -166,6 +146,7 @@ impl windows_core::RuntimeType for PwmController {
 unsafe impl windows_core::Interface for PwmController {
     type Vtable = <IPwmController as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPwmController as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PwmController {
     const NAME: &'static str = "Windows.Devices.Pwm.PwmController";
@@ -185,7 +166,7 @@ impl PwmPin {
     pub fn Controller(&self) -> windows_core::Result<PwmController> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Controller)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Controller)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetActiveDutyCyclePercentage(&self) -> windows_core::Result<f64> {
@@ -225,6 +206,7 @@ impl windows_core::RuntimeType for PwmPin {
 unsafe impl windows_core::Interface for PwmPin {
     type Vtable = <IPwmPin as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPwmPin as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PwmPin {
     const NAME: &'static str = "Windows.Devices.Pwm.PwmPin";

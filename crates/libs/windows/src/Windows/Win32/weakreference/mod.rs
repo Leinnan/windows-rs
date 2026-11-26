@@ -3,7 +3,7 @@ windows_core::imp::interface_hierarchy!(IWeakReference, windows_core::IUnknown);
 impl IWeakReference {
     #[cfg(feature = "guiddef")]
     pub unsafe fn Resolve(&self, riid: *const super::IID, objectreference: *mut Option<windows_core::IInspectable>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Resolve)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(objectreference)) }
+        unsafe { (windows_core::Interface::vtable(self).Resolve)(windows_core::Interface::as_raw(self), riid, objectreference as _) }
     }
 }
 #[repr(C)]
@@ -42,7 +42,7 @@ impl IWeakReferenceSource {
     pub unsafe fn GetWeakReference(&self) -> windows_core::Result<IWeakReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetWeakReference)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetWeakReference)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -62,7 +62,7 @@ impl IWeakReferenceSource_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWeakReferenceSource_Impl::GetWeakReference(this) {
                     Ok(ok__) => {
-                        weakreference.write(core::mem::transmute(ok__));
+                        weakreference.cast::<IWeakReference>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

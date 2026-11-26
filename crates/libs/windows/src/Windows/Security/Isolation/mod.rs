@@ -3,7 +3,7 @@ impl windows_core::RuntimeType for HostMessageReceivedCallback {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl HostMessageReceivedCallback {
-    pub fn new<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&HostMessageReceivedCallbackBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -20,8 +20,8 @@ pub struct HostMessageReceivedCallback_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(this: *mut core::ffi::c_void, receiverid: windows_core::GUID, message: *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-struct HostMessageReceivedCallbackBox<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + 'static>(core::marker::PhantomData<(fn() -> F,)>);
-impl<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + 'static> HostMessageReceivedCallbackBox<F> {
+struct HostMessageReceivedCallbackBox<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + Sync + 'static>(core::marker::PhantomData<(fn() -> F,)>);
+impl<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + Sync + 'static> HostMessageReceivedCallbackBox<F> {
     const VTABLE: HostMessageReceivedCallback_Vtbl = HostMessageReceivedCallback_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<HostMessageReceivedCallback, F>::QueryInterface,
@@ -32,16 +32,12 @@ impl<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorVi
     };
     unsafe extern "system" fn Invoke(this: *mut core::ffi::c_void, receiverid: windows_core::GUID, message: *mut core::ffi::c_void) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<HostMessageReceivedCallback, F>);
-            (this.invoke)(core::mem::transmute(&receiverid), core::mem::transmute_copy(&message)).into()
+            let this = &*(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<HostMessageReceivedCallback, F>);
+            (this.invoke)(&*(&raw const receiverid).cast(), core::mem::transmute_copy(&message)).into()
         }
     }
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironment, IIsolatedWindowsEnvironment_Vtbl, 0x41d24597_c328_4467_b37f_4dfc6f60b6bc);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironment {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironment");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironment, IIsolatedWindowsEnvironment_Vtbl, 0x41d24597_c328_4467_b37f_4dfc6f60b6bc, b"Windows.Security.Isolation.IIsolatedWindowsEnvironment");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironment_Vtbl {
@@ -58,11 +54,7 @@ pub struct IIsolatedWindowsEnvironment_Vtbl {
     pub RegisterMessageReceiver: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub UnregisterMessageReceiver: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironment2, IIsolatedWindowsEnvironment2_Vtbl, 0x2d365f39_88bd_4ab4_93cf_7e2bcef337c0);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironment2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironment2");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironment2, IIsolatedWindowsEnvironment2_Vtbl, 0x2d365f39_88bd_4ab4_93cf_7e2bcef337c0, b"Windows.Security.Isolation.IIsolatedWindowsEnvironment2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironment2_Vtbl {
@@ -70,11 +62,7 @@ pub struct IIsolatedWindowsEnvironment2_Vtbl {
     pub PostMessageToReceiverAsync: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub PostMessageToReceiverWithTelemetryAsync: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironment3, IIsolatedWindowsEnvironment3_Vtbl, 0xcb7fc7d2_d06e_4c26_8ada_dacdaaad03f5);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironment3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironment3");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironment3, IIsolatedWindowsEnvironment3_Vtbl, 0xcb7fc7d2_d06e_4c26_8ada_dacdaaad03f5, b"Windows.Security.Isolation.IIsolatedWindowsEnvironment3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironment3_Vtbl {
@@ -83,22 +71,14 @@ pub struct IIsolatedWindowsEnvironment3_Vtbl {
     pub ShareFileAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ShareFileWithTelemetryAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironment4, IIsolatedWindowsEnvironment4_Vtbl, 0x11e3701a_dd9e_4f1b_812c_4020f307f93c);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironment4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironment4");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironment4, IIsolatedWindowsEnvironment4_Vtbl, 0x11e3701a_dd9e_4f1b_812c_4020f307f93c, b"Windows.Security.Isolation.IIsolatedWindowsEnvironment4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironment4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ChangePriority: unsafe extern "system" fn(*mut core::ffi::c_void, IsolatedWindowsEnvironmentCreationPriority) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentCreateResult, IIsolatedWindowsEnvironmentCreateResult_Vtbl, 0xef9a5e58_dcd7_45c2_9c85_ab642a715e8e);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentCreateResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentCreateResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentCreateResult, IIsolatedWindowsEnvironmentCreateResult_Vtbl, 0xef9a5e58_dcd7_45c2_9c85_ab642a715e8e, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentCreateResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentCreateResult_Vtbl {
@@ -107,22 +87,14 @@ pub struct IIsolatedWindowsEnvironmentCreateResult_Vtbl {
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
     pub Environment: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentCreateResult2, IIsolatedWindowsEnvironmentCreateResult2_Vtbl, 0xa547dbc7_61d4_4fb8_ab5c_edefa3d388ad);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentCreateResult2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentCreateResult2");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentCreateResult2, IIsolatedWindowsEnvironmentCreateResult2_Vtbl, 0xa547dbc7_61d4_4fb8_ab5c_edefa3d388ad, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentCreateResult2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentCreateResult2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ChangeCreationPriority: unsafe extern "system" fn(*mut core::ffi::c_void, IsolatedWindowsEnvironmentCreationPriority) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentFactory, IIsolatedWindowsEnvironmentFactory_Vtbl, 0x1aca93e7_e804_454d_8466_f9897c20b0f6);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentFactory");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentFactory, IIsolatedWindowsEnvironmentFactory_Vtbl, 0x1aca93e7_e804_454d_8466_f9897c20b0f6, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentFactory_Vtbl {
@@ -132,11 +104,7 @@ pub struct IIsolatedWindowsEnvironmentFactory_Vtbl {
     pub GetById: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub FindByOwnerId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentFile, IIsolatedWindowsEnvironmentFile_Vtbl, 0x4d5ae1ef_029f_4101_8c35_fe91bf9cd5f0);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentFile {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentFile");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentFile, IIsolatedWindowsEnvironmentFile_Vtbl, 0x4d5ae1ef_029f_4101_8c35_fe91bf9cd5f0, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentFile");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentFile_Vtbl {
@@ -145,11 +113,7 @@ pub struct IIsolatedWindowsEnvironmentFile_Vtbl {
     pub HostPath: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Close: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentFile2, IIsolatedWindowsEnvironmentFile2_Vtbl, 0x4eeb8dec_ad5d_4b0a_b754_f36c3d46d684);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentFile2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentFile2");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentFile2, IIsolatedWindowsEnvironmentFile2_Vtbl, 0x4eeb8dec_ad5d_4b0a_b754_f36c3d46d684, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentFile2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentFile2_Vtbl {
@@ -157,11 +121,7 @@ pub struct IIsolatedWindowsEnvironmentFile2_Vtbl {
     pub GuestPath: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub IsReadOnly: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentHostStatics, IIsolatedWindowsEnvironmentHostStatics_Vtbl, 0x2c0e22c7_05a0_517a_b81c_6ee8790c381f);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentHostStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentHostStatics");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentHostStatics, IIsolatedWindowsEnvironmentHostStatics_Vtbl, 0x2c0e22c7_05a0_517a_b81c_6ee8790c381f, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentHostStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentHostStatics_Vtbl {
@@ -169,11 +129,7 @@ pub struct IIsolatedWindowsEnvironmentHostStatics_Vtbl {
     pub IsReady: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub HostErrors: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentLaunchFileResult, IIsolatedWindowsEnvironmentLaunchFileResult_Vtbl, 0x685d4176_f6e0_4569_b1aa_215c0ff5b257);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentLaunchFileResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentLaunchFileResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentLaunchFileResult, IIsolatedWindowsEnvironmentLaunchFileResult_Vtbl, 0x685d4176_f6e0_4569_b1aa_215c0ff5b257, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentLaunchFileResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentLaunchFileResult_Vtbl {
@@ -182,11 +138,7 @@ pub struct IIsolatedWindowsEnvironmentLaunchFileResult_Vtbl {
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
     pub File: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentOptions, IIsolatedWindowsEnvironmentOptions_Vtbl, 0xb71d98f7_61f0_4008_b207_0bf9eb2d76f2);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentOptions {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOptions");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentOptions, IIsolatedWindowsEnvironmentOptions_Vtbl, 0xb71d98f7_61f0_4008_b207_0bf9eb2d76f2, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOptions");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentOptions_Vtbl {
@@ -209,11 +161,7 @@ pub struct IIsolatedWindowsEnvironmentOptions_Vtbl {
     pub AllowCameraAndMicrophoneAccess: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetAllowCameraAndMicrophoneAccess: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentOptions2, IIsolatedWindowsEnvironmentOptions2_Vtbl, 0x10d7cc31_8b8f_4b9d_b22c_617103b55b08);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentOptions2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOptions2");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentOptions2, IIsolatedWindowsEnvironmentOptions2_Vtbl, 0x10d7cc31_8b8f_4b9d_b22c_617103b55b08, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOptions2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentOptions2_Vtbl {
@@ -221,11 +169,7 @@ pub struct IIsolatedWindowsEnvironmentOptions2_Vtbl {
     pub WindowAnnotationOverride: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetWindowAnnotationOverride: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentOptions3, IIsolatedWindowsEnvironmentOptions3_Vtbl, 0x98d5aa23_161f_4cd9_8a9c_269b30122b0d);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentOptions3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOptions3");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentOptions3, IIsolatedWindowsEnvironmentOptions3_Vtbl, 0x98d5aa23_161f_4cd9_8a9c_269b30122b0d, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOptions3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentOptions3_Vtbl {
@@ -237,11 +181,7 @@ pub struct IIsolatedWindowsEnvironmentOptions3_Vtbl {
     pub CreationPriority: unsafe extern "system" fn(*mut core::ffi::c_void, *mut IsolatedWindowsEnvironmentCreationPriority) -> windows_core::HRESULT,
     pub SetCreationPriority: unsafe extern "system" fn(*mut core::ffi::c_void, IsolatedWindowsEnvironmentCreationPriority) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentOwnerRegistrationData, IIsolatedWindowsEnvironmentOwnerRegistrationData_Vtbl, 0xf888ec22_e8cf_56c0_b1df_90af4ad80e84);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentOwnerRegistrationData {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOwnerRegistrationData");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentOwnerRegistrationData, IIsolatedWindowsEnvironmentOwnerRegistrationData_Vtbl, 0xf888ec22_e8cf_56c0_b1df_90af4ad80e84, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOwnerRegistrationData");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentOwnerRegistrationData_Vtbl {
@@ -251,11 +191,7 @@ pub struct IIsolatedWindowsEnvironmentOwnerRegistrationData_Vtbl {
     pub ProcessesRunnableAsUser: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ActivationFileExtensions: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentOwnerRegistrationResult, IIsolatedWindowsEnvironmentOwnerRegistrationResult_Vtbl, 0x6dab9451_6169_55df_8f51_790e99d7277d);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentOwnerRegistrationResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOwnerRegistrationResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentOwnerRegistrationResult, IIsolatedWindowsEnvironmentOwnerRegistrationResult_Vtbl, 0x6dab9451_6169_55df_8f51_790e99d7277d, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOwnerRegistrationResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentOwnerRegistrationResult_Vtbl {
@@ -263,11 +199,7 @@ pub struct IIsolatedWindowsEnvironmentOwnerRegistrationResult_Vtbl {
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut IsolatedWindowsEnvironmentOwnerRegistrationStatus) -> windows_core::HRESULT,
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentOwnerRegistrationStatics, IIsolatedWindowsEnvironmentOwnerRegistrationStatics_Vtbl, 0x10951754_204b_5ec9_9de3_df792d074a61);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentOwnerRegistrationStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOwnerRegistrationStatics");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentOwnerRegistrationStatics, IIsolatedWindowsEnvironmentOwnerRegistrationStatics_Vtbl, 0x10951754_204b_5ec9_9de3_df792d074a61, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentOwnerRegistrationStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentOwnerRegistrationStatics_Vtbl {
@@ -275,11 +207,7 @@ pub struct IIsolatedWindowsEnvironmentOwnerRegistrationStatics_Vtbl {
     pub Register: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Unregister: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentPostMessageResult, IIsolatedWindowsEnvironmentPostMessageResult_Vtbl, 0x0dfa28fa_2ef0_4d8f_b341_3171b2df93b1);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentPostMessageResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentPostMessageResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentPostMessageResult, IIsolatedWindowsEnvironmentPostMessageResult_Vtbl, 0x0dfa28fa_2ef0_4d8f_b341_3171b2df93b1, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentPostMessageResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentPostMessageResult_Vtbl {
@@ -287,11 +215,7 @@ pub struct IIsolatedWindowsEnvironmentPostMessageResult_Vtbl {
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut IsolatedWindowsEnvironmentPostMessageStatus) -> windows_core::HRESULT,
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentProcess, IIsolatedWindowsEnvironmentProcess_Vtbl, 0xa858c3ef_8172_4f10_af93_cbe60af88d09);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentProcess {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentProcess");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentProcess, IIsolatedWindowsEnvironmentProcess_Vtbl, 0xa858c3ef_8172_4f10_af93_cbe60af88d09, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentProcess");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentProcess_Vtbl {
@@ -302,11 +226,7 @@ pub struct IIsolatedWindowsEnvironmentProcess_Vtbl {
     pub WaitForExitWithTimeout: unsafe extern "system" fn(*mut core::ffi::c_void, u32) -> windows_core::HRESULT,
     pub WaitForExitAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentShareFileRequestOptions, IIsolatedWindowsEnvironmentShareFileRequestOptions_Vtbl, 0xc9190ed8_0fd0_4946_bb88_117a60737b61);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentShareFileRequestOptions {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFileRequestOptions");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentShareFileRequestOptions, IIsolatedWindowsEnvironmentShareFileRequestOptions_Vtbl, 0xc9190ed8_0fd0_4946_bb88_117a60737b61, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFileRequestOptions");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentShareFileRequestOptions_Vtbl {
@@ -314,11 +234,7 @@ pub struct IIsolatedWindowsEnvironmentShareFileRequestOptions_Vtbl {
     pub AllowWrite: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetAllowWrite: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentShareFileResult, IIsolatedWindowsEnvironmentShareFileResult_Vtbl, 0xaec7caa7_9ac6_4bf5_8b91_5c1adf0d7d00);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentShareFileResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFileResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentShareFileResult, IIsolatedWindowsEnvironmentShareFileResult_Vtbl, 0xaec7caa7_9ac6_4bf5_8b91_5c1adf0d7d00, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFileResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentShareFileResult_Vtbl {
@@ -327,11 +243,7 @@ pub struct IIsolatedWindowsEnvironmentShareFileResult_Vtbl {
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
     pub File: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentShareFolderRequestOptions, IIsolatedWindowsEnvironmentShareFolderRequestOptions_Vtbl, 0xc405eb7d_7053_4f6a_9b87_746846ed19b2);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentShareFolderRequestOptions {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFolderRequestOptions");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentShareFolderRequestOptions, IIsolatedWindowsEnvironmentShareFolderRequestOptions_Vtbl, 0xc405eb7d_7053_4f6a_9b87_746846ed19b2, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFolderRequestOptions");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentShareFolderRequestOptions_Vtbl {
@@ -339,11 +251,7 @@ pub struct IIsolatedWindowsEnvironmentShareFolderRequestOptions_Vtbl {
     pub AllowWrite: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetAllowWrite: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentShareFolderResult, IIsolatedWindowsEnvironmentShareFolderResult_Vtbl, 0x556ba72e_ca9d_4211_b143_1cedc86eb2fe);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentShareFolderResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFolderResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentShareFolderResult, IIsolatedWindowsEnvironmentShareFolderResult_Vtbl, 0x556ba72e_ca9d_4211_b143_1cedc86eb2fe, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentShareFolderResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentShareFolderResult_Vtbl {
@@ -351,11 +259,7 @@ pub struct IIsolatedWindowsEnvironmentShareFolderResult_Vtbl {
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut IsolatedWindowsEnvironmentShareFolderStatus) -> windows_core::HRESULT,
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentStartProcessResult, IIsolatedWindowsEnvironmentStartProcessResult_Vtbl, 0x8fa1dc2f_57da_4bb5_9c06_fa072d2032e2);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentStartProcessResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentStartProcessResult");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentStartProcessResult, IIsolatedWindowsEnvironmentStartProcessResult_Vtbl, 0x8fa1dc2f_57da_4bb5_9c06_fa072d2032e2, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentStartProcessResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentStartProcessResult_Vtbl {
@@ -364,11 +268,7 @@ pub struct IIsolatedWindowsEnvironmentStartProcessResult_Vtbl {
     pub ExtendedError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::HRESULT) -> windows_core::HRESULT,
     pub Process: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentTelemetryParameters, IIsolatedWindowsEnvironmentTelemetryParameters_Vtbl, 0xebdb3cab_7a3a_4524_a0f4_f96e284d33cd);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentTelemetryParameters {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentTelemetryParameters");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentTelemetryParameters, IIsolatedWindowsEnvironmentTelemetryParameters_Vtbl, 0xebdb3cab_7a3a_4524_a0f4_f96e284d33cd, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentTelemetryParameters");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentTelemetryParameters_Vtbl {
@@ -376,11 +276,7 @@ pub struct IIsolatedWindowsEnvironmentTelemetryParameters_Vtbl {
     pub CorrelationId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::GUID) -> windows_core::HRESULT,
     pub SetCorrelationId: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentUserInfo, IIsolatedWindowsEnvironmentUserInfo_Vtbl, 0x8a9c75ae_69ba_4001_96fc_19a02703b340);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentUserInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentUserInfo");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentUserInfo, IIsolatedWindowsEnvironmentUserInfo_Vtbl, 0x8a9c75ae_69ba_4001_96fc_19a02703b340, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentUserInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentUserInfo_Vtbl {
@@ -389,22 +285,14 @@ pub struct IIsolatedWindowsEnvironmentUserInfo_Vtbl {
     pub EnvironmentUserName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryWaitForSignInAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsEnvironmentUserInfo2, IIsolatedWindowsEnvironmentUserInfo2_Vtbl, 0xb0bdd5dd_91d7_481e_94f2_2a5a6bdf9383);
-impl windows_core::RuntimeType for IIsolatedWindowsEnvironmentUserInfo2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentUserInfo2");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsEnvironmentUserInfo2, IIsolatedWindowsEnvironmentUserInfo2_Vtbl, 0xb0bdd5dd_91d7_481e_94f2_2a5a6bdf9383, b"Windows.Security.Isolation.IIsolatedWindowsEnvironmentUserInfo2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsEnvironmentUserInfo2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub TryWaitForSignInWithProgressAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsHostMessengerStatics, IIsolatedWindowsHostMessengerStatics_Vtbl, 0x06e444bb_53c0_4889_8fa3_53592e37cf21);
-impl windows_core::RuntimeType for IIsolatedWindowsHostMessengerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsHostMessengerStatics");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsHostMessengerStatics, IIsolatedWindowsHostMessengerStatics_Vtbl, 0x06e444bb_53c0_4889_8fa3_53592e37cf21, b"Windows.Security.Isolation.IIsolatedWindowsHostMessengerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsHostMessengerStatics_Vtbl {
@@ -412,11 +300,7 @@ pub struct IIsolatedWindowsHostMessengerStatics_Vtbl {
     pub PostMessageToReceiver: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetFileId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut windows_core::GUID) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIsolatedWindowsHostMessengerStatics2, IIsolatedWindowsHostMessengerStatics2_Vtbl, 0x55ef9ebc_0444_42ad_832d_1b89c089d1ca);
-impl windows_core::RuntimeType for IIsolatedWindowsHostMessengerStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Isolation.IIsolatedWindowsHostMessengerStatics2");
-}
+windows_core::imp::define_winrt_interface!(IIsolatedWindowsHostMessengerStatics2, IIsolatedWindowsHostMessengerStatics2_Vtbl, 0x55ef9ebc_0444_42ad_832d_1b89c089d1ca, b"Windows.Security.Isolation.IIsolatedWindowsHostMessengerStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIsolatedWindowsHostMessengerStatics2_Vtbl {
@@ -438,7 +322,7 @@ impl IsolatedWindowsEnvironment {
     pub fn StartProcessSilentlyAsync(&self, hostexepath: &windows_core::HSTRING, arguments: &windows_core::HSTRING, activator: IsolatedWindowsEnvironmentActivator) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentStartProcessResult>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).StartProcessSilentlyAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostexepath), core::mem::transmute_copy(arguments), activator, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).StartProcessSilentlyAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostexepath), core::mem::transmute_copy(arguments), activator, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn StartProcessSilentlyWithTelemetryAsync<P3>(&self, hostexepath: &windows_core::HSTRING, arguments: &windows_core::HSTRING, activator: IsolatedWindowsEnvironmentActivator, telemetryparameters: P3) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentStartProcessResult>>
@@ -447,7 +331,7 @@ impl IsolatedWindowsEnvironment {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).StartProcessSilentlyWithTelemetryAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostexepath), core::mem::transmute_copy(arguments), activator, telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).StartProcessSilentlyWithTelemetryAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostexepath), core::mem::transmute_copy(arguments), activator, telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ShareFolderAsync<P1>(&self, hostfolder: &windows_core::HSTRING, requestoptions: P1) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentShareFolderResult>>
@@ -456,7 +340,7 @@ impl IsolatedWindowsEnvironment {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ShareFolderAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostfolder), requestoptions.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ShareFolderAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostfolder), requestoptions.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ShareFolderWithTelemetryAsync<P1, P2>(&self, hostfolder: &windows_core::HSTRING, requestoptions: P1, telemetryparameters: P2) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentShareFolderResult>>
@@ -466,13 +350,13 @@ impl IsolatedWindowsEnvironment {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ShareFolderWithTelemetryAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostfolder), requestoptions.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ShareFolderWithTelemetryAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hostfolder), requestoptions.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn LaunchFileWithUIAsync(&self, appexepath: &windows_core::HSTRING, argumentstemplate: &windows_core::HSTRING, filepath: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentLaunchFileResult>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LaunchFileWithUIAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(appexepath), core::mem::transmute_copy(argumentstemplate), core::mem::transmute_copy(filepath), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LaunchFileWithUIAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(appexepath), core::mem::transmute_copy(argumentstemplate), core::mem::transmute_copy(filepath), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn LaunchFileWithUIAndTelemetryAsync<P3>(&self, appexepath: &windows_core::HSTRING, argumentstemplate: &windows_core::HSTRING, filepath: &windows_core::HSTRING, telemetryparameters: P3) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentLaunchFileResult>>
@@ -481,13 +365,13 @@ impl IsolatedWindowsEnvironment {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LaunchFileWithUIAndTelemetryAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(appexepath), core::mem::transmute_copy(argumentstemplate), core::mem::transmute_copy(filepath), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LaunchFileWithUIAndTelemetryAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(appexepath), core::mem::transmute_copy(argumentstemplate), core::mem::transmute_copy(filepath), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn TerminateAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TerminateAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TerminateAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn TerminateWithTelemetryAsync<P0>(&self, telemetryparameters: P0) -> windows_core::Result<windows_future::IAsyncAction>
@@ -496,7 +380,7 @@ impl IsolatedWindowsEnvironment {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TerminateWithTelemetryAsync)(windows_core::Interface::as_raw(self), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TerminateWithTelemetryAsync)(windows_core::Interface::as_raw(self), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn RegisterMessageReceiver<P1>(&self, receiverid: windows_core::GUID, messagereceivedcallback: P1) -> windows_core::Result<()>
@@ -515,7 +399,7 @@ impl IsolatedWindowsEnvironment {
         let this = &windows_core::Interface::cast::<IIsolatedWindowsEnvironment2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PostMessageToReceiverAsync)(windows_core::Interface::as_raw(this), receiverid, message.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).PostMessageToReceiverAsync)(windows_core::Interface::as_raw(this), receiverid, message.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PostMessageToReceiverWithTelemetryAsync<P1, P2>(&self, receiverid: windows_core::GUID, message: P1, telemetryparameters: P2) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentPostMessageResult>>
@@ -526,14 +410,14 @@ impl IsolatedWindowsEnvironment {
         let this = &windows_core::Interface::cast::<IIsolatedWindowsEnvironment2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PostMessageToReceiverWithTelemetryAsync)(windows_core::Interface::as_raw(this), receiverid, message.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).PostMessageToReceiverWithTelemetryAsync)(windows_core::Interface::as_raw(this), receiverid, message.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetUserInfo(&self) -> windows_core::Result<IsolatedWindowsEnvironmentUserInfo> {
         let this = &windows_core::Interface::cast::<IIsolatedWindowsEnvironment3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetUserInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetUserInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ShareFileAsync<P1>(&self, filepath: &windows_core::HSTRING, options: P1) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentShareFileResult>>
@@ -543,7 +427,7 @@ impl IsolatedWindowsEnvironment {
         let this = &windows_core::Interface::cast::<IIsolatedWindowsEnvironment3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ShareFileAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(filepath), options.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).ShareFileAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(filepath), options.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ShareFileWithTelemetryAsync<P1, P2>(&self, filepath: &windows_core::HSTRING, options: P1, telemetryparameters: P2) -> windows_core::Result<windows_future::IAsyncOperation<IsolatedWindowsEnvironmentShareFileResult>>
@@ -554,7 +438,7 @@ impl IsolatedWindowsEnvironment {
         let this = &windows_core::Interface::cast::<IIsolatedWindowsEnvironment3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ShareFileWithTelemetryAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(filepath), options.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).ShareFileWithTelemetryAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(filepath), options.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ChangePriority(&self, priority: IsolatedWindowsEnvironmentCreationPriority) -> windows_core::Result<()> {
@@ -567,7 +451,7 @@ impl IsolatedWindowsEnvironment {
     {
         Self::IIsolatedWindowsEnvironmentFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateAsync)(windows_core::Interface::as_raw(this), options.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateAsync)(windows_core::Interface::as_raw(this), options.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateWithTelemetryAsync<P0, P1>(options: P0, telemetryparameters: P1) -> windows_core::Result<windows_future::IAsyncOperationWithProgress<IsolatedWindowsEnvironmentCreateResult, IsolatedWindowsEnvironmentCreateProgress>>
@@ -577,19 +461,19 @@ impl IsolatedWindowsEnvironment {
     {
         Self::IIsolatedWindowsEnvironmentFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateWithTelemetryAsync)(windows_core::Interface::as_raw(this), options.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateWithTelemetryAsync)(windows_core::Interface::as_raw(this), options.param().abi(), telemetryparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetById(environmentid: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IIsolatedWindowsEnvironmentFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetById)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(environmentid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetById)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(environmentid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn FindByOwnerId(environmentownerid: &windows_core::HSTRING) -> windows_core::Result<windows_collections::IVectorView<Self>> {
         Self::IIsolatedWindowsEnvironmentFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FindByOwnerId)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(environmentownerid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FindByOwnerId)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(environmentownerid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IIsolatedWindowsEnvironmentFactory<R, F: FnOnce(&IIsolatedWindowsEnvironmentFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -603,6 +487,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironment {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironment {
     type Vtable = <IIsolatedWindowsEnvironment as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironment as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironment {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironment";
@@ -803,7 +688,7 @@ impl IsolatedWindowsEnvironmentCreateResult {
     pub fn Environment(&self) -> windows_core::Result<IsolatedWindowsEnvironment> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Environment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Environment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ChangeCreationPriority(&self, priority: IsolatedWindowsEnvironmentCreationPriority) -> windows_core::Result<()> {
@@ -817,6 +702,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentCreateResult {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentCreateResult {
     type Vtable = <IIsolatedWindowsEnvironmentCreateResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentCreateResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentCreateResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentCreateResult";
@@ -893,6 +779,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentFile {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentFile {
     type Vtable = <IIsolatedWindowsEnvironmentFile as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentFile as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentFile {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentFile";
@@ -910,7 +797,7 @@ impl IsolatedWindowsEnvironmentHost {
     pub fn HostErrors() -> windows_core::Result<windows_collections::IVectorView<IsolatedWindowsEnvironmentHostError>> {
         Self::IIsolatedWindowsEnvironmentHostStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).HostErrors)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).HostErrors)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IIsolatedWindowsEnvironmentHostStatics<R, F: FnOnce(&IIsolatedWindowsEnvironmentHostStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -958,7 +845,7 @@ impl IsolatedWindowsEnvironmentLaunchFileResult {
     pub fn File(&self) -> windows_core::Result<IsolatedWindowsEnvironmentFile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).File)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).File)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -968,6 +855,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentLaunchFileResult {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentLaunchFileResult {
     type Vtable = <IIsolatedWindowsEnvironmentLaunchFileResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentLaunchFileResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentLaunchFileResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentLaunchFileResult";
@@ -1133,6 +1021,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentOptions {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentOptions {
     type Vtable = <IIsolatedWindowsEnvironmentOptions as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentOptions as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentOptions {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentOptions";
@@ -1147,7 +1036,7 @@ impl IsolatedWindowsEnvironmentOwnerRegistration {
     {
         Self::IIsolatedWindowsEnvironmentOwnerRegistrationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Register)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(ownername), ownerregistrationdata.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Register)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(ownername), ownerregistrationdata.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Unregister(ownername: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -1176,25 +1065,25 @@ impl IsolatedWindowsEnvironmentOwnerRegistrationData {
     pub fn ShareableFolders(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ShareableFolders)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ShareableFolders)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ProcessesRunnableAsSystem(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProcessesRunnableAsSystem)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProcessesRunnableAsSystem)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ProcessesRunnableAsUser(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProcessesRunnableAsUser)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProcessesRunnableAsUser)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ActivationFileExtensions(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivationFileExtensions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivationFileExtensions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1204,6 +1093,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentOwnerRegistrationDa
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentOwnerRegistrationData {
     type Vtable = <IIsolatedWindowsEnvironmentOwnerRegistrationData as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentOwnerRegistrationData as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentOwnerRegistrationData {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentOwnerRegistrationData";
@@ -1234,6 +1124,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentOwnerRegistrationRe
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentOwnerRegistrationResult {
     type Vtable = <IIsolatedWindowsEnvironmentOwnerRegistrationResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentOwnerRegistrationResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentOwnerRegistrationResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentOwnerRegistrationResult";
@@ -1281,6 +1172,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentPostMessageResult {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentPostMessageResult {
     type Vtable = <IIsolatedWindowsEnvironmentPostMessageResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentPostMessageResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentPostMessageResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentPostMessageResult";
@@ -1328,7 +1220,7 @@ impl IsolatedWindowsEnvironmentProcess {
     pub fn WaitForExitAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).WaitForExitAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).WaitForExitAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1338,6 +1230,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentProcess {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentProcess {
     type Vtable = <IIsolatedWindowsEnvironmentProcess as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentProcess as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentProcess {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentProcess";
@@ -1406,6 +1299,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentShareFileRequestOpt
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentShareFileRequestOptions {
     type Vtable = <IIsolatedWindowsEnvironmentShareFileRequestOptions as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentShareFileRequestOptions as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentShareFileRequestOptions {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentShareFileRequestOptions";
@@ -1432,7 +1326,7 @@ impl IsolatedWindowsEnvironmentShareFileResult {
     pub fn File(&self) -> windows_core::Result<IsolatedWindowsEnvironmentFile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).File)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).File)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1442,6 +1336,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentShareFileResult {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentShareFileResult {
     type Vtable = <IIsolatedWindowsEnvironmentShareFileResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentShareFileResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentShareFileResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentShareFileResult";
@@ -1494,6 +1389,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentShareFolderRequestO
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentShareFolderRequestOptions {
     type Vtable = <IIsolatedWindowsEnvironmentShareFolderRequestOptions as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentShareFolderRequestOptions as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentShareFolderRequestOptions {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentShareFolderRequestOptions";
@@ -1524,6 +1420,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentShareFolderResult {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentShareFolderResult {
     type Vtable = <IIsolatedWindowsEnvironmentShareFolderResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentShareFolderResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentShareFolderResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentShareFolderResult";
@@ -1585,7 +1482,7 @@ impl IsolatedWindowsEnvironmentStartProcessResult {
     pub fn Process(&self) -> windows_core::Result<IsolatedWindowsEnvironmentProcess> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Process)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Process)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1595,6 +1492,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentStartProcessResult 
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentStartProcessResult {
     type Vtable = <IIsolatedWindowsEnvironmentStartProcessResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentStartProcessResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentStartProcessResult {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentStartProcessResult";
@@ -1646,6 +1544,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentTelemetryParameters
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentTelemetryParameters {
     type Vtable = <IIsolatedWindowsEnvironmentTelemetryParameters as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentTelemetryParameters as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentTelemetryParameters {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentTelemetryParameters";
@@ -1672,14 +1571,14 @@ impl IsolatedWindowsEnvironmentUserInfo {
     pub fn TryWaitForSignInAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<bool>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TryWaitForSignInAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TryWaitForSignInAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn TryWaitForSignInWithProgressAsync(&self) -> windows_core::Result<windows_future::IAsyncOperationWithProgress<bool, IsolatedWindowsEnvironmentSignInProgress>> {
         let this = &windows_core::Interface::cast::<IIsolatedWindowsEnvironmentUserInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryWaitForSignInWithProgressAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryWaitForSignInWithProgressAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1689,6 +1588,7 @@ impl windows_core::RuntimeType for IsolatedWindowsEnvironmentUserInfo {
 unsafe impl windows_core::Interface for IsolatedWindowsEnvironmentUserInfo {
     type Vtable = <IIsolatedWindowsEnvironmentUserInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIsolatedWindowsEnvironmentUserInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IsolatedWindowsEnvironmentUserInfo {
     const NAME: &'static str = "Windows.Security.Isolation.IsolatedWindowsEnvironmentUserInfo";
@@ -1735,7 +1635,7 @@ impl windows_core::RuntimeType for MessageReceivedCallback {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl MessageReceivedCallback {
-    pub fn new<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&MessageReceivedCallbackBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -1752,8 +1652,8 @@ pub struct MessageReceivedCallback_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(this: *mut core::ffi::c_void, receiverid: windows_core::GUID, message: *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-struct MessageReceivedCallbackBox<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + 'static>(core::marker::PhantomData<(fn() -> F,)>);
-impl<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + 'static> MessageReceivedCallbackBox<F> {
+struct MessageReceivedCallbackBox<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + Sync + 'static>(core::marker::PhantomData<(fn() -> F,)>);
+impl<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorView<windows_core::IInspectable>>) -> windows_core::Result<()> + Send + Sync + 'static> MessageReceivedCallbackBox<F> {
     const VTABLE: MessageReceivedCallback_Vtbl = MessageReceivedCallback_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<MessageReceivedCallback, F>::QueryInterface,
@@ -1764,8 +1664,8 @@ impl<F: Fn(&windows_core::GUID, windows_core::Ref<windows_collections::IVectorVi
     };
     unsafe extern "system" fn Invoke(this: *mut core::ffi::c_void, receiverid: windows_core::GUID, message: *mut core::ffi::c_void) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<MessageReceivedCallback, F>);
-            (this.invoke)(core::mem::transmute(&receiverid), core::mem::transmute_copy(&message)).into()
+            let this = &*(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<MessageReceivedCallback, F>);
+            (this.invoke)(&*(&raw const receiverid).cast(), core::mem::transmute_copy(&message)).into()
         }
     }
 }

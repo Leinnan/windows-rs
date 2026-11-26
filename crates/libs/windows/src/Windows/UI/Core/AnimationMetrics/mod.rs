@@ -6,7 +6,7 @@ impl AnimationDescription {
     pub fn Animations(&self) -> windows_core::Result<windows_collections::IVectorView<IPropertyAnimation>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Animations)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Animations)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn StaggerDelay(&self) -> windows_core::Result<windows_time::TimeSpan> {
@@ -36,7 +36,7 @@ impl AnimationDescription {
     pub fn CreateInstance(effect: AnimationEffect, target: AnimationEffectTarget) -> windows_core::Result<Self> {
         Self::IAnimationDescriptionFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), effect, target, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), effect, target, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IAnimationDescriptionFactory<R, F: FnOnce(&IAnimationDescriptionFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -50,6 +50,7 @@ impl windows_core::RuntimeType for AnimationDescription {
 unsafe impl windows_core::Interface for AnimationDescription {
     type Vtable = <IAnimationDescription as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAnimationDescription as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AnimationDescription {
     const NAME: &'static str = "Windows.UI.Core.AnimationMetrics.AnimationDescription";
@@ -136,11 +137,7 @@ impl windows_core::RuntimeType for AnimationEffectTarget {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.UI.Core.AnimationMetrics.AnimationEffectTarget;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Core.AnimationMetrics.AnimationEffectTarget");
 }
-windows_core::imp::define_interface!(IAnimationDescription, IAnimationDescription_Vtbl, 0x7d11a549_be3d_41de_b081_05c149962f9b);
-impl windows_core::RuntimeType for IAnimationDescription {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Core.AnimationMetrics.IAnimationDescription");
-}
+windows_core::imp::define_winrt_interface!(IAnimationDescription, IAnimationDescription_Vtbl, 0x7d11a549_be3d_41de_b081_05c149962f9b, b"Windows.UI.Core.AnimationMetrics.IAnimationDescription");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAnimationDescription_Vtbl {
@@ -151,22 +148,14 @@ pub struct IAnimationDescription_Vtbl {
     pub DelayLimit: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::TimeSpan) -> windows_core::HRESULT,
     pub ZOrder: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAnimationDescriptionFactory, IAnimationDescriptionFactory_Vtbl, 0xc6e27abe_c1fb_48b5_9271_ecc70ac86ef0);
-impl windows_core::RuntimeType for IAnimationDescriptionFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Core.AnimationMetrics.IAnimationDescriptionFactory");
-}
+windows_core::imp::define_winrt_interface!(IAnimationDescriptionFactory, IAnimationDescriptionFactory_Vtbl, 0xc6e27abe_c1fb_48b5_9271_ecc70ac86ef0, b"Windows.UI.Core.AnimationMetrics.IAnimationDescriptionFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAnimationDescriptionFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(*mut core::ffi::c_void, AnimationEffect, AnimationEffectTarget, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IOpacityAnimation, IOpacityAnimation_Vtbl, 0x803aabe5_ee7e_455f_84e9_2506afb8d2b4);
-impl windows_core::RuntimeType for IOpacityAnimation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Core.AnimationMetrics.IOpacityAnimation");
-}
+windows_core::imp::define_winrt_interface!(IOpacityAnimation, IOpacityAnimation_Vtbl, 0x803aabe5_ee7e_455f_84e9_2506afb8d2b4, b"Windows.UI.Core.AnimationMetrics.IOpacityAnimation");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IOpacityAnimation_Vtbl {
@@ -174,11 +163,7 @@ pub struct IOpacityAnimation_Vtbl {
     pub InitialOpacity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub FinalOpacity: unsafe extern "system" fn(*mut core::ffi::c_void, *mut f32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPropertyAnimation, IPropertyAnimation_Vtbl, 0x3a01b4da_4d8c_411e_b615_1ade683a9903);
-impl windows_core::RuntimeType for IPropertyAnimation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Core.AnimationMetrics.IPropertyAnimation");
-}
+windows_core::imp::define_winrt_interface!(IPropertyAnimation, IPropertyAnimation_Vtbl, 0x3a01b4da_4d8c_411e_b615_1ade683a9903, b"Windows.UI.Core.AnimationMetrics.IPropertyAnimation");
 windows_core::imp::interface_hierarchy!(IPropertyAnimation, windows_core::IUnknown, windows_core::IInspectable);
 impl IPropertyAnimation {
     pub fn Type(&self) -> windows_core::Result<PropertyAnimationType> {
@@ -300,7 +285,7 @@ impl IPropertyAnimation_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IPropertyAnimation, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Type: Type::<Identity, OFFSET>,
             Delay: Delay::<Identity, OFFSET>,
             Duration: Duration::<Identity, OFFSET>,
@@ -322,11 +307,7 @@ pub struct IPropertyAnimation_Vtbl {
     pub Control1: unsafe extern "system" fn(*mut core::ffi::c_void, *mut super::super::super::Foundation::Point) -> windows_core::HRESULT,
     pub Control2: unsafe extern "system" fn(*mut core::ffi::c_void, *mut super::super::super::Foundation::Point) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IScaleAnimation, IScaleAnimation_Vtbl, 0x023552c7_71ab_428c_9c9f_d31780964995);
-impl windows_core::RuntimeType for IScaleAnimation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Core.AnimationMetrics.IScaleAnimation");
-}
+windows_core::imp::define_winrt_interface!(IScaleAnimation, IScaleAnimation_Vtbl, 0x023552c7_71ab_428c_9c9f_d31780964995, b"Windows.UI.Core.AnimationMetrics.IScaleAnimation");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IScaleAnimation_Vtbl {
@@ -346,7 +327,7 @@ impl OpacityAnimation {
     pub fn InitialOpacity(&self) -> windows_core::Result<f32> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InitialOpacity)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f32>| r__.Value())
+            (windows_core::Interface::vtable(self).InitialOpacity)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f32>| r__.Value())
         }
     }
     pub fn FinalOpacity(&self) -> windows_core::Result<f32> {
@@ -397,6 +378,7 @@ impl windows_core::RuntimeType for OpacityAnimation {
 unsafe impl windows_core::Interface for OpacityAnimation {
     type Vtable = <IOpacityAnimation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IOpacityAnimation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for OpacityAnimation {
     const NAME: &'static str = "Windows.UI.Core.AnimationMetrics.OpacityAnimation";
@@ -445,6 +427,7 @@ impl windows_core::RuntimeType for PropertyAnimation {
 unsafe impl windows_core::Interface for PropertyAnimation {
     type Vtable = <IPropertyAnimation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPropertyAnimation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PropertyAnimation {
     const NAME: &'static str = "Windows.UI.Core.AnimationMetrics.PropertyAnimation";
@@ -510,13 +493,13 @@ impl ScaleAnimation {
     pub fn InitialScaleX(&self) -> windows_core::Result<f32> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InitialScaleX)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f32>| r__.Value())
+            (windows_core::Interface::vtable(self).InitialScaleX)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f32>| r__.Value())
         }
     }
     pub fn InitialScaleY(&self) -> windows_core::Result<f32> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InitialScaleY)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f32>| r__.Value())
+            (windows_core::Interface::vtable(self).InitialScaleY)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f32>| r__.Value())
         }
     }
     pub fn FinalScaleX(&self) -> windows_core::Result<f32> {
@@ -544,6 +527,7 @@ impl windows_core::RuntimeType for ScaleAnimation {
 unsafe impl windows_core::Interface for ScaleAnimation {
     type Vtable = <IScaleAnimation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IScaleAnimation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ScaleAnimation {
     const NAME: &'static str = "Windows.UI.Core.AnimationMetrics.ScaleAnimation";
@@ -592,6 +576,7 @@ impl windows_core::RuntimeType for TranslationAnimation {
 unsafe impl windows_core::Interface for TranslationAnimation {
     type Vtable = <IPropertyAnimation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPropertyAnimation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for TranslationAnimation {
     const NAME: &'static str = "Windows.UI.Core.AnimationMetrics.TranslationAnimation";

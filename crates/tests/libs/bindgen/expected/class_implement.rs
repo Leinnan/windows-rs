@@ -53,17 +53,17 @@ impl windows_core::RuntimeType for Class {
 unsafe impl windows_core::Interface for Class {
     type Vtable = <IClass as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IClass as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for Class {
     const NAME: &'static str = "Test.Class";
 }
-windows_core::imp::define_interface!(IClass, IClass_Vtbl, 0x327dfd65_5684_57ee_85ab_168eff31a838);
-impl windows_core::RuntimeType for IClass {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IClass");
-}
+windows_core::imp::define_winrt_interface!(
+    IClass,
+    IClass_Vtbl,
+    0x327dfd65_5684_57ee_85ab_168eff31a838,
+    b"Test.IClass"
+);
 impl windows_core::RuntimeName for IClass {
     const NAME: &'static str = "Test.IClass";
 }
@@ -102,8 +102,7 @@ impl IClass_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IClass_Impl::Name(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -120,11 +119,11 @@ impl IClass_Vtbl {
             unsafe {
                 let this: &Identity =
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IClass_Impl::SetName(this, core::mem::transmute(&value)).into()
+                IClass_Impl::SetName(this, &*(&raw const value).cast()).into()
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IClass, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Method: Method::<Identity, OFFSET>,
             Name: Name::<Identity, OFFSET>,
             SetName: SetName::<Identity, OFFSET>,

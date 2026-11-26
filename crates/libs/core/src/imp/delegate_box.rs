@@ -18,7 +18,9 @@ pub struct DelegateBox<I: Interface, F> {
 
 impl<I: Interface, F> DelegateBox<I, F> {
     /// Creates a new `DelegateBox` with a reference count of 1.
-    pub const fn new(vtable: *const I::Vtable, invoke: F) -> Self {
+    pub fn new(vtable: *const I::Vtable, invoke: F) -> Self {
+        #[cfg(windows_cast_diagnostics)]
+        live_objects::DELEGATES.add();
         Self {
             vtable,
             invoke,
@@ -45,15 +47,13 @@ impl<I: Interface, F> DelegateBox<I, F> {
                 || *iid == <IUnknown as Interface>::IID
                 || *iid == <IAgileObject as Interface>::IID
             {
-                &mut (*this).vtable as *mut _ as _
+                // Later calls and the final Release need the whole allocation's provenance.
+                this.cast()
             } else {
                 #[cfg(windows)]
                 if *iid == <IMarshal as Interface>::IID {
                     (*this).count.add_ref();
-                    return marshaler(
-                        core::mem::transmute(&mut (*this).vtable as *mut _ as *mut c_void),
-                        interface,
-                    );
+                    return marshaler(IUnknown::from_raw(this.cast()), interface);
                 }
                 core::ptr::null_mut()
             };
@@ -87,5 +87,12 @@ impl<I: Interface, F> DelegateBox<I, F> {
 
             remaining
         }
+    }
+}
+
+#[cfg(windows_cast_diagnostics)]
+impl<I: Interface, F> Drop for DelegateBox<I, F> {
+    fn drop(&mut self) {
+        live_objects::DELEGATES.remove();
     }
 }

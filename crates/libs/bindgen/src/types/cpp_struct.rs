@@ -152,25 +152,6 @@ impl CppStruct {
         field.name() == "Value" && fields.next().is_none()
     }
 
-    // Native typedef chains to fixed arrays prevent deriving `Default`.
-    fn resolves_to_fixed_array(&self, reader: &Reader) -> bool {
-        if !self.is_native_typedef() {
-            return false;
-        }
-
-        match self
-            .def
-            .fields()
-            .next()
-            .unwrap()
-            .field_type(Some(self), reader)
-        {
-            Type::ArrayFixed(..) => true,
-            Type::CppStruct(inner) => inner.resolves_to_fixed_array(reader),
-            _ => false,
-        }
-    }
-
     fn write_native_object(&self, config: &Config) -> TokenStream {
         assert!(
             !self.def.flags().contains(TypeAttributes::ExplicitLayout)
@@ -333,6 +314,8 @@ impl CppStruct {
         let field_config = &config.with_self_ty(self.type_name(), &[]);
 
         let fields = {
+            let size_of = aligned_members.then(|| config.write_mem_function("size_of"));
+            let align_of = aligned_members.then(|| config.write_mem_function("align_of"));
             let mut names: BTreeSet<String> = if aligned_members {
                 fields.iter().map(|(name, _, _)| (*name).into()).collect()
             } else {
@@ -373,7 +356,7 @@ impl CppStruct {
                         pub #padding: [core::mem::MaybeUninit<u8>; {
                             let offset = 0usize;
                             #layout
-                            let natural = ::core::mem::align_of::<#ty>();
+                            let natural = #align_of::<#ty>();
                             let required = if natural < #alignment { #alignment } else { natural };
                             ((offset + required - 1) & !(required - 1))
                                 - ((offset + natural - 1) & !(natural - 1))
@@ -388,10 +371,10 @@ impl CppStruct {
                         quote! { let alignment = if alignment < #alignment { #alignment } else { alignment }; }
                     });
                     layout.extend(quote! {
-                        let alignment = ::core::mem::align_of::<#ty>();
+                        let alignment = #align_of::<#ty>();
                         #requested
                         let offset = ((offset + alignment - 1) & !(alignment - 1))
-                            + ::core::mem::size_of::<#ty>();
+                            + #size_of::<#ty>();
                     });
                 }
                 quote! { #padding pub #name: #ty, }
@@ -454,6 +437,7 @@ impl CppStruct {
             derive.extend(["Default"]);
             quote! {}
         } else {
+            derive.remove("Default");
             quote! {
                 #cfg
                 impl Default for #name {
@@ -537,23 +521,33 @@ impl CppStruct {
         !self.has_explicit_layout(config.reader)
             && !self.has_member_alignment(config.reader)
             && !self.def.fields().any(|field| {
-                let ty = field.field_type(Some(self), config.reader);
-
-                // Resolve transparent native-typedef aliases to a fixed-size array,
-                // which has no derivable `Default`; treat like a directly-spelled array.
-                if let Type::CppStruct(inner) = &ty
-                    && inner.resolves_to_fixed_array(config.reader)
+                let mut ty = field
+                    .field_type(Some(self), config.reader)
+                    .projection_type(config.reader);
+                while let Type::CppStruct(inner) = &ty
+                    && inner.is_handle(config.reader)
+                    && config.typedef_emits_bare(inner.def)
                 {
-                    return true;
+                    ty = inner
+                        .def
+                        .underlying_type_ext(config.reader)
+                        .projection_type(config.reader);
                 }
 
-                if config.bindgen.style.is_sys()
-                    && let Type::CppEnum(inner) = &ty
-                    && inner.def.has_attribute("ScopedEnumAttribute")
-                {
-                    return true;
+                match ty {
+                    Type::ArrayFixed(..) | Type::PtrMut(..) | Type::PtrConst(..) => true,
+                    ty if config.bindgen.style.is_sys() && ty.is_interface() => true,
+                    Type::CppEnum(inner) if config.bindgen.style.is_sys() => {
+                        inner.def.has_attribute("ScopedEnumAttribute")
+                    }
+                    Type::PSTR
+                    | Type::PCSTR
+                    | Type::PWSTR
+                    | Type::PCWSTR
+                    | Type::BSTR
+                    | Type::String => config.bindgen.style.is_sys(),
+                    _ => false,
                 }
-                matches!(&ty, Type::ArrayFixed(..))
             })
     }
 
@@ -616,7 +610,8 @@ impl CppStruct {
                     || !offset.is_multiple_of(layout.alignment)
                 {
                     let helper = Type::UnalignedHelper.type_name().write(config, &[]);
-                    storage = quote! { #helper<#storage, { ::core::mem::size_of::<#storage>() }> };
+                    let size_of = config.write_mem_function("size_of");
+                    storage = quote! { #helper<#storage, { #size_of::<#storage>() }> };
                 }
                 if !config.bindgen.style.is_sys() && !ty.is_copyable(config.reader) {
                     storage = quote! { core::mem::ManuallyDrop<#storage> };
@@ -883,7 +878,7 @@ impl CppStruct {
                     accessors.push(backing.write_typed_accessor(
                         config,
                         &field_ident,
-                        (&read, &wrappers, unaligned),
+                        (&read, &wrappers, unaligned, unaligned || is_union),
                         (member, &ty),
                         (offset, width),
                         arch,
@@ -1122,14 +1117,14 @@ impl BitfieldBacking {
         &self,
         config: &Config,
         field: &TokenStream,
-        storage: (&TokenStream, &[TokenStream], bool),
+        storage: (&TokenStream, &[TokenStream], bool, bool),
         member: (&str, &Type),
         range: (u32, u32),
         arch: i32,
     ) -> TokenStream {
         let (member, ty) = member;
         let (offset, width) = range;
-        let (read, storage_wrappers, unaligned) = storage;
+        let (read, storage_wrappers, unaligned, unsafe_access) = storage;
         let (scalar, wrappers) = bitfield_scalar(ty, config, arch);
         let prim = &self.prim;
         let uprim = &self.uprim;
@@ -1237,25 +1232,16 @@ impl BitfieldBacking {
             let helper = Type::UnalignedHelper.type_name().write(config, &[]);
             set = quote! { #helper::new(#set) };
         }
-        let safety = unaligned.then(|| {
-            quote! {
-                /// # Safety
-                ///
-                /// The backing storage must be initialized.
-            }
-        });
-        let unsafety = unaligned.then(|| quote! { unsafe });
+        let unsafety = unsafe_access.then(|| quote! { unsafe });
         let getter = to_ident(member);
         let setter = to_ident(&format!("set_{member}"));
         let name = ty.write_name(config);
         quote! {
-            #safety
             pub #unsafety fn #getter(&self) -> #name {
                 #bounds
                 #member_bounds
                 #get
             }
-            #safety
             pub #unsafety fn #setter(&mut self, value: #name) {
                 #bounds
                 #member_bounds

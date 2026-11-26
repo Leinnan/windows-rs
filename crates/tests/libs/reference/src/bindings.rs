@@ -12,17 +12,12 @@ impl windows_core::RuntimeType for DateTime {
     const NAME: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.DateTime");
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IPropertyValue,
     IPropertyValue_Vtbl,
-    0x4bd682dd_7554_40e9_9a9b_82654ede7e62
+    0x4bd682dd_7554_40e9_9a9b_82654ede7e62,
+    b"Windows.Foundation.IPropertyValue"
 );
-impl windows_core::RuntimeType for IPropertyValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.IPropertyValue");
-}
 windows_core::imp::interface_hierarchy!(
     IPropertyValue,
     windows_core::IUnknown,
@@ -230,6 +225,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetUInt8Array(&self, value: &mut windows_core::Array<u8>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetUInt8Array)(
                 windows_core::Interface::as_raw(self),
@@ -240,6 +236,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetInt16Array(&self, value: &mut windows_core::Array<i16>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetInt16Array)(
                 windows_core::Interface::as_raw(self),
@@ -250,6 +247,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetUInt16Array(&self, value: &mut windows_core::Array<u16>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetUInt16Array)(
                 windows_core::Interface::as_raw(self),
@@ -260,6 +258,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetInt32Array(&self, value: &mut windows_core::Array<i32>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetInt32Array)(
                 windows_core::Interface::as_raw(self),
@@ -270,6 +269,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetUInt32Array(&self, value: &mut windows_core::Array<u32>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetUInt32Array)(
                 windows_core::Interface::as_raw(self),
@@ -280,6 +280,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetInt64Array(&self, value: &mut windows_core::Array<i64>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetInt64Array)(
                 windows_core::Interface::as_raw(self),
@@ -290,6 +291,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetUInt64Array(&self, value: &mut windows_core::Array<u64>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetUInt64Array)(
                 windows_core::Interface::as_raw(self),
@@ -300,6 +302,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetSingleArray(&self, value: &mut windows_core::Array<f32>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetSingleArray)(
                 windows_core::Interface::as_raw(self),
@@ -310,6 +313,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetDoubleArray(&self, value: &mut windows_core::Array<f64>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetDoubleArray)(
                 windows_core::Interface::as_raw(self),
@@ -320,6 +324,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetChar16Array(&self, value: &mut windows_core::Array<u16>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetChar16Array)(
                 windows_core::Interface::as_raw(self),
@@ -333,6 +338,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<bool>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetBooleanArray)(
                 windows_core::Interface::as_raw(self),
@@ -346,6 +352,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<windows_core::HSTRING>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetStringArray)(
                 windows_core::Interface::as_raw(self),
@@ -359,6 +366,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<windows_core::IInspectable>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetInspectableArray)(
                 windows_core::Interface::as_raw(self),
@@ -372,6 +380,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<windows_core::GUID>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetGuidArray)(
                 windows_core::Interface::as_raw(self),
@@ -385,6 +394,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<DateTime>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetDateTimeArray)(
                 windows_core::Interface::as_raw(self),
@@ -398,6 +408,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<TimeSpan>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetTimeSpanArray)(
                 windows_core::Interface::as_raw(self),
@@ -411,6 +422,7 @@ impl IPropertyValue {
         &self,
         value: &mut windows_core::Array<Point>,
     ) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetPointArray)(
                 windows_core::Interface::as_raw(self),
@@ -421,6 +433,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetSizeArray(&self, value: &mut windows_core::Array<Size>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetSizeArray)(
                 windows_core::Interface::as_raw(self),
@@ -431,6 +444,7 @@ impl IPropertyValue {
         }
     }
     pub fn GetRectArray(&self, value: &mut windows_core::Array<Rect>) -> windows_core::Result<()> {
+        value.clear();
         unsafe {
             (windows_core::Interface::vtable(self).GetRectArray)(
                 windows_core::Interface::as_raw(self),
@@ -761,8 +775,7 @@ impl IPropertyValue_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPropertyValue_Impl::GetString(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1292,7 +1305,7 @@ impl IPropertyValue_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IPropertyValue, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Type: Type::<Identity, OFFSET>,
             IsNumericScalar: IsNumericScalar::<Identity, OFFSET>,
             GetUInt8: GetUInt8::<Identity, OFFSET>,

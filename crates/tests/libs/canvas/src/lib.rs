@@ -4,8 +4,23 @@
 //! They require a GPU (hardware or WARP) to run.
 
 #[cfg(test)]
+#[allow(
+    dead_code,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    clippy::all
+)]
+mod bindings {
+    include!(concat!(env!("OUT_DIR"), "\\bindings.rs"));
+}
+
+#[cfg(test)]
 mod tests {
+    use super::bindings::*;
     use windows_canvas::*;
+    use windows_core::Interface;
+    use windows_text::{ParagraphAlignment, TextAlignment, TextFormat, TextLayout, WordWrapping};
 
     fn ensure_com_initialized() {
         unsafe {
@@ -13,6 +28,40 @@ mod tests {
             let mut cookie = core::ptr::null_mut();
             let _ = CoIncrementMTAUsage(&mut cookie);
         }
+    }
+
+    #[test]
+    fn scoped_clips_intersect_and_restore() {
+        let device = GpuDevice::new_warp().unwrap();
+        let target = device.create_render_target(12, 12).unwrap();
+        target
+            .draw(|session| {
+                session.clear(ColorF::BLACK);
+                let red = session.create_solid_brush(ColorF::RED)?;
+                let green = session.create_solid_brush(ColorF::from_rgb8(0, 255, 0))?;
+                let blue = session.create_solid_brush(ColorF::BLUE)?;
+                session.with_clip(&Rect::from_xywh(2.0, 2.0, 8.0, 8.0), || {
+                    session.with_clip(&Rect::from_xywh(0.0, 0.0, 6.0, 6.0), || {
+                        session.fill_rect(&Rect::from_xywh(0.0, 0.0, 12.0, 12.0), &red);
+                    });
+                    session.fill_rect(&Rect::from_xywh(8.0, 8.0, 4.0, 4.0), &green);
+                });
+                let panic = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    session.with_clip(&Rect::from_xywh(4.0, 4.0, 1.0, 1.0), || panic!("test"));
+                }));
+                assert!(panic.is_err());
+                session.fill_rect(&Rect::from_xywh(0.0, 0.0, 1.0, 1.0), &blue);
+                Ok(())
+            })
+            .unwrap();
+        let pixels = target.read_pixels().unwrap();
+        let pixel = |x: usize, y: usize| &pixels[(y * 12 + x) * 4..(y * 12 + x + 1) * 4];
+        assert_eq!(pixel(0, 0), [255, 0, 0, 255]);
+        assert_eq!(pixel(1, 1), [0, 0, 0, 255]);
+        assert_eq!(pixel(2, 2), [0, 0, 255, 255]);
+        assert_eq!(pixel(6, 6), [0, 0, 0, 255]);
+        assert_eq!(pixel(8, 8), [0, 255, 0, 255]);
+        assert_eq!(pixel(10, 10), [0, 0, 0, 255]);
     }
 
     #[test]
@@ -62,6 +111,98 @@ mod tests {
     }
 
     #[test]
+    fn end_draw_failure_prevents_present() {
+        let present_count = |chain: &SwapChain| {
+            let mut count = 0;
+            unsafe {
+                chain
+                    .as_interface::<IDXGISwapChain1>()
+                    .GetLastPresentCount(&mut count)
+                    .unwrap();
+            }
+            count
+        };
+        let device = GpuDevice::new_warp().unwrap();
+        let mut chain = device.create_swap_chain(64, 64).unwrap();
+        let presented = present_count(&chain);
+        {
+            let session = chain.begin_draw().unwrap();
+            session.clear(ColorF::RED);
+            // This void call defers the unbalanced-clip error until EndDraw.
+            unsafe {
+                session
+                    .as_interface::<ID2D1DeviceContext>()
+                    .PopAxisAlignedClip();
+            }
+        }
+        for _ in 0..2 {
+            assert_eq!(
+                chain.present().unwrap_err().code(),
+                D2DERR_PUSH_POP_UNBALANCED
+            );
+            assert!(!chain.is_device_lost());
+            assert_eq!(present_count(&chain), presented);
+        }
+        chain.begin_draw().unwrap().clear(ColorF::BLUE);
+        assert!(chain.present().unwrap());
+        assert_eq!(present_count(&chain), presented + 1);
+    }
+
+    #[test]
+    fn end_draw_failure_reaches_render_target_owner() {
+        let device = GpuDevice::new_warp().unwrap();
+        let target = device.create_render_target(4, 4).unwrap();
+        for callback_error in [None, Some(windows_core::HRESULT(0x8000_4004_u32 as i32))] {
+            let error = target
+                .draw(|session| {
+                    session.clear(ColorF::RED);
+                    unsafe {
+                        session
+                            .as_interface::<ID2D1DeviceContext>()
+                            .PopAxisAlignedClip();
+                    }
+                    callback_error
+                        .map_or(Ok(()), |code| Err(windows_core::Error::from_hresult(code)))
+                })
+                .unwrap_err();
+            assert_eq!(error.code(), D2DERR_PUSH_POP_UNBALANCED);
+        }
+        target
+            .draw(|session| {
+                session.clear(ColorF::BLUE);
+                Ok(())
+            })
+            .unwrap();
+        for pixel in target.read_pixels().unwrap().as_chunks::<4>().0 {
+            assert_eq!(pixel, &[255, 0, 0, 255]);
+        }
+    }
+
+    #[test]
+    fn render_target_preserves_callback_errors() {
+        let device = GpuDevice::new_warp().unwrap();
+        let target = device.create_render_target(4, 4).unwrap();
+        let removed = windows_core::HRESULT(0x887A_0005_u32 as i32);
+        for code in [windows_core::HRESULT(0x8000_4004_u32 as i32), removed] {
+            let error = target
+                .draw(|_| Err(windows_core::Error::from_hresult(code)))
+                .unwrap_err();
+            assert_eq!(error.code(), code);
+        }
+        let error = target
+            .draw(|session| {
+                unsafe {
+                    session
+                        .as_interface::<ID2D1DeviceContext>()
+                        .PopAxisAlignedClip();
+                }
+                Err(windows_core::Error::from_hresult(removed))
+            })
+            .unwrap_err();
+        assert_eq!(error.code(), removed);
+    }
+
+    #[test]
     fn resize_swap_chain() {
         let device = GpuDevice::new_warp().unwrap();
         let mut chain = device.create_swap_chain(64, 64).unwrap();
@@ -99,9 +240,7 @@ mod tests {
         let device = GpuDevice::new_warp().unwrap();
         let mut chain = device.create_swap_chain(128, 64).unwrap();
 
-        let format = TextFormat::new("Segoe UI", 16.0)
-            .unwrap()
-            .with_alignment(TextAlignment::Center);
+        let format = TextFormat::new("Segoe UI", 16.0).with_alignment(TextAlignment::Center);
         let brush = chain.create_solid_brush(ColorF::WHITE).unwrap();
 
         let session = chain.begin_draw().unwrap();
@@ -353,8 +492,8 @@ mod tests {
     }
 
     #[test]
-    fn text_format_new_bold() {
-        let format = TextFormat::new_bold("Segoe UI", 20.0).unwrap();
+    fn bold_text() {
+        let format = TextFormat::new("Segoe UI", 20.0).with_weight(windows_text::FontWeight::BOLD);
 
         let device = GpuDevice::new_warp().unwrap();
         let mut chain = device.create_swap_chain(128, 64).unwrap();
@@ -676,26 +815,6 @@ mod tests {
     }
 
     #[test]
-    fn rect_from_xywh_and_accessors() {
-        let rect = Rect::from_xywh(10.0, 20.0, 30.0, 40.0);
-        assert_eq!(rect.left, 10.0);
-        assert_eq!(rect.top, 20.0);
-        assert_eq!(rect.right, 40.0);
-        assert_eq!(rect.bottom, 60.0);
-        assert_eq!(rect.width(), 30.0);
-        assert_eq!(rect.height(), 40.0);
-
-        let moved = rect.offset(5.0, -8.0);
-        assert_eq!(moved.left, 15.0);
-        assert_eq!(moved.top, 12.0);
-        assert_eq!(moved.right, 45.0);
-        assert_eq!(moved.bottom, 52.0);
-        // Offset preserves size.
-        assert_eq!(moved.width(), rect.width());
-        assert_eq!(moved.height(), rect.height());
-    }
-
-    #[test]
     fn ellipse_new() {
         let e = Ellipse::new(Vector2::new(10.0, 20.0), 30.0, 40.0);
         assert_eq!(e.center.x, 10.0);
@@ -714,11 +833,9 @@ mod tests {
 
     #[test]
     fn text_format_with_weight_and_paragraph_alignment() {
-        let format = TextFormat::with_weight("Segoe UI", 18.0, CanvasFontWeight::BOLD)
-            .unwrap()
+        let format = TextFormat::new("Segoe UI", 18.0)
+            .with_weight(windows_text::FontWeight::BOLD)
             .with_paragraph_alignment(ParagraphAlignment::Center);
-
-        let _raw = format.raw();
 
         let device = GpuDevice::new_warp().unwrap();
         let mut chain = device.create_swap_chain(128, 64).unwrap();
@@ -784,16 +901,20 @@ mod tests {
     fn device_accessors() {
         let device = GpuDevice::new_warp().unwrap();
         let _d2d_factory = device.d2d_factory();
-        let _dwrite = device.dwrite_factory();
     }
 
     #[test]
-    fn swap_chain_raw_and_load_bitmap() {
+    fn swap_chain_interop_and_load_bitmap() {
         ensure_com_initialized();
         let device = GpuDevice::new_warp().unwrap();
         let chain = device.create_swap_chain(64, 64).unwrap();
 
-        let _raw = chain.raw_swap_chain();
+        let borrowed: &IDXGISwapChain1 = chain.as_interface();
+        let queried: IDXGISwapChain1 = chain.to_interface().unwrap();
+        assert_eq!(borrowed.as_raw(), queried.as_raw());
+        let mut desc = DXGI_SWAP_CHAIN_DESC1::default();
+        unsafe { borrowed.GetDesc1(&mut desc).unwrap() };
+        assert_eq!((desc.Width, desc.Height), (64, 64));
 
         let bitmap = chain
             .load_bitmap(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("test.png"))
@@ -802,12 +923,14 @@ mod tests {
     }
 
     #[test]
-    fn session_raw_and_create_brush() {
+    fn session_interop_and_create_brush() {
         let device = GpuDevice::new_warp().unwrap();
         let mut chain = device.create_swap_chain(64, 64).unwrap();
 
         let session = chain.begin_draw().unwrap();
-        let _raw = session.raw();
+        let context: &ID2D1DeviceContext = session.as_interface();
+        let size = unsafe { context.GetPixelSize() };
+        assert_eq!((size.width, size.height), (64, 64));
 
         // create_solid_brush on session (vs swap chain).
         let brush = session.create_solid_brush(ColorF::RED).unwrap();
@@ -818,7 +941,7 @@ mod tests {
     }
 
     #[test]
-    fn path_raw_accessor() {
+    fn path_interop() {
         let device = GpuDevice::new_warp().unwrap();
         let path = PathBuilder::new(&device)
             .unwrap()
@@ -828,7 +951,10 @@ mod tests {
             .build()
             .unwrap();
 
-        let _raw = path.raw();
+        let geometry: &ID2D1PathGeometry1 = path.as_interface();
+        let mut count = 0;
+        unsafe { geometry.GetFigureCount(&mut count).unwrap() };
+        assert_eq!(count, 1);
     }
 
     #[test]
@@ -961,7 +1087,7 @@ mod tests {
     fn new_or_warp_produces_working_device() {
         let device = GpuDevice::new_or_warp().unwrap();
         let chain = device.create_swap_chain(64, 64).unwrap();
-        let _raw = chain.raw_swap_chain();
+        let _swap_chain: &IDXGISwapChain1 = chain.as_interface();
     }
 
     #[test]
@@ -995,7 +1121,10 @@ mod tests {
         let outer = chain.begin_draw().unwrap();
 
         let offset = Matrix3x2::translation(10.0, 20.0);
-        let session = DrawingSession::from_borrowed_context(outer.raw(), offset);
+        let session = DrawingSession::from_borrowed_context(
+            outer.as_interface::<ID2D1DeviceContext>(),
+            offset,
+        );
 
         // The offset is applied to the context but hidden from callers: an
         // untouched session reports the identity transform even though the
@@ -1027,7 +1156,7 @@ mod tests {
             outer.clear(ColorF::BLACK);
             {
                 let session = DrawingSession::from_borrowed_context(
-                    outer.raw(),
+                    outer.as_interface::<ID2D1DeviceContext>(),
                     Matrix3x2::translation(0.0, 0.0),
                 );
                 session.clear(ColorF::CORNFLOWER_BLUE);
@@ -1097,85 +1226,12 @@ mod tests {
     }
 
     #[test]
-    fn text_layout_metrics() {
-        let format = TextFormat::new("Segoe UI", 24.0).unwrap();
-        let layout = TextLayout::new("Hello, Canvas!", &format, 400.0, 200.0).unwrap();
-
-        assert_eq!(layout.max_size(), (400.0, 200.0));
-
-        let m = layout.metrics();
-        // Single, unwrapped line of non-empty text.
-        assert_eq!(m.line_count, 1);
-        assert!(m.width > 0.0);
-        assert!(m.height > 0.0);
-        // Trailing-whitespace width is never smaller than the inked width.
-        assert!(m.width_including_trailing_whitespace >= m.width);
-        assert_eq!(m.layout_width, 400.0);
-        assert_eq!(m.layout_height, 200.0);
-        assert_eq!(m.bounds().width(), m.width);
-        assert_eq!(m.bounds().height(), m.height);
-    }
-
-    #[test]
-    fn text_layout_wraps_when_narrow() {
-        let format = TextFormat::new("Segoe UI", 24.0)
-            .unwrap()
-            .with_word_wrapping(WordWrapping::Wrap);
-
-        let wide = TextLayout::new("word word word word word", &format, 1000.0, 500.0).unwrap();
-        assert_eq!(wide.metrics().line_count, 1);
-
-        let narrow = TextLayout::new("word word word word word", &format, 60.0, 500.0).unwrap();
-        assert!(narrow.metrics().line_count > 1);
-
-        // Reflow the wide layout by shrinking it in place.
-        wide.set_max_size(60.0, 500.0);
-        assert!(wide.metrics().line_count > 1);
-    }
-
-    #[test]
-    fn text_layout_no_wrap_stays_one_line() {
-        let format = TextFormat::new("Segoe UI", 24.0)
-            .unwrap()
-            .with_word_wrapping(WordWrapping::NoWrap);
-        let layout = TextLayout::new("word word word word word", &format, 40.0, 500.0).unwrap();
-        assert_eq!(layout.metrics().line_count, 1);
-    }
-
-    #[test]
-    fn text_layout_hit_test_point_and_caret() {
-        let format = TextFormat::new("Segoe UI", 24.0).unwrap();
-        let layout = TextLayout::new("Hello", &format, 400.0, 200.0).unwrap();
-
-        let first = layout.hit_test_point(Vector2::new(0.0, 5.0));
-        assert_eq!(first.text_position, 0);
-        assert!(first.bounds.width() > 0.0);
-
-        let past = layout.hit_test_point(Vector2::new(1000.0, 1000.0));
-        assert!(!past.is_inside);
-
-        // The caret for a later position sits further right than the first, is a
-        // zero-width vertical line, and spans the line height.
-        let caret0 = layout.caret_bounds(0, false);
-        let caret3 = layout.caret_bounds(3, false);
-        assert!(caret3.left > caret0.left);
-        assert_eq!(caret0.width(), 0.0);
-        assert!(caret0.height() > 0.0);
-
-        // `trailing` moves the caret to the far edge of the character.
-        let caret0_trailing = layout.caret_bounds(0, true);
-        assert!(caret0_trailing.left > caret0.left);
-    }
-
-    #[test]
     fn text_layout_draws() {
         let device = GpuDevice::new_warp().unwrap();
         let mut chain = device.create_swap_chain(256, 64).unwrap();
 
-        let format = TextFormat::new("Segoe UI", 20.0)
-            .unwrap()
-            .with_alignment(TextAlignment::Center);
-        let layout = TextLayout::new("Layout", &format, 256.0, 64.0).unwrap();
+        let format = TextFormat::new("Segoe UI", 20.0).with_alignment(TextAlignment::Center);
+        let layout = TextLayout::new("Layout", &format, 256.0, 64.0);
         let brush = chain.create_solid_brush(ColorF::WHITE).unwrap();
 
         let session = chain.begin_draw().unwrap();
@@ -1185,29 +1241,196 @@ mod tests {
         chain.present().unwrap();
     }
 
+    // Pixels covered by white text drawn on black.
+    struct Ink {
+        width: usize,
+        coverage: Vec<u8>,
+    }
+
+    impl Ink {
+        fn render(width: u32, height: u32, layout: &TextLayout, origin: Vector2) -> Self {
+            let device = GpuDevice::new_warp().unwrap();
+            let target = device.create_render_target(width, height).unwrap();
+            target
+                .draw(|session| {
+                    session.clear(ColorF::BLACK);
+                    let brush = session.create_solid_brush(ColorF::WHITE)?;
+                    session.draw_text_layout(origin, layout, &brush);
+                    Ok(())
+                })
+                .unwrap();
+            #[allow(clippy::chunks_exact_to_as_chunks)]
+            let coverage = target
+                .read_pixels()
+                .unwrap()
+                .chunks_exact(4)
+                .map(|p| p[0].max(p[1]).max(p[2]))
+                .collect();
+            Self {
+                width: width as usize,
+                coverage,
+            }
+        }
+
+        // The smallest pixel rectangle containing every lit pixel.
+        fn bounds(&self) -> Rect {
+            let mut bounds: Option<(usize, usize, usize, usize)> = None;
+            for (i, _) in self.coverage.iter().enumerate().filter(|(_, c)| **c > 0) {
+                let (x, y) = (i % self.width, i / self.width);
+                let b = bounds.get_or_insert((x, y, x, y));
+                *b = (b.0.min(x), b.1.min(y), b.2.max(x + 1), b.3.max(y + 1));
+            }
+            let (left, top, right, bottom) = bounds.unwrap();
+            Rect::new(left as f32, top as f32, right as f32, bottom as f32)
+        }
+
+        fn total(&self) -> u32 {
+            self.coverage.iter().map(|c| *c as u32).sum()
+        }
+    }
+
+    fn text_layout(text: &str, format: &TextFormat, width: f32) -> TextLayout {
+        TextLayout::new(text, format, width, 100.0)
+    }
+
     #[test]
-    fn text_layout_renders_pixels() {
-        let device = GpuDevice::new_warp().unwrap();
-        let target = device.create_render_target(64, 32).unwrap();
+    fn text_ink_matches_layout_metrics() {
+        let format = TextFormat::new("Segoe UI", 24.0);
+        let layout = text_layout("Hello", &format, 200.0);
+        let origin = Vector2::new(10.0, 5.0);
+        let ink = Ink::render(220, 60, &layout, origin).bounds();
+        let metrics = layout.metrics();
+        let left = origin.x + metrics.left;
+        let right = left + metrics.width;
+        let top = origin.y + metrics.top;
+        let bottom = top + metrics.height;
 
-        let format = TextFormat::new("Segoe UI", 24.0).unwrap();
-        let layout = TextLayout::new("X", &format, 64.0, 32.0).unwrap();
+        // Glyphs stay inside the line box, apart from antialiasing at the edges.
+        assert!(
+            ink.left >= left - 1.0 && ink.right <= right + 1.0,
+            "{ink:?}"
+        );
+        assert!(
+            ink.top >= top - 1.0 && ink.bottom <= bottom + 1.0,
+            "{ink:?}"
+        );
 
-        target
-            .draw(|session| {
-                session.clear(ColorF::BLACK);
-                let brush = session.create_solid_brush(ColorF::WHITE)?;
-                session.draw_text_layout(Vector2::new(0.0, 0.0), &layout, &brush);
-                Ok(())
-            })
-            .unwrap();
+        // Side bearings are small, so the ink spans most of the reported width.
+        assert!(ink.right - ink.left > metrics.width - 6.0, "{ink:?}");
 
-        // At least one pixel must be lit by the glyph.
-        let pixels = target.read_pixels().unwrap();
-        #[allow(clippy::chunks_exact_to_as_chunks)]
-        let any_lit = pixels
-            .chunks_exact(4)
-            .any(|p| p[0] > 0 || p[1] > 0 || p[2] > 0);
-        assert!(any_lit, "expected the glyph to light some pixels");
+        // The trailing caret sits just past the last glyph.
+        let caret = layout.caret_bounds(5, false);
+        assert!(
+            (origin.x + caret.left - ink.right).abs() <= 3.0,
+            "{caret:?} {ink:?}"
+        );
+    }
+
+    #[test]
+    fn text_ink_follows_origin() {
+        let format = TextFormat::new("Segoe UI", 20.0);
+        let layout = text_layout("Move", &format, 100.0);
+        let a = Ink::render(140, 60, &layout, Vector2::new(0.0, 0.0)).bounds();
+        let b = Ink::render(140, 60, &layout, Vector2::new(20.0, 10.0)).bounds();
+        assert_eq!(b.left - a.left, 20.0);
+        assert_eq!(b.top - a.top, 10.0);
+        assert_eq!(b.right - b.left, a.right - a.left);
+        assert_eq!(b.bottom - b.top, a.bottom - a.top);
+    }
+
+    #[test]
+    fn text_ink_follows_alignment() {
+        let ink = |alignment| {
+            let format = TextFormat::new("Segoe UI", 20.0).with_alignment(alignment);
+            let layout = text_layout("Align", &format, 200.0);
+            Ink::render(200, 40, &layout, Vector2::new(0.0, 0.0)).bounds()
+        };
+        let leading = ink(TextAlignment::Leading);
+        let center = ink(TextAlignment::Center);
+        let trailing = ink(TextAlignment::Trailing);
+
+        assert!(leading.left < 4.0, "{leading:?}");
+        assert!(trailing.right > 196.0, "{trailing:?}");
+        let middle = (center.left + center.right) / 2.0;
+        assert!((middle - 100.0).abs() <= 3.0, "{center:?}");
+    }
+
+    #[test]
+    fn text_ink_wraps_onto_lines() {
+        let format = TextFormat::new("Segoe UI", 20.0).with_word_wrapping(WordWrapping::Wrap);
+        let wide = text_layout("one two three", &format, 300.0);
+        let narrow = text_layout("one two three", &format, 60.0);
+        assert_eq!(wide.metrics().line_count, 1);
+        let lines = narrow.metrics().line_count;
+        assert!(lines >= 2);
+
+        let ink = Ink::render(100, 120, &narrow, Vector2::new(0.0, 0.0)).bounds();
+        let metrics = narrow.metrics();
+        assert!(ink.right <= 61.0, "{ink:?}");
+        assert!(ink.bottom <= metrics.height + 1.0, "{ink:?}");
+
+        // The last line has ink.
+        let line_height = metrics.height / lines as f32;
+        assert!(ink.bottom > metrics.height - line_height, "{ink:?}");
+    }
+
+    #[test]
+    fn bold_text_has_more_ink() {
+        let normal = TextFormat::new("Segoe UI", 24.0);
+        let bold = TextFormat::new("Segoe UI", 24.0).with_weight(windows_text::FontWeight::BOLD);
+        let origin = Vector2::new(0.0, 0.0);
+        let normal = Ink::render(200, 40, &text_layout("Weight", &normal, 200.0), origin);
+        let bold = Ink::render(200, 40, &text_layout("Weight", &bold, 200.0), origin);
+        assert!(bold.total() > normal.total() * 5 / 4);
+    }
+
+    #[test]
+    fn underline_and_strikethrough_have_ink() {
+        let format = TextFormat::new("Segoe UI", 24.0);
+        let origin = Vector2::new(0.0, 0.0);
+        let plain = Ink::render(200, 40, &text_layout("aaaa", &format, 200.0), origin).bounds();
+
+        let mut underlined = text_layout("aaaa", &format, 200.0);
+        underlined.set_underline(.., true);
+        let underlined = Ink::render(200, 40, &underlined, origin).bounds();
+        assert!(underlined.bottom > plain.bottom, "{underlined:?} {plain:?}");
+
+        // The spaces between the glyphs have no ink until they are struck through.
+        let mut struck = text_layout("a    a", &format, 200.0);
+        let spaces = struck.range_bounds(2..4)[0];
+        let lit = |ink: &Ink| {
+            let (left, right) = (spaces.left as usize, spaces.right as usize);
+            ink.coverage
+                .chunks_exact(ink.width)
+                .enumerate()
+                .filter(|(_, row)| row[left..right].iter().all(|c| *c > 0))
+                .map(|(y, _)| y as f32)
+                .collect::<Vec<_>>()
+        };
+        assert!(lit(&Ink::render(200, 40, &struck, origin)).is_empty());
+        struck.set_strikethrough(1..5, true);
+        let rows = lit(&Ink::render(200, 40, &struck, origin));
+        assert!(!rows.is_empty());
+        // The line crosses the glyphs above the baseline.
+        let baseline = struck.line_metrics()[0].baseline;
+        assert!(
+            rows.iter().all(|y| *y > spaces.top && *y < baseline),
+            "{rows:?} {baseline}"
+        );
+    }
+
+    #[test]
+    fn range_weight_has_more_ink() {
+        let format = TextFormat::new("Segoe UI", 24.0);
+        let origin = Vector2::new(0.0, 0.0);
+        let ink = |bold: std::ops::Range<usize>| {
+            let mut layout = text_layout("WeightWeight", &format, 300.0);
+            layout.set_font_weight(bold, windows_text::FontWeight::BOLD);
+            Ink::render(300, 40, &layout, origin).total()
+        };
+        let normal = ink(0..0);
+        let half = ink(6..12);
+        let bold = ink(0..12);
+        assert!(normal < half && half < bold, "{normal} {half} {bold}");
     }
 }

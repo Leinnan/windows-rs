@@ -150,7 +150,7 @@ impl ICastingEventHandler_Vtbl {
         unsafe extern "system" fn OnError<Identity: ICastingEventHandler_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, errorstatus: CASTING_CONNECTION_ERROR_STATUS, errormessage: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                ICastingEventHandler_Impl::OnError(this, core::mem::transmute_copy(&errorstatus), core::mem::transmute(&errormessage))
+                ICastingEventHandler_Impl::OnError(this, core::mem::transmute_copy(&errorstatus), &*(&raw const errormessage).cast())
             }
         }
         Self {
@@ -170,14 +170,14 @@ impl ICastingSourceInfo {
     pub unsafe fn GetController(&self) -> windows_core::Result<ICastingController> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetController)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetController)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "propsys")]
     pub unsafe fn GetProperties(&self) -> windows_core::Result<super::INamedPropertyStore> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetProperties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetProperties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -204,7 +204,7 @@ impl ICastingSourceInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICastingSourceInfo_Impl::GetController(this) {
                     Ok(ok__) => {
-                        controller.write(core::mem::transmute(ok__));
+                        controller.cast::<ICastingController>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -219,7 +219,7 @@ impl ICastingSourceInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICastingSourceInfo_Impl::GetProperties(this) {
                     Ok(ok__) => {
-                        props.write(core::mem::transmute(ok__));
+                        props.cast::<super::INamedPropertyStore>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(INamedResource, INamedResource_Vtbl, 0x1c98c219_0b13_4240_89a5_d495dc189a00);
-impl windows_core::RuntimeType for INamedResource {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.INamedResource");
-}
+windows_core::imp::define_winrt_interface!(INamedResource, INamedResource_Vtbl, 0x1c98c219_0b13_4240_89a5_d495dc189a00, b"Windows.ApplicationModel.Resources.Core.INamedResource");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INamedResource_Vtbl {
@@ -14,11 +10,7 @@ pub struct INamedResource_Vtbl {
     pub ResolveAll: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ResolveAllForContext: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceCandidate, IResourceCandidate_Vtbl, 0xaf5207d9_c433_4764_b3fd_8fa6bfbcbadc);
-impl windows_core::RuntimeType for IResourceCandidate {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceCandidate");
-}
+windows_core::imp::define_winrt_interface!(IResourceCandidate, IResourceCandidate_Vtbl, 0xaf5207d9_c433_4764_b3fd_8fa6bfbcbadc, b"Windows.ApplicationModel.Resources.Core.IResourceCandidate");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceCandidate_Vtbl {
@@ -34,11 +26,7 @@ pub struct IResourceCandidate_Vtbl {
     GetValueAsFileAsync: usize,
     pub GetQualifierValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceCandidate2, IResourceCandidate2_Vtbl, 0x69e5b468_f6fc_4013_aaa2_d53f1757d3b5);
-impl windows_core::RuntimeType for IResourceCandidate2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceCandidate2");
-}
+windows_core::imp::define_winrt_interface!(IResourceCandidate2, IResourceCandidate2_Vtbl, 0x69e5b468_f6fc_4013_aaa2_d53f1757d3b5, b"Windows.ApplicationModel.Resources.Core.IResourceCandidate2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceCandidate2_Vtbl {
@@ -48,22 +36,14 @@ pub struct IResourceCandidate2_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     GetValueAsStreamAsync: usize,
 }
-windows_core::imp::define_interface!(IResourceCandidate3, IResourceCandidate3_Vtbl, 0x08ae97f8_517a_4674_958c_4a3c7cd2cc6b);
-impl windows_core::RuntimeType for IResourceCandidate3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceCandidate3");
-}
+windows_core::imp::define_winrt_interface!(IResourceCandidate3, IResourceCandidate3_Vtbl, 0x08ae97f8_517a_4674_958c_4a3c7cd2cc6b, b"Windows.ApplicationModel.Resources.Core.IResourceCandidate3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceCandidate3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Kind: unsafe extern "system" fn(*mut core::ffi::c_void, *mut ResourceCandidateKind) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceContext, IResourceContext_Vtbl, 0x2fa22f4b_707e_4b27_ad0d_d0d8cd468fd2);
-impl windows_core::RuntimeType for IResourceContext {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceContext");
-}
+windows_core::imp::define_winrt_interface!(IResourceContext, IResourceContext_Vtbl, 0x2fa22f4b_707e_4b27_ad0d_d0d8cd468fd2, b"Windows.ApplicationModel.Resources.Core.IResourceContext");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceContext_Vtbl {
@@ -76,22 +56,14 @@ pub struct IResourceContext_Vtbl {
     pub Languages: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetLanguages: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceContextStatics, IResourceContextStatics_Vtbl, 0x98be9d6c_6338_4b31_99df_b2b442f17149);
-impl windows_core::RuntimeType for IResourceContextStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics");
-}
+windows_core::imp::define_winrt_interface!(IResourceContextStatics, IResourceContextStatics_Vtbl, 0x98be9d6c_6338_4b31_99df_b2b442f17149, b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceContextStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateMatchingContext: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceContextStatics2, IResourceContextStatics2_Vtbl, 0x41f752ef_12af_41b9_ab36_b1eb4b512460);
-impl windows_core::RuntimeType for IResourceContextStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics2");
-}
+windows_core::imp::define_winrt_interface!(IResourceContextStatics2, IResourceContextStatics2_Vtbl, 0x41f752ef_12af_41b9_ab36_b1eb4b512460, b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceContextStatics2_Vtbl {
@@ -102,22 +74,14 @@ pub struct IResourceContextStatics2_Vtbl {
     pub ResetGlobalQualifierValuesForSpecifiedQualifiers: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetForViewIndependentUse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceContextStatics3, IResourceContextStatics3_Vtbl, 0x20cf492c_af0f_450b_9da6_106dd0c29a39);
-impl windows_core::RuntimeType for IResourceContextStatics3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics3");
-}
+windows_core::imp::define_winrt_interface!(IResourceContextStatics3, IResourceContextStatics3_Vtbl, 0x20cf492c_af0f_450b_9da6_106dd0c29a39, b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceContextStatics3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub SetGlobalQualifierValueWithPersistence: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, ResourceQualifierPersistence) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceContextStatics4, IResourceContextStatics4_Vtbl, 0x22eb9ccd_fb31_4bfa_b86b_df9d9d7bdc39);
-impl windows_core::RuntimeType for IResourceContextStatics4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics4");
-}
+windows_core::imp::define_winrt_interface!(IResourceContextStatics4, IResourceContextStatics4_Vtbl, 0x22eb9ccd_fb31_4bfa_b86b_df9d9d7bdc39, b"Windows.ApplicationModel.Resources.Core.IResourceContextStatics4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceContextStatics4_Vtbl {
@@ -127,11 +91,7 @@ pub struct IResourceContextStatics4_Vtbl {
     #[cfg(not(feature = "UI"))]
     GetForUIContext: usize,
 }
-windows_core::imp::define_interface!(IResourceManager, IResourceManager_Vtbl, 0xf744d97b_9988_44fb_abd6_5378844cfa8b);
-impl windows_core::RuntimeType for IResourceManager {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceManager");
-}
+windows_core::imp::define_winrt_interface!(IResourceManager, IResourceManager_Vtbl, 0xf744d97b_9988_44fb_abd6_5378844cfa8b, b"Windows.ApplicationModel.Resources.Core.IResourceManager");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceManager_Vtbl {
@@ -148,11 +108,7 @@ pub struct IResourceManager_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     UnloadPriFiles: usize,
 }
-windows_core::imp::define_interface!(IResourceManager2, IResourceManager2_Vtbl, 0x9d66fe6c_a4d7_4c23_9e85_675f304c252d);
-impl windows_core::RuntimeType for IResourceManager2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceManager2");
-}
+windows_core::imp::define_winrt_interface!(IResourceManager2, IResourceManager2_Vtbl, 0x9d66fe6c_a4d7_4c23_9e85_675f304c252d, b"Windows.ApplicationModel.Resources.Core.IResourceManager2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceManager2_Vtbl {
@@ -160,11 +116,7 @@ pub struct IResourceManager2_Vtbl {
     pub GetAllNamedResourcesForPackage: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, ResourceLayoutInfo, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetAllSubtreesForPackage: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, ResourceLayoutInfo, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceManagerStatics, IResourceManagerStatics_Vtbl, 0x1cc0fdfc_69ee_4e43_9901_47f12687baf7);
-impl windows_core::RuntimeType for IResourceManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(IResourceManagerStatics, IResourceManagerStatics_Vtbl, 0x1cc0fdfc_69ee_4e43_9901_47f12687baf7, b"Windows.ApplicationModel.Resources.Core.IResourceManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceManagerStatics_Vtbl {
@@ -172,11 +124,7 @@ pub struct IResourceManagerStatics_Vtbl {
     pub Current: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub IsResourceReference: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceMap, IResourceMap_Vtbl, 0x72284824_db8c_42f8_b08c_53ff357dad82);
-impl windows_core::RuntimeType for IResourceMap {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceMap");
-}
+windows_core::imp::define_winrt_interface!(IResourceMap, IResourceMap_Vtbl, 0x72284824_db8c_42f8_b08c_53ff357dad82, b"Windows.ApplicationModel.Resources.Core.IResourceMap");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceMap_Vtbl {
@@ -186,11 +134,7 @@ pub struct IResourceMap_Vtbl {
     pub GetValueForContext: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetSubtree: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceQualifier, IResourceQualifier_Vtbl, 0x785da5b2_4afd_4376_a888_c5f9a6b7a05c);
-impl windows_core::RuntimeType for IResourceQualifier {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.Core.IResourceQualifier");
-}
+windows_core::imp::define_winrt_interface!(IResourceQualifier, IResourceQualifier_Vtbl, 0x785da5b2_4afd_4376_a888_c5f9a6b7a05c, b"Windows.ApplicationModel.Resources.Core.IResourceQualifier");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceQualifier_Vtbl {
@@ -209,19 +153,19 @@ impl NamedResource {
     pub fn Uri(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Uri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Uri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Candidates(&self) -> windows_core::Result<windows_collections::IVectorView<ResourceCandidate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Candidates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Candidates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Resolve(&self) -> windows_core::Result<ResourceCandidate> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Resolve)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Resolve)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ResolveForContext<P0>(&self, resourcecontext: P0) -> windows_core::Result<ResourceCandidate>
@@ -230,13 +174,13 @@ impl NamedResource {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ResolveForContext)(windows_core::Interface::as_raw(self), resourcecontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ResolveForContext)(windows_core::Interface::as_raw(self), resourcecontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ResolveAll(&self) -> windows_core::Result<windows_collections::IVectorView<ResourceCandidate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ResolveAll)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ResolveAll)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ResolveAllForContext<P0>(&self, resourcecontext: P0) -> windows_core::Result<windows_collections::IVectorView<ResourceCandidate>>
@@ -245,7 +189,7 @@ impl NamedResource {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ResolveAllForContext)(windows_core::Interface::as_raw(self), resourcecontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ResolveAllForContext)(windows_core::Interface::as_raw(self), resourcecontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -255,6 +199,7 @@ impl windows_core::RuntimeType for NamedResource {
 unsafe impl windows_core::Interface for NamedResource {
     type Vtable = <INamedResource as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INamedResource as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NamedResource {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.NamedResource";
@@ -269,7 +214,7 @@ impl ResourceCandidate {
     pub fn Qualifiers(&self) -> windows_core::Result<windows_collections::IVectorView<ResourceQualifier>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Qualifiers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Qualifiers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsMatch(&self) -> windows_core::Result<bool> {
@@ -300,7 +245,7 @@ impl ResourceCandidate {
     pub fn GetValueAsFileAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<super::super::super::Storage::StorageFile>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetValueAsFileAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetValueAsFileAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetQualifierValue(&self, qualifiername: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -314,7 +259,7 @@ impl ResourceCandidate {
         let this = &windows_core::Interface::cast::<IResourceCandidate2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetValueAsStreamAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetValueAsStreamAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Kind(&self) -> windows_core::Result<ResourceCandidateKind> {
@@ -331,6 +276,7 @@ impl windows_core::RuntimeType for ResourceCandidate {
 unsafe impl windows_core::Interface for ResourceCandidate {
     type Vtable = <IResourceCandidate as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IResourceCandidate as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceCandidate {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceCandidate";
@@ -362,13 +308,13 @@ impl ResourceCandidateVectorView {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<ResourceCandidate>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAt(&self, index: u32) -> windows_core::Result<ResourceCandidate> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAt)(windows_core::Interface::as_raw(self), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAt)(windows_core::Interface::as_raw(self), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -387,6 +333,9 @@ impl ResourceCandidateVectorView {
         }
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<ResourceCandidate>]) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<Option<ResourceCandidate>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(windows_core::Interface::as_raw(self), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -399,6 +348,7 @@ impl windows_core::RuntimeType for ResourceCandidateVectorView {
 unsafe impl windows_core::Interface for ResourceCandidateVectorView {
     type Vtable = <windows_collections::IVectorView<ResourceCandidate> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IVectorView<ResourceCandidate> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceCandidateVectorView {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceCandidateVectorView";
@@ -434,7 +384,7 @@ impl ResourceContext {
     pub fn QualifierValues(&self) -> windows_core::Result<windows_collections::IObservableMap<windows_core::HSTRING, windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).QualifierValues)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).QualifierValues)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Reset(&self) -> windows_core::Result<()> {
@@ -455,13 +405,13 @@ impl ResourceContext {
     pub fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Languages(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Languages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Languages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetLanguages<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -476,13 +426,13 @@ impl ResourceContext {
     {
         Self::IResourceContextStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateMatchingContext)(windows_core::Interface::as_raw(this), result.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateMatchingContext)(windows_core::Interface::as_raw(this), result.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetForCurrentView() -> windows_core::Result<Self> {
         Self::IResourceContextStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn SetGlobalQualifierValue(key: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -500,7 +450,7 @@ impl ResourceContext {
     pub fn GetForViewIndependentUse() -> windows_core::Result<Self> {
         Self::IResourceContextStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForViewIndependentUse)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForViewIndependentUse)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn SetGlobalQualifierValueWithPersistence(key: &windows_core::HSTRING, value: &windows_core::HSTRING, persistence: ResourceQualifierPersistence) -> windows_core::Result<()> {
@@ -513,7 +463,7 @@ impl ResourceContext {
     {
         Self::IResourceContextStatics4(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IResourceContextStatics<R, F: FnOnce(&IResourceContextStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -539,6 +489,7 @@ impl windows_core::RuntimeType for ResourceContext {
 unsafe impl windows_core::Interface for ResourceContext {
     type Vtable = <IResourceContext as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IResourceContext as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceContext {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceContext";
@@ -555,7 +506,7 @@ impl ResourceContextLanguagesVectorView {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_core::HSTRING>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAt(&self, index: u32) -> windows_core::Result<windows_core::HSTRING> {
@@ -577,6 +528,9 @@ impl ResourceContextLanguagesVectorView {
         }
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [windows_core::HSTRING]) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<windows_core::HSTRING>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(windows_core::Interface::as_raw(self), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -589,6 +543,7 @@ impl windows_core::RuntimeType for ResourceContextLanguagesVectorView {
 unsafe impl windows_core::Interface for ResourceContextLanguagesVectorView {
     type Vtable = <windows_collections::IVectorView<windows_core::HSTRING> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IVectorView<windows_core::HSTRING> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceContextLanguagesVectorView {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceContextLanguagesVectorView";
@@ -633,19 +588,19 @@ impl ResourceManager {
     pub fn MainResourceMap(&self) -> windows_core::Result<ResourceMap> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MainResourceMap)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).MainResourceMap)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AllResourceMaps(&self) -> windows_core::Result<windows_collections::IMapView<windows_core::HSTRING, ResourceMap>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AllResourceMaps)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AllResourceMaps)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DefaultContext(&self) -> windows_core::Result<ResourceContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DefaultContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DefaultContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -666,20 +621,20 @@ impl ResourceManager {
         let this = &windows_core::Interface::cast::<IResourceManager2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAllNamedResourcesForPackage)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(packagename), resourcelayoutinfo, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAllNamedResourcesForPackage)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(packagename), resourcelayoutinfo, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAllSubtreesForPackage(&self, packagename: &windows_core::HSTRING, resourcelayoutinfo: ResourceLayoutInfo) -> windows_core::Result<windows_collections::IVectorView<ResourceMap>> {
         let this = &windows_core::Interface::cast::<IResourceManager2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAllSubtreesForPackage)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(packagename), resourcelayoutinfo, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAllSubtreesForPackage)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(packagename), resourcelayoutinfo, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Current() -> windows_core::Result<Self> {
         Self::IResourceManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Current)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Current)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn IsResourceReference(resourcereference: &windows_core::HSTRING) -> windows_core::Result<bool> {
@@ -699,6 +654,7 @@ impl windows_core::RuntimeType for ResourceManager {
 unsafe impl windows_core::Interface for ResourceManager {
     type Vtable = <IResourceManager as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IResourceManager as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceManager {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceManager";
@@ -715,14 +671,14 @@ impl ResourceMap {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, NamedResource>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<NamedResource> {
         let this = &windows_core::Interface::cast::<windows_collections::IMapView<windows_core::HSTRING, NamedResource>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Lookup)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(key), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Lookup)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(key), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -741,18 +697,24 @@ impl ResourceMap {
     }
     pub fn Split(&self, first: &mut Option<windows_collections::IMapView<windows_core::HSTRING, NamedResource>>, second: &mut Option<windows_collections::IMapView<windows_core::HSTRING, NamedResource>>) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IMapView<windows_core::HSTRING, NamedResource>>(self)?;
+        if core::mem::needs_drop::<Option<windows_collections::IMapView<windows_core::HSTRING, NamedResource>>>() {
+            *first = unsafe { core::mem::zeroed() };
+        }
+        if core::mem::needs_drop::<Option<windows_collections::IMapView<windows_core::HSTRING, NamedResource>>>() {
+            *second = unsafe { core::mem::zeroed() };
+        }
         unsafe { (windows_core::Interface::vtable(this).Split)(windows_core::Interface::as_raw(this), first as *mut _ as _, second as *mut _ as _).ok() }
     }
     pub fn Uri(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Uri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Uri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetValue(&self, resource: &windows_core::HSTRING) -> windows_core::Result<ResourceCandidate> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetValue)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetValue)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetValueForContext<P1>(&self, resource: &windows_core::HSTRING, context: P1) -> windows_core::Result<ResourceCandidate>
@@ -761,13 +723,13 @@ impl ResourceMap {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetValueForContext)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), context.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetValueForContext)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), context.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetSubtree(&self, reference: &windows_core::HSTRING) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSubtree)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(reference), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSubtree)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(reference), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -777,6 +739,7 @@ impl windows_core::RuntimeType for ResourceMap {
 unsafe impl windows_core::Interface for ResourceMap {
     type Vtable = <IResourceMap as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IResourceMap as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceMap {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceMap";
@@ -805,7 +768,7 @@ impl ResourceMapIterator {
     pub fn Current(&self) -> windows_core::Result<windows_collections::IKeyValuePair<windows_core::HSTRING, NamedResource>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Current)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Current)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn HasCurrent(&self) -> windows_core::Result<bool> {
@@ -821,6 +784,9 @@ impl ResourceMapIterator {
         }
     }
     pub fn GetMany(&self, items: &mut [Option<windows_collections::IKeyValuePair<windows_core::HSTRING, NamedResource>>]) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<Option<windows_collections::IKeyValuePair<windows_core::HSTRING, NamedResource>>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(windows_core::Interface::as_raw(self), items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -833,6 +799,7 @@ impl windows_core::RuntimeType for ResourceMapIterator {
 unsafe impl windows_core::Interface for ResourceMapIterator {
     type Vtable = <windows_collections::IIterator<windows_collections::IKeyValuePair<windows_core::HSTRING, NamedResource>> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IIterator<windows_collections::IKeyValuePair<windows_core::HSTRING, NamedResource>> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceMapIterator {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceMapIterator";
@@ -849,13 +816,13 @@ impl ResourceMapMapView {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, ResourceMap>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<ResourceMap> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Lookup)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(key), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Lookup)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(key), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -871,6 +838,12 @@ impl ResourceMapMapView {
         }
     }
     pub fn Split(&self, first: &mut Option<windows_collections::IMapView<windows_core::HSTRING, ResourceMap>>, second: &mut Option<windows_collections::IMapView<windows_core::HSTRING, ResourceMap>>) -> windows_core::Result<()> {
+        if core::mem::needs_drop::<Option<windows_collections::IMapView<windows_core::HSTRING, ResourceMap>>>() {
+            *first = unsafe { core::mem::zeroed() };
+        }
+        if core::mem::needs_drop::<Option<windows_collections::IMapView<windows_core::HSTRING, ResourceMap>>>() {
+            *second = unsafe { core::mem::zeroed() };
+        }
         unsafe { (windows_core::Interface::vtable(self).Split)(windows_core::Interface::as_raw(self), first as *mut _ as _, second as *mut _ as _).ok() }
     }
 }
@@ -880,6 +853,7 @@ impl windows_core::RuntimeType for ResourceMapMapView {
 unsafe impl windows_core::Interface for ResourceMapMapView {
     type Vtable = <windows_collections::IMapView<windows_core::HSTRING, ResourceMap> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IMapView<windows_core::HSTRING, ResourceMap> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceMapMapView {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceMapMapView";
@@ -908,7 +882,7 @@ impl ResourceMapMapViewIterator {
     pub fn Current(&self) -> windows_core::Result<windows_collections::IKeyValuePair<windows_core::HSTRING, ResourceMap>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Current)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Current)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn HasCurrent(&self) -> windows_core::Result<bool> {
@@ -924,6 +898,9 @@ impl ResourceMapMapViewIterator {
         }
     }
     pub fn GetMany(&self, items: &mut [Option<windows_collections::IKeyValuePair<windows_core::HSTRING, ResourceMap>>]) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<Option<windows_collections::IKeyValuePair<windows_core::HSTRING, ResourceMap>>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(windows_core::Interface::as_raw(self), items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -936,6 +913,7 @@ impl windows_core::RuntimeType for ResourceMapMapViewIterator {
 unsafe impl windows_core::Interface for ResourceMapMapViewIterator {
     type Vtable = <windows_collections::IIterator<windows_collections::IKeyValuePair<windows_core::HSTRING, ResourceMap>> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IIterator<windows_collections::IKeyValuePair<windows_core::HSTRING, ResourceMap>> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceMapMapViewIterator {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceMapMapViewIterator";
@@ -984,6 +962,7 @@ impl windows_core::RuntimeType for ResourceQualifier {
 unsafe impl windows_core::Interface for ResourceQualifier {
     type Vtable = <IResourceQualifier as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IResourceQualifier as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceQualifier {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceQualifier";
@@ -1000,7 +979,7 @@ impl ResourceQualifierMapView {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, windows_core::HSTRING>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -1022,6 +1001,12 @@ impl ResourceQualifierMapView {
         }
     }
     pub fn Split(&self, first: &mut Option<windows_collections::IMapView<windows_core::HSTRING, windows_core::HSTRING>>, second: &mut Option<windows_collections::IMapView<windows_core::HSTRING, windows_core::HSTRING>>) -> windows_core::Result<()> {
+        if core::mem::needs_drop::<Option<windows_collections::IMapView<windows_core::HSTRING, windows_core::HSTRING>>>() {
+            *first = unsafe { core::mem::zeroed() };
+        }
+        if core::mem::needs_drop::<Option<windows_collections::IMapView<windows_core::HSTRING, windows_core::HSTRING>>>() {
+            *second = unsafe { core::mem::zeroed() };
+        }
         unsafe { (windows_core::Interface::vtable(self).Split)(windows_core::Interface::as_raw(self), first as *mut _ as _, second as *mut _ as _).ok() }
     }
 }
@@ -1031,6 +1016,7 @@ impl windows_core::RuntimeType for ResourceQualifierMapView {
 unsafe impl windows_core::Interface for ResourceQualifierMapView {
     type Vtable = <windows_collections::IMapView<windows_core::HSTRING, windows_core::HSTRING> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IMapView<windows_core::HSTRING, windows_core::HSTRING> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceQualifierMapView {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceQualifierMapView";
@@ -1061,7 +1047,7 @@ impl ResourceQualifierObservableMap {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, windows_core::HSTRING>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -1089,7 +1075,7 @@ impl ResourceQualifierObservableMap {
         let this = &windows_core::Interface::cast::<windows_collections::IMap<windows_core::HSTRING, windows_core::HSTRING>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert(&self, key: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<bool> {
@@ -1109,7 +1095,7 @@ impl ResourceQualifierObservableMap {
     }
     pub fn MapChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_collections::IObservableMap<windows_core::HSTRING, windows_core::HSTRING>>, windows_core::Ref<windows_collections::IMapChangedEventArgs<windows_core::HSTRING>>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_collections::IObservableMap<windows_core::HSTRING, windows_core::HSTRING>>, windows_core::Ref<windows_collections::IMapChangedEventArgs<windows_core::HSTRING>>) + Send + Sync + 'static,
     {
         let handler = <windows_collections::MapChangedEventHandler<windows_core::HSTRING, windows_core::HSTRING>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -1128,6 +1114,7 @@ impl windows_core::RuntimeType for ResourceQualifierObservableMap {
 unsafe impl windows_core::Interface for ResourceQualifierObservableMap {
     type Vtable = <windows_collections::IObservableMap<windows_core::HSTRING, windows_core::HSTRING> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IObservableMap<windows_core::HSTRING, windows_core::HSTRING> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceQualifierObservableMap {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceQualifierObservableMap";
@@ -1172,13 +1159,13 @@ impl ResourceQualifierVectorView {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<ResourceQualifier>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAt(&self, index: u32) -> windows_core::Result<ResourceQualifier> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAt)(windows_core::Interface::as_raw(self), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAt)(windows_core::Interface::as_raw(self), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1197,6 +1184,9 @@ impl ResourceQualifierVectorView {
         }
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<ResourceQualifier>]) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<Option<ResourceQualifier>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(windows_core::Interface::as_raw(self), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -1209,6 +1199,7 @@ impl windows_core::RuntimeType for ResourceQualifierVectorView {
 unsafe impl windows_core::Interface for ResourceQualifierVectorView {
     type Vtable = <windows_collections::IVectorView<ResourceQualifier> as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <windows_collections::IVectorView<ResourceQualifier> as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceQualifierVectorView {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.Core.ResourceQualifierVectorView";

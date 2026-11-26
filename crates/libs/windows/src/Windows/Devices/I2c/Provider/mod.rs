@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(II2cControllerProvider, II2cControllerProvider_Vtbl, 0x61c2bb82_4510_4163_a87c_4e15a9558980);
-impl windows_core::RuntimeType for II2cControllerProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.I2c.Provider.II2cControllerProvider");
-}
+windows_core::imp::define_winrt_interface!(II2cControllerProvider, II2cControllerProvider_Vtbl, 0x61c2bb82_4510_4163_a87c_4e15a9558980, b"Windows.Devices.I2c.Provider.II2cControllerProvider");
 windows_core::imp::interface_hierarchy!(II2cControllerProvider, windows_core::IUnknown, windows_core::IInspectable);
 impl II2cControllerProvider {
     pub fn GetDeviceProvider<P0>(&self, settings: P0) -> windows_core::Result<II2cDeviceProvider>
@@ -11,7 +7,7 @@ impl II2cControllerProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeviceProvider)(windows_core::Interface::as_raw(self), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeviceProvider)(windows_core::Interface::as_raw(self), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -28,8 +24,7 @@ impl II2cControllerProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match II2cControllerProvider_Impl::GetDeviceProvider(this, core::mem::transmute_copy(&settings)) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -39,10 +34,7 @@ impl II2cControllerProvider_Vtbl {
                 }
             }
         }
-        Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, II2cControllerProvider, OFFSET>(),
-            GetDeviceProvider: GetDeviceProvider::<Identity, OFFSET>,
-        }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), GetDeviceProvider: GetDeviceProvider::<Identity, OFFSET> }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<II2cControllerProvider as windows_core::Interface>::IID
@@ -54,11 +46,7 @@ pub struct II2cControllerProvider_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetDeviceProvider: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(II2cDeviceProvider, II2cDeviceProvider_Vtbl, 0xad342654_57e8_453e_8329_d1e447d103a9);
-impl windows_core::RuntimeType for II2cDeviceProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.I2c.Provider.II2cDeviceProvider");
-}
+windows_core::imp::define_winrt_interface!(II2cDeviceProvider, II2cDeviceProvider_Vtbl, 0xad342654_57e8_453e_8329_d1e447d103a9, b"Windows.Devices.I2c.Provider.II2cDeviceProvider");
 windows_core::imp::interface_hierarchy!(II2cDeviceProvider, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(II2cDeviceProvider, super::super::super::Foundation::IClosable);
 impl II2cDeviceProvider {
@@ -119,8 +107,7 @@ impl II2cDeviceProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match II2cDeviceProvider_Impl::DeviceId(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -194,7 +181,7 @@ impl II2cDeviceProvider_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, II2cDeviceProvider, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             DeviceId: DeviceId::<Identity, OFFSET>,
             Write: Write::<Identity, OFFSET>,
             WritePartial: WritePartial::<Identity, OFFSET>,
@@ -220,17 +207,13 @@ pub struct II2cDeviceProvider_Vtbl {
     pub WriteRead: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const u8, u32, *mut u8) -> windows_core::HRESULT,
     pub WriteReadPartial: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const u8, u32, *mut u8, *mut ProviderI2cTransferResult) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(II2cProvider, II2cProvider_Vtbl, 0x6f13083e_bf62_4fe2_a95a_f08999669818);
-impl windows_core::RuntimeType for II2cProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.I2c.Provider.II2cProvider");
-}
+windows_core::imp::define_winrt_interface!(II2cProvider, II2cProvider_Vtbl, 0x6f13083e_bf62_4fe2_a95a_f08999669818, b"Windows.Devices.I2c.Provider.II2cProvider");
 windows_core::imp::interface_hierarchy!(II2cProvider, windows_core::IUnknown, windows_core::IInspectable);
 impl II2cProvider {
     pub fn GetControllersAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<windows_collections::IVectorView<II2cControllerProvider>>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetControllersAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetControllersAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -247,8 +230,7 @@ impl II2cProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match II2cProvider_Impl::GetControllersAsync(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -258,7 +240,7 @@ impl II2cProvider_Vtbl {
                 }
             }
         }
-        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, II2cProvider, OFFSET>(), GetControllersAsync: GetControllersAsync::<Identity, OFFSET> }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), GetControllersAsync: GetControllersAsync::<Identity, OFFSET> }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<II2cProvider as windows_core::Interface>::IID
@@ -270,11 +252,7 @@ pub struct II2cProvider_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetControllersAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IProviderI2cConnectionSettings, IProviderI2cConnectionSettings_Vtbl, 0xe9db4e34_e510_44b7_809d_f2f85b555339);
-impl windows_core::RuntimeType for IProviderI2cConnectionSettings {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.I2c.Provider.IProviderI2cConnectionSettings");
-}
+windows_core::imp::define_winrt_interface!(IProviderI2cConnectionSettings, IProviderI2cConnectionSettings_Vtbl, 0xe9db4e34_e510_44b7_809d_f2f85b555339, b"Windows.Devices.I2c.Provider.IProviderI2cConnectionSettings");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IProviderI2cConnectionSettings_Vtbl {
@@ -339,6 +317,7 @@ impl windows_core::RuntimeType for ProviderI2cConnectionSettings {
 unsafe impl windows_core::Interface for ProviderI2cConnectionSettings {
     type Vtable = <IProviderI2cConnectionSettings as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IProviderI2cConnectionSettings as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ProviderI2cConnectionSettings {
     const NAME: &'static str = "Windows.Devices.I2c.Provider.ProviderI2cConnectionSettings";

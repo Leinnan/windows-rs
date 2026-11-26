@@ -5,7 +5,7 @@ where
     P2: windows_core::Param<super::LPUNKNOWN>,
 {
     windows_core::link!("dsound.dll" "system" fn DirectSoundCaptureCreate(pcguiddevice : super::LPCGUID, ppdsc : *mut *mut core::ffi::c_void, punkouter : *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { DirectSoundCaptureCreate(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppdsc), punkouter.param().abi()) }
+    unsafe { DirectSoundCaptureCreate(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, ppdsc as _, punkouter.param().abi()) }
 }
 #[cfg(all(feature = "guiddef", feature = "unknwnbase"))]
 #[inline]
@@ -14,7 +14,7 @@ where
     P2: windows_core::Param<super::LPUNKNOWN>,
 {
     windows_core::link!("dsound.dll" "system" fn DirectSoundCaptureCreate8(pcguiddevice : super::LPCGUID, ppdsc8 : *mut *mut core::ffi::c_void, punkouter : *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { DirectSoundCaptureCreate8(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppdsc8), punkouter.param().abi()) }
+    unsafe { DirectSoundCaptureCreate8(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, ppdsc8 as _, punkouter.param().abi()) }
 }
 #[cfg(all(feature = "guiddef", feature = "minwindef"))]
 #[inline]
@@ -35,7 +35,7 @@ where
     P2: windows_core::Param<super::LPUNKNOWN>,
 {
     windows_core::link!("dsound.dll" "system" fn DirectSoundCreate(pcguiddevice : super::LPCGUID, ppds : *mut *mut core::ffi::c_void, punkouter : *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { DirectSoundCreate(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppds), punkouter.param().abi()) }
+    unsafe { DirectSoundCreate(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, ppds as _, punkouter.param().abi()) }
 }
 #[cfg(all(feature = "guiddef", feature = "unknwnbase"))]
 #[inline]
@@ -44,7 +44,7 @@ where
     P2: windows_core::Param<super::LPUNKNOWN>,
 {
     windows_core::link!("dsound.dll" "system" fn DirectSoundCreate8(pcguiddevice : super::LPCGUID, ppds8 : *mut *mut core::ffi::c_void, punkouter : *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { DirectSoundCreate8(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppds8), punkouter.param().abi()) }
+    unsafe { DirectSoundCreate8(pcguiddevice.unwrap_or(core::mem::zeroed()) as _, ppds8 as _, punkouter.param().abi()) }
 }
 #[cfg(all(feature = "guiddef", feature = "minwindef"))]
 #[inline]
@@ -65,7 +65,7 @@ where
     P9: windows_core::Param<super::LPUNKNOWN>,
 {
     windows_core::link!("dsound.dll" "system" fn DirectSoundFullDuplexCreate(pcguidcapturedevice : super::LPCGUID, pcguidrenderdevice : super::LPCGUID, pcdscbufferdesc : LPCDSCBUFFERDESC, pcdsbufferdesc : LPCDSBUFFERDESC, hwnd : super::HWND, dwlevel : super::DWORD, ppdsfd : *mut *mut core::ffi::c_void, ppdscbuffer8 : *mut *mut core::ffi::c_void, ppdsbuffer8 : *mut *mut core::ffi::c_void, punkouter : *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { DirectSoundFullDuplexCreate(pcguidcapturedevice.unwrap_or(core::mem::zeroed()) as _, pcguidrenderdevice.unwrap_or(core::mem::zeroed()) as _, pcdscbufferdesc, pcdsbufferdesc, hwnd as _, dwlevel, core::mem::transmute(ppdsfd), core::mem::transmute(ppdscbuffer8), core::mem::transmute(ppdsbuffer8), punkouter.param().abi()) }
+    unsafe { DirectSoundFullDuplexCreate(pcguidcapturedevice.unwrap_or(core::mem::zeroed()) as _, pcguidrenderdevice.unwrap_or(core::mem::zeroed()) as _, pcdscbufferdesc, pcdsbufferdesc, hwnd as _, dwlevel, ppdsfd as _, ppdscbuffer8 as _, ppdsbuffer8 as _, punkouter.param().abi()) }
 }
 #[cfg(all(feature = "guiddef", feature = "mmeapi", feature = "shared", feature = "unknwnbase", feature = "windef"))]
 #[inline]
@@ -74,7 +74,7 @@ where
     P9: windows_core::Param<super::LPUNKNOWN>,
 {
     windows_core::link!("dsound.dll" "system" "DirectSoundFullDuplexCreate" fn DirectSoundFullDuplexCreate8(pcguidcapturedevice : super::LPCGUID, pcguidrenderdevice : super::LPCGUID, pcdscbufferdesc : LPCDSCBUFFERDESC, pcdsbufferdesc : LPCDSBUFFERDESC, hwnd : super::HWND, dwlevel : super::DWORD, ppdsfd : *mut *mut core::ffi::c_void, ppdscbuffer8 : *mut *mut core::ffi::c_void, ppdsbuffer8 : *mut *mut core::ffi::c_void, punkouter : *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { DirectSoundFullDuplexCreate8(pcguidcapturedevice.unwrap_or(core::mem::zeroed()) as _, pcguidrenderdevice.unwrap_or(core::mem::zeroed()) as _, pcdscbufferdesc, pcdsbufferdesc, hwnd as _, dwlevel, core::mem::transmute(ppdsfd), core::mem::transmute(ppdscbuffer8), core::mem::transmute(ppdsbuffer8), punkouter.param().abi()) }
+    unsafe { DirectSoundFullDuplexCreate8(pcguidcapturedevice.unwrap_or(core::mem::zeroed()) as _, pcguidrenderdevice.unwrap_or(core::mem::zeroed()) as _, pcdscbufferdesc, pcdsbufferdesc, hwnd as _, dwlevel, ppdsfd as _, ppdscbuffer8 as _, ppdsbuffer8 as _, punkouter.param().abi()) }
 }
 #[cfg(feature = "guiddef")]
 #[inline]
@@ -193,10 +193,16 @@ pub const DSBPLAY_TERMINATEBY_TIME: i32 = 8;
 pub const DSBPN_OFFSETSTOP: u32 = 4294967295;
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DSBPOSITIONNOTIFY {
     pub dwOffset: super::DWORD,
     pub hEventNotify: super::HANDLE,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for DSBPOSITIONNOTIFY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DSBSIZE_FX_MIN: i32 = 150;
 pub const DSBSIZE_MAX: i32 = 268435455;
@@ -209,7 +215,7 @@ pub const DSBSTATUS_PLAYING: i32 = 1;
 pub const DSBSTATUS_TERMINATED: i32 = 32;
 #[repr(C)]
 #[cfg(all(feature = "mmeapi", feature = "shared"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DSBUFFERDESC {
     pub dwSize: super::DWORD,
     pub dwFlags: super::DWORD,
@@ -218,15 +224,27 @@ pub struct DSBUFFERDESC {
     pub lpwfxFormat: super::LPWAVEFORMATEX,
     pub guid3DAlgorithm: windows_core::GUID,
 }
+#[cfg(all(feature = "mmeapi", feature = "shared"))]
+impl Default for DSBUFFERDESC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "mmeapi", feature = "shared"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DSBUFFERDESC1 {
     pub dwSize: super::DWORD,
     pub dwFlags: super::DWORD,
     pub dwBufferBytes: super::DWORD,
     pub dwReserved: super::DWORD,
     pub lpwfxFormat: super::LPWAVEFORMATEX,
+}
+#[cfg(all(feature = "mmeapi", feature = "shared"))]
+impl Default for DSBUFFERDESC1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DSBVOLUME_MAX: i32 = 0;
 pub const DSBVOLUME_MIN: i32 = -10000;
@@ -287,7 +305,7 @@ pub const DSCBSTATUS_CAPTURING: i32 = 1;
 pub const DSCBSTATUS_LOOPING: i32 = 2;
 #[repr(C)]
 #[cfg(all(feature = "mmeapi", feature = "shared"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DSCBUFFERDESC {
     pub dwSize: super::DWORD,
     pub dwFlags: super::DWORD,
@@ -297,15 +315,27 @@ pub struct DSCBUFFERDESC {
     pub dwFXCount: super::DWORD,
     pub lpDSCFXDesc: LPDSCEFFECTDESC,
 }
+#[cfg(all(feature = "mmeapi", feature = "shared"))]
+impl Default for DSCBUFFERDESC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "mmeapi", feature = "shared"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DSCBUFFERDESC1 {
     pub dwSize: super::DWORD,
     pub dwFlags: super::DWORD,
     pub dwBufferBytes: super::DWORD,
     pub dwReserved: super::DWORD,
     pub lpwfxFormat: super::LPWAVEFORMATEX,
+}
+#[cfg(all(feature = "mmeapi", feature = "shared"))]
+impl Default for DSCBUFFERDESC1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "shared")]
@@ -713,7 +743,7 @@ impl IDirectSound {
     where
         P2: windows_core::Param<super::LPUNKNOWN>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateSoundBuffer)(windows_core::Interface::as_raw(self), pcdsbufferdesc, core::mem::transmute(ppdsbuffer), punkouter.param().abi()) }
+        unsafe { (windows_core::Interface::vtable(self).CreateSoundBuffer)(windows_core::Interface::as_raw(self), pcdsbufferdesc, ppdsbuffer as _, punkouter.param().abi()) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetCaps(&self, pdscaps: LPDSCAPS) -> windows_core::HRESULT {
@@ -725,7 +755,7 @@ impl IDirectSound {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DuplicateSoundBuffer)(windows_core::Interface::as_raw(self), pdsbufferoriginal.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DuplicateSoundBuffer)(windows_core::Interface::as_raw(self), pdsbufferoriginal.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "windef"))]
@@ -810,7 +840,7 @@ impl IDirectSound_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IDirectSound_Impl::DuplicateSoundBuffer(this, core::mem::transmute_copy(&pdsbufferoriginal)) {
                     Ok(ok__) => {
-                        ppdsbufferduplicate.write(core::mem::transmute(ok__));
+                        ppdsbufferduplicate.cast::<LPDIRECTSOUNDBUFFER>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1837,7 +1867,7 @@ impl IDirectSoundCapture {
     where
         P2: windows_core::Param<super::LPUNKNOWN>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateCaptureBuffer)(windows_core::Interface::as_raw(self), pcdscbufferdesc, core::mem::transmute(ppdscbuffer), punkouter.param().abi()) }
+        unsafe { (windows_core::Interface::vtable(self).CreateCaptureBuffer)(windows_core::Interface::as_raw(self), pcdscbufferdesc, ppdscbuffer as _, punkouter.param().abi()) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetCaps(&self, pdsccaps: LPDSCCAPS) -> windows_core::HRESULT {
@@ -2863,7 +2893,7 @@ impl IDirectSoundFullDuplex {
     pub unsafe fn Initialize(&self, pcaptureguid: super::LPCGUID, prenderguid: super::LPCGUID, lpdscbufferdesc: LPCDSCBUFFERDESC, lpdsbufferdesc: LPCDSBUFFERDESC, hwnd: super::HWND, dwlevel: super::DWORD, lplpdirectsoundcapturebuffer8: LPLPDIRECTSOUNDCAPTUREBUFFER8) -> windows_core::Result<IDirectSoundBuffer8> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Initialize)(windows_core::Interface::as_raw(self), pcaptureguid, prenderguid, lpdscbufferdesc, lpdsbufferdesc, hwnd as _, dwlevel, lplpdirectsoundcapturebuffer8, core::ptr::from_mut::<*mut core::ffi::c_void>(&mut result__).cast()).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Initialize)(windows_core::Interface::as_raw(self), pcaptureguid, prenderguid, lpdscbufferdesc, lpdsbufferdesc, hwnd as _, dwlevel, lplpdirectsoundcapturebuffer8, core::ptr::from_mut::<*mut core::ffi::c_void>(&mut result__).cast()).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2888,7 +2918,7 @@ impl IDirectSoundFullDuplex_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IDirectSoundFullDuplex_Impl::Initialize(this, core::mem::transmute_copy(&pcaptureguid), core::mem::transmute_copy(&prenderguid), core::mem::transmute_copy(&lpdscbufferdesc), core::mem::transmute_copy(&lpdsbufferdesc), core::mem::transmute_copy(&hwnd), core::mem::transmute_copy(&dwlevel), core::mem::transmute_copy(&lplpdirectsoundcapturebuffer8)) {
                     Ok(ok__) => {
-                        lplpdirectsoundbuffer8.write(core::mem::transmute(ok__));
+                        lplpdirectsoundbuffer8.cast::<IDirectSoundBuffer8>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

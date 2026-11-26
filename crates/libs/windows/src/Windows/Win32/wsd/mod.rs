@@ -18,7 +18,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDeviceHost(pszlocalid : windows_core::PCWSTR, pcontext : *mut core::ffi::c_void, ppdevicehost : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDeviceHost(pszlocalid.param().abi(), pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDeviceHost(pszlocalid.param().abi(), pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -31,7 +31,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDeviceHost2(pszlocalid : windows_core::PCWSTR, pcontext : *mut core::ffi::c_void, pconfigparams : *const WSD_CONFIG_PARAM, dwconfigparamcount : super::DWORD, ppdevicehost : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDeviceHost2(pszlocalid.param().abi(), pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDeviceHost2(pszlocalid.param().abi(), pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(feature = "shared")]
@@ -44,7 +44,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDeviceHostAdvanced(pszlocalid : windows_core::PCWSTR, pcontext : *mut core::ffi::c_void, pphostaddresses : *const *mut core::ffi::c_void, dwhostaddresscount : super::DWORD, ppdevicehost : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDeviceHostAdvanced(pszlocalid.param().abi(), pcontext.param().abi(), pphostaddresses.unwrap_or(core::mem::zeroed()) as _, dwhostaddresscount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDeviceHostAdvanced(pszlocalid.param().abi(), pcontext.param().abi(), pphostaddresses.unwrap_or(core::mem::zeroed()) as _, dwhostaddresscount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -57,7 +57,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDeviceProxy(pszdeviceid : windows_core::PCWSTR, pszlocalid : windows_core::PCWSTR, pcontext : *mut core::ffi::c_void, ppdeviceproxy : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDeviceProxy(pszdeviceid.param().abi(), pszlocalid.param().abi(), pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDeviceProxy(pszdeviceid.param().abi(), pszlocalid.param().abi(), pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -71,7 +71,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDeviceProxy2(pszdeviceid : windows_core::PCWSTR, pszlocalid : windows_core::PCWSTR, pcontext : *mut core::ffi::c_void, pconfigparams : *const WSD_CONFIG_PARAM, dwconfigparamcount : super::DWORD, ppdeviceproxy : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDeviceProxy2(pszdeviceid.param().abi(), pszlocalid.param().abi(), pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDeviceProxy2(pszdeviceid.param().abi(), pszlocalid.param().abi(), pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -85,7 +85,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDeviceProxyAdvanced(pszdeviceid : windows_core::PCWSTR, pdeviceaddress : *mut core::ffi::c_void, pszlocalid : windows_core::PCWSTR, pcontext : *mut core::ffi::c_void, ppdeviceproxy : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDeviceProxyAdvanced(pszdeviceid.param().abi(), pdeviceaddress.param().abi(), pszlocalid.param().abi(), pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDeviceProxyAdvanced(pszdeviceid.param().abi(), pdeviceaddress.param().abi(), pszlocalid.param().abi(), pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -96,7 +96,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDiscoveryProvider(pcontext : *mut core::ffi::c_void, ppprovider : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDiscoveryProvider(pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDiscoveryProvider(pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -108,7 +108,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDiscoveryProvider2(pcontext : *mut core::ffi::c_void, pconfigparams : *const WSD_CONFIG_PARAM, dwconfigparamcount : super::DWORD, ppprovider : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDiscoveryProvider2(pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDiscoveryProvider2(pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -119,7 +119,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDiscoveryPublisher(pcontext : *mut core::ffi::c_void, pppublisher : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDiscoveryPublisher(pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDiscoveryPublisher(pcontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -131,7 +131,7 @@ where
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateDiscoveryPublisher2(pcontext : *mut core::ffi::c_void, pconfigparams : *const WSD_CONFIG_PARAM, dwconfigparamcount : super::DWORD, pppublisher : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateDiscoveryPublisher2(pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateDiscoveryPublisher2(pcontext.param().abi(), pconfigparams.unwrap_or(core::mem::zeroed()) as _, dwconfigparamcount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -139,7 +139,7 @@ pub unsafe fn WSDCreateHttpAddress() -> windows_core::Result<IWSDHttpAddress> {
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateHttpAddress(ppaddress : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateHttpAddress(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateHttpAddress(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -147,7 +147,7 @@ pub unsafe fn WSDCreateHttpMessageParameters() -> windows_core::Result<IWSDHttpM
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateHttpMessageParameters(pptxparams : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateHttpMessageParameters(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateHttpMessageParameters(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -155,7 +155,7 @@ pub unsafe fn WSDCreateOutboundAttachment() -> windows_core::Result<IWSDOutbound
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateOutboundAttachment(ppattachment : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateOutboundAttachment(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateOutboundAttachment(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -163,7 +163,7 @@ pub unsafe fn WSDCreateUdpAddress() -> windows_core::Result<IWSDUdpAddress> {
     windows_core::link!("wsdapi.dll" "system" fn WSDCreateUdpAddress(ppaddress : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDCreateUdpAddress(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDCreateUdpAddress(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -259,7 +259,7 @@ pub unsafe fn WSDXMLCreateContext() -> windows_core::Result<IWSDXMLContext> {
     windows_core::link!("wsdapi.dll" "system" fn WSDXMLCreateContext(ppcontext : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        WSDXMLCreateContext(&mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        WSDXMLCreateContext(&mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -379,7 +379,7 @@ impl IWSDAddress_Vtbl {
         unsafe extern "system" fn Deserialize<Identity: IWSDAddress_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszbuffer: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDAddress_Impl::Deserialize(this, core::mem::transmute(&pszbuffer))
+                IWSDAddress_Impl::Deserialize(this, &*(&raw const pszbuffer).cast())
             }
         }
         Self {
@@ -449,7 +449,7 @@ impl IWSDAsyncResult {
     pub unsafe fn GetAsyncState(&self) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAsyncState)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAsyncState)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Abort(&self) -> windows_core::HRESULT {
@@ -462,7 +462,7 @@ impl IWSDAsyncResult {
     pub unsafe fn GetEndpointProxy(&self) -> windows_core::Result<IWSDEndpointProxy> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEndpointProxy)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEndpointProxy)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -520,7 +520,7 @@ impl IWSDAsyncResult_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDAsyncResult_Impl::GetAsyncState(this) {
                     Ok(ok__) => {
-                        ppasyncstate.write(core::mem::transmute(ok__));
+                        ppasyncstate.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -547,7 +547,7 @@ impl IWSDAsyncResult_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDAsyncResult_Impl::GetEndpointProxy(this) {
                     Ok(ok__) => {
-                        ppendpoint.write(core::mem::transmute(ok__));
+                        ppendpoint.cast::<IWSDEndpointProxy>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -721,7 +721,7 @@ impl IWSDDeviceHost_Vtbl {
         unsafe extern "system" fn Init<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszlocalid: windows_core::PCWSTR, pcontext: *mut core::ffi::c_void, pphostaddresses: *const *mut core::ffi::c_void, dwhostaddresscount: super::DWORD) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::Init(this, core::mem::transmute(&pszlocalid), core::mem::transmute_copy(&pcontext), core::mem::transmute_copy(&pphostaddresses), core::mem::transmute_copy(&dwhostaddresscount))
+                IWSDDeviceHost_Impl::Init(this, &*(&raw const pszlocalid).cast(), core::mem::transmute_copy(&pcontext), core::mem::transmute_copy(&pphostaddresses), core::mem::transmute_copy(&dwhostaddresscount))
             }
         }
         unsafe extern "system" fn Start<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ullinstanceid: super::ULONGLONG, pscopelist: *const WSD_URI_LIST, pnotificationsink: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -757,37 +757,37 @@ impl IWSDDeviceHost_Vtbl {
         unsafe extern "system" fn RegisterService<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR, pservice: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::RegisterService(this, core::mem::transmute(&pszserviceid), core::mem::transmute_copy(&pservice))
+                IWSDDeviceHost_Impl::RegisterService(this, &*(&raw const pszserviceid).cast(), core::mem::transmute_copy(&pservice))
             }
         }
         unsafe extern "system" fn RetireService<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::RetireService(this, core::mem::transmute(&pszserviceid))
+                IWSDDeviceHost_Impl::RetireService(this, &*(&raw const pszserviceid).cast())
             }
         }
         unsafe extern "system" fn AddDynamicService<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR, pszendpointaddress: windows_core::PCWSTR, pporttype: *const WSD_PORT_TYPE, pportname: *const WSDXML_NAME, pany: *const WSDXML_ELEMENT, pservice: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::AddDynamicService(this, core::mem::transmute(&pszserviceid), core::mem::transmute(&pszendpointaddress), core::mem::transmute_copy(&pporttype), core::mem::transmute_copy(&pportname), core::mem::transmute_copy(&pany), core::mem::transmute_copy(&pservice))
+                IWSDDeviceHost_Impl::AddDynamicService(this, &*(&raw const pszserviceid).cast(), &*(&raw const pszendpointaddress).cast(), core::mem::transmute_copy(&pporttype), core::mem::transmute_copy(&pportname), core::mem::transmute_copy(&pany), core::mem::transmute_copy(&pservice))
             }
         }
         unsafe extern "system" fn RemoveDynamicService<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::RemoveDynamicService(this, core::mem::transmute(&pszserviceid))
+                IWSDDeviceHost_Impl::RemoveDynamicService(this, &*(&raw const pszserviceid).cast())
             }
         }
         unsafe extern "system" fn SetServiceDiscoverable<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR, fdiscoverable: windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::SetServiceDiscoverable(this, core::mem::transmute(&pszserviceid), core::mem::transmute_copy(&fdiscoverable))
+                IWSDDeviceHost_Impl::SetServiceDiscoverable(this, &*(&raw const pszserviceid).cast(), core::mem::transmute_copy(&fdiscoverable))
             }
         }
         unsafe extern "system" fn SignalEvent<Identity: IWSDDeviceHost_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR, pbody: *const core::ffi::c_void, poperation: *const WSD_OPERATION) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceHost_Impl::SignalEvent(this, core::mem::transmute(&pszserviceid), core::mem::transmute_copy(&pbody), core::mem::transmute_copy(&poperation))
+                IWSDDeviceHost_Impl::SignalEvent(this, &*(&raw const pszserviceid).cast(), core::mem::transmute_copy(&pbody), core::mem::transmute_copy(&poperation))
             }
         }
         Self {
@@ -821,7 +821,7 @@ impl IWSDDeviceHostNotify {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetService)(windows_core::Interface::as_raw(self), pszserviceid.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetService)(windows_core::Interface::as_raw(self), pszserviceid.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -839,9 +839,9 @@ impl IWSDDeviceHostNotify_Vtbl {
         unsafe extern "system" fn GetService<Identity: IWSDDeviceHostNotify_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR, ppservice: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IWSDDeviceHostNotify_Impl::GetService(this, core::mem::transmute(&pszserviceid)) {
+                match IWSDDeviceHostNotify_Impl::GetService(this, &*(&raw const pszserviceid).cast()) {
                     Ok(ok__) => {
-                        ppservice.write(core::mem::transmute(ok__));
+                        ppservice.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -874,7 +874,7 @@ impl IWSDDeviceProxy {
     pub unsafe fn BeginGetMetadata(&self) -> windows_core::Result<IWSDAsyncResult> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BeginGetMetadata)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BeginGetMetadata)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EndGetMetadata<P0>(&self, presult: P0) -> windows_core::HRESULT
@@ -905,20 +905,20 @@ impl IWSDDeviceProxy {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetServiceProxyById)(windows_core::Interface::as_raw(self), pszserviceid.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetServiceProxyById)(windows_core::Interface::as_raw(self), pszserviceid.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
     pub unsafe fn GetServiceProxyByType(&self, ptype: *const WSDXML_NAME) -> windows_core::Result<IWSDServiceProxy> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetServiceProxyByType)(windows_core::Interface::as_raw(self), ptype, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetServiceProxyByType)(windows_core::Interface::as_raw(self), ptype, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetEndpointProxy(&self) -> windows_core::Result<IWSDEndpointProxy> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEndpointProxy)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEndpointProxy)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -971,7 +971,7 @@ impl IWSDDeviceProxy_Vtbl {
         unsafe extern "system" fn Init<Identity: IWSDDeviceProxy_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszdeviceid: windows_core::PCWSTR, pdeviceaddress: *mut core::ffi::c_void, pszlocalid: windows_core::PCWSTR, pcontext: *mut core::ffi::c_void, psponsor: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDDeviceProxy_Impl::Init(this, core::mem::transmute(&pszdeviceid), core::mem::transmute_copy(&pdeviceaddress), core::mem::transmute(&pszlocalid), core::mem::transmute_copy(&pcontext), core::mem::transmute_copy(&psponsor))
+                IWSDDeviceProxy_Impl::Init(this, &*(&raw const pszdeviceid).cast(), core::mem::transmute_copy(&pdeviceaddress), &*(&raw const pszlocalid).cast(), core::mem::transmute_copy(&pcontext), core::mem::transmute_copy(&psponsor))
             }
         }
         unsafe extern "system" fn BeginGetMetadata<Identity: IWSDDeviceProxy_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppresult: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -979,7 +979,7 @@ impl IWSDDeviceProxy_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDDeviceProxy_Impl::BeginGetMetadata(this) {
                     Ok(ok__) => {
-                        ppresult.write(core::mem::transmute(ok__));
+                        ppresult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1022,9 +1022,9 @@ impl IWSDDeviceProxy_Vtbl {
         unsafe extern "system" fn GetServiceProxyById<Identity: IWSDDeviceProxy_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszserviceid: windows_core::PCWSTR, ppserviceproxy: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IWSDDeviceProxy_Impl::GetServiceProxyById(this, core::mem::transmute(&pszserviceid)) {
+                match IWSDDeviceProxy_Impl::GetServiceProxyById(this, &*(&raw const pszserviceid).cast()) {
                     Ok(ok__) => {
-                        ppserviceproxy.write(core::mem::transmute(ok__));
+                        ppserviceproxy.cast::<IWSDServiceProxy>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1039,7 +1039,7 @@ impl IWSDDeviceProxy_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDDeviceProxy_Impl::GetServiceProxyByType(this, core::mem::transmute_copy(&ptype)) {
                     Ok(ok__) => {
-                        ppserviceproxy.write(core::mem::transmute(ok__));
+                        ppserviceproxy.cast::<IWSDServiceProxy>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1054,7 +1054,7 @@ impl IWSDDeviceProxy_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDDeviceProxy_Impl::GetEndpointProxy(this) {
                     Ok(ok__) => {
-                        ppproxy.write(core::mem::transmute(ok__));
+                        ppproxy.cast::<IWSDEndpointProxy>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1103,7 +1103,7 @@ impl IWSDEndpointProxy {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SendTwoWayRequestAsync)(windows_core::Interface::as_raw(self), pbody, poperation, pasyncstate.param().abi(), pcallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SendTwoWayRequestAsync)(windows_core::Interface::as_raw(self), pbody, poperation, pasyncstate.param().abi(), pcallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn AbortAsyncOperation<P0>(&self, pasyncresult: P0) -> windows_core::HRESULT
@@ -1181,7 +1181,7 @@ impl IWSDEndpointProxy_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDEndpointProxy_Impl::SendTwoWayRequestAsync(this, core::mem::transmute_copy(&pbody), core::mem::transmute_copy(&poperation), core::mem::transmute_copy(&pasyncstate), core::mem::transmute_copy(&pcallback)) {
                     Ok(ok__) => {
-                        presult.write(core::mem::transmute(ok__));
+                        presult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1278,19 +1278,19 @@ impl IWSDEventingStatus_Vtbl {
         unsafe extern "system" fn SubscriptionRenewed<Identity: IWSDEventingStatus_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszsubscriptionaction: windows_core::PCWSTR) {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDEventingStatus_Impl::SubscriptionRenewed(this, core::mem::transmute(&pszsubscriptionaction));
+                IWSDEventingStatus_Impl::SubscriptionRenewed(this, &*(&raw const pszsubscriptionaction).cast());
             }
         }
         unsafe extern "system" fn SubscriptionRenewalFailed<Identity: IWSDEventingStatus_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszsubscriptionaction: windows_core::PCWSTR, hr: windows_core::HRESULT) {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDEventingStatus_Impl::SubscriptionRenewalFailed(this, core::mem::transmute(&pszsubscriptionaction), core::mem::transmute_copy(&hr));
+                IWSDEventingStatus_Impl::SubscriptionRenewalFailed(this, &*(&raw const pszsubscriptionaction).cast(), core::mem::transmute_copy(&hr));
             }
         }
         unsafe extern "system" fn SubscriptionEnded<Identity: IWSDEventingStatus_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszsubscriptionaction: windows_core::PCWSTR) {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDEventingStatus_Impl::SubscriptionEnded(this, core::mem::transmute(&pszsubscriptionaction));
+                IWSDEventingStatus_Impl::SubscriptionEnded(this, &*(&raw const pszsubscriptionaction).cast());
             }
         }
         Self {
@@ -1370,7 +1370,7 @@ impl IWSDHttpAddress_Vtbl {
         unsafe extern "system" fn SetPath<Identity: IWSDHttpAddress_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszpath: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDHttpAddress_Impl::SetPath(this, core::mem::transmute(&pszpath))
+                IWSDHttpAddress_Impl::SetPath(this, &*(&raw const pszpath).cast())
             }
         }
         Self {
@@ -1485,7 +1485,7 @@ impl IWSDHttpMessageParameters {
     pub unsafe fn GetContext(&self) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clear(&self) -> windows_core::HRESULT {
@@ -1522,7 +1522,7 @@ impl IWSDHttpMessageParameters_Vtbl {
         unsafe extern "system" fn SetInboundHttpHeaders<Identity: IWSDHttpMessageParameters_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszheaders: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDHttpMessageParameters_Impl::SetInboundHttpHeaders(this, core::mem::transmute(&pszheaders))
+                IWSDHttpMessageParameters_Impl::SetInboundHttpHeaders(this, &*(&raw const pszheaders).cast())
             }
         }
         unsafe extern "system" fn GetInboundHttpHeaders<Identity: IWSDHttpMessageParameters_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppszheaders: *mut windows_core::PCWSTR) -> windows_core::HRESULT {
@@ -1534,7 +1534,7 @@ impl IWSDHttpMessageParameters_Vtbl {
         unsafe extern "system" fn SetOutboundHttpHeaders<Identity: IWSDHttpMessageParameters_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszheaders: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDHttpMessageParameters_Impl::SetOutboundHttpHeaders(this, core::mem::transmute(&pszheaders))
+                IWSDHttpMessageParameters_Impl::SetOutboundHttpHeaders(this, &*(&raw const pszheaders).cast())
             }
         }
         unsafe extern "system" fn GetOutboundHttpHeaders<Identity: IWSDHttpMessageParameters_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppszheaders: *mut windows_core::PCWSTR) -> windows_core::HRESULT {
@@ -1546,7 +1546,7 @@ impl IWSDHttpMessageParameters_Vtbl {
         unsafe extern "system" fn SetID<Identity: IWSDHttpMessageParameters_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszid: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDHttpMessageParameters_Impl::SetID(this, core::mem::transmute(&pszid))
+                IWSDHttpMessageParameters_Impl::SetID(this, &*(&raw const pszid).cast())
             }
         }
         unsafe extern "system" fn GetID<Identity: IWSDHttpMessageParameters_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppszid: *mut windows_core::PCWSTR) -> windows_core::HRESULT {
@@ -1566,7 +1566,7 @@ impl IWSDHttpMessageParameters_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDHttpMessageParameters_Impl::GetContext(this) {
                     Ok(ok__) => {
-                        ppcontext.write(core::mem::transmute(ok__));
+                        ppcontext.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1661,7 +1661,7 @@ impl IWSDMessageParameters {
     pub unsafe fn GetLocalAddress(&self) -> windows_core::Result<IWSDAddress> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetLocalAddress)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetLocalAddress)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetLocalAddress<P0>(&self, paddress: P0) -> windows_core::HRESULT
@@ -1673,7 +1673,7 @@ impl IWSDMessageParameters {
     pub unsafe fn GetRemoteAddress(&self) -> windows_core::Result<IWSDAddress> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRemoteAddress)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRemoteAddress)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetRemoteAddress<P0>(&self, paddress: P0) -> windows_core::HRESULT
@@ -1685,7 +1685,7 @@ impl IWSDMessageParameters {
     pub unsafe fn GetLowerParameters(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetLowerParameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetLowerParameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1713,7 +1713,7 @@ impl IWSDMessageParameters_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDMessageParameters_Impl::GetLocalAddress(this) {
                     Ok(ok__) => {
-                        ppaddress.write(core::mem::transmute(ok__));
+                        ppaddress.cast::<IWSDAddress>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1734,7 +1734,7 @@ impl IWSDMessageParameters_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDMessageParameters_Impl::GetRemoteAddress(this) {
                     Ok(ok__) => {
-                        ppaddress.write(core::mem::transmute(ok__));
+                        ppaddress.cast::<IWSDAddress>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1755,7 +1755,7 @@ impl IWSDMessageParameters_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDMessageParameters_Impl::GetLowerParameters(this) {
                     Ok(ok__) => {
-                        pptxparams.write(core::mem::transmute(ok__));
+                        pptxparams.cast::<IWSDMessageParameters>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1981,7 +1981,7 @@ impl IWSDScopeMatchingRule_Vtbl {
         unsafe extern "system" fn MatchScopes<Identity: IWSDScopeMatchingRule_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszscope1: windows_core::PCWSTR, pszscope2: windows_core::PCWSTR, pfmatch: *mut windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDScopeMatchingRule_Impl::MatchScopes(this, core::mem::transmute(&pszscope1), core::mem::transmute(&pszscope2), core::mem::transmute_copy(&pfmatch))
+                IWSDScopeMatchingRule_Impl::MatchScopes(this, &*(&raw const pszscope1).cast(), &*(&raw const pszscope2).cast(), core::mem::transmute_copy(&pfmatch))
             }
         }
         Self {
@@ -2070,7 +2070,7 @@ impl IWSDServiceProxy {
     pub unsafe fn BeginGetMetadata(&self) -> windows_core::Result<IWSDAsyncResult> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BeginGetMetadata)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BeginGetMetadata)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -2104,7 +2104,7 @@ impl IWSDServiceProxy {
     pub unsafe fn GetEndpointProxy(&self) -> windows_core::Result<IWSDEndpointProxy> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEndpointProxy)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEndpointProxy)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2150,7 +2150,7 @@ impl IWSDServiceProxy_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDServiceProxy_Impl::BeginGetMetadata(this) {
                     Ok(ok__) => {
-                        ppresult.write(core::mem::transmute(ok__));
+                        ppresult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2195,7 +2195,7 @@ impl IWSDServiceProxy_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDServiceProxy_Impl::GetEndpointProxy(this) {
                     Ok(ok__) => {
-                        ppproxy.write(core::mem::transmute(ok__));
+                        ppproxy.cast::<IWSDEndpointProxy>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2247,7 +2247,7 @@ impl IWSDServiceProxyEventing {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BeginSubscribeToMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, punknown.param().abi(), pexpires.unwrap_or(core::mem::zeroed()) as _, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BeginSubscribeToMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, punknown.param().abi(), pexpires.unwrap_or(core::mem::zeroed()) as _, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -2269,7 +2269,7 @@ impl IWSDServiceProxyEventing {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BeginUnsubscribeToMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BeginUnsubscribeToMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -2291,7 +2291,7 @@ impl IWSDServiceProxyEventing {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BeginRenewMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, pexpires.unwrap_or(core::mem::zeroed()) as _, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BeginRenewMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, pexpires.unwrap_or(core::mem::zeroed()) as _, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -2313,7 +2313,7 @@ impl IWSDServiceProxyEventing {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BeginGetStatusForMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BeginGetStatusForMultipleOperations)(windows_core::Interface::as_raw(self), poperations, dwoperationcount, pany.unwrap_or(core::mem::zeroed()) as _, pasyncstate.param().abi(), pasynccallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
@@ -2406,7 +2406,7 @@ impl IWSDServiceProxyEventing_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDServiceProxyEventing_Impl::BeginSubscribeToMultipleOperations(this, core::mem::transmute_copy(&poperations), core::mem::transmute_copy(&dwoperationcount), core::mem::transmute_copy(&punknown), core::mem::transmute_copy(&pexpires), core::mem::transmute_copy(&pany), core::mem::transmute_copy(&pasyncstate), core::mem::transmute_copy(&pasynccallback)) {
                     Ok(ok__) => {
-                        ppresult.write(core::mem::transmute(ok__));
+                        ppresult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2433,7 +2433,7 @@ impl IWSDServiceProxyEventing_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDServiceProxyEventing_Impl::BeginUnsubscribeToMultipleOperations(this, core::mem::transmute_copy(&poperations), core::mem::transmute_copy(&dwoperationcount), core::mem::transmute_copy(&pany), core::mem::transmute_copy(&pasyncstate), core::mem::transmute_copy(&pasynccallback)) {
                     Ok(ok__) => {
-                        ppresult.write(core::mem::transmute(ok__));
+                        ppresult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2460,7 +2460,7 @@ impl IWSDServiceProxyEventing_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDServiceProxyEventing_Impl::BeginRenewMultipleOperations(this, core::mem::transmute_copy(&poperations), core::mem::transmute_copy(&dwoperationcount), core::mem::transmute_copy(&pexpires), core::mem::transmute_copy(&pany), core::mem::transmute_copy(&pasyncstate), core::mem::transmute_copy(&pasynccallback)) {
                     Ok(ok__) => {
-                        ppresult.write(core::mem::transmute(ok__));
+                        ppresult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2487,7 +2487,7 @@ impl IWSDServiceProxyEventing_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDServiceProxyEventing_Impl::BeginGetStatusForMultipleOperations(this, core::mem::transmute_copy(&poperations), core::mem::transmute_copy(&dwoperationcount), core::mem::transmute_copy(&pany), core::mem::transmute_copy(&pasyncstate), core::mem::transmute_copy(&pasynccallback)) {
                     Ok(ok__) => {
-                        ppresult.write(core::mem::transmute(ok__));
+                        ppresult.cast::<IWSDAsyncResult>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2706,7 +2706,7 @@ impl IWSDTransportAddress_Vtbl {
         unsafe extern "system" fn SetTransportAddress<Identity: IWSDTransportAddress_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszaddress: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDTransportAddress_Impl::SetTransportAddress(this, core::mem::transmute(&pszaddress))
+                IWSDTransportAddress_Impl::SetTransportAddress(this, &*(&raw const pszaddress).cast())
             }
         }
         Self {
@@ -3016,13 +3016,13 @@ impl IWSDXMLContext_Vtbl {
         unsafe extern "system" fn AddNamespace<Identity: IWSDXMLContext_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszuri: windows_core::PCWSTR, pszsuggestedprefix: windows_core::PCWSTR, ppnamespace: *mut *mut WSDXML_NAMESPACE) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDXMLContext_Impl::AddNamespace(this, core::mem::transmute(&pszuri), core::mem::transmute(&pszsuggestedprefix), core::mem::transmute_copy(&ppnamespace))
+                IWSDXMLContext_Impl::AddNamespace(this, &*(&raw const pszuri).cast(), &*(&raw const pszsuggestedprefix).cast(), core::mem::transmute_copy(&ppnamespace))
             }
         }
         unsafe extern "system" fn AddNameToNamespace<Identity: IWSDXMLContext_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszuri: windows_core::PCWSTR, pszname: windows_core::PCWSTR, ppname: *mut *mut WSDXML_NAME) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDXMLContext_Impl::AddNameToNamespace(this, core::mem::transmute(&pszuri), core::mem::transmute(&pszname), core::mem::transmute_copy(&ppname))
+                IWSDXMLContext_Impl::AddNameToNamespace(this, &*(&raw const pszuri).cast(), &*(&raw const pszname).cast(), core::mem::transmute_copy(&ppname))
             }
         }
         unsafe extern "system" fn SetNamespaces<Identity: IWSDXMLContext_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pnamespaces: *const PCWSDXML_NAMESPACE, wnamespacescount: super::WORD, blayernumber: super::BYTE) -> windows_core::HRESULT {
@@ -3277,7 +3277,7 @@ impl IWSDiscoveryProvider {
     pub unsafe fn GetXMLContext(&self) -> windows_core::Result<IWSDXMLContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetXMLContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetXMLContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3333,19 +3333,19 @@ impl IWSDiscoveryProvider_Vtbl {
         unsafe extern "system" fn SearchById<Identity: IWSDiscoveryProvider_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszid: windows_core::PCWSTR, psztag: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryProvider_Impl::SearchById(this, core::mem::transmute(&pszid), core::mem::transmute(&psztag))
+                IWSDiscoveryProvider_Impl::SearchById(this, &*(&raw const pszid).cast(), &*(&raw const psztag).cast())
             }
         }
         unsafe extern "system" fn SearchByAddress<Identity: IWSDiscoveryProvider_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszaddress: windows_core::PCWSTR, psztag: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryProvider_Impl::SearchByAddress(this, core::mem::transmute(&pszaddress), core::mem::transmute(&psztag))
+                IWSDiscoveryProvider_Impl::SearchByAddress(this, &*(&raw const pszaddress).cast(), &*(&raw const psztag).cast())
             }
         }
         unsafe extern "system" fn SearchByType<Identity: IWSDiscoveryProvider_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ptypeslist: *const WSD_NAME_LIST, pscopeslist: *const WSD_URI_LIST, pszmatchby: windows_core::PCWSTR, psztag: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryProvider_Impl::SearchByType(this, core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute(&pszmatchby), core::mem::transmute(&psztag))
+                IWSDiscoveryProvider_Impl::SearchByType(this, core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), &*(&raw const pszmatchby).cast(), &*(&raw const psztag).cast())
             }
         }
         unsafe extern "system" fn GetXMLContext<Identity: IWSDiscoveryProvider_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppcontext: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3353,7 +3353,7 @@ impl IWSDiscoveryProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDiscoveryProvider_Impl::GetXMLContext(this) {
                     Ok(ok__) => {
-                        ppcontext.write(core::mem::transmute(ok__));
+                        ppcontext.cast::<IWSDXMLContext>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3440,13 +3440,13 @@ impl IWSDiscoveryProviderNotify_Vtbl {
         unsafe extern "system" fn SearchFailed<Identity: IWSDiscoveryProviderNotify_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, hr: windows_core::HRESULT, psztag: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryProviderNotify_Impl::SearchFailed(this, core::mem::transmute_copy(&hr), core::mem::transmute(&psztag))
+                IWSDiscoveryProviderNotify_Impl::SearchFailed(this, core::mem::transmute_copy(&hr), &*(&raw const psztag).cast())
             }
         }
         unsafe extern "system" fn SearchComplete<Identity: IWSDiscoveryProviderNotify_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, psztag: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryProviderNotify_Impl::SearchComplete(this, core::mem::transmute(&psztag))
+                IWSDiscoveryProviderNotify_Impl::SearchComplete(this, &*(&raw const psztag).cast())
             }
         }
         Self {
@@ -3611,7 +3611,7 @@ impl IWSDiscoveryPublisher {
     pub unsafe fn GetXMLContext(&self) -> windows_core::Result<IWSDXMLContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetXMLContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetXMLContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3697,25 +3697,25 @@ impl IWSDiscoveryPublisher_Vtbl {
         unsafe extern "system" fn Publish<Identity: IWSDiscoveryPublisher_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszid: windows_core::PCWSTR, ullmetadataversion: super::ULONGLONG, ullinstanceid: super::ULONGLONG, ullmessagenumber: super::ULONGLONG, pszsessionid: windows_core::PCWSTR, ptypeslist: *const WSD_NAME_LIST, pscopeslist: *const WSD_URI_LIST, pxaddrslist: *const WSD_URI_LIST) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryPublisher_Impl::Publish(this, core::mem::transmute(&pszid), core::mem::transmute_copy(&ullmetadataversion), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), core::mem::transmute(&pszsessionid), core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute_copy(&pxaddrslist))
+                IWSDiscoveryPublisher_Impl::Publish(this, &*(&raw const pszid).cast(), core::mem::transmute_copy(&ullmetadataversion), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), &*(&raw const pszsessionid).cast(), core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute_copy(&pxaddrslist))
             }
         }
         unsafe extern "system" fn UnPublish<Identity: IWSDiscoveryPublisher_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszid: windows_core::PCWSTR, ullinstanceid: super::ULONGLONG, ullmessagenumber: super::ULONGLONG, pszsessionid: windows_core::PCWSTR, pany: *const WSDXML_ELEMENT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryPublisher_Impl::UnPublish(this, core::mem::transmute(&pszid), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), core::mem::transmute(&pszsessionid), core::mem::transmute_copy(&pany))
+                IWSDiscoveryPublisher_Impl::UnPublish(this, &*(&raw const pszid).cast(), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), &*(&raw const pszsessionid).cast(), core::mem::transmute_copy(&pany))
             }
         }
         unsafe extern "system" fn MatchProbe<Identity: IWSDiscoveryPublisher_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pprobemessage: *const WSD_SOAP_MESSAGE, pmessageparameters: *mut core::ffi::c_void, pszid: windows_core::PCWSTR, ullmetadataversion: super::ULONGLONG, ullinstanceid: super::ULONGLONG, ullmessagenumber: super::ULONGLONG, pszsessionid: windows_core::PCWSTR, ptypeslist: *const WSD_NAME_LIST, pscopeslist: *const WSD_URI_LIST, pxaddrslist: *const WSD_URI_LIST) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryPublisher_Impl::MatchProbe(this, core::mem::transmute_copy(&pprobemessage), core::mem::transmute_copy(&pmessageparameters), core::mem::transmute(&pszid), core::mem::transmute_copy(&ullmetadataversion), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), core::mem::transmute(&pszsessionid), core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute_copy(&pxaddrslist))
+                IWSDiscoveryPublisher_Impl::MatchProbe(this, core::mem::transmute_copy(&pprobemessage), core::mem::transmute_copy(&pmessageparameters), &*(&raw const pszid).cast(), core::mem::transmute_copy(&ullmetadataversion), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), &*(&raw const pszsessionid).cast(), core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute_copy(&pxaddrslist))
             }
         }
         unsafe extern "system" fn MatchResolve<Identity: IWSDiscoveryPublisher_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, presolvemessage: *const WSD_SOAP_MESSAGE, pmessageparameters: *mut core::ffi::c_void, pszid: windows_core::PCWSTR, ullmetadataversion: super::ULONGLONG, ullinstanceid: super::ULONGLONG, ullmessagenumber: super::ULONGLONG, pszsessionid: windows_core::PCWSTR, ptypeslist: *const WSD_NAME_LIST, pscopeslist: *const WSD_URI_LIST, pxaddrslist: *const WSD_URI_LIST) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IWSDiscoveryPublisher_Impl::MatchResolve(this, core::mem::transmute_copy(&presolvemessage), core::mem::transmute_copy(&pmessageparameters), core::mem::transmute(&pszid), core::mem::transmute_copy(&ullmetadataversion), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), core::mem::transmute(&pszsessionid), core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute_copy(&pxaddrslist))
+                IWSDiscoveryPublisher_Impl::MatchResolve(this, core::mem::transmute_copy(&presolvemessage), core::mem::transmute_copy(&pmessageparameters), &*(&raw const pszid).cast(), core::mem::transmute_copy(&ullmetadataversion), core::mem::transmute_copy(&ullinstanceid), core::mem::transmute_copy(&ullmessagenumber), &*(&raw const pszsessionid).cast(), core::mem::transmute_copy(&ptypeslist), core::mem::transmute_copy(&pscopeslist), core::mem::transmute_copy(&pxaddrslist))
             }
         }
         unsafe extern "system" fn PublishEx<Identity: IWSDiscoveryPublisher_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszid: windows_core::PCWSTR, ullmetadataversion: super::ULONGLONG, ullinstanceid: super::ULONGLONG, ullmessagenumber: super::ULONGLONG, pszsessionid: windows_core::PCWSTR, ptypeslist: *const WSD_NAME_LIST, pscopeslist: *const WSD_URI_LIST, pxaddrslist: *const WSD_URI_LIST, pheaderany: *const WSDXML_ELEMENT, preferenceparameterany: *const WSDXML_ELEMENT, ppolicyany: *const WSDXML_ELEMENT, pendpointreferenceany: *const WSDXML_ELEMENT, pany: *const WSDXML_ELEMENT) -> windows_core::HRESULT {
@@ -3723,11 +3723,11 @@ impl IWSDiscoveryPublisher_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 IWSDiscoveryPublisher_Impl::PublishEx(
                     this,
-                    core::mem::transmute(&pszid),
+                    &*(&raw const pszid).cast(),
                     core::mem::transmute_copy(&ullmetadataversion),
                     core::mem::transmute_copy(&ullinstanceid),
                     core::mem::transmute_copy(&ullmessagenumber),
-                    core::mem::transmute(&pszsessionid),
+                    &*(&raw const pszsessionid).cast(),
                     core::mem::transmute_copy(&ptypeslist),
                     core::mem::transmute_copy(&pscopeslist),
                     core::mem::transmute_copy(&pxaddrslist),
@@ -3746,11 +3746,11 @@ impl IWSDiscoveryPublisher_Vtbl {
                     this,
                     core::mem::transmute_copy(&pprobemessage),
                     core::mem::transmute_copy(&pmessageparameters),
-                    core::mem::transmute(&pszid),
+                    &*(&raw const pszid).cast(),
                     core::mem::transmute_copy(&ullmetadataversion),
                     core::mem::transmute_copy(&ullinstanceid),
                     core::mem::transmute_copy(&ullmessagenumber),
-                    core::mem::transmute(&pszsessionid),
+                    &*(&raw const pszsessionid).cast(),
                     core::mem::transmute_copy(&ptypeslist),
                     core::mem::transmute_copy(&pscopeslist),
                     core::mem::transmute_copy(&pxaddrslist),
@@ -3769,11 +3769,11 @@ impl IWSDiscoveryPublisher_Vtbl {
                     this,
                     core::mem::transmute_copy(&presolvemessage),
                     core::mem::transmute_copy(&pmessageparameters),
-                    core::mem::transmute(&pszid),
+                    &*(&raw const pszid).cast(),
                     core::mem::transmute_copy(&ullmetadataversion),
                     core::mem::transmute_copy(&ullinstanceid),
                     core::mem::transmute_copy(&ullmessagenumber),
-                    core::mem::transmute(&pszsessionid),
+                    &*(&raw const pszsessionid).cast(),
                     core::mem::transmute_copy(&ptypeslist),
                     core::mem::transmute_copy(&pscopeslist),
                     core::mem::transmute_copy(&pxaddrslist),
@@ -3802,7 +3802,7 @@ impl IWSDiscoveryPublisher_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWSDiscoveryPublisher_Impl::GetXMLContext(this) {
                     Ok(ok__) => {
-                        ppcontext.write(core::mem::transmute(ok__));
+                        ppcontext.cast::<IWSDXMLContext>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3973,20 +3973,32 @@ pub type PWSD_SECURITY_SIGNATURE_VALIDATION = *mut WSD_SECURITY_SIGNATURE_VALIDA
 pub type PWSD_SOAP_MESSAGE_HANDLER = Option<unsafe extern "C" fn(thisunknown: windows_core::Ref<windows_core::IUnknown>, event: *mut WSD_EVENT) -> windows_core::HRESULT>;
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct REQUESTBODY_GetStatus {
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for REQUESTBODY_GetStatus {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct REQUESTBODY_Renew {
     pub Expires: *mut WSD_EVENTING_EXPIRES,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for REQUESTBODY_Renew {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct REQUESTBODY_Subscribe {
     pub EndTo: *mut WSD_ENDPOINT_REFERENCE,
     pub Delivery: *mut WSD_EVENTING_DELIVERY_MODE,
@@ -3994,48 +4006,90 @@ pub struct REQUESTBODY_Subscribe {
     pub Filter: *mut WSD_EVENTING_FILTER,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for REQUESTBODY_Subscribe {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct REQUESTBODY_Unsubscribe {
     pub any: *mut WSDXML_ELEMENT,
 }
-#[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct RESPONSEBODY_GetMetadata {
-    pub Metadata: *mut WSD_METADATA_SECTION_LIST,
+impl Default for REQUESTBODY_Unsubscribe {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RESPONSEBODY_GetMetadata {
+    pub Metadata: *mut WSD_METADATA_SECTION_LIST,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for RESPONSEBODY_GetMetadata {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "shared", feature = "winnt"))]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RESPONSEBODY_GetStatus {
     pub expires: *mut WSD_EVENTING_EXPIRES,
     pub any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for RESPONSEBODY_GetStatus {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RESPONSEBODY_Renew {
     pub expires: *mut WSD_EVENTING_EXPIRES,
     pub any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for RESPONSEBODY_Renew {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RESPONSEBODY_Subscribe {
     pub SubscriptionManager: *mut WSD_ENDPOINT_REFERENCE,
     pub expires: *mut WSD_EVENTING_EXPIRES,
     pub any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for RESPONSEBODY_Subscribe {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RESPONSEBODY_SubscriptionEnd {
     pub SubscriptionManager: *mut WSD_ENDPOINT_REFERENCE,
     pub Status: *const super::WCHAR,
     pub Reason: *mut WSD_LOCALIZED_STRING,
     pub Any: *mut WSDXML_ELEMENT,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for RESPONSEBODY_SubscriptionEnd {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[cfg(feature = "shared")]
 pub const SOAP_Actor: super::DWORD = 458757;
@@ -4328,10 +4382,16 @@ pub const WSD_Actions: super::DWORD = 327682;
 pub type WSD_BYE = _WSD_BYE;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_CONFIG_ADDRESSES {
     pub addresses: *mut Option<IWSDAddress>,
     pub dwAddressCount: super::DWORD,
+}
+#[cfg(feature = "shared")]
+impl Default for WSD_CONFIG_ADDRESSES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const WSD_CONFIG_DEVICE_ADDRESSES: WSD_CONFIG_PARAM_TYPE = 10;
 pub const WSD_CONFIG_HOSTING_ADDRESSES: WSD_CONFIG_PARAM_TYPE = 9;
@@ -4339,11 +4399,17 @@ pub const WSD_CONFIG_MAX_INBOUND_MESSAGE_SIZE: WSD_CONFIG_PARAM_TYPE = 1;
 pub const WSD_CONFIG_MAX_OUTBOUND_MESSAGE_SIZE: WSD_CONFIG_PARAM_TYPE = 2;
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_CONFIG_PARAM {
     pub configParamType: WSD_CONFIG_PARAM_TYPE,
     pub pConfigData: super::PVOID,
     pub dwConfigDataSize: super::DWORD,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for WSD_CONFIG_PARAM {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type WSD_CONFIG_PARAM_TYPE = i32;
 #[repr(C)]
@@ -4441,20 +4507,32 @@ pub const WSD_ModelUrl: super::DWORD = 327689;
 pub type WSD_NAME_LIST = _WSD_NAME_LIST;
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug)]
 pub struct WSD_OPERATION {
     pub RequestType: *mut WSDXML_TYPE,
     pub ResponseType: *mut WSDXML_TYPE,
     pub RequestStubFunction: WSD_STUB_FUNCTION,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for WSD_OPERATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_PORT_TYPE {
     pub EncodedName: super::DWORD,
     pub OperationCount: super::DWORD,
     pub Operations: *mut WSD_OPERATION,
     pub ProtocolType: WSD_PROTOCOL_TYPE,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for WSD_PORT_TYPE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[cfg(all(feature = "shared", feature = "winnt"))]
 pub type WSD_PROBE = _WSD_PROBE;
@@ -4490,7 +4568,7 @@ pub const WSD_Relationship: super::DWORD = 327699;
 pub type WSD_SCOPES = _WSD_SCOPES;
 #[repr(C)]
 #[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_SECURITY_CERT_VALIDATION {
     pub certMatchArray: *mut super::PCCERT_CONTEXT,
     pub dwCertMatchArrayCount: super::DWORD,
@@ -4501,15 +4579,27 @@ pub struct WSD_SECURITY_CERT_VALIDATION {
     pub pbCertHash: *mut super::BYTE,
     pub dwCertHashSize: super::DWORD,
 }
+#[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
+impl Default for WSD_SECURITY_CERT_VALIDATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_SECURITY_CERT_VALIDATION_V1 {
     pub certMatchArray: *mut super::PCCERT_CONTEXT,
     pub dwCertMatchArrayCount: super::DWORD,
     pub hCertMatchStore: super::HCERTSTORE,
     pub hCertIssuerStore: super::HCERTSTORE,
     pub dwCertCheckOptions: super::DWORD,
+}
+#[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
+impl Default for WSD_SECURITY_CERT_VALIDATION_V1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const WSD_SECURITY_COMPACTSIG_SIGNING_CERT: WSD_CONFIG_PARAM_TYPE = 7;
 pub const WSD_SECURITY_COMPACTSIG_VALIDATION: WSD_CONFIG_PARAM_TYPE = 8;
@@ -4520,12 +4610,18 @@ pub const WSD_SECURITY_REQUIRE_CLIENT_CERT_OR_HTTP_CLIENT_AUTH: WSD_CONFIG_PARAM
 pub const WSD_SECURITY_REQUIRE_HTTP_CLIENT_AUTH: WSD_CONFIG_PARAM_TYPE = 11;
 #[repr(C)]
 #[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_SECURITY_SIGNATURE_VALIDATION {
     pub signingCertArray: *mut super::PCCERT_CONTEXT,
     pub dwSigningCertArrayCount: super::DWORD,
     pub hSigningCertStore: super::HCERTSTORE,
     pub dwFlags: super::DWORD,
+}
+#[cfg(all(feature = "minwindef", feature = "shared", feature = "wincrypt"))]
+impl Default for WSD_SECURITY_SIGNATURE_VALIDATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const WSD_SECURITY_SSL_CERT_FOR_CLIENT_AUTH: WSD_CONFIG_PARAM_TYPE = 3;
 pub const WSD_SECURITY_SSL_CLIENT_CERT_VALIDATION: WSD_CONFIG_PARAM_TYPE = 5;
@@ -4552,12 +4648,18 @@ pub type WSD_SOAP_MESSAGE = _WSD_SOAP_MESSAGE;
 pub type WSD_STUB_FUNCTION = Option<unsafe extern "C" fn(server: windows_core::Ref<windows_core::IUnknown>, session: windows_core::Ref<IWSDServiceMessaging>, event: *mut WSD_EVENT) -> windows_core::HRESULT>;
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct WSD_SYNCHRONOUS_RESPONSE_CONTEXT {
     pub hr: windows_core::HRESULT,
     pub eventHandle: super::HANDLE,
     pub messageParameters: core::mem::ManuallyDrop<Option<IWSDMessageParameters>>,
     pub results: *mut core::ffi::c_void,
+}
+#[cfg(feature = "winnt")]
+impl Default for WSD_SYNCHRONOUS_RESPONSE_CONTEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[cfg(feature = "shared")]
 pub const WSD_SerialNumber: super::DWORD = 327694;
@@ -4577,9 +4679,15 @@ pub const WSD_Type: super::DWORD = 327700;
 pub const WSD_Types: super::DWORD = 327695;
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WSD_UNKNOWN_LOOKUP {
     pub Any: *mut WSDXML_ELEMENT,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for WSD_UNKNOWN_LOOKUP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[cfg(feature = "winnt")]
 pub type WSD_URI_LIST = _WSD_URI_LIST;
@@ -4699,16 +4807,22 @@ pub const XOP_Href: super::DWORD = 196609;
 pub const XOP_Include: super::DWORD = 196608;
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_ATTRIBUTE {
     pub Element: *mut WSDXML_ELEMENT,
     pub Next: *mut WSDXML_ATTRIBUTE,
     pub Name: *mut WSDXML_NAME,
     pub Value: *mut super::WCHAR,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_ATTRIBUTE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_ELEMENT {
     pub Node: WSDXML_NODE,
     pub Name: *mut WSDXML_NAME,
@@ -4716,23 +4830,41 @@ pub struct _WSDXML_ELEMENT {
     pub FirstChild: *mut WSDXML_NODE,
     pub PrefixMappings: *mut WSDXML_PREFIX_MAPPING,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_ELEMENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_ELEMENT_LIST {
     pub Next: *mut WSDXML_ELEMENT_LIST,
     pub Element: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_ELEMENT_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_NAME {
     pub Space: *mut WSDXML_NAMESPACE,
     pub LocalName: *mut super::WCHAR,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_NAME {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_NAMESPACE {
     pub Uri: *const super::WCHAR,
     pub PreferredPrefix: *const super::WCHAR,
@@ -4740,9 +4872,15 @@ pub struct _WSDXML_NAMESPACE {
     pub NamesCount: super::WORD,
     pub Encoding: super::WORD,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_NAMESPACE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_NODE {
     pub Type: i32,
     pub Parent: *mut WSDXML_ELEMENT,
@@ -4753,47 +4891,83 @@ impl _WSDXML_NODE {
     pub const ElementType: i32 = 0;
     pub const TextType: i32 = 1;
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_NODE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_PREFIX_MAPPING {
     pub Refs: super::DWORD,
     pub Next: *mut WSDXML_PREFIX_MAPPING,
     pub Space: *mut WSDXML_NAMESPACE,
     pub Prefix: *mut super::WCHAR,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_PREFIX_MAPPING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_TEXT {
     pub Node: WSDXML_NODE,
     pub Text: *mut super::WCHAR,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_TEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSDXML_TYPE {
     pub Uri: *const super::WCHAR,
     pub Table: *const super::BYTE,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSDXML_TYPE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_APP_SEQUENCE {
     pub InstanceId: super::ULONGLONG,
     pub SequenceId: *const super::WCHAR,
     pub MessageNumber: super::ULONGLONG,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_APP_SEQUENCE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_BYE {
     pub EndpointReference: *mut WSD_ENDPOINT_REFERENCE,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_BYE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_ENDPOINT_REFERENCE {
     pub Address: *const super::WCHAR,
     pub ReferenceProperties: WSD_REFERENCE_PROPERTIES,
@@ -4802,16 +4976,28 @@ pub struct _WSD_ENDPOINT_REFERENCE {
     pub ServiceName: *mut WSDXML_NAME,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_ENDPOINT_REFERENCE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_ENDPOINT_REFERENCE_LIST {
     pub Next: *mut WSD_ENDPOINT_REFERENCE_LIST,
     pub Element: *mut WSD_ENDPOINT_REFERENCE,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_ENDPOINT_REFERENCE_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct _WSD_EVENT {
     pub Hr: windows_core::HRESULT,
     pub EventType: super::DWORD,
@@ -4821,59 +5007,107 @@ pub struct _WSD_EVENT {
     pub Operation: *mut WSD_OPERATION,
     pub MessageParameters: core::mem::ManuallyDrop<Option<IWSDMessageParameters>>,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_EVENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_EVENTING_DELIVERY_MODE {
     pub Mode: *const super::WCHAR,
     pub Push: *mut WSD_EVENTING_DELIVERY_MODE_PUSH,
     pub Data: *mut core::ffi::c_void,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_EVENTING_DELIVERY_MODE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_EVENTING_DELIVERY_MODE_PUSH {
     pub NotifyTo: *mut WSD_ENDPOINT_REFERENCE,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_EVENTING_DELIVERY_MODE_PUSH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_EVENTING_EXPIRES {
     pub Duration: *mut WSD_DURATION,
     pub DateTime: *mut WSD_DATETIME,
 }
+#[cfg(feature = "shared")]
+impl Default for _WSD_EVENTING_EXPIRES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_EVENTING_FILTER {
     pub Dialect: *const super::WCHAR,
     pub FilterAction: *mut WSD_EVENTING_FILTER_ACTION,
     pub Data: *mut core::ffi::c_void,
 }
+#[cfg(feature = "winnt")]
+impl Default for _WSD_EVENTING_FILTER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_EVENTING_FILTER_ACTION {
     pub Actions: *mut WSD_URI_LIST,
 }
+#[cfg(feature = "winnt")]
+impl Default for _WSD_EVENTING_FILTER_ACTION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct _WSD_HANDLER_CONTEXT {
     pub Handler: PWSD_SOAP_MESSAGE_HANDLER,
     pub PVoid: *mut core::ffi::c_void,
     pub Unknown: core::mem::ManuallyDrop<Option<windows_core::IUnknown>>,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_HANDLER_CONTEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_HEADER_RELATESTO {
     pub RelationshipType: *mut WSDXML_NAME,
     pub MessageID: *const super::WCHAR,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_HEADER_RELATESTO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_HELLO {
     pub EndpointReference: *mut WSD_ENDPOINT_REFERENCE,
     pub Types: *mut WSD_NAME_LIST,
@@ -4882,30 +5116,54 @@ pub struct _WSD_HELLO {
     pub MetadataVersion: super::ULONGLONG,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_HELLO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_HOST_METADATA {
     pub Host: *mut WSD_SERVICE_METADATA,
     pub Hosted: *mut WSD_SERVICE_METADATA_LIST,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_HOST_METADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_LOCALIZED_STRING {
     pub lang: *const super::WCHAR,
     pub String: *const super::WCHAR,
 }
+#[cfg(feature = "winnt")]
+impl Default for _WSD_LOCALIZED_STRING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_LOCALIZED_STRING_LIST {
     pub Next: *mut WSD_LOCALIZED_STRING_LIST,
     pub Element: *mut WSD_LOCALIZED_STRING,
 }
+#[cfg(feature = "winnt")]
+impl Default for _WSD_LOCALIZED_STRING_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_METADATA_SECTION {
     pub Dialect: *const super::WCHAR,
     pub Identifier: *const super::WCHAR,
@@ -4914,31 +5172,55 @@ pub struct _WSD_METADATA_SECTION {
     pub Location: *const super::WCHAR,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_METADATA_SECTION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_METADATA_SECTION_LIST {
     pub Next: *mut WSD_METADATA_SECTION_LIST,
     pub Element: *mut WSD_METADATA_SECTION,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_METADATA_SECTION_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_NAME_LIST {
     pub Next: *mut WSD_NAME_LIST,
     pub Element: *mut WSDXML_NAME,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_NAME_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_PROBE {
     pub Types: *mut WSD_NAME_LIST,
     pub Scopes: *mut WSD_SCOPES,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_PROBE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_PROBE_MATCH {
     pub EndpointReference: *mut WSD_ENDPOINT_REFERENCE,
     pub Types: *mut WSD_NAME_LIST,
@@ -4947,50 +5229,92 @@ pub struct _WSD_PROBE_MATCH {
     pub MetadataVersion: super::ULONGLONG,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_PROBE_MATCH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_PROBE_MATCHES {
     pub ProbeMatch: *mut WSD_PROBE_MATCH_LIST,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_PROBE_MATCHES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_PROBE_MATCH_LIST {
     pub Next: *mut WSD_PROBE_MATCH_LIST,
     pub Element: *mut WSD_PROBE_MATCH,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_PROBE_MATCH_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_REFERENCE_PARAMETERS {
     pub Any: *mut WSDXML_ELEMENT,
 }
-#[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct _WSD_REFERENCE_PROPERTIES {
-    pub Any: *mut WSDXML_ELEMENT,
+impl Default for _WSD_REFERENCE_PARAMETERS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct _WSD_REFERENCE_PROPERTIES {
+    pub Any: *mut WSDXML_ELEMENT,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_REFERENCE_PROPERTIES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(all(feature = "shared", feature = "winnt"))]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_RELATIONSHIP_METADATA {
     pub Type: *const super::WCHAR,
     pub Data: *mut WSD_HOST_METADATA,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_RELATIONSHIP_METADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_RESOLVE {
     pub EndpointReference: *mut WSD_ENDPOINT_REFERENCE,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_RESOLVE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_RESOLVE_MATCH {
     pub EndpointReference: *mut WSD_ENDPOINT_REFERENCE,
     pub Types: *mut WSD_NAME_LIST,
@@ -4999,39 +5323,69 @@ pub struct _WSD_RESOLVE_MATCH {
     pub MetadataVersion: super::ULONGLONG,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_RESOLVE_MATCH {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_RESOLVE_MATCHES {
     pub ResolveMatch: *mut WSD_RESOLVE_MATCH,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_RESOLVE_MATCHES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SCOPES {
     pub MatchBy: *const super::WCHAR,
     pub Scopes: *mut WSD_URI_LIST,
 }
+#[cfg(feature = "winnt")]
+impl Default for _WSD_SCOPES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SERVICE_METADATA {
     pub EndpointReference: *mut WSD_ENDPOINT_REFERENCE_LIST,
     pub Types: *mut WSD_NAME_LIST,
     pub ServiceId: *const super::WCHAR,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SERVICE_METADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SERVICE_METADATA_LIST {
     pub Next: *mut WSD_SERVICE_METADATA_LIST,
     pub Element: *mut WSD_SERVICE_METADATA,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SERVICE_METADATA_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SOAP_FAULT {
     pub Code: *mut WSD_SOAP_FAULT_CODE,
     pub Reason: *mut WSD_SOAP_FAULT_REASON,
@@ -5039,29 +5393,53 @@ pub struct _WSD_SOAP_FAULT {
     pub Role: *const super::WCHAR,
     pub Detail: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SOAP_FAULT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SOAP_FAULT_CODE {
     pub Value: *mut WSDXML_NAME,
     pub Subcode: *mut WSD_SOAP_FAULT_SUBCODE,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SOAP_FAULT_CODE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SOAP_FAULT_REASON {
     pub Text: *mut WSD_LOCALIZED_STRING_LIST,
 }
+#[cfg(feature = "winnt")]
+impl Default for _WSD_SOAP_FAULT_REASON {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SOAP_FAULT_SUBCODE {
     pub Value: *mut WSDXML_NAME,
     pub Subcode: *mut WSD_SOAP_FAULT_SUBCODE,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SOAP_FAULT_SUBCODE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SOAP_HEADER {
     pub To: *const super::WCHAR,
     pub Action: *const super::WCHAR,
@@ -5073,26 +5451,44 @@ pub struct _WSD_SOAP_HEADER {
     pub AppSequence: *mut WSD_APP_SEQUENCE,
     pub AnyHeaders: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SOAP_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_SOAP_MESSAGE {
     pub Header: WSD_SOAP_HEADER,
     pub Body: *mut core::ffi::c_void,
     pub BodyType: *mut WSDXML_TYPE,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_SOAP_MESSAGE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_THIS_DEVICE_METADATA {
     pub FriendlyName: *mut WSD_LOCALIZED_STRING_LIST,
     pub FirmwareVersion: *const super::WCHAR,
     pub SerialNumber: *const super::WCHAR,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_THIS_DEVICE_METADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_THIS_MODEL_METADATA {
     pub Manufacturer: *mut WSD_LOCALIZED_STRING_LIST,
     pub ManufacturerUrl: *const super::WCHAR,
@@ -5102,10 +5498,22 @@ pub struct _WSD_THIS_MODEL_METADATA {
     pub PresentationUrl: *const super::WCHAR,
     pub Any: *mut WSDXML_ELEMENT,
 }
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for _WSD_THIS_MODEL_METADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "winnt")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _WSD_URI_LIST {
     pub Next: *mut WSD_URI_LIST,
     pub Element: *const super::WCHAR,
+}
+#[cfg(feature = "winnt")]
+impl Default for _WSD_URI_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }

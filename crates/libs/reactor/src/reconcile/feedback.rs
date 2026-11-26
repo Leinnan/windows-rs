@@ -106,8 +106,6 @@ impl EventCall {
             Self::Bool(..) => ValueType::Bool,
             Self::Color(..) => ValueType::Color,
             Self::ContentDialogResult(..) => ValueType::ContentDialogResult,
-            #[cfg(any(test, feature = "test"))]
-            Self::CharacterEventInfo(..) => ValueType::CharacterEventInfo,
             Self::String(..) => ValueType::String,
             Self::F64(..) => ValueType::F64,
             Self::FocusEventInfo(..) => ValueType::FocusEventInfo,
@@ -119,8 +117,6 @@ impl EventCall {
             Self::OptionalTimeSpan(..) => ValueType::OptionalTimeSpan,
             Self::NavigationViewDisplayMode(..) => ValueType::NavigationViewDisplayMode,
             Self::PointerEventInfo(..) => ValueType::PointerEventInfo,
-            #[cfg(any(test, feature = "test"))]
-            Self::KeyEventInfo(..) => ValueType::KeyEventInfo,
             Self::Item(..) => ValueType::Key,
             Self::Items(..) => ValueType::Keys,
             Self::Selection(..) => ValueType::Selection,
@@ -136,8 +132,6 @@ impl EventCall {
             Self::Bool(callback, value) => callback.call(value),
             Self::Color(callback, value) => callback.call(value),
             Self::ContentDialogResult(callback, value) => callback.call(value),
-            #[cfg(any(test, feature = "test"))]
-            Self::CharacterEventInfo(callback, value) => _ = callback.call(value),
             Self::String(callback, value) => callback.call(value),
             Self::F64(callback, value) => callback.call(value),
             Self::FocusEventInfo(callback, value) => callback.call(value),
@@ -149,8 +143,6 @@ impl EventCall {
             Self::OptionalTimeSpan(callback, value) => callback.call(value),
             Self::NavigationViewDisplayMode(callback, value) => callback.call(value),
             Self::PointerEventInfo(callback, value) => callback.call(value),
-            #[cfg(any(test, feature = "test"))]
-            Self::KeyEventInfo(callback, value) => _ = callback.call(value),
             Self::Key(callback, value) => callback.call(value),
             Self::Keys(callback, value) => callback.call(value),
             Self::Selection(callback, value) => callback.call(value.value),
@@ -241,7 +233,7 @@ impl RetainedGraph {
                 let baseline = retained
                     .baselines
                     .iter()
-                    .position(|baseline| baseline.id == property_id);
+                    .position(|baseline| baseline.property.id == property_id);
                 // Observing a native value does not make the declaration own that property.
                 let Some(current) = retained
                     .properties
@@ -250,27 +242,62 @@ impl RetainedGraph {
                     .cloned()
                 else {
                     match baseline {
-                        Some(index) if retained.baselines[index] == property => return false,
-                        Some(index) if record => retained.baselines[index] = property,
+                        Some(index) if retained.baselines[index].property == property => {
+                            return false;
+                        }
+                        Some(index) if record => retained.baselines[index].property = property,
                         Some(index) => {
                             retained.baselines.swap_remove(index);
                         }
-                        None if record => retained.baselines.push(property),
+                        None if record => retained.baselines.push(PropertyBaseline {
+                            property,
+                            applied: None,
+                        }),
                         None => {}
                     }
                     return true;
                 };
+                if record {
+                    match baseline {
+                        Some(index) if retained.baselines[index].property == property => {
+                            retained.baselines.swap_remove(index);
+                        }
+                        Some(index) => {
+                            retained.baselines[index].applied = Some(property.value.clone());
+                        }
+                        None if current != property => {
+                            retained.baselines.push(PropertyBaseline {
+                                property: current,
+                                applied: Some(property.value.clone()),
+                            });
+                        }
+                        None => {}
+                    }
+                    retained
+                        .properties
+                        .upsert(|current| current.id == property_id, property);
+                    return false;
+                }
                 // Native state that matches the declaration is settled, whichever write or
-                // notification produced it, so only a departure from the declaration is reported.
+                // notification produced it. The effective value read back from a coerced write
+                // is settled too; a deferred notification must not report it as an edit.
                 let settled = match baseline {
-                    Some(index) if retained.baselines[index] == property => {
+                    Some(index) if retained.baselines[index].property == property => {
                         retained.baselines.swap_remove(index);
+                        true
+                    }
+                    Some(index)
+                        if retained.baselines[index].applied.as_ref() == Some(&property.value) =>
+                    {
                         true
                     }
                     Some(_) => false,
                     None if current == property => return false,
                     None => {
-                        retained.baselines.push(current);
+                        retained.baselines.push(PropertyBaseline {
+                            property: current,
+                            applied: None,
+                        });
                         false
                     }
                 };

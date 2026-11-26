@@ -18,6 +18,9 @@ impl Interface {
         let com_trait = self.gen_com_trait();
         let vtable = self.gen_vtable(&vtable_name);
         let conversions = self.gen_conversions();
+        let inspectable = self.parent.as_ref().map(|parent| {
+            quote! { const INSPECTABLE: bool = <#parent as ::windows_core::Interface>::INSPECTABLE; }
+        });
 
         Ok(quote! {
             #[repr(transparent)]
@@ -27,6 +30,7 @@ impl Interface {
             unsafe impl ::windows_core::Interface for #name {
                 type Vtable = #vtable_name;
                 const IID: ::windows_core::GUID = #guid;
+                #inspectable
             }
             impl ::windows_core::RuntimeName for #name {}
             impl ::core::ops::Deref for #name {
@@ -285,7 +289,15 @@ impl Interface {
         // Parented interfaces delegate through the inheritance chain; scoped interfaces have a
         // raw inner pointer, so they fall back to transmute.
         let into_iunknown_impl = if self.parent.is_some() {
+            let parent = self.parent_type();
             quote! {
+                impl<T> ::windows_core::imp::CanInto<T> for #name
+                where
+                    #parent: ::windows_core::imp::CanInto<T>,
+                {
+                    const QUERY: bool = <#parent as ::windows_core::imp::CanInto<T>>::QUERY;
+                }
+
                 impl ::core::convert::From<#name> for ::windows_core::IUnknown {
                     fn from(value: #name) -> Self {
                         ::windows_core::IUnknown::from(value.0)
@@ -365,11 +377,11 @@ impl Interface {
 
     /// Returns the `ParentName_Impl` supertrait constraint, except for `IUnknown`.
     fn parent_trait_constraint(&self) -> proc_macro2::TokenStream {
-        if let Some((ident, path)) = self.parent_path().split_last()
-            && ident != "IUnknown"
-        {
-            let ident = quote::format_ident!("{}_Impl", ident);
-            return quote! { #(#path::)* #ident };
+        if let Some((ident, path)) = self.parent_path().split_last() {
+            if ident != "IUnknown" {
+                let ident = quote::format_ident!("{}_Impl", ident);
+                return quote! { #(#path::)* #ident };
+            }
         }
 
         quote! {}
@@ -379,20 +391,19 @@ impl Interface {
 impl InterfaceMethod {
     /// Returns `true` when the method's return type is `Result<T>`.
     pub(crate) fn is_result(&self) -> bool {
-        if let syn::ReturnType::Type(_, ty) = &self.ret
-            && let syn::Type::Path(path) = &**ty
-            && let Some(segment) = path.path.segments.last()
-        {
-            let ident = segment.ident.to_string();
-            if ident == "Result"
-                && let syn::PathArguments::AngleBracketed(args) = &segment.arguments
-                && args.args.len() == 1
-            {
-                return true;
-            }
-        }
-
-        false
+        let syn::ReturnType::Type(_, ty) = &self.ret else {
+            return false;
+        };
+        let syn::Type::Path(path) = &**ty else {
+            return false;
+        };
+        let Some(segment) = path.path.segments.last() else {
+            return false;
+        };
+        let syn::PathArguments::AngleBracketed(args) = &segment.arguments else {
+            return false;
+        };
+        segment.ident == "Result" && args.args.len() == 1
     }
 
     /// Generates `name: Type` argument pairs for the raw vtable function signature.
@@ -472,19 +483,23 @@ impl InterfaceMethod {
 impl InterfaceMethodArg {
     /// If this argument is `Ref<T>` or `OutRef<T>`, returns `(T, "Ref")` or `(T, "OutRef")`.
     pub(crate) fn borrow_type(&self) -> Option<(syn::Type, String)> {
-        if let syn::Type::Path(path) = &*self.ty
-            && let Some(segment) = path.path.segments.last()
-        {
-            let ident = segment.ident.to_string();
-            if matches!(ident.as_str(), "Ref" | "OutRef")
-                && let syn::PathArguments::AngleBracketed(args) = &segment.arguments
-                && args.args.len() == 1
-                && let Some(syn::GenericArgument::Type(ty)) = args.args.first()
-            {
-                return Some((ty.clone(), ident));
-            }
+        let syn::Type::Path(path) = &*self.ty else {
+            return None;
+        };
+        let segment = path.path.segments.last()?;
+        let ident = segment.ident.to_string();
+        if !matches!(ident.as_str(), "Ref" | "OutRef") {
+            return None;
         }
-
-        None
+        let syn::PathArguments::AngleBracketed(args) = &segment.arguments else {
+            return None;
+        };
+        if args.args.len() != 1 {
+            return None;
+        }
+        let syn::GenericArgument::Type(ty) = args.args.first()? else {
+            return None;
+        };
+        Some((ty.clone(), ident))
     }
 }

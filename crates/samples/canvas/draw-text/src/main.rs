@@ -1,13 +1,14 @@
 #![windows_subsystem = "windows"]
 
-use windows_canvas::TextAlignment;
 use windows_canvas::*;
+
 use windows_reactor::*;
+use windows_text::{ParagraphAlignment, TextAlignment, TextFormat};
 
 fn draw(ctx: &DrawContext) -> Result<()> {
     ctx.clear(ColorF::BLACK);
 
-    let format = TextFormat::new("Segoe UI", 32.0)?
+    let format = TextFormat::new("Segoe UI", 32.0)
         .with_alignment(TextAlignment::Center)
         .with_paragraph_alignment(ParagraphAlignment::Center);
 
@@ -34,7 +35,7 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Draw Text");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
         canvas(draw)
     }
 }

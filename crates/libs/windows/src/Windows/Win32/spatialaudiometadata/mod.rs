@@ -5,7 +5,7 @@ impl ISpatialAudioMetadataClient {
     pub unsafe fn ActivateSpatialAudioMetadataItems(&self, maxitemcount: super::UINT16, framecount: super::UINT16, metadataitemsbuffer: Option<*mut Option<ISpatialAudioMetadataItemsBuffer>>) -> windows_core::Result<ISpatialAudioMetadataItems> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataItems)(windows_core::Interface::as_raw(self), maxitemcount, framecount, metadataitemsbuffer.unwrap_or(core::mem::zeroed()) as _, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataItems)(windows_core::Interface::as_raw(self), maxitemcount, framecount, metadataitemsbuffer.unwrap_or(core::mem::zeroed()) as _, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -15,19 +15,19 @@ impl ISpatialAudioMetadataClient {
     pub unsafe fn ActivateSpatialAudioMetadataWriter(&self, overflowmode: SpatialAudioMetadataWriterOverflowMode) -> windows_core::Result<ISpatialAudioMetadataWriter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataWriter)(windows_core::Interface::as_raw(self), overflowmode, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataWriter)(windows_core::Interface::as_raw(self), overflowmode, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn ActivateSpatialAudioMetadataCopier(&self) -> windows_core::Result<ISpatialAudioMetadataCopier> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataCopier)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataCopier)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn ActivateSpatialAudioMetadataReader(&self) -> windows_core::Result<ISpatialAudioMetadataReader> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataReader)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioMetadataReader)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -63,7 +63,7 @@ impl ISpatialAudioMetadataClient_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioMetadataClient_Impl::ActivateSpatialAudioMetadataItems(this, core::mem::transmute_copy(&maxitemcount), core::mem::transmute_copy(&framecount), core::mem::transmute_copy(&metadataitemsbuffer)) {
                     Ok(ok__) => {
-                        metadataitems.write(core::mem::transmute(ok__));
+                        metadataitems.cast::<ISpatialAudioMetadataItems>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -84,7 +84,7 @@ impl ISpatialAudioMetadataClient_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioMetadataClient_Impl::ActivateSpatialAudioMetadataWriter(this, core::mem::transmute_copy(&overflowmode)) {
                     Ok(ok__) => {
-                        metadatawriter.write(core::mem::transmute(ok__));
+                        metadatawriter.cast::<ISpatialAudioMetadataWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -99,7 +99,7 @@ impl ISpatialAudioMetadataClient_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioMetadataClient_Impl::ActivateSpatialAudioMetadataCopier(this) {
                     Ok(ok__) => {
-                        metadatacopier.write(core::mem::transmute(ok__));
+                        metadatacopier.cast::<ISpatialAudioMetadataCopier>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -114,7 +114,7 @@ impl ISpatialAudioMetadataClient_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioMetadataClient_Impl::ActivateSpatialAudioMetadataReader(this) {
                     Ok(ok__) => {
-                        metadatareader.write(core::mem::transmute(ok__));
+                        metadatareader.cast::<ISpatialAudioMetadataReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -617,7 +617,7 @@ impl ISpatialAudioObjectForMetadataItems {
     pub unsafe fn GetSpatialAudioMetadataItems(&self) -> windows_core::Result<ISpatialAudioMetadataItems> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSpatialAudioMetadataItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSpatialAudioMetadataItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -640,7 +640,7 @@ impl ISpatialAudioObjectForMetadataItems_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioObjectForMetadataItems_Impl::GetSpatialAudioMetadataItems(this) {
                     Ok(ok__) => {
-                        metadataitems.write(core::mem::transmute(ok__));
+                        metadataitems.cast::<ISpatialAudioMetadataItems>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -677,13 +677,13 @@ impl ISpatialAudioObjectRenderStreamForMetadata {
     pub unsafe fn ActivateSpatialAudioObjectForMetadataCommands(&self, r#type: super::AudioObjectType) -> windows_core::Result<ISpatialAudioObjectForMetadataCommands> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioObjectForMetadataCommands)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioObjectForMetadataCommands)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn ActivateSpatialAudioObjectForMetadataItems(&self, r#type: super::AudioObjectType) -> windows_core::Result<ISpatialAudioObjectForMetadataItems> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ActivateSpatialAudioObjectForMetadataItems)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ActivateSpatialAudioObjectForMetadataItems)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -708,7 +708,7 @@ impl ISpatialAudioObjectRenderStreamForMetadata_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioObjectRenderStreamForMetadata_Impl::ActivateSpatialAudioObjectForMetadataCommands(this, core::mem::transmute_copy(&r#type)) {
                     Ok(ok__) => {
-                        audioobject.write(core::mem::transmute(ok__));
+                        audioobject.cast::<ISpatialAudioObjectForMetadataCommands>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -723,7 +723,7 @@ impl ISpatialAudioObjectRenderStreamForMetadata_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpatialAudioObjectRenderStreamForMetadata_Impl::ActivateSpatialAudioObjectForMetadataItems(this, core::mem::transmute_copy(&r#type)) {
                     Ok(ok__) => {
-                        audioobject.write(core::mem::transmute(ok__));
+                        audioobject.cast::<ISpatialAudioObjectForMetadataItems>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -797,7 +797,6 @@ pub const SpatialAudioMetadataWriterOverflow_MergeWithLast: SpatialAudioMetadata
 pub const SpatialAudioMetadataWriterOverflow_MergeWithNew: SpatialAudioMetadataWriterOverflowMode = 1;
 #[repr(C, packed(1))]
 #[cfg(all(feature = "audiosessiontypes", feature = "guiddef", feature = "minwindef", feature = "mmeapi", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "spatialaudioclient", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Default)]
 pub struct SpatialAudioObjectRenderStreamForMetadataActivationParams {
     pub ObjectFormat: *const super::WAVEFORMATEX,
     pub StaticObjectTypeMask: super::AudioObjectType,
@@ -810,9 +809,14 @@ pub struct SpatialAudioObjectRenderStreamForMetadataActivationParams {
     pub MetadataActivationParams: *const super::PROPVARIANT,
     pub NotifyObject: core::mem::ManuallyDrop<Option<super::ISpatialAudioObjectRenderStreamNotify>>,
 }
+#[cfg(all(feature = "audiosessiontypes", feature = "guiddef", feature = "minwindef", feature = "mmeapi", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "spatialaudioclient", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for SpatialAudioObjectRenderStreamForMetadataActivationParams {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(1))]
 #[cfg(all(feature = "audiosessiontypes", feature = "guiddef", feature = "minwindef", feature = "mmeapi", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "spatialaudioclient", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Default)]
 pub struct SpatialAudioObjectRenderStreamForMetadataActivationParams2 {
     pub ObjectFormat: *const super::WAVEFORMATEX,
     pub StaticObjectTypeMask: super::AudioObjectType,
@@ -825,4 +829,10 @@ pub struct SpatialAudioObjectRenderStreamForMetadataActivationParams2 {
     pub MetadataActivationParams: *const super::PROPVARIANT,
     pub NotifyObject: core::mem::ManuallyDrop<Option<super::ISpatialAudioObjectRenderStreamNotify>>,
     pub Options: super::SPATIAL_AUDIO_STREAM_OPTIONS,
+}
+#[cfg(all(feature = "audiosessiontypes", feature = "guiddef", feature = "minwindef", feature = "mmeapi", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "spatialaudioclient", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for SpatialAudioObjectRenderStreamForMetadataActivationParams2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }

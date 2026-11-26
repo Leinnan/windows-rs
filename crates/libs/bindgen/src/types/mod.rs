@@ -180,82 +180,6 @@ impl Type {
         }
     }
 
-    /// Collects sys ABI dependencies without projected interfaces, which sys signatures erase to
-    /// raw pointers.
-    pub fn combine_sys(&self, dependencies: &mut TypeMap, reader: &Reader) {
-        let ty = self.dependency_type();
-
-        if let Self::Ptr64(inner, _) = ty {
-            dependencies.insert(Self::Pointer64Helper);
-            inner.combine_sys(dependencies, reader);
-            return;
-        }
-        if let Self::FnPtr(signature) = ty {
-            for ty in signature.types() {
-                ty.combine_sys(dependencies, reader);
-            }
-            return;
-        }
-        if ty.is_intrinsic() || ty.is_interface() {
-            return;
-        }
-
-        if let Some(owner) = ty.enclosing() {
-            for owner in reader.with_full_name(owner.namespace(), owner.name()) {
-                owner.combine_sys(dependencies, reader);
-            }
-            return;
-        }
-        let (ty, generics) = ty.split_generic(reader);
-
-        for ty in generics {
-            ty.combine_sys(dependencies, reader);
-        }
-
-        if !dependencies.insert(ty.clone()) {
-            return;
-        }
-
-        if let Some(multi) = match &ty {
-            Self::CppStruct(ty) => Some(reader.with_full_name(ty.def.namespace(), ty.def.name())),
-            Self::CppFn(ty) => Some(reader.with_full_name(ty.namespace, ty.method.name())),
-            Self::CppDelegate(ty) => Some(reader.with_full_name(ty.def.namespace(), ty.def.name())),
-            _ => None,
-        } {
-            multi.for_each(|multi| {
-                if ty != multi {
-                    multi.combine_sys(dependencies, reader);
-                }
-            });
-        }
-
-        match &ty {
-            Self::Struct(ty) => {
-                for field in ty.def.fields() {
-                    field
-                        .field_type(None, reader)
-                        .combine_sys(dependencies, reader);
-                }
-            }
-            Self::CppDelegate(ty) => {
-                let signature = ty.method().method_signature(&[], reader);
-                for ty in signature.types() {
-                    ty.combine_sys(dependencies, reader);
-                }
-                for ty in ty.method().associated_enums(reader) {
-                    ty.combine_sys(dependencies, reader);
-                }
-            }
-            Self::CppFn(ty) => ty.combine_sys(dependencies, reader),
-            Self::CppStruct(ty) => {
-                for ty in ty.definition_types(reader) {
-                    ty.combine_sys(dependencies, reader);
-                }
-            }
-            _ => {}
-        }
-    }
-
     fn sort_key(&self) -> (bool, TypeName, i32, i32) {
         // Sort functions first, then by name, namespace, architecture, and kind.
 
@@ -288,7 +212,7 @@ impl Type {
         }
     }
 
-    /// Stable tie-breaker for same-name `--flat` collisions.
+    /// Stable tie-breaker for same-name definitions within a namespace.
     fn row_key(&self) -> (usize, usize) {
         let row = match self {
             Self::CppFn(ty) => Some(ty.method.to_row()),
@@ -759,7 +683,7 @@ impl Type {
             let tokens = self.write_name(config);
 
             if matches!(self, Self::Generic(_)) {
-                quote! { <#tokens as windows_core::imp::Type<#tokens>>::Default }
+                quote! { <#tokens as windows_core::imp::Type>::Default }
             } else if self.is_interface_with_reader(config.reader) {
                 quote! { Option<#tokens> }
             } else {
@@ -814,20 +738,32 @@ impl Type {
                 if ty.is_copyable(config.reader) {
                     name
                 } else {
-                    quote! { core::mem::MaybeUninit<#name> }
+                    quote! { core::mem::ManuallyDrop<#name> }
                 }
             }
             Self::PtrMut(ty, pointers) => {
-                let ty = ty.write_abi(config);
+                let ty = ty.write_abi_pointee(config);
                 let pointers = write_ptr_mut(*pointers);
                 quote! { #pointers #ty }
             }
             Self::PtrConst(ty, pointers) => {
-                let ty = ty.write_abi(config);
+                let ty = ty.write_abi_pointee(config);
                 let pointers = write_ptr_const(*pointers);
                 quote! { #pointers #ty }
             }
             ty => ty.write_name(config),
+        }
+    }
+
+    pub fn write_abi_pointee(&self, config: &Config) -> TokenStream {
+        match self {
+            Self::Struct(_) => self.write_name(config),
+            Self::ArrayFixed(ty, len) => {
+                let name = ty.write_abi_pointee(config);
+                let len = Literal::usize_unsuffixed(*len);
+                quote! { [#name; #len] }
+            }
+            _ => self.write_abi(config),
         }
     }
 
@@ -911,23 +847,6 @@ impl Type {
 
     pub fn is_winrt_array_ref(&self) -> bool {
         matches!(self, Self::ArrayRef(_))
-    }
-
-    /// Returns `true` when `write_abi` emits `*mut core::ffi::c_void` for this
-    /// type - i.e. the ABI representation is a raw COM/HSTRING pointer rather
-    /// than the Rust type itself or `MaybeUninit<Self>`.
-    pub fn has_pointer_abi(&self) -> bool {
-        matches!(
-            self,
-            Self::IUnknown
-                | Self::Object
-                | Self::Delegate(_)
-                | Self::Class(_)
-                | Self::CppInterface(_)
-                | Self::Interface(_)
-                | Self::String
-                | Self::BSTR
-        )
     }
 
     pub fn is_async(&self) -> bool {
@@ -1200,8 +1119,11 @@ impl Type {
 
     pub fn write(&self, config: &Config) -> TokenStream {
         match self {
-            Self::UnalignedHelper => quote! {
-                /// Unaligned native field storage. No references to the stored value are exposed.
+            // `read` requires valid, initialized storage. For non-Copy values, callers must
+            // prevent duplicated ownership and further reads. `write` does not drop old contents.
+            Self::UnalignedHelper => {
+                let size_of = config.write_mem_function("size_of");
+                quote! {
                 #[doc(hidden)]
                 #[repr(C)]
                 pub struct __windows_bindgen_Unaligned<T, const N: usize> {
@@ -1217,19 +1139,12 @@ impl Type {
                         result.write(value);
                         result
                     }
-                    /// Copies the stored value without creating an aligned reference.
-                    ///
-                    /// # Safety
-                    ///
-                    /// Storage must contain a valid, initialized `T`. For non-`Copy` values,
-                    /// the caller must prevent duplicated ownership and subsequent reads.
                     pub unsafe fn read(&self) -> T {
-                        assert_eq!(N, ::core::mem::size_of::<T>());
+                        assert_eq!(N, #size_of::<T>());
                         unsafe { self.bytes.as_ptr().cast::<T>().read_unaligned() }
                     }
-                    /// Writes a value without dropping the previous contents.
                     pub fn write(&mut self, value: T) {
-                        assert_eq!(N, ::core::mem::size_of::<T>());
+                        assert_eq!(N, #size_of::<T>());
                         unsafe { self.bytes.as_mut_ptr().cast::<T>().write_unaligned(value); }
                     }
                 }
@@ -1237,9 +1152,10 @@ impl Type {
                 impl<T: Copy, const N: usize> Clone for __windows_bindgen_Unaligned<T, N> {
                     fn clone(&self) -> Self { *self }
                 }
-            },
+                }
+            }
+            // A fixed-width address, not a native Rust pointer.
             Self::Pointer64Helper => quote! {
-                /// A fixed 64-bit address, not a native Rust pointer.
                 #[doc(hidden)]
                 #[repr(C)]
                 pub struct __windows_bindgen_Pointer64<P> {
@@ -1292,6 +1208,14 @@ impl Type {
             Self::Interface(ty) => ty.generics = generics,
             Self::Delegate(ty) => ty.generics = generics,
             rest => panic!("{rest:?}"),
+        }
+    }
+
+    pub fn generics(&self) -> &[Self] {
+        match self {
+            Self::Interface(ty) => &ty.generics,
+            Self::Delegate(ty) => &ty.generics,
+            _ => &[],
         }
     }
 
@@ -1348,13 +1272,50 @@ impl Type {
         )
     }
 
-    pub fn write_result_map(&self, reader: &Reader) -> TokenStream {
-        if self.is_copyable(reader) {
-            quote! { map(|| result__) }
-        } else if self.is_convertible() {
-            quote! { and_then(||windows_core::imp::Type::from_abi(result__)) }
+    pub fn needs_result_storage(&self, reader: &Reader) -> bool {
+        match self {
+            Self::Generic(_) => true,
+            Self::Struct(_) => !self.is_copyable(reader),
+            Self::ArrayFixed(ty, _) => ty.needs_result_storage(reader),
+            _ => false,
+        }
+    }
+
+    pub fn write_result_init(&self, config: &Config) -> TokenStream {
+        if self.needs_result_storage(config.reader) {
+            let ty = self.write_default(config);
+            quote! { let mut result__ = core::mem::MaybeUninit::<#ty>::zeroed(); }
         } else {
-            quote! { map(|| core::mem::transmute(result__)) }
+            quote! { let mut result__ = core::mem::zeroed(); }
+        }
+    }
+
+    pub fn write_result_arg(&self, reader: &Reader) -> TokenStream {
+        if self.needs_result_storage(reader) {
+            quote! { result__.as_mut_ptr().cast() }
+        } else {
+            quote! { &mut result__ }
+        }
+    }
+
+    pub fn write_result_value(&self, reader: &Reader) -> TokenStream {
+        if self.needs_result_storage(reader) {
+            quote! { result__.assume_init() }
+        } else {
+            quote! { result__ }
+        }
+    }
+
+    pub fn write_result_map(&self, reader: &Reader) -> TokenStream {
+        let result = self.write_result_value(reader);
+        if matches!(self, Self::Generic(_)) {
+            quote! { and_then(||windows_core::imp::Type::from_default_owned(#result)) }
+        } else if self.is_copyable(reader) || self.needs_result_storage(reader) {
+            quote! { map(|| #result) }
+        } else if self.is_convertible() {
+            quote! { and_then(||windows_core::imp::from_abi(#result)) }
+        } else {
+            quote! { map(|| core::mem::transmute(#result)) }
         }
     }
 }
@@ -1483,8 +1444,8 @@ fn write_full_cfg(ty: &impl Dependencies, config: &Config) -> (Cfg, TokenStream)
 }
 
 /// Emit a `#[cfg(target_arch = ...)]` attribute when a metadata row carries
-/// a `[SupportedArchitectureAttribute]`. Independent of `--package` /
-/// `--flat` layout - the generated arch gate is always meaningful.
+/// a `[SupportedArchitectureAttribute]`. Independent of the output
+/// layout - the generated arch gate is always meaningful.
 pub fn write_arches<R: HasAttributes<'static>>(row: R) -> TokenStream {
     write_arch_bits(row.arches())
 }

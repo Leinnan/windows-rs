@@ -184,10 +184,9 @@ impl CppMethod {
         &self,
         config: &Config,
         method_names: &mut MethodNames,
-        virtual_names: &mut MethodNames,
+        vname: &TokenStream,
     ) -> TokenStream {
         let name = method_names.add(self.def);
-        let vname = virtual_names.add(self.def);
 
         let args = self.write_args(config);
         let params = self.write_params(config);
@@ -205,7 +204,7 @@ impl CppMethod {
                 quote! {
                     #vis unsafe fn #name<#generics T>(&self, #params) -> #result Result<T> #where_clause {
                         let mut result__ = core::ptr::null_mut();
-                        unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+                        unsafe { (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).and_then(|| windows_core::imp::from_abi(result__)) }
                     }
                 }
             }
@@ -230,12 +229,13 @@ impl CppMethod {
                 let map = ty
                     .projection_type(config.reader)
                     .write_result_map(config.reader);
+                let init = ty.projection_type(config.reader).write_result_init(config);
                 let return_type = ty.write_name(config);
 
                 quote! {
                     #vis unsafe fn #name<#generics>(&self, #params) -> #result Result<#return_type> #where_clause {
                         unsafe {
-                            let mut result__ = core::mem::zeroed();
+                            #init
                             (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self),#args).#map
                         }
                     }
@@ -256,7 +256,7 @@ impl CppMethod {
                             unsafe {
                                 let mut result__ = core::mem::zeroed();
                                 (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), #args);
-                                windows_core::imp::Type::from_abi(result__)
+                                windows_core::imp::from_abi(result__)
                             }
                         }
                     }
@@ -336,7 +336,9 @@ impl CppMethod {
                 let last_param = &self.signature.params[self.signature.params.len() - 1];
                 let result = last_param.write_ident();
                 let result = if matches!(last_param.projection_type(reader), Type::PtrConst(..)) {
-                    let target = last_param.projection_pointee(reader).write_abi(config);
+                    let target = last_param
+                        .projection_pointee(reader)
+                        .write_abi_pointee(config);
                     quote! { (#result as *mut #target) }
                 } else {
                     result
@@ -352,7 +354,8 @@ impl CppMethod {
                 {
                     quote! { #result.write(ok__); }
                 } else {
-                    quote! { #result.write(core::mem::transmute(ok__)); }
+                    let ty = last_param.projection_pointee(reader).write_name(config);
+                    quote! { #result.cast::<#ty>().write(ok__); }
                 };
                 quote! {
                     match #parent_impl::#name(this, #(#invoke_args,)*) {
@@ -579,6 +582,12 @@ impl CppMethod {
                             .is_interface_with_reader(config.reader)
                     {
                         quote! { core::ptr::from_mut::<*mut core::ffi::c_void>(&mut result__).cast(), }
+                    } else if self.return_hint == ReturnHint::ResultValue {
+                        let arg = param
+                            .projection_pointee(config.reader)
+                            .projection_type(config.reader)
+                            .write_result_arg(config.reader);
+                        quote! { #arg, }
                     } else {
                         quote! { &mut result__, }
                     }
@@ -614,6 +623,8 @@ impl CppMethod {
                                 == param.write_abi(config).to_string()
                             {
                                 quote! { #name, }
+                            } else if param.projection_type(config.reader).is_pointer() {
+                                quote! { #name as _, }
                             } else {
                                 quote! { core::mem::transmute(#name), }
                             }
@@ -649,6 +660,8 @@ impl CppMethod {
                                 == param.write_abi(config).to_string()
                             {
                                 quote! { #name, }
+                            } else if param.projection_type(config.reader).is_pointer() {
+                                quote! { #name as _, }
                             } else {
                                 quote! { core::mem::transmute(#name), }
                             }
@@ -712,7 +725,7 @@ fn write_invoke_arg(param: &Param, reader: &Reader) -> TokenStream {
     if ty.is_interface_with_reader(reader) {
         quote! { core::mem::transmute_copy(&#name) }
     } else if param.is_input_only() && !ty.is_primitive(reader) {
-        quote! { core::mem::transmute(&#name) }
+        quote! { &*(&raw const #name).cast() }
     } else {
         quote! { core::mem::transmute_copy(&#name) }
     }

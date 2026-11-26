@@ -4,13 +4,12 @@ use super::*;
 pub struct Config<'a> {
     pub bindgen: &'a Bindgen,
     pub reader: &'a Reader,
-    pub types: &'a TypeMap,
-    pub references: &'a References,
-    pub filter: &'a Filter,
+    pub plan: &'a BindingPlan,
     pub implement: Option<&'a Implements>,
     pub derive: &'a Derive,
     pub link: &'a str,
     pub namespace: &'static str,
+    pub shadowed_prelude: &'a HashSet<&'static str>,
     /// Event-only delegates whose constructor and `Invoke` can be suppressed in minimal mode.
     pub event_only_delegates: &'a HashSet<TypeName>,
     /// Current `impl` target, used by `TypeName::write` to emit `Self` when possible.
@@ -22,6 +21,40 @@ pub struct Config<'a> {
 }
 
 impl Config<'_> {
+    pub fn shadowed_prelude(types: &TypeMap) -> HashSet<&'static str> {
+        fn collect(record: &CppStruct, names: &mut HashSet<&'static str>) {
+            if matches!(record.name, "size_of" | "align_of") {
+                names.insert(record.name);
+            }
+            for nested in record.nested.values() {
+                collect(nested, names);
+            }
+        }
+
+        let mut names = HashSet::new();
+        for ty in types.values().flatten() {
+            if let Type::CppStruct(record) = ty {
+                collect(record, &mut names);
+            } else {
+                let name = ty.type_name().name();
+                if matches!(name, "size_of" | "align_of") {
+                    names.insert(name);
+                }
+            }
+        }
+        names
+    }
+
+    /// Uses the prelude unless a selected declaration may shadow the name.
+    pub fn write_mem_function(&self, name: &str) -> TokenStream {
+        let ident = to_ident(name);
+        if self.shadowed_prelude.contains(name) {
+            quote! { ::core::mem::#ident }
+        } else {
+            quote! { #ident }
+        }
+    }
+
     pub fn with_namespace(&self, namespace: &'static str) -> Self {
         let mut clone = self.clone();
         clone.namespace = namespace;
@@ -51,7 +84,7 @@ impl Config<'_> {
         let own = def.arches();
         let available = arch_mask(own);
         let arches = write_arch_bits(own);
-        if self.bindgen.dead_code && available & self.types.reached_arches(ty) != available {
+        if self.bindgen.dead_code && available & self.plan.types.reached_arches(ty) != available {
             quote! { #arches #[allow(dead_code)] }
         } else {
             arches
@@ -62,7 +95,7 @@ impl Config<'_> {
     pub fn should_implement(&self, name: TypeName, default: bool) -> bool {
         match self.implement {
             None => default && !self.bindgen.style.is_minimal(),
-            Some(implements) => implements.matches(name),
+            Some(_) => self.plan.implemented.contains(&name),
         }
     }
 
@@ -83,13 +116,9 @@ impl Config<'_> {
 
     /// Emits the value-type runtime name used by non-minimal generic signatures.
     pub fn write_value_name_const(&self, type_name: TypeName) -> TokenStream {
-        if self.bindgen.style.is_minimal() {
-            quote! {}
-        } else {
-            let type_name_bytes = Literal::byte_string(format!("{type_name}").as_bytes());
-            quote! {
-                const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(#type_name_bytes);
-            }
+        let type_name_bytes = Literal::byte_string(format!("{type_name}").as_bytes());
+        quote! {
+            const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(#type_name_bytes);
         }
     }
 
@@ -102,48 +131,32 @@ impl Config<'_> {
         }
     }
 
-    /// Returns `true` if the given method should be emitted (not demoted).
-    pub fn includes_method(&self, type_name: TypeName, method: MethodDef) -> bool {
-        // If `--implement` requests this interface, keep all methods.
-        if let Some(implements) = self.implement
-            && implements.matches(type_name)
-        {
-            return true;
-        }
-        self.filter.includes_method(type_name, method)
+    /// Whether `ty` and its generic arguments are generated here or provided by a reference.
+    pub fn provides(&self, ty: &Type) -> bool {
+        self.plan.provides(ty)
     }
 }
 
 impl Config<'_> {
     #[track_caller]
-    pub fn write(&self, tree: TypeTree) {
+    pub fn write(&self, tree: TypeTree, output: &Path) {
         if self.bindgen.layout.is_package() {
-            let phase = std::time::Instant::now();
-            self.write_package(&tree);
-            report_timing(&self.bindgen.output, "package output", phase.elapsed());
+            self.write_package(&tree, output);
         } else {
-            self.write_file(tree);
+            self.write_file(tree, output);
         }
     }
 
     #[track_caller]
-    fn write_file(&self, tree: TypeTree) {
-        let phase = std::time::Instant::now();
+    fn write_file(&self, tree: TypeTree, output: &Path) {
         let tokens = if self.bindgen.layout.is_flat() {
             self.write_flat(tree)
         } else {
             self.write_modules(&tree)
         };
-        let tokens = tokens.into_string();
-        report_timing(&self.bindgen.output, "render", phase.elapsed());
+        let formatted = self.format(tokens);
 
-        let phase = std::time::Instant::now();
-        let formatted = self.format(&tokens);
-        report_timing(&self.bindgen.output, "format", phase.elapsed());
-
-        let phase = std::time::Instant::now();
-        write_to_file(&self.bindgen.output, formatted);
-        report_timing(&self.bindgen.output, "write", phase.elapsed());
+        write_to_file(output, formatted);
     }
 
     fn write_flat(&self, tree: TypeTree) -> TokenStream {

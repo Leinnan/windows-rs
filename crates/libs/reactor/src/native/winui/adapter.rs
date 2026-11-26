@@ -1,26 +1,6 @@
 use super::*;
 
-impl Runtime<SharedWinUiAdapter> {
-    pub fn set_native_event_wakers(
-        &mut self,
-        native: impl Fn() + 'static,
-        imperative: impl Fn() + 'static,
-    ) {
-        self.adapter().state.borrow_mut().set_event_waker(native);
-        self.set_imperative_waker(imperative);
-    }
-}
-
-impl ComponentHost<SharedWinUiAdapter> {
-    pub fn set_native_event_wakers(
-        &mut self,
-        native: impl Fn() + 'static,
-        imperative: impl Fn() + 'static,
-    ) {
-        self.runtime_mut_internal()
-            .set_native_event_wakers(native, imperative);
-    }
-
+impl ComponentHost {
     pub(crate) fn set_realizer(&mut self, realizer: impl Fn() + 'static) {
         self.runtime()
             .adapter()
@@ -78,20 +58,24 @@ impl SharedWinUiAdapter {
     }
 }
 
-impl Adapter for SharedWinUiAdapter {
-    fn peek_native_event(&self) -> Option<NativeEvent> {
+impl SharedWinUiAdapter {
+    pub(crate) fn set_event_drain(&self, drain: UiCallback) {
+        self.state.borrow_mut().set_event_drain(drain);
+    }
+
+    pub(crate) fn peek_native_event(&self) -> Option<NativeEvent> {
         self.state.borrow().peek_native_event()
     }
 
-    fn peek_native_dispatch(&self) -> Option<NativeEvent> {
+    pub(crate) fn peek_native_dispatch(&self) -> Option<NativeEvent> {
         self.state.borrow().peek_native_dispatch()
     }
 
-    fn pop_native_event(&mut self) -> Option<NativeEvent> {
+    pub(crate) fn pop_native_event(&mut self) -> Option<NativeEvent> {
         self.state.borrow_mut().pop_native_event()
     }
 
-    fn apply(&mut self, mutations: &[Mutation]) {
+    pub(crate) fn apply(&mut self, mutations: &[Mutation]) {
         let index_writes = mutations
             .iter()
             .filter_map(|mutation| match mutation {
@@ -122,7 +106,7 @@ impl Adapter for SharedWinUiAdapter {
         }
     }
 
-    fn imperative(&mut self, request: ImperativeRequest) {
+    pub(crate) fn imperative(&mut self, request: ImperativeRequest) {
         self.state.borrow_mut().apply_imperative(request).unwrap();
     }
 }
@@ -268,30 +252,6 @@ impl WinUiAdapter {
                     moves,
                     children,
                 } => self.reorder(*parent, *relation, moves, children)?,
-                Mutation::Retire {
-                    root,
-                    nodes,
-                    parent,
-                    relation,
-                    duration,
-                } => {
-                    self.start_retirement(*root, nodes.clone(), *parent, *relation, *duration)?;
-                }
-                Mutation::CompleteRetirement { root, nodes } => {
-                    if nodes.iter().any(|object| {
-                        self.tooltips.contains_key(object)
-                            || self.tooltip_owners.contains_key(object)
-                            || self.flyouts.contains_key(object)
-                            || self.flyout_owners.contains_key(object)
-                            || self.menus.contains_key(object)
-                            || self.command_bar_flyouts.contains_key(object)
-                            || self.content_dialogs.contains_key(object)
-                            || self.content_dialog_owners.contains_key(object)
-                    }) {
-                        return Err(WinUiError::StillOwned(*root));
-                    }
-                    self.complete_retirement(*root, nodes)?;
-                }
                 Mutation::Destroy { object } => {
                     if self
                         .window_title_bar
@@ -356,9 +316,9 @@ impl WinUiAdapter {
         match element.Focus(native::FocusState::Programmatic) {
             Ok(true) => {
                 let pending_focus_states = Rc::clone(&self.pending_focus_states);
-                let cleanup = native::DispatcherQueueHandler::new(move || {
+                let cleanup = native::DispatcherQueueHandler::new(local::task(move || {
                     pending_focus_states.borrow_mut().remove(&object);
-                });
+                }));
                 let accepted = native::DispatcherQueue::GetForCurrentThread()?
                     .TryEnqueueWithPriority(native::DispatcherQueuePriority::Low, &cleanup)?;
                 // A dispatcher that is shutting down rejects the cleanup; clear the state now.
@@ -415,15 +375,18 @@ impl WinUiAdapter {
                 }
                 let setup = (|| {
                     let initializations = Rc::clone(&self.webview_initializations);
-                    let initialized = control.CoreWebView2Initialized(move |sender, _| {
-                        let result = sender
-                            .as_ref()
-                            .ok_or_else(windows_core::Error::empty)
-                            .and_then(|control| control.CoreWebView2())
-                            .map(Into::into)
-                            .map_err(integration_error);
-                        complete_webview_initialization(&initializations, object, result);
-                    })?;
+                    let initialized =
+                        control.CoreWebView2Initialized(
+                            local::handler::<native::WebView2, _, _>(move |sender, _| {
+                                let result = sender
+                                    .as_ref()
+                                    .ok_or_else(windows_core::Error::empty)
+                                    .and_then(|control| control.CoreWebView2())
+                                    .map(Into::into)
+                                    .map_err(integration_error);
+                                complete_webview_initialization(&initializations, object, result);
+                            }),
+                        )?;
                     let framework = control.cast::<native::IFrameworkElement>()?;
                     let is_loaded = framework.IsLoaded()?;
                     Ok::<_, windows_core::Error>((initialized, framework, is_loaded))
@@ -440,7 +403,7 @@ impl WinUiAdapter {
                 } else {
                     let control = control.clone();
                     let initializations = Rc::clone(&self.webview_initializations);
-                    let loaded = framework.Loaded(move |_, _| {
+                    let loaded = framework.Loaded(local::handler(move |_, _| {
                         let result = control.EnsureCoreWebView2Async();
                         match result {
                             Ok(action) => {
@@ -456,7 +419,7 @@ impl WinUiAdapter {
                                 Err(integration_error(error)),
                             ),
                         }
-                    });
+                    }));
                     match loaded {
                         Ok(loaded) => Some(loaded),
                         Err(error) => {
@@ -495,6 +458,7 @@ impl WinUiAdapter {
                 object,
                 observation,
                 binding,
+                rendering,
                 callback,
             } => {
                 let Some(Handle::Generated(GeneratedHandle::SwapChainPanel(control))) =
@@ -512,36 +476,49 @@ impl WinUiAdapter {
                 });
                 let size_callback = callback.clone();
                 let size_control = control.clone();
-                let size = element.SizeChanged(move |_, args| {
-                    if let Some(args) = args.as_ref()
-                        && let Ok(size) = args.NewSize()
-                    {
-                        size_callback.call(SwapChainPanelEvent::Metrics {
-                            binding: SwapChainPanelBinding::new(binding),
-                            width: f64::from(size.width),
-                            height: f64::from(size.height),
-                            scale_x: size_control.CompositionScaleX().unwrap_or(1.0),
-                            scale_y: size_control.CompositionScaleY().unwrap_or(1.0),
-                        });
-                    }
-                })?;
+                let size =
+                    element.SizeChanged(local::handler::<_, native::SizeChangedEventArgs, _>(
+                        move |_, args| {
+                            if let Some(args) = args.as_ref()
+                                && let Ok(size) = args.NewSize()
+                            {
+                                size_callback.call(SwapChainPanelEvent::Metrics {
+                                    binding: SwapChainPanelBinding::new(binding),
+                                    width: f64::from(size.width),
+                                    height: f64::from(size.height),
+                                    scale_x: size_control.CompositionScaleX().unwrap_or(1.0),
+                                    scale_y: size_control.CompositionScaleY().unwrap_or(1.0),
+                                });
+                            }
+                        },
+                    ))?;
                 let scale_callback = callback.clone();
                 let scale_element = element;
-                let scale = control.CompositionScaleChanged(move |sender, _| {
-                    if let Some(sender) = sender.as_ref() {
-                        scale_callback.call(SwapChainPanelEvent::Metrics {
-                            binding: SwapChainPanelBinding::new(binding),
-                            width: scale_element.ActualWidth().unwrap_or(0.0),
-                            height: scale_element.ActualHeight().unwrap_or(0.0),
-                            scale_x: sender.CompositionScaleX().unwrap_or(1.0),
-                            scale_y: sender.CompositionScaleY().unwrap_or(1.0),
-                        });
-                    }
-                })?;
-                let rendering_callback = callback;
-                let rendering = native::CompositionTarget::Rendering(move |_, _| {
-                    rendering_callback.call(SwapChainPanelEvent::Rendering);
-                })?;
+                let scale =
+                    control.CompositionScaleChanged(local::handler::<
+                        native::SwapChainPanel,
+                        _,
+                        _,
+                    >(move |sender, _| {
+                        if let Some(sender) = sender.as_ref() {
+                            scale_callback.call(SwapChainPanelEvent::Metrics {
+                                binding: SwapChainPanelBinding::new(binding),
+                                width: scale_element.ActualWidth().unwrap_or(0.0),
+                                height: scale_element.ActualHeight().unwrap_or(0.0),
+                                scale_x: sender.CompositionScaleX().unwrap_or(1.0),
+                                scale_y: sender.CompositionScaleY().unwrap_or(1.0),
+                            });
+                        }
+                    }))?;
+                let rendering = if rendering {
+                    Some(native::CompositionTarget::Rendering(local::handler(
+                        move |_, _| {
+                            callback.call(SwapChainPanelEvent::Rendering);
+                        },
+                    ))?)
+                } else {
+                    None
+                };
                 self.observations.insert(
                     (object, observation),
                     ObservationSubscription::SwapChainPanel {
@@ -563,9 +540,9 @@ impl WinUiAdapter {
                 let queued = native::DispatcherQueue::GetForCurrentThread().and_then(|queue| {
                     queue.TryEnqueueWithPriority(
                         native::DispatcherQueuePriority::Normal,
-                        &native::DispatcherQueueHandler::new(move || {
+                        &native::DispatcherQueueHandler::new(local::task(move || {
                             queued_completion.call(Ok(()));
-                        }),
+                        })),
                     )
                 });
                 match queued {
@@ -644,9 +621,9 @@ impl WinUiAdapter {
                 observe_xaml_scale(&element, &changed, callback.clone())?;
                 let loaded_element = element;
                 let loaded_changed = Rc::clone(&changed);
-                let loaded = framework.Loaded(move |_, _| {
+                let loaded = framework.Loaded(local::handler(move |_, _| {
                     observe_xaml_scale(&loaded_element, &loaded_changed, callback.clone()).unwrap();
-                })?;
+                }))?;
                 self.observations.insert(
                     (object, observation),
                     ObservationSubscription::ImageScale {
@@ -677,17 +654,20 @@ impl WinUiAdapter {
                 });
                 let size_callback = callback.clone();
                 let size_element = element.clone();
-                let size = framework.SizeChanged(move |_, args| {
-                    if let Some(args) = args.as_ref()
-                        && let Ok(value) = args.NewSize()
-                    {
-                        size_callback.call(CompositionHostEvent::Metrics {
-                            width: f64::from(value.width),
-                            height: f64::from(value.height),
-                            scale: xaml_scale(&size_element).unwrap(),
-                        });
-                    }
-                })?;
+                let size =
+                    framework.SizeChanged(local::handler::<_, native::SizeChangedEventArgs, _>(
+                        move |_, args| {
+                            if let Some(args) = args.as_ref()
+                                && let Ok(value) = args.NewSize()
+                            {
+                                size_callback.call(CompositionHostEvent::Metrics {
+                                    width: f64::from(value.width),
+                                    height: f64::from(value.height),
+                                    scale: xaml_scale(&size_element).unwrap(),
+                                });
+                            }
+                        },
+                    ))?;
                 let changed = Rc::new(RefCell::new(None));
                 let scale_callback = callback.clone();
                 let scale_framework = framework.clone();
@@ -706,24 +686,26 @@ impl WinUiAdapter {
                 let loaded_changed = Rc::clone(&changed);
                 let loaded_callback = callback;
                 let loaded_framework = framework;
-                let loaded = loaded_framework.clone().Loaded(move |_, _| {
-                    let framework = loaded_framework.clone();
-                    observe_xaml_scale(
-                        &loaded_element,
-                        &loaded_changed,
-                        Callback::new({
-                            let callback = loaded_callback.clone();
-                            move |scale| {
-                                callback.call(CompositionHostEvent::Metrics {
-                                    width: framework.ActualWidth().unwrap_or(0.0),
-                                    height: framework.ActualHeight().unwrap_or(0.0),
-                                    scale,
-                                });
-                            }
-                        }),
-                    )
-                    .unwrap();
-                })?;
+                let loaded = loaded_framework
+                    .clone()
+                    .Loaded(local::handler(move |_, _| {
+                        let framework = loaded_framework.clone();
+                        observe_xaml_scale(
+                            &loaded_element,
+                            &loaded_changed,
+                            Callback::new({
+                                let callback = loaded_callback.clone();
+                                move |scale| {
+                                    callback.call(CompositionHostEvent::Metrics {
+                                        width: framework.ActualWidth().unwrap_or(0.0),
+                                        height: framework.ActualHeight().unwrap_or(0.0),
+                                        scale,
+                                    });
+                                }
+                            }),
+                        )
+                        .unwrap();
+                    }))?;
                 self.observations.insert(
                     (object, observation),
                     ObservationSubscription::CompositionHost {
@@ -738,31 +720,47 @@ impl WinUiAdapter {
                 observation,
                 callback,
             } => {
-                let Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) =
+                let Some(Handle::Generated(GeneratedHandle::ScrollView(control))) =
                     self.handles.get(&object)
                 else {
                     return Ok(());
                 };
-                let framework = control.cast::<native::IFrameworkElement>()?;
-                callback.call(scroll_view(control, false));
-                let changed_viewer = control.clone();
-                let changed_callback = callback.clone();
-                let changed = control.ViewChanged(move |_, args| {
-                    let is_intermediate = args
-                        .as_ref()
-                        .and_then(|args| args.IsIntermediate().ok())
-                        .unwrap_or(false);
-                    changed_callback.call(scroll_view(&changed_viewer, is_intermediate));
-                })?;
-                // A resize changes the viewport without moving the content.
-                let size_viewer = control.clone();
-                let size = framework.SizeChanged(move |_, _| {
-                    callback.call(scroll_view(&size_viewer, false));
-                })?;
+                let last = Rc::new(Cell::new(scroll_view_metrics(control)?));
+                callback.call(last.get());
+                let report = Rc::new(move |view: &native::ScrollView| {
+                    let metrics = scroll_view_metrics(view).unwrap();
+                    if last.replace(metrics) != metrics {
+                        callback.call(metrics);
+                    }
+                });
+                let view_report = Rc::clone(&report);
+                let view = control.ViewChanged(local::handler::<native::ScrollView, _, _>(
+                    move |sender, _| {
+                        if let Some(sender) = sender.as_ref() {
+                            view_report(sender);
+                        }
+                    },
+                ))?;
+                let extent_report = Rc::clone(&report);
+                let extent = control.ExtentChanged(local::handler::<native::ScrollView, _, _>(
+                    move |sender, _| {
+                        if let Some(sender) = sender.as_ref() {
+                            extent_report(sender);
+                        }
+                    },
+                ))?;
+                let size_control = control.clone();
+                let size =
+                    control
+                        .cast::<native::IFrameworkElement>()?
+                        .SizeChanged(local::handler::<_, native::SizeChangedEventArgs, _>(
+                            move |_, _| report(&size_control),
+                        ))?;
                 self.observations.insert(
                     (object, observation),
                     ObservationSubscription::ScrollView {
-                        _changed: changed,
+                        _view: view,
+                        _extent: extent,
                         _size: size,
                     },
                 );
@@ -771,18 +769,126 @@ impl WinUiAdapter {
                 object,
                 horizontal_offset,
                 vertical_offset,
+                animate,
+                completion,
+            } => {
+                let Some(Handle::Generated(GeneratedHandle::ScrollView(control))) =
+                    self.handles.get(&object)
+                else {
+                    completion.call(Err(IntegrationError::Unavailable));
+                    return Ok(());
+                };
+                if !self.scroll_requests.borrow().contains_key(&object) {
+                    let requests = Rc::clone(&self.scroll_requests);
+                    let completed = control.ScrollCompleted(local::handler::<
+                        native::ScrollView,
+                        native::ScrollingScrollCompletedEventArgs,
+                        _,
+                    >(
+                        move |sender, args| {
+                            let (Some(sender), Some(args)) = (sender.as_ref(), args.as_ref())
+                            else {
+                                return;
+                            };
+                            let id = args.CorrelationId().unwrap();
+                            let completion = requests
+                                .borrow_mut()
+                                .get_mut(&object)
+                                .and_then(|pending| pending.completions.remove(&id));
+                            if let Some(completion) = completion {
+                                completion
+                                    .call(scroll_view_metrics(sender).map_err(integration_error));
+                            }
+                        },
+                    ))?;
+                    self.scroll_requests.borrow_mut().insert(
+                        object,
+                        ScrollRequests {
+                            _completed: completed,
+                            completions: HashMap::new(),
+                        },
+                    );
+                }
+                let mode = if animate {
+                    native::ScrollingAnimationMode::Auto
+                } else {
+                    native::ScrollingAnimationMode::Disabled
+                };
+                let id = native::ScrollingScrollOptions::CreateInstance(mode).and_then(|options| {
+                    control.ScrollToWithOptions(horizontal_offset, vertical_offset, &options)
+                });
+                match id {
+                    // WinUI returns -1 without raising ScrollCompleted when it takes no action,
+                    // such as before the template is applied or when there is no content.
+                    Ok(-1) => completion.call(Err(IntegrationError::Unavailable)),
+                    Ok(id) => {
+                        let previous = self
+                            .scroll_requests
+                            .borrow_mut()
+                            .get_mut(&object)
+                            .unwrap()
+                            .completions
+                            .insert(id, completion);
+                        assert!(previous.is_none());
+                    }
+                    Err(error) => completion.call(Err(integration_error(error))),
+                }
+            }
+            ImperativeRequest::ObserveScrollViewer {
+                object,
+                observation,
+                callback,
+            } => {
+                let Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) =
+                    self.handles.get(&object)
+                else {
+                    return Ok(());
+                };
+                callback.call(scroll_viewer_position(control, false));
+                let changed_viewer = control.clone();
+                let changed_callback = callback.clone();
+                let changed = control.ViewChanged(local::handler::<
+                    IInspectable,
+                    native::ScrollViewerViewChangedEventArgs,
+                    _,
+                >(move |_, args| {
+                    let is_intermediate = args
+                        .as_ref()
+                        .and_then(|args| args.IsIntermediate().ok())
+                        .unwrap_or(false);
+                    changed_callback.call(scroll_viewer_position(&changed_viewer, is_intermediate));
+                }))?;
+                // A resize changes the viewport without moving the content.
+                let size_viewer = control.clone();
+                let size =
+                    control
+                        .cast::<native::IFrameworkElement>()?
+                        .SizeChanged(local::handler::<_, native::SizeChangedEventArgs, _>(
+                            move |_, _| callback.call(scroll_viewer_position(&size_viewer, false)),
+                        ))?;
+                self.observations.insert(
+                    (object, observation),
+                    ObservationSubscription::ScrollViewer {
+                        _changed: changed,
+                        _size: size,
+                    },
+                );
+            }
+            ImperativeRequest::ScrollViewerTo {
+                object,
+                horizontal_offset,
+                vertical_offset,
                 animated,
                 completion,
             } => {
                 let result = match self.handles.get(&object) {
-                    Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) => {
-                        control.ChangeViewWithOptionalAnimation(
+                    Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) => control
+                        .ChangeViewWithOptionalAnimation(
                             horizontal_offset,
                             vertical_offset,
                             None,
                             !animated,
-                        )
-                    }
+                        ),
                     _ => Err(windows_core::Error::new(
                         HRESULT(0x8000000E_u32 as i32),
                         "scroll viewer unavailable",

@@ -5,14 +5,13 @@ and callbacks; calling an existing interface does not require the macro.
 
 - 📦 [crates.io](https://crates.io/crates/windows-implement)
 - 📖 [docs.rs](https://docs.rs/windows-implement)
-- 🧩 [Robot sample](https://github.com/microsoft/windows-rs/tree/master/crates/samples/robot)
 - 📁 [Source](https://github.com/microsoft/windows-rs/tree/master/crates/libs/implement)
 
 ## Get started
 
 ```toml
 [dependencies]
-windows-core = "0.100"
+windows-core = "0.101"
 ```
 
 ```rust
@@ -45,6 +44,11 @@ Implement required base-interface traits as well as the declared interface.
 Objects are agile by default. Synchronize shared mutable state and ensure destruction is valid on
 the thread that releases the final reference. Use `Agile = false` in the attribute for an
 apartment-affine object. Agility does not make thread-affine fields safe to share.
+
+The first interface is the object's COM identity. Queries for `IInspectable` use the first
+inspectable interface; objects with no declared interfaces also support `IInspectable`. Direct
+conversion to `IInspectable` requires an inspectable identity. Use `Compose = true` to derive from
+a composable WinRT class.
 
 Interface values retain the object through COM reference counting. Avoid ownership cycles or
 provide an explicit teardown path.

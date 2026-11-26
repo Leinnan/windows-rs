@@ -501,6 +501,7 @@ pub struct DOT11_ACCESSNETWORKOPTIONS {
 pub type DOT11_AUTH_ALGORITHM = i32;
 pub const DOT11_AUTH_ALGORITHM_OPEN_SYSTEM: DOT11_AUTH_ALGORITHM = 1;
 pub const DOT11_AUTH_ALGORITHM_OWE: DOT11_AUTH_ALGORITHM = 10;
+pub const DOT11_AUTH_ALGORITHM_PQC_1X: DOT11_AUTH_ALGORITHM = 12;
 pub const DOT11_AUTH_ALGORITHM_RSNA: DOT11_AUTH_ALGORITHM = 6;
 pub const DOT11_AUTH_ALGORITHM_RSNA_PSK: DOT11_AUTH_ALGORITHM = 7;
 pub const DOT11_AUTH_ALGORITHM_SHARED_KEY: DOT11_AUTH_ALGORITHM = 2;
@@ -516,6 +517,7 @@ pub const DOT11_AUTH_ALGO_80211_SHARED_KEY: DOT11_AUTH_ALGORITHM = 2;
 pub const DOT11_AUTH_ALGO_IHV_END: DOT11_AUTH_ALGORITHM = -1;
 pub const DOT11_AUTH_ALGO_IHV_START: DOT11_AUTH_ALGORITHM = -2147483648;
 pub const DOT11_AUTH_ALGO_OWE: DOT11_AUTH_ALGORITHM = 10;
+pub const DOT11_AUTH_ALGO_PQC_1X: DOT11_AUTH_ALGORITHM = 12;
 pub const DOT11_AUTH_ALGO_RSNA: DOT11_AUTH_ALGORITHM = 6;
 pub const DOT11_AUTH_ALGO_RSNA_PSK: DOT11_AUTH_ALGORITHM = 7;
 pub const DOT11_AUTH_ALGO_WPA: DOT11_AUTH_ALGORITHM = 3;
@@ -976,7 +978,7 @@ impl Default for WLAN_CONNECTION_NOTIFICATION_DATA {
 }
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "windot11"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WLAN_CONNECTION_PARAMETERS {
     pub wlanConnectionMode: WLAN_CONNECTION_MODE,
     pub strProfile: windows_core::PCWSTR,
@@ -985,9 +987,15 @@ pub struct WLAN_CONNECTION_PARAMETERS {
     pub dot11BssType: DOT11_BSS_TYPE,
     pub dwFlags: super::DWORD,
 }
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "windot11"))]
+impl Default for WLAN_CONNECTION_PARAMETERS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "windot11"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WLAN_CONNECTION_PARAMETERS_V2 {
     pub wlanConnectionMode: WLAN_CONNECTION_MODE,
     pub strProfile: windows_core::PCWSTR,
@@ -997,6 +1005,12 @@ pub struct WLAN_CONNECTION_PARAMETERS_V2 {
     pub dot11BssType: DOT11_BSS_TYPE,
     pub dwFlags: super::DWORD,
     pub pDot11AccessNetworkOptions: PDOT11_ACCESSNETWORKOPTIONS,
+}
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "windot11"))]
+impl Default for WLAN_CONNECTION_PARAMETERS_V2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const WLAN_CONNECTION_PERSIST_DISCOVERY_PROFILE: i32 = 16;
 pub const WLAN_CONNECTION_PERSIST_DISCOVERY_PROFILE_CONNECTION_MODE_AUTO: i32 = 32;

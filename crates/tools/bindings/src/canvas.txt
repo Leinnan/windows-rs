@@ -1,7 +1,9 @@
 --out crates/libs/canvas/src/bindings.rs
---flat --minimal --dead-code
+--dead-code
 
 --filter
+    D2D1_ANTIALIAS_MODE_ALIASED
+    ID2D1RenderTarget::{PushAxisAlignedClip, PopAxisAlignedClip}
     D2DERR_RECREATE_TARGET
     E_INVALIDARG
     E_FAIL
@@ -15,6 +17,7 @@
     D2D1_FIGURE_END_CLOSED
     D2D1_FIGURE_END_OPEN
     D2D1_GRADIENT_STOP
+    IDWriteTextFormat1::{}
     ID2D1SimplifiedGeometrySink::{BeginFigure, EndFigure, Close}
     D2D1_BITMAP_OPTIONS_CANNOT_DRAW
     D2D1_BITMAP_OPTIONS_CPU_READ
@@ -29,7 +32,7 @@
     D2D1_DASH_STYLE_DOT
     D2D1_DASH_STYLE_SOLID
     D2D1_DEVICE_CONTEXT_OPTIONS_NONE
-    D2D1_DRAW_TEXT_OPTIONS_NONE
+    D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT
     D2D1_ELLIPSE
     D2D1_EXTEND_MODE_CLAMP
     D2D1_FACTORY_TYPE_SINGLE_THREADED
@@ -47,14 +50,47 @@
     ID2D1Bitmap::{GetSize, CopyFromBitmap}
     ID2D1Bitmap1::{Map, Unmap}
     ID2D1Device::CreateDeviceContext
-    ID2D1DeviceContext::{CreateBitmap, CreateBitmapFromDxgiSurface, CreateBitmapFromWicBitmap, CreateEffect, SetTarget, GetTarget, DrawBitmap, DrawImage}
+    ID2D1DeviceContext::{
+        CreateBitmap,
+        CreateBitmapFromDxgiSurface,
+        CreateBitmapFromWicBitmap,
+        CreateEffect,
+        SetTarget,
+        GetTarget,
+        DrawBitmap,
+        DrawImage,
+    }
     ID2D1Effect::{SetInput, GetOutput}
     ID2D1Factory1::{CreateDevice, CreateStrokeStyle}
     ID2D1Factory1::CreatePathGeometry
     ID2D1Geometry::{GetBounds, FillContainsPoint, StrokeContainsPoint}
     ID2D1GeometrySink::{AddLine, AddBezier}
     ID2D1PathGeometry::Open
-    ID2D1RenderTarget::{BeginDraw, EndDraw, Clear, DrawEllipse, FillEllipse, DrawLine, DrawRectangle, FillRectangle, DrawRoundedRectangle, FillRoundedRectangle, DrawText, DrawTextLayout, DrawGeometry, FillGeometry, CreateSolidColorBrush, CreateGradientStopCollection, CreateLinearGradientBrush, CreateRadialGradientBrush, GetTransform, SetTransform, SetDpi, GetDpi, GetPixelSize}
+    ID2D1RenderTarget::{
+        BeginDraw,
+        EndDraw,
+        Clear,
+        DrawEllipse,
+        FillEllipse,
+        DrawLine,
+        DrawRectangle,
+        FillRectangle,
+        DrawRoundedRectangle,
+        FillRoundedRectangle,
+        DrawText,
+        DrawTextLayout,
+        DrawGeometry,
+        FillGeometry,
+        CreateSolidColorBrush,
+        CreateGradientStopCollection,
+        CreateLinearGradientBrush,
+        CreateRadialGradientBrush,
+        GetTransform,
+        SetTransform,
+        SetDpi,
+        GetDpi,
+        GetPixelSize,
+    }
     ID2D1SolidColorBrush::SetColor
     D3D_DRIVER_TYPE_HARDWARE
     D3D_DRIVER_TYPE_WARP
@@ -62,23 +98,6 @@
     D3D11_CREATE_DEVICE_BGRA_SUPPORT
     D3D11_SDK_VERSION
     D3D11CreateDevice
-    DWRITE_FACTORY_TYPE_SHARED
-    DWRITE_FONT_STRETCH_NORMAL
-    DWRITE_FONT_STYLE_NORMAL
-    DWRITE_PARAGRAPH_ALIGNMENT_CENTER
-    DWRITE_PARAGRAPH_ALIGNMENT_FAR
-    DWRITE_PARAGRAPH_ALIGNMENT_NEAR
-    DWRITE_TEXT_ALIGNMENT_CENTER
-    DWRITE_TEXT_ALIGNMENT_LEADING
-    DWRITE_TEXT_ALIGNMENT_TRAILING
-    DWRITE_WORD_WRAPPING_WRAP
-    DWRITE_WORD_WRAPPING_NO_WRAP
-    DWRITE_TEXT_METRICS
-    DWRITE_HIT_TEST_METRICS
-    DWriteCreateFactory
-    IDWriteFactory::{CreateTextFormat, CreateTextLayout}
-    IDWriteTextFormat::{SetTextAlignment, SetParagraphAlignment, SetWordWrapping}
-    IDWriteTextLayout::{GetMetrics, HitTestPoint, HitTestTextPosition, GetMaxWidth, GetMaxHeight, SetMaxWidth, SetMaxHeight}
     DXGI_ALPHA_MODE_PREMULTIPLIED
     DXGI_FORMAT_B8G8R8A8_UNORM
     DXGI_FORMAT_UNKNOWN

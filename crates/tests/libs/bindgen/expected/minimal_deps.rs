@@ -11,16 +11,14 @@ impl windows_core::imp::TypeKind for Enum {
 impl windows_core::RuntimeType for Enum {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"enum(Test.Enum;i4)");
+    const NAME: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::from_slice(b"Test.Enum");
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     Interface,
     Interface_Vtbl,
     0x15cc7583_8b29_53d3_b0ee_7091c6f91977
 );
-impl windows_core::RuntimeType for Interface {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     Interface,
     windows_core::IUnknown,
@@ -60,4 +58,6 @@ impl windows_core::imp::TypeKind for Struct {
 impl windows_core::RuntimeType for Struct {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"struct(Test.Struct;i4;i4)");
+    const NAME: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::from_slice(b"Test.Struct");
 }

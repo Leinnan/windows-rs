@@ -3,6 +3,172 @@
 // reached when a command file cannot be opened.
 
 #[test]
+fn filter_file_unbalanced_groups() {
+    let scratch = std::path::Path::new(env!("OUT_DIR")).join("filter_file_unbalanced_groups");
+    std::fs::create_dir_all(&scratch).unwrap();
+    let filters = scratch.join("filters.txt");
+    let commands = scratch.join("commands.txt");
+    for (input, expected) in [
+        ("// comment\nType::{\nMethod", ":2: unbalanced `{`"),
+        ("// comment\nType::{\nMethod}\n}", ":4: unbalanced `}`"),
+    ] {
+        std::fs::write(&filters, input).unwrap();
+        std::fs::write(&commands, format!("--filter {input}")).unwrap();
+        for path in [&filters, &commands] {
+            let error = std::panic::catch_unwind(|| {
+                if path == &filters {
+                    windows_bindgen::builder().filter_file(path);
+                } else {
+                    windows_bindgen::bindgen(["--etc", path.to_str().unwrap()]);
+                }
+            })
+            .unwrap_err();
+            let message = error.downcast::<String>().unwrap();
+            assert!(
+                message.contains(&format!("{}{expected}", path.display())),
+                "{message}"
+            );
+        }
+    }
+}
+
+#[test]
+fn filter_diagnostics_are_independent_of_input_form() {
+    let scratch = std::path::Path::new(env!("OUT_DIR")).join("filter_hints");
+    std::fs::create_dir_all(&scratch).unwrap();
+    let output = scratch.join("output.rs");
+    let filters = scratch.join("filters.txt");
+    let commands = scratch.join("commands.txt");
+    for (filter, expected) in [
+        (
+            "Windows.Win32.Foundation.HWND",
+            "could not resolve filter entry `Windows::Win32::Foundation::HWND`; try `HWND`",
+        ),
+        (
+            "IStream::Read::Write",
+            "chained members in filter `IStream::Read::Write`; try `IStream::{Read, Write}`",
+        ),
+        (
+            "Windows.Storage.Streams.IDataReader::ReadByte::ReadUInt32",
+            "chained members in filter `Windows::Storage::Streams::IDataReader::ReadByte::ReadUInt32`; try `Windows::Storage::Streams::IDataReader::{ReadByte, ReadUInt32}`",
+        ),
+        (
+            "IStream::",
+            "empty path segment in filter `IStream::`; use `Type::{}` for a name-only shell",
+        ),
+    ] {
+        std::fs::write(&filters, filter).unwrap();
+        std::fs::write(&commands, format!("--filter {filter}")).unwrap();
+
+        for form in [
+            "builder",
+            "builder-filters",
+            "cli",
+            "filter-file",
+            "filter-files",
+            "cli-filter-file",
+            "command-file",
+        ] {
+            let error = std::panic::catch_unwind(|| match form {
+                "builder" => windows_bindgen::builder()
+                    .output(&output)
+                    .filter(filter)
+                    .write(),
+                "builder-filters" => windows_bindgen::builder()
+                    .output(&output)
+                    .filters([filter])
+                    .write(),
+                "filter-file" => windows_bindgen::builder()
+                    .output(&output)
+                    .filter_file(&filters)
+                    .write(),
+                "filter-files" => windows_bindgen::builder()
+                    .output(&output)
+                    .filter_files([&filters])
+                    .write(),
+                "cli" => {
+                    windows_bindgen::bindgen([
+                        "--out",
+                        output.to_str().unwrap(),
+                        "--filter",
+                        filter,
+                    ]);
+                }
+                "cli-filter-file" => windows_bindgen::bindgen([
+                    "--out",
+                    output.to_str().unwrap(),
+                    "--filter-file",
+                    filters.to_str().unwrap(),
+                ]),
+                "command-file" => windows_bindgen::bindgen([
+                    "--out",
+                    output.to_str().unwrap(),
+                    "--etc",
+                    commands.to_str().unwrap(),
+                ]),
+                _ => unreachable!(),
+            })
+            .unwrap_err();
+            assert_eq!(*error.downcast::<String>().unwrap(), expected, "{form}");
+        }
+    }
+}
+
+#[test]
+fn malformed_metadata_ordinals() {
+    use windows_metadata::*;
+
+    let scratch = std::path::Path::new(env!("OUT_DIR")).join("malformed_ordinals");
+    std::fs::create_dir_all(&scratch).unwrap();
+    for ordinal in ["#", "#0", "#65536", "#-1", "#+1", "#12x"] {
+        let mut file = writer::File::new("ordinal");
+        let object = writer::TypeDefOrRef::TypeRef(file.TypeRef("System", "Object"));
+        file.TypeDef(
+            "Test",
+            "Apis",
+            object,
+            TypeAttributes::Public | TypeAttributes::Sealed,
+        );
+        let method = file.MethodDef(
+            "Bad",
+            &Signature {
+                flags: MethodCallAttributes::default(),
+                ..Default::default()
+            },
+            MethodAttributes::Public | MethodAttributes::Static | MethodAttributes::PInvokeImpl,
+            MethodImplAttributes::PreserveSig,
+        );
+        file.ImplMap(
+            method,
+            PInvokeAttributes::NoMangle | PInvokeAttributes::CallConvPlatformapi,
+            ordinal,
+            "example.dll",
+        );
+        let bytes = file.into_stream();
+        let error = std::panic::catch_unwind(|| {
+            windows_bindgen::builder()
+                .input_bytes(&bytes)
+                .filter("Test.Bad")
+                .output(scratch.join("output.rs"))
+                .write();
+        })
+        .unwrap_err();
+        let message = error
+            .downcast_ref::<String>()
+            .map(String::as_str)
+            .or_else(|| error.downcast_ref::<&str>().copied())
+            .unwrap();
+        assert!(message.contains("import ordinal"), "{message}");
+        let error = windows_rdl::writer()
+            .input_bytes(&bytes)
+            .output(scratch.join("output.rdl"))
+            .write()
+            .unwrap_err();
+        assert!(error.message.contains("import ordinal"), "{error}");
+    }
+}
+
+#[test]
 fn nested_type_name_collisions() {
     let scratch = std::path::Path::new(env!("OUT_DIR")).join("nested_type_name_collisions");
     std::fs::create_dir_all(&scratch).unwrap();
@@ -22,7 +188,6 @@ fn nested_type_name_collisions() {
         windows_bindgen::builder()
             .input(&winmd)
             .filter("Test.Safe")
-            .flat()
             .output(scratch.join("safe.rs"))
             .write();
         for flat in [false, true] {
@@ -32,8 +197,8 @@ fn nested_type_name_collisions() {
                     .input(&winmd)
                     .filter("Test")
                     .output(scratch.join("output.rs"));
-                if flat {
-                    builder.flat();
+                if !flat {
+                    builder.modules();
                 }
                 builder.write();
             })
@@ -69,7 +234,6 @@ fn duplicate_anonymous_positions() {
     windows_bindgen::builder()
         .input(&winmd)
         .filter("Test.Outer")
-        .flat()
         .output(scratch.join("output.rs"))
         .write();
 }
@@ -113,7 +277,6 @@ fn fixed_pointer_callable_rejection() {
             windows_bindgen::builder()
                 .input(&winmd)
                 .filter("Test.Bad")
-                .flat()
                 .output(scratch.join("output.rs"))
                 .write();
         })
@@ -149,7 +312,6 @@ fn invalid_bitfield_members() {
             windows_bindgen::builder()
                 .input(&winmd)
                 .filter("Test.Bits")
-                .flat()
                 .output(&output)
                 .write();
         })
@@ -181,7 +343,6 @@ fn invalid_named_bitfield_storage() {
             windows_bindgen::builder()
                 .input(&winmd)
                 .filter("Test.Wrapped")
-                .flat()
                 .output(&output)
                 .write();
         })
@@ -229,7 +390,6 @@ fn invalid_target_bitfield_width() {
         windows_bindgen::builder()
             .input(&winmd)
             .filter(filter)
-            .flat()
             .output(&output)
             .write();
         let result = std::process::Command::new("rustc")
@@ -257,10 +417,103 @@ fn invalid_target_bitfield_width() {
 }
 
 #[test]
+fn implemented_base_rejects_member_filters() {
+    let scratch = std::path::Path::new(env!("OUT_DIR")).join("implemented_base_member_filters");
+    std::fs::create_dir_all(&scratch).unwrap();
+    let winmd = scratch.join("input.winmd");
+    windows_rdl::reader()
+        .input("input/minimal_interfaces.rdl")
+        .output(&winmd)
+        .write()
+        .unwrap();
+    for (base, derived) in [
+        ("Test.Native.NativeBase", "Test.Native.NativeDerived"),
+        ("Test.Runtime.RuntimeBase", "Test.Runtime.RuntimeDerived"),
+    ] {
+        for prefix in ["", "!"] {
+            let error = std::panic::catch_unwind(|| {
+                windows_bindgen::builder()
+                    .input(&winmd)
+                    .filters([
+                        format!("{derived}::{{}}"),
+                        format!("{prefix}{base}::BaseValue"),
+                    ])
+                    .implement(derived)
+                    .output(scratch.join("bindings.rs"))
+                    .write();
+            })
+            .unwrap_err();
+            let message = error.downcast::<String>().unwrap();
+            assert!(
+                message.contains(&format!(
+                    "method-level filter on `{base}` conflicts with `--implement`"
+                )),
+                "{message}"
+            );
+        }
+    }
+}
+
+#[test]
 #[should_panic(expected = "failed to open file")]
 fn missing_filter_file_panics() {
     let missing = std::env::temp_dir().join("test_bindgen_missing_filter_file.txt");
     windows_bindgen::builder().filter_file(missing);
+}
+
+#[test]
+fn union_bitfields_require_unsafe() {
+    let scratch = std::path::Path::new(env!("OUT_DIR")).join("union_bitfields_require_unsafe");
+    std::fs::create_dir_all(&scratch).unwrap();
+    let winmd = scratch.join("input.winmd");
+    let output = scratch.join("bindings.rs");
+    let probe = scratch.join("probe.rs");
+    windows_rdl::reader()
+        .input("input/struct_bitfield.rdl")
+        .output(&winmd)
+        .write()
+        .unwrap();
+    for style in ["full", "minimal"] {
+        let mut builder = windows_bindgen::builder();
+        builder.input(&winmd).filter("Test.Partial").output(&output);
+        if style == "full" {
+            builder.full();
+        }
+        builder.write();
+        for (method, body) in [
+            ("Low", "let value = Partial { byte: 7 }; value.Low();"),
+            (
+                "set_Low",
+                "let mut value = Partial { byte: 7 }; value.set_Low(3);",
+            ),
+        ] {
+            std::fs::write(
+                &probe,
+                format!("include!(\"bindings.rs\");\npub fn probe() {{ {body} }}\n"),
+            )
+            .unwrap();
+            let result = std::process::Command::new("rustc")
+                .args([
+                    "--crate-type=lib",
+                    "--edition=2024",
+                    "--emit=metadata",
+                    "-A",
+                    "nonstandard_style",
+                ])
+                .arg(&probe)
+                .arg("-o")
+                .arg(scratch.join("probe.rmeta"))
+                .output()
+                .unwrap();
+            let stderr = String::from_utf8_lossy(&result.stderr);
+            assert!(!result.status.success(), "{style}: {method} must be unsafe");
+            assert!(
+                stderr.contains("error[E0133]")
+                    && stderr.contains(&format!("Partial::{method}` is unsafe")),
+                "{style}: {stderr}"
+            );
+        }
+    }
 }
 
 #[test]
@@ -270,13 +523,7 @@ fn invalid_option_panics() {
 }
 
 #[test]
-#[should_panic(expected = "output is required")]
-fn missing_output_panics() {
-    windows_bindgen::bindgen(["--filter", "GetTickCount"]);
-}
-
-#[test]
-#[should_panic(expected = "cannot combine `--sys` and `--minimal`")]
+#[should_panic(expected = "cannot combine `--sys` and `--full`")]
 fn conflicting_styles_panic() {
     windows_bindgen::bindgen([
         "--out",
@@ -284,16 +531,17 @@ fn conflicting_styles_panic() {
         "--filter",
         "GetTickCount",
         "--sys",
-        "--minimal",
+        "--full",
     ]);
 }
 
 #[test]
-#[should_panic(expected = "`compose` requires `minimal`")]
-fn compose_without_minimal_panics() {
+#[should_panic(expected = "`compose` cannot be combined with `--full` or `--sys`")]
+fn compose_with_full_panics() {
     windows_bindgen::builder()
         .output("unused.rs")
         .filter("GetTickCount")
+        .full()
         .compose("Test.Class")
         .write();
 }
@@ -307,7 +555,7 @@ fn unqualified_compose_target_panics() {
 #[test]
 #[should_panic(expected = "`--compose` requires a class name")]
 fn missing_compose_target_panics() {
-    windows_bindgen::bindgen(["--compose", "--minimal"]);
+    windows_bindgen::bindgen(["--compose", "--full"]);
 }
 
 #[test]
@@ -328,11 +576,9 @@ fn implemented_factory_does_not_select_composition_factory() {
     windows_bindgen::builder()
         .input(winmd)
         .output(scratch.join("out.rs"))
-        .filter("Test.Base")
+        .filter("Test.Base::{}")
         .implement("Test.IBaseFactory")
         .compose("Test.Base")
-        .minimal()
-        .flat()
         .write();
 }
 
@@ -354,25 +600,25 @@ fn author_variadic(name: &str) -> (String, String) {
 #[test]
 #[should_panic(
     expected = "windows-bindgen: selected variadic function `Test.VariadicFunc` cannot be projected \
-                by rich or minimal bindings; use `--sys` for its raw declaration"
+                by full or minimal bindings; use `--sys` for its raw declaration"
 )]
-fn exact_rich_variadic_selection_panics() {
-    let (winmd, output) = author_variadic("exact_rich_variadic");
+fn exact_full_variadic_selection_panics() {
+    let (winmd, output) = author_variadic("exact_full_variadic");
     windows_bindgen::bindgen([
         "--in",
         &winmd,
         "--out",
         &output,
-        "--flat",
         "--filter",
         "Test.VariadicFunc",
+        "--full",
     ]);
 }
 
 #[test]
 #[should_panic(
     expected = "windows-bindgen: selected variadic function `Test.VariadicFunc` cannot be projected \
-                by rich or minimal bindings; use `--sys` for its raw declaration"
+                by full or minimal bindings; use `--sys` for its raw declaration"
 )]
 fn exact_minimal_variadic_selection_panics() {
     let (winmd, output) = author_variadic("exact_minimal_variadic");
@@ -381,8 +627,6 @@ fn exact_minimal_variadic_selection_panics() {
         &winmd,
         "--out",
         &output,
-        "--minimal",
-        "--flat",
         "--filter",
         "Test.VariadicFunc",
     ]);
@@ -401,7 +645,6 @@ fn exact_fastcall_variadic_selection_panics() {
         "--out",
         &output,
         "--sys",
-        "--flat",
         "--filter",
         "Test.VariadicFastcall",
     ]);
@@ -409,7 +652,7 @@ fn exact_fastcall_variadic_selection_panics() {
 
 #[test]
 #[should_panic(expected = "windows-bindgen: selected variadic function \
-                `Windows.Win32.AuthzReportSecurityEvent` cannot be projected by rich or minimal \
+                `Windows.Win32.AuthzReportSecurityEvent` cannot be projected by full or minimal \
                 bindings; use `--sys` for its raw declaration")]
 fn exact_real_variadic_selection_panics() {
     let output = std::path::Path::new(env!("OUT_DIR")).join("real_variadic.rs");
@@ -418,7 +661,6 @@ fn exact_real_variadic_selection_panics() {
         "default",
         "--out",
         output.to_str().unwrap(),
-        "--flat",
         "--filter",
         "Windows.Win32.AuthzReportSecurityEvent",
     ]);

@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IActionFeedbackHandler, IActionFeedbackHandler_Vtbl, 0xa3fc3c51_a8c6_52c8_ad77_37bf3e2b565c);
-impl windows_core::RuntimeType for IActionFeedbackHandler {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.Provider.IActionFeedbackHandler");
-}
+windows_core::imp::define_winrt_interface!(IActionFeedbackHandler, IActionFeedbackHandler_Vtbl, 0xa3fc3c51_a8c6_52c8_ad77_37bf3e2b565c, b"Windows.AI.Actions.Provider.IActionFeedbackHandler");
 windows_core::imp::interface_hierarchy!(IActionFeedbackHandler, windows_core::IUnknown, windows_core::IInspectable);
 impl IActionFeedbackHandler {
     pub fn ProcessFeedbackAsync<P0, P1>(&self, context: P0, feedback: P1) -> windows_core::Result<windows_future::IAsyncAction>
@@ -12,7 +8,7 @@ impl IActionFeedbackHandler {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProcessFeedbackAsync)(windows_core::Interface::as_raw(self), context.param().abi(), feedback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProcessFeedbackAsync)(windows_core::Interface::as_raw(self), context.param().abi(), feedback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -29,8 +25,7 @@ impl IActionFeedbackHandler_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IActionFeedbackHandler_Impl::ProcessFeedbackAsync(this, core::mem::transmute_copy(&context), core::mem::transmute_copy(&feedback)) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -40,10 +35,7 @@ impl IActionFeedbackHandler_Vtbl {
                 }
             }
         }
-        Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IActionFeedbackHandler, OFFSET>(),
-            ProcessFeedbackAsync: ProcessFeedbackAsync::<Identity, OFFSET>,
-        }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), ProcessFeedbackAsync: ProcessFeedbackAsync::<Identity, OFFSET> }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<IActionFeedbackHandler as windows_core::Interface>::IID
@@ -55,11 +47,7 @@ pub struct IActionFeedbackHandler_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ProcessFeedbackAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IActionProvider, IActionProvider_Vtbl, 0x62906c47_3d07_55f1_aefa_1522505afbbe);
-impl windows_core::RuntimeType for IActionProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.AI.Actions.Provider.IActionProvider");
-}
+windows_core::imp::define_winrt_interface!(IActionProvider, IActionProvider_Vtbl, 0x62906c47_3d07_55f1_aefa_1522505afbbe, b"Windows.AI.Actions.Provider.IActionProvider");
 windows_core::imp::interface_hierarchy!(IActionProvider, windows_core::IUnknown, windows_core::IInspectable);
 impl IActionProvider {
     pub fn InvokeAsync<P0>(&self, context: P0) -> windows_core::Result<windows_future::IAsyncAction>
@@ -68,7 +56,7 @@ impl IActionProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InvokeAsync)(windows_core::Interface::as_raw(self), context.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InvokeAsync)(windows_core::Interface::as_raw(self), context.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -85,8 +73,7 @@ impl IActionProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IActionProvider_Impl::InvokeAsync(this, core::mem::transmute_copy(&context)) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -96,7 +83,7 @@ impl IActionProvider_Vtbl {
                 }
             }
         }
-        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, IActionProvider, OFFSET>(), InvokeAsync: InvokeAsync::<Identity, OFFSET> }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), InvokeAsync: InvokeAsync::<Identity, OFFSET> }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<IActionProvider as windows_core::Interface>::IID

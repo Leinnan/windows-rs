@@ -1,14 +1,9 @@
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     ISource,
     ISource_Vtbl,
-    0xe6a45de3_2aba_5aca_97cd_a70913696a97
+    0xe6a45de3_2aba_5aca_97cd_a70913696a97,
+    b"Test.ISource"
 );
-impl windows_core::RuntimeType for ISource {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.ISource");
-}
 windows_core::imp::interface_hierarchy!(
     ISource,
     windows_core::IUnknown,
@@ -22,7 +17,7 @@ impl ISource {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -43,8 +38,7 @@ impl ISource_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISource_Impl::GetWidget(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -55,7 +49,7 @@ impl ISource_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ISource, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetWidget: GetWidget::<Identity, OFFSET>,
         }
     }
@@ -71,17 +65,12 @@ pub struct ISource_Vtbl {
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IWidget,
     IWidget_Vtbl,
-    0x05cda87c_844a_5686_8429_f335c8ee6276
+    0x05cda87c_844a_5686_8429_f335c8ee6276,
+    b"Test.IWidget"
 );
-impl windows_core::RuntimeType for IWidget {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IWidget");
-}
 windows_core::imp::interface_hierarchy!(
     IWidget,
     windows_core::IUnknown,
@@ -110,6 +99,7 @@ impl windows_core::RuntimeType for Widget {
 unsafe impl windows_core::Interface for Widget {
     type Vtable = <IWidget as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWidget as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for Widget {
     const NAME: &'static str = "Test.Widget";

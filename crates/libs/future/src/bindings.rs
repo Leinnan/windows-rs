@@ -11,6 +11,7 @@ impl AsyncActionCompletedHandler {
     pub fn new<
         F: Fn(windows_core::Ref<IAsyncAction>, AsyncStatus) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -45,10 +46,16 @@ pub struct AsyncActionCompletedHandler_Vtbl {
     ) -> windows_core::HRESULT,
 }
 struct AsyncActionCompletedHandlerBox<
-    F: Fn(windows_core::Ref<IAsyncAction>, AsyncStatus) -> windows_core::Result<()> + Send + 'static,
+    F: Fn(windows_core::Ref<IAsyncAction>, AsyncStatus) -> windows_core::Result<()>
+        + Send
+        + Sync
+        + 'static,
 >(core::marker::PhantomData<(fn() -> F,)>);
 impl<
-    F: Fn(windows_core::Ref<IAsyncAction>, AsyncStatus) -> windows_core::Result<()> + Send + 'static,
+    F: Fn(windows_core::Ref<IAsyncAction>, AsyncStatus) -> windows_core::Result<()>
+        + Send
+        + Sync
+        + 'static,
 > AsyncActionCompletedHandlerBox<F>
 {
     const VTABLE: AsyncActionCompletedHandler_Vtbl = AsyncActionCompletedHandler_Vtbl {
@@ -66,7 +73,7 @@ impl<
         asyncstatus: AsyncStatus,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<AsyncActionCompletedHandler, F>);
             (this.invoke)(core::mem::transmute_copy(&asyncinfo), asyncstatus).into()
         }
@@ -103,6 +110,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> AsyncActionProgressHandler<
                 windows_core::Ref<TProgress>,
             ) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -148,6 +156,7 @@ struct AsyncActionProgressHandlerBox<
             windows_core::Ref<TProgress>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(TProgress, fn() -> F)>)
 where
@@ -159,6 +168,7 @@ impl<
             windows_core::Ref<TProgress>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > AsyncActionProgressHandlerBox<TProgress, F>
 {
@@ -184,7 +194,7 @@ impl<
         progressinfo: windows_core::imp::AbiType<TProgress>,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<AsyncActionProgressHandler<TProgress>, F>);
             (this.invoke)(
                 core::mem::transmute_copy(&asyncinfo),
@@ -227,6 +237,7 @@ impl<TProgress: windows_core::RuntimeType + 'static>
                 AsyncStatus,
             ) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -271,6 +282,7 @@ struct AsyncActionWithProgressCompletedHandlerBox<
             AsyncStatus,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(TProgress, fn() -> F)>)
 where
@@ -282,6 +294,7 @@ impl<
             AsyncStatus,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > AsyncActionWithProgressCompletedHandlerBox<TProgress, F>
 {
@@ -310,7 +323,7 @@ impl<
         asyncstatus: AsyncStatus,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<
                     AsyncActionWithProgressCompletedHandler<TProgress>,
                     F,
@@ -347,6 +360,7 @@ impl<TResult: windows_core::RuntimeType + 'static> AsyncOperationCompletedHandle
     pub fn new<
         F: Fn(windows_core::Ref<IAsyncOperation<TResult>>, AsyncStatus) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -388,6 +402,7 @@ struct AsyncOperationCompletedHandlerBox<
     TResult,
     F: Fn(windows_core::Ref<IAsyncOperation<TResult>>, AsyncStatus) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(TResult, fn() -> F)>)
 where
@@ -396,6 +411,7 @@ impl<
     TResult: windows_core::RuntimeType + 'static,
     F: Fn(windows_core::Ref<IAsyncOperation<TResult>>, AsyncStatus) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > AsyncOperationCompletedHandlerBox<TResult, F>
 {
@@ -425,7 +441,7 @@ impl<
         asyncstatus: AsyncStatus,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<AsyncOperationCompletedHandler<TResult>, F>);
             (this.invoke)(core::mem::transmute_copy(&asyncinfo), asyncstatus).into()
         }
@@ -470,6 +486,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                 windows_core::Ref<TProgress>,
             ) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -518,6 +535,7 @@ struct AsyncOperationProgressHandlerBox<
             windows_core::Ref<TProgress>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(TResult, TProgress, fn() -> F)>)
 where
@@ -531,6 +549,7 @@ impl<
             windows_core::Ref<TProgress>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > AsyncOperationProgressHandlerBox<TResult, TProgress, F>
 {
@@ -560,7 +579,7 @@ impl<
         progressinfo: windows_core::imp::AbiType<TProgress>,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<
                     AsyncOperationProgressHandler<TResult, TProgress>,
                     F,
@@ -612,6 +631,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                 AsyncStatus,
             ) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -659,6 +679,7 @@ struct AsyncOperationWithProgressCompletedHandlerBox<
             AsyncStatus,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(TResult, TProgress, fn() -> F)>)
 where
@@ -672,6 +693,7 @@ impl<
             AsyncStatus,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > AsyncOperationWithProgressCompletedHandlerBox<TResult, TProgress, F>
 {
@@ -701,7 +723,7 @@ impl<
         asyncstatus: AsyncStatus,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<
                     AsyncOperationWithProgressCompletedHandler<TResult, TProgress>,
                     F,
@@ -728,17 +750,12 @@ impl windows_core::RuntimeType for AsyncStatus {
     const NAME: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.AsyncStatus");
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IAsyncAction,
     IAsyncAction_Vtbl,
-    0x5a648006_843a_4da9_865b_9d26e5dfad7b
+    0x5a648006_843a_4da9_865b_9d26e5dfad7b,
+    b"Windows.Foundation.IAsyncAction"
 );
-impl windows_core::RuntimeType for IAsyncAction {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.IAsyncAction");
-}
 windows_core::imp::interface_hierarchy!(
     IAsyncAction,
     windows_core::IUnknown,
@@ -765,7 +782,7 @@ impl IAsyncAction {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetResults(&self) -> windows_core::Result<()> {
@@ -858,8 +875,7 @@ impl IAsyncAction_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncAction_Impl::Completed(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -879,7 +895,7 @@ impl IAsyncAction_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IAsyncAction, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             SetCompleted: SetCompleted::<Identity, OFFSET>,
             Completed: Completed::<Identity, OFFSET>,
             GetResults: GetResults::<Identity, OFFSET>,
@@ -902,42 +918,7 @@ pub struct IAsyncAction_Vtbl {
     ) -> windows_core::HRESULT,
     pub GetResults: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IAsyncActionWithProgress<TProgress>(
-    windows_core::IUnknown,
-    core::marker::PhantomData<TProgress>,
-)
-where
-    TProgress: windows_core::RuntimeType + 'static;
-impl<TProgress: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown> for IAsyncActionWithProgress<TProgress>
-{
-}
-impl<TProgress: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable> for IAsyncActionWithProgress<TProgress>
-{
-}
-unsafe impl<TProgress: windows_core::RuntimeType + 'static> windows_core::Interface
-    for IAsyncActionWithProgress<TProgress>
-{
-    type Vtable = IAsyncActionWithProgress_Vtbl<TProgress>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<TProgress: windows_core::RuntimeType + 'static> windows_core::RuntimeType
-    for IAsyncActionWithProgress<TProgress>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({1f6db258-e803-48a1-9546-eb7353398884}")
-        .push_slice(b";")
-        .push_other(TProgress::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.IAsyncActionWithProgress`1<")
-        .push_other(TProgress::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IAsyncActionWithProgress < TProgress >, IAsyncActionWithProgress_Vtbl < TProgress, >, 0x1f6db258_e803_48a1_9546_eb7353398884, b"Windows.Foundation.IAsyncActionWithProgress`1");
 impl<TProgress: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IAsyncInfo>
     for IAsyncActionWithProgress<TProgress>
 {
@@ -963,7 +944,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> IAsyncActionWithProgress<TP
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetCompleted<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -987,7 +968,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> IAsyncActionWithProgress<TP
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetResults(&self) -> windows_core::Result<()> {
@@ -1109,8 +1090,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> IAsyncActionWithProgress_Vt
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncActionWithProgress_Impl::Progress(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1148,8 +1128,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> IAsyncActionWithProgress_Vt
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncActionWithProgress_Impl::Completed(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1173,11 +1152,7 @@ impl<TProgress: windows_core::RuntimeType + 'static> IAsyncActionWithProgress_Vt
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<
-                Identity,
-                IAsyncActionWithProgress<TProgress>,
-                OFFSET,
-            >(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             SetProgress: SetProgress::<TProgress, Identity, OFFSET>,
             Progress: Progress::<TProgress, Identity, OFFSET>,
             SetCompleted: SetCompleted::<TProgress, Identity, OFFSET>,
@@ -1215,17 +1190,12 @@ where
     pub GetResults: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
     TProgress: core::marker::PhantomData<TProgress>,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IAsyncInfo,
     IAsyncInfo_Vtbl,
-    0x00000036_0000_0000_c000_000000000046
+    0x00000036_0000_0000_c000_000000000046,
+    b"Windows.Foundation.IAsyncInfo"
 );
-impl windows_core::RuntimeType for IAsyncInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.IAsyncInfo");
-}
 windows_core::imp::interface_hierarchy!(
     IAsyncInfo,
     windows_core::IUnknown,
@@ -1363,7 +1333,7 @@ impl IAsyncInfo_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IAsyncInfo, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Id: Id::<Identity, OFFSET>,
             Status: Status::<Identity, OFFSET>,
             ErrorCode: ErrorCode::<Identity, OFFSET>,
@@ -1390,39 +1360,7 @@ pub struct IAsyncInfo_Vtbl {
     pub Cancel: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Close: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IAsyncOperation<TResult>(windows_core::IUnknown, core::marker::PhantomData<TResult>)
-where
-    TResult: windows_core::RuntimeType + 'static;
-impl<TResult: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown> for IAsyncOperation<TResult>
-{
-}
-impl<TResult: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable> for IAsyncOperation<TResult>
-{
-}
-unsafe impl<TResult: windows_core::RuntimeType + 'static> windows_core::Interface
-    for IAsyncOperation<TResult>
-{
-    type Vtable = IAsyncOperation_Vtbl<TResult>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<TResult: windows_core::RuntimeType + 'static> windows_core::RuntimeType
-    for IAsyncOperation<TResult>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({9fc2b0bb-e446-44e2-aa61-9cab8f636af2}")
-        .push_slice(b";")
-        .push_other(TResult::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.IAsyncOperation`1<")
-        .push_other(TResult::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IAsyncOperation < TResult >, IAsyncOperation_Vtbl < TResult, >, 0x9fc2b0bb_e446_44e2_aa61_9cab8f636af2, b"Windows.Foundation.IAsyncOperation`1");
 impl<TResult: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IAsyncInfo>
     for IAsyncOperation<TResult>
 {
@@ -1448,17 +1386,18 @@ impl<TResult: windows_core::RuntimeType + 'static> IAsyncOperation<TResult> {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetResults(&self) -> windows_core::Result<TResult> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<TResult as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).GetResults)(
                 windows_core::Interface::as_raw(self),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Id(&self) -> windows_core::Result<u32> {
@@ -1558,8 +1497,7 @@ impl<TResult: windows_core::RuntimeType + 'static> IAsyncOperation_Vtbl<TResult>
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncOperation_Impl::Completed(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1582,8 +1520,7 @@ impl<TResult: windows_core::RuntimeType + 'static> IAsyncOperation_Vtbl<TResult>
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncOperation_Impl::GetResults(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1594,11 +1531,7 @@ impl<TResult: windows_core::RuntimeType + 'static> IAsyncOperation_Vtbl<TResult>
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<
-                Identity,
-                IAsyncOperation<TResult>,
-                OFFSET,
-            >(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             SetCompleted: SetCompleted::<TResult, Identity, OFFSET>,
             Completed: Completed::<TResult, Identity, OFFSET>,
             GetResults: GetResults::<TResult, Identity, OFFSET>,
@@ -1629,52 +1562,7 @@ where
     ) -> windows_core::HRESULT,
     TResult: core::marker::PhantomData<TResult>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IAsyncOperationWithProgress<TResult, TProgress>(
-    windows_core::IUnknown,
-    core::marker::PhantomData<TResult>,
-    core::marker::PhantomData<TProgress>,
-)
-where
-    TResult: windows_core::RuntimeType + 'static,
-    TProgress: windows_core::RuntimeType + 'static;
-impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown>
-    for IAsyncOperationWithProgress<TResult, TProgress>
-{
-}
-impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable>
-    for IAsyncOperationWithProgress<TResult, TProgress>
-{
-}
-unsafe impl<
-    TResult: windows_core::RuntimeType + 'static,
-    TProgress: windows_core::RuntimeType + 'static,
-> windows_core::Interface for IAsyncOperationWithProgress<TResult, TProgress>
-{
-    type Vtable = IAsyncOperationWithProgress_Vtbl<TResult, TProgress>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::RuntimeType + 'static>
-    windows_core::RuntimeType for IAsyncOperationWithProgress<TResult, TProgress>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({b5d036d7-e297-498f-ba60-0289e76e23dd}")
-        .push_slice(b";")
-        .push_other(TResult::SIGNATURE)
-        .push_slice(b";")
-        .push_other(TProgress::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.IAsyncOperationWithProgress`2<")
-        .push_other(TResult::NAME)
-        .push_slice(b", ")
-        .push_other(TProgress::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IAsyncOperationWithProgress < TResult, TProgress >, IAsyncOperationWithProgress_Vtbl < TResult, TProgress, >, 0xb5d036d7_e297_498f_ba60_0289e76e23dd, b"Windows.Foundation.IAsyncOperationWithProgress`2");
 impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::RuntimeType + 'static>
     windows_core::imp::CanInto<IAsyncInfo> for IAsyncOperationWithProgress<TResult, TProgress>
 {
@@ -1704,7 +1592,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetCompleted<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1728,17 +1616,18 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetResults(&self) -> windows_core::Result<TResult> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<TResult as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).GetResults)(
                 windows_core::Interface::as_raw(self),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Id(&self) -> windows_core::Result<u32> {
@@ -1867,8 +1756,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncOperationWithProgress_Impl::Progress(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1911,8 +1799,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncOperationWithProgress_Impl::Completed(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1936,8 +1823,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAsyncOperationWithProgress_Impl::GetResults(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1948,11 +1834,7 @@ impl<TResult: windows_core::RuntimeType + 'static, TProgress: windows_core::Runt
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<
-                Identity,
-                IAsyncOperationWithProgress<TResult, TProgress>,
-                OFFSET,
-            >(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             SetProgress: SetProgress::<TResult, TProgress, Identity, OFFSET>,
             Progress: Progress::<TResult, TProgress, Identity, OFFSET>,
             SetCompleted: SetCompleted::<TResult, TProgress, Identity, OFFSET>,

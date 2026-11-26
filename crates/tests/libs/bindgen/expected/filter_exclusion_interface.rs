@@ -1,10 +1,9 @@
-windows_core::imp::define_interface!(IKept, IKept_Vtbl, 0x694faf18_5fa9_5673_9e69_deec743d0692);
-impl windows_core::RuntimeType for IKept {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IKept");
-}
+windows_core::imp::define_winrt_interface!(
+    IKept,
+    IKept_Vtbl,
+    0x694faf18_5fa9_5673_9e69_deec743d0692,
+    b"Test.IKept"
+);
 windows_core::imp::interface_hierarchy!(IKept, windows_core::IUnknown, windows_core::IInspectable);
 impl IKept {
     pub fn Read(&self) -> windows_core::Result<u32> {
@@ -46,7 +45,7 @@ impl IKept_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IKept, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Read: Read::<Identity, OFFSET>,
         }
     }

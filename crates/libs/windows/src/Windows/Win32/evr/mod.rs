@@ -45,7 +45,7 @@ where
     P0: windows_core::Param<windows_core::IUnknown>,
 {
     windows_core::link!("evr.dll" "system" fn MFCreateVideoSampleFromSurface(punksurface : *mut core::ffi::c_void, ppsample : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
-    unsafe { MFCreateVideoSampleFromSurface(punksurface.param().abi(), core::mem::transmute(ppsample)) }
+    unsafe { MFCreateVideoSampleFromSurface(punksurface.param().abi(), ppsample as _) }
 }
 pub type EVRFilterConfigPrefs = i32;
 pub const EVRFilterConfigPrefs_EnableQoS: EVRFilterConfigPrefs = 1;
@@ -928,7 +928,7 @@ impl IMFVideoPresenter {
     pub unsafe fn GetCurrentMediaType(&self) -> windows_core::Result<super::IMFVideoMediaType> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrentMediaType)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrentMediaType)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -965,7 +965,7 @@ impl IMFVideoPresenter_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMFVideoPresenter_Impl::GetCurrentMediaType(this) {
                     Ok(ok__) => {
-                        ppmediatype.write(core::mem::transmute(ok__));
+                        ppmediatype.cast::<super::IMFVideoMediaType>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

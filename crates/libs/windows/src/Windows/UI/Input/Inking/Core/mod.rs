@@ -15,13 +15,13 @@ impl CoreIncrementalInkStroke {
     pub fn CreateInkStroke(&self) -> windows_core::Result<super::InkStroke> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateInkStroke)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateInkStroke)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DrawingAttributes(&self) -> windows_core::Result<super::InkDrawingAttributes> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DrawingAttributes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DrawingAttributes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PointTransform(&self) -> windows_core::Result<windows_numerics::Matrix3x2> {
@@ -42,7 +42,7 @@ impl CoreIncrementalInkStroke {
     {
         Self::ICoreIncrementalInkStrokeFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), drawingattributes.param().abi(), pointtransform, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), drawingattributes.param().abi(), pointtransform, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreIncrementalInkStrokeFactory<R, F: FnOnce(&ICoreIncrementalInkStrokeFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -56,6 +56,7 @@ impl windows_core::RuntimeType for CoreIncrementalInkStroke {
 unsafe impl windows_core::Interface for CoreIncrementalInkStroke {
     type Vtable = <ICoreIncrementalInkStroke as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreIncrementalInkStroke as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreIncrementalInkStroke {
     const NAME: &'static str = "Windows.UI.Input.Inking.Core.CoreIncrementalInkStroke";
@@ -70,7 +71,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerEntering<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -85,7 +86,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerHovering<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -100,7 +101,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerExiting<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -115,7 +116,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerPressing<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -130,7 +131,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerMoving<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -145,7 +146,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerReleasing<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -160,7 +161,7 @@ impl CoreInkIndependentInputSource {
     #[cfg(feature = "UI_Core")]
     pub fn PointerLost<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::super::super::Core::PointerEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, super::super::super::Core::PointerEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -175,7 +176,7 @@ impl CoreInkIndependentInputSource {
     pub fn InkPresenter(&self) -> windows_core::Result<super::InkPresenter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InkPresenter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InkPresenter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "UI_Core")]
@@ -183,7 +184,7 @@ impl CoreInkIndependentInputSource {
         let this = &windows_core::Interface::cast::<ICoreInkIndependentInputSource2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PointerCursor)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).PointerCursor)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "UI_Core")]
@@ -200,7 +201,7 @@ impl CoreInkIndependentInputSource {
     {
         Self::ICoreInkIndependentInputSourceStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), inkpresenter.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), inkpresenter.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreInkIndependentInputSourceStatics<R, F: FnOnce(&ICoreInkIndependentInputSourceStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -214,6 +215,7 @@ impl windows_core::RuntimeType for CoreInkIndependentInputSource {
 unsafe impl windows_core::Interface for CoreInkIndependentInputSource {
     type Vtable = <ICoreInkIndependentInputSource as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInkIndependentInputSource as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInkIndependentInputSource {
     const NAME: &'static str = "Windows.UI.Input.Inking.Core.CoreInkIndependentInputSource";
@@ -235,7 +237,7 @@ impl CoreInkPresenterHost {
     pub fn InkPresenter(&self) -> windows_core::Result<super::InkPresenter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InkPresenter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InkPresenter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -245,6 +247,7 @@ impl windows_core::RuntimeType for CoreInkPresenterHost {
 unsafe impl windows_core::Interface for CoreInkPresenterHost {
     type Vtable = <ICoreInkPresenterHost as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInkPresenterHost as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInkPresenterHost {
     const NAME: &'static str = "Windows.UI.Input.Inking.Core.CoreInkPresenterHost";
@@ -274,7 +277,7 @@ impl CoreWetStrokeUpdateEventArgs {
     pub fn NewInkPoints(&self) -> windows_core::Result<windows_collections::IVector<super::InkPoint>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NewInkPoints)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).NewInkPoints)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PointerId(&self) -> windows_core::Result<u32> {
@@ -299,6 +302,7 @@ impl windows_core::RuntimeType for CoreWetStrokeUpdateEventArgs {
 unsafe impl windows_core::Interface for CoreWetStrokeUpdateEventArgs {
     type Vtable = <ICoreWetStrokeUpdateEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreWetStrokeUpdateEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreWetStrokeUpdateEventArgs {
     const NAME: &'static str = "Windows.UI.Input.Inking.Core.CoreWetStrokeUpdateEventArgs";
@@ -312,7 +316,7 @@ windows_core::imp::interface_hierarchy!(CoreWetStrokeUpdateSource, windows_core:
 impl CoreWetStrokeUpdateSource {
     pub fn WetStrokeStarting<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, CoreWetStrokeUpdateEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -326,7 +330,7 @@ impl CoreWetStrokeUpdateSource {
     }
     pub fn WetStrokeContinuing<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, CoreWetStrokeUpdateEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -340,7 +344,7 @@ impl CoreWetStrokeUpdateSource {
     }
     pub fn WetStrokeStopping<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, CoreWetStrokeUpdateEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -354,7 +358,7 @@ impl CoreWetStrokeUpdateSource {
     }
     pub fn WetStrokeCompleted<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, CoreWetStrokeUpdateEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -368,7 +372,7 @@ impl CoreWetStrokeUpdateSource {
     }
     pub fn WetStrokeCanceled<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreWetStrokeUpdateEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::super::Foundation::TypedEventHandler<Self, CoreWetStrokeUpdateEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -383,7 +387,7 @@ impl CoreWetStrokeUpdateSource {
     pub fn InkPresenter(&self) -> windows_core::Result<super::InkPresenter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InkPresenter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InkPresenter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Create<P0>(inkpresenter: P0) -> windows_core::Result<Self>
@@ -392,7 +396,7 @@ impl CoreWetStrokeUpdateSource {
     {
         Self::ICoreWetStrokeUpdateSourceStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), inkpresenter.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), inkpresenter.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreWetStrokeUpdateSourceStatics<R, F: FnOnce(&ICoreWetStrokeUpdateSourceStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -406,17 +410,14 @@ impl windows_core::RuntimeType for CoreWetStrokeUpdateSource {
 unsafe impl windows_core::Interface for CoreWetStrokeUpdateSource {
     type Vtable = <ICoreWetStrokeUpdateSource as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreWetStrokeUpdateSource as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreWetStrokeUpdateSource {
     const NAME: &'static str = "Windows.UI.Input.Inking.Core.CoreWetStrokeUpdateSource";
 }
 unsafe impl Send for CoreWetStrokeUpdateSource {}
 unsafe impl Sync for CoreWetStrokeUpdateSource {}
-windows_core::imp::define_interface!(ICoreIncrementalInkStroke, ICoreIncrementalInkStroke_Vtbl, 0xfda015d3_9d66_4f7d_a57f_cc70b9cfaa76);
-impl windows_core::RuntimeType for ICoreIncrementalInkStroke {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreIncrementalInkStroke");
-}
+windows_core::imp::define_winrt_interface!(ICoreIncrementalInkStroke, ICoreIncrementalInkStroke_Vtbl, 0xfda015d3_9d66_4f7d_a57f_cc70b9cfaa76, b"Windows.UI.Input.Inking.Core.ICoreIncrementalInkStroke");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreIncrementalInkStroke_Vtbl {
@@ -427,22 +428,14 @@ pub struct ICoreIncrementalInkStroke_Vtbl {
     pub PointTransform: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_numerics::Matrix3x2) -> windows_core::HRESULT,
     pub BoundingRect: unsafe extern "system" fn(*mut core::ffi::c_void, *mut super::super::super::super::Foundation::Rect) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreIncrementalInkStrokeFactory, ICoreIncrementalInkStrokeFactory_Vtbl, 0xd7c59f46_8da8_4f70_9751_e53bb6df4596);
-impl windows_core::RuntimeType for ICoreIncrementalInkStrokeFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreIncrementalInkStrokeFactory");
-}
+windows_core::imp::define_winrt_interface!(ICoreIncrementalInkStrokeFactory, ICoreIncrementalInkStrokeFactory_Vtbl, 0xd7c59f46_8da8_4f70_9751_e53bb6df4596, b"Windows.UI.Input.Inking.Core.ICoreIncrementalInkStrokeFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreIncrementalInkStrokeFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, windows_numerics::Matrix3x2, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInkIndependentInputSource, ICoreInkIndependentInputSource_Vtbl, 0x39b38da9_7639_4499_a5b5_191d00e35b16);
-impl windows_core::RuntimeType for ICoreInkIndependentInputSource {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreInkIndependentInputSource");
-}
+windows_core::imp::define_winrt_interface!(ICoreInkIndependentInputSource, ICoreInkIndependentInputSource_Vtbl, 0x39b38da9_7639_4499_a5b5_191d00e35b16, b"Windows.UI.Input.Inking.Core.ICoreInkIndependentInputSource");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInkIndependentInputSource_Vtbl {
@@ -484,11 +477,7 @@ pub struct ICoreInkIndependentInputSource_Vtbl {
     pub RemovePointerLost: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub InkPresenter: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInkIndependentInputSource2, ICoreInkIndependentInputSource2_Vtbl, 0x2846b012_0b59_5bb9_a3c5_becb7cf03a33);
-impl windows_core::RuntimeType for ICoreInkIndependentInputSource2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreInkIndependentInputSource2");
-}
+windows_core::imp::define_winrt_interface!(ICoreInkIndependentInputSource2, ICoreInkIndependentInputSource2_Vtbl, 0x2846b012_0b59_5bb9_a3c5_becb7cf03a33, b"Windows.UI.Input.Inking.Core.ICoreInkIndependentInputSource2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInkIndependentInputSource2_Vtbl {
@@ -502,33 +491,21 @@ pub struct ICoreInkIndependentInputSource2_Vtbl {
     #[cfg(not(feature = "UI_Core"))]
     SetPointerCursor: usize,
 }
-windows_core::imp::define_interface!(ICoreInkIndependentInputSourceStatics, ICoreInkIndependentInputSourceStatics_Vtbl, 0x73e6011b_80c0_4dfb_9b66_10ba7f3f9c84);
-impl windows_core::RuntimeType for ICoreInkIndependentInputSourceStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreInkIndependentInputSourceStatics");
-}
+windows_core::imp::define_winrt_interface!(ICoreInkIndependentInputSourceStatics, ICoreInkIndependentInputSourceStatics_Vtbl, 0x73e6011b_80c0_4dfb_9b66_10ba7f3f9c84, b"Windows.UI.Input.Inking.Core.ICoreInkIndependentInputSourceStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInkIndependentInputSourceStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInkPresenterHost, ICoreInkPresenterHost_Vtbl, 0x396e89e6_7d55_4617_9e58_68c70c9169b9);
-impl windows_core::RuntimeType for ICoreInkPresenterHost {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreInkPresenterHost");
-}
+windows_core::imp::define_winrt_interface!(ICoreInkPresenterHost, ICoreInkPresenterHost_Vtbl, 0x396e89e6_7d55_4617_9e58_68c70c9169b9, b"Windows.UI.Input.Inking.Core.ICoreInkPresenterHost");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInkPresenterHost_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub InkPresenter: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreWetStrokeUpdateEventArgs, ICoreWetStrokeUpdateEventArgs_Vtbl, 0xfb07d14c_3380_457a_a987_991357896c1b);
-impl windows_core::RuntimeType for ICoreWetStrokeUpdateEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreWetStrokeUpdateEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreWetStrokeUpdateEventArgs, ICoreWetStrokeUpdateEventArgs_Vtbl, 0xfb07d14c_3380_457a_a987_991357896c1b, b"Windows.UI.Input.Inking.Core.ICoreWetStrokeUpdateEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreWetStrokeUpdateEventArgs_Vtbl {
@@ -538,11 +515,7 @@ pub struct ICoreWetStrokeUpdateEventArgs_Vtbl {
     pub Disposition: unsafe extern "system" fn(*mut core::ffi::c_void, *mut CoreWetStrokeDisposition) -> windows_core::HRESULT,
     pub SetDisposition: unsafe extern "system" fn(*mut core::ffi::c_void, CoreWetStrokeDisposition) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreWetStrokeUpdateSource, ICoreWetStrokeUpdateSource_Vtbl, 0x1f718e22_ee52_4e00_8209_4c3e5b21a3cc);
-impl windows_core::RuntimeType for ICoreWetStrokeUpdateSource {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreWetStrokeUpdateSource");
-}
+windows_core::imp::define_winrt_interface!(ICoreWetStrokeUpdateSource, ICoreWetStrokeUpdateSource_Vtbl, 0x1f718e22_ee52_4e00_8209_4c3e5b21a3cc, b"Windows.UI.Input.Inking.Core.ICoreWetStrokeUpdateSource");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreWetStrokeUpdateSource_Vtbl {
@@ -559,11 +532,7 @@ pub struct ICoreWetStrokeUpdateSource_Vtbl {
     pub RemoveWetStrokeCanceled: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub InkPresenter: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreWetStrokeUpdateSourceStatics, ICoreWetStrokeUpdateSourceStatics_Vtbl, 0x3dad9cba_1d3d_46ae_ab9d_8647486c6f90);
-impl windows_core::RuntimeType for ICoreWetStrokeUpdateSourceStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Input.Inking.Core.ICoreWetStrokeUpdateSourceStatics");
-}
+windows_core::imp::define_winrt_interface!(ICoreWetStrokeUpdateSourceStatics, ICoreWetStrokeUpdateSourceStatics_Vtbl, 0x3dad9cba_1d3d_46ae_ab9d_8647486c6f90, b"Windows.UI.Input.Inking.Core.ICoreWetStrokeUpdateSourceStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreWetStrokeUpdateSourceStatics_Vtbl {

@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IXsltProcessor, IXsltProcessor_Vtbl, 0x7b64703f_550c_48c6_a90f_93a5b964518f);
-impl windows_core::RuntimeType for IXsltProcessor {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Data.Xml.Xsl.IXsltProcessor");
-}
+windows_core::imp::define_winrt_interface!(IXsltProcessor, IXsltProcessor_Vtbl, 0x7b64703f_550c_48c6_a90f_93a5b964518f, b"Windows.Data.Xml.Xsl.IXsltProcessor");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IXsltProcessor_Vtbl {
@@ -12,11 +8,7 @@ pub struct IXsltProcessor_Vtbl {
     #[cfg(not(feature = "Data_Xml_Dom"))]
     TransformToString: usize,
 }
-windows_core::imp::define_interface!(IXsltProcessor2, IXsltProcessor2_Vtbl, 0x8da45c56_97a5_44cb_a8be_27d86280c70a);
-impl windows_core::RuntimeType for IXsltProcessor2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Data.Xml.Xsl.IXsltProcessor2");
-}
+windows_core::imp::define_winrt_interface!(IXsltProcessor2, IXsltProcessor2_Vtbl, 0x8da45c56_97a5_44cb_a8be_27d86280c70a, b"Windows.Data.Xml.Xsl.IXsltProcessor2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IXsltProcessor2_Vtbl {
@@ -26,11 +18,7 @@ pub struct IXsltProcessor2_Vtbl {
     #[cfg(not(feature = "Data_Xml_Dom"))]
     TransformToDocument: usize,
 }
-windows_core::imp::define_interface!(IXsltProcessorFactory, IXsltProcessorFactory_Vtbl, 0x274146c0_9a51_4663_bf30_0ef742146f20);
-impl windows_core::RuntimeType for IXsltProcessorFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Data.Xml.Xsl.IXsltProcessorFactory");
-}
+windows_core::imp::define_winrt_interface!(IXsltProcessorFactory, IXsltProcessorFactory_Vtbl, 0x274146c0_9a51_4663_bf30_0ef742146f20, b"Windows.Data.Xml.Xsl.IXsltProcessorFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IXsltProcessorFactory_Vtbl {
@@ -63,7 +51,7 @@ impl XsltProcessor {
         let this = &windows_core::Interface::cast::<IXsltProcessor2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TransformToDocument)(windows_core::Interface::as_raw(this), inputnode.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TransformToDocument)(windows_core::Interface::as_raw(this), inputnode.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Data_Xml_Dom")]
@@ -73,7 +61,7 @@ impl XsltProcessor {
     {
         Self::IXsltProcessorFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), document.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), document.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IXsltProcessorFactory<R, F: FnOnce(&IXsltProcessorFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -87,6 +75,7 @@ impl windows_core::RuntimeType for XsltProcessor {
 unsafe impl windows_core::Interface for XsltProcessor {
     type Vtable = <IXsltProcessor as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IXsltProcessor as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for XsltProcessor {
     const NAME: &'static str = "Windows.Data.Xml.Xsl.XsltProcessor";

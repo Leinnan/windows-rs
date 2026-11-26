@@ -1,6 +1,6 @@
 --in target/webview default
 --out crates/libs/webview/src/bindings.rs
---flat --minimal --dead-code
+--dead-code
 --implement
     WebView2.ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler
     WebView2.ICoreWebView2CreateCoreWebView2ControllerCompletedHandler
@@ -92,6 +92,10 @@
 
     CoTaskMemAlloc
     CoTaskMemFree
+    CoGetApartmentType
+    APTTYPE_STA
+    APTTYPE_MAINSTA
+    RPC_E_WRONG_THREAD
     E_ABORT
     E_INVALIDARG
     E_PENDING

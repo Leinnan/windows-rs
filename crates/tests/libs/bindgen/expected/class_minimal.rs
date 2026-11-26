@@ -3,6 +3,19 @@
 pub struct Class(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Class, windows_core::IUnknown, windows_core::IInspectable);
 impl Class {
+    pub fn new() -> windows_core::Result<Self> {
+        Self::IActivationFactory(|f| f.ActivateInstance::<Self>())
+    }
+    fn IActivationFactory<
+        R,
+        F: FnOnce(&windows_core::imp::IGenericFactory) -> windows_core::Result<R>,
+    >(
+        callback: F,
+    ) -> windows_core::Result<R> {
+        static SHARED: windows_core::imp::FactoryCache<Class, windows_core::imp::IGenericFactory> =
+            windows_core::imp::FactoryCache::new();
+        SHARED.call(callback)
+    }
     pub fn Create(value: i32) -> windows_core::Result<Self> {
         Self::IClassStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
@@ -11,7 +24,7 @@ impl Class {
                 value,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Value() -> i32 {
@@ -63,7 +76,7 @@ impl Class {
                     &mut result__,
                 );
                 debug_assert!(hresult__.0 == 0);
-                core::mem::transmute(result__)
+                core::mem::transmute::<*mut core::ffi::c_void, Option<IClass>>(result__)
             })
         })
         .unwrap()
@@ -71,14 +84,15 @@ impl Class {
     pub fn Numbers() -> windows_core::Array<i32> {
         Self::IClassStatics(|this| {
             Ok(unsafe {
-                let mut result__ = core::mem::MaybeUninit::zeroed();
+                let mut result__ = core::ptr::null_mut();
+                let mut result_size__ = 0;
                 let hresult__ = (windows_core::Interface::vtable(this).Numbers)(
                     windows_core::Interface::as_raw(this),
-                    windows_core::Array::<i32>::set_abi_len(core::mem::transmute(&mut result__)),
-                    result__.as_mut_ptr() as *mut _ as _,
+                    &mut result_size__,
+                    &mut result__,
                 );
                 debug_assert!(hresult__.0 == 0);
-                result__.assume_init()
+                windows_core::Array::<i32>::from_raw_parts(result__.cast(), result_size__)
             })
         })
         .unwrap()
@@ -98,6 +112,7 @@ impl windows_core::RuntimeType for Class {
 unsafe impl windows_core::Interface for Class {
     type Vtable = <IClass as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IClass as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl core::ops::Deref for Class {
     type Target = IClass;
@@ -108,11 +123,11 @@ impl core::ops::Deref for Class {
 impl windows_core::RuntimeName for Class {
     const NAME: &'static str = "Test.Class";
 }
-windows_core::imp::define_interface!(IClass, IClass_Vtbl, 0x327dfd65_5684_57ee_85ab_168eff31a838);
-impl windows_core::RuntimeType for IClass {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
+windows_core::imp::define_winrt_interface!(
+    IClass,
+    IClass_Vtbl,
+    0x327dfd65_5684_57ee_85ab_168eff31a838
+);
 impl IClass {
     pub fn Method(&self) -> windows_core::Result<i32> {
         unsafe {
@@ -161,15 +176,11 @@ pub struct IClass_Vtbl {
         *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IClassStatics,
     IClassStatics_Vtbl,
     0xe859dd18_1e99_5da7_a6b0_bbb6011bd19d
 );
-impl windows_core::RuntimeType for IClassStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 #[repr(C)]
 pub struct IClassStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,

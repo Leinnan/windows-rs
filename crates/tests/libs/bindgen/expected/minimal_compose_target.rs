@@ -23,7 +23,7 @@ impl Base {
             )
             .ok()?;
             let _ = &derived__;
-            windows_core::imp::Type::from_abi(result__)
+            windows_core::imp::from_abi(result__)
         })
     }
     fn IBaseFactory<R, F: FnOnce(&IBaseFactory) -> windows_core::Result<R>>(
@@ -41,6 +41,7 @@ impl windows_core::RuntimeType for Base {
 unsafe impl windows_core::Interface for Base {
     type Vtable = <IOverrides as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IOverrides as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl core::ops::Deref for Base {
     type Target = IOverrides;
@@ -71,7 +72,7 @@ impl Derived {
                 &mut None::<windows_core::IInspectable> as *mut _ as _,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IDerivedFactory<R, F: FnOnce(&IDerivedFactory) -> windows_core::Result<R>>(
@@ -89,6 +90,7 @@ impl windows_core::RuntimeType for Derived {
 unsafe impl windows_core::Interface for Derived {
     type Vtable = <IDerived as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDerived as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl core::ops::Deref for Derived {
     type Target = IDerived;
@@ -99,15 +101,11 @@ impl core::ops::Deref for Derived {
 impl windows_core::RuntimeName for Derived {
     const NAME: &'static str = "Test.Derived";
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IBaseFactory,
     IBaseFactory_Vtbl,
     0xb2b35536_fcb0_54c1_9424_0abe7fedee40
 );
-impl windows_core::RuntimeType for IBaseFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     IBaseFactory,
     windows_core::IUnknown,
@@ -122,6 +120,9 @@ impl IBaseFactory {
     where
         P0: windows_core::Param<windows_core::IInspectable>,
     {
+        if core::mem::needs_drop::<Option<windows_core::IInspectable>>() {
+            *inner = unsafe { core::mem::zeroed() };
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).CreateInstance)(
@@ -130,7 +131,7 @@ impl IBaseFactory {
                 inner as *mut _ as _,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -144,15 +145,11 @@ pub struct IBaseFactory_Vtbl {
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IDerived,
     IDerived_Vtbl,
     0x23cf7109_3cfc_56a0_88cb_06d8fd320cc6
 );
-impl windows_core::RuntimeType for IDerived {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     IDerived,
     windows_core::IUnknown,
@@ -162,15 +159,11 @@ windows_core::imp::interface_hierarchy!(
 pub struct IDerived_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IDerivedFactory,
     IDerivedFactory_Vtbl,
     0xa04ab497_ffe5_53d3_a6ad_1bfb9db8c9a1
 );
-impl windows_core::RuntimeType for IDerivedFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
 windows_core::imp::interface_hierarchy!(
     IDerivedFactory,
     windows_core::IUnknown,
@@ -185,6 +178,9 @@ impl IDerivedFactory {
     where
         P0: windows_core::Param<windows_core::IInspectable>,
     {
+        if core::mem::needs_drop::<Option<windows_core::IInspectable>>() {
+            *inner = unsafe { core::mem::zeroed() };
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).CreateInstance)(
@@ -193,7 +189,7 @@ impl IDerivedFactory {
                 inner as *mut _ as _,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -207,17 +203,12 @@ pub struct IDerivedFactory_Vtbl {
         *mut *mut core::ffi::c_void,
     ) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IOverrides,
     IOverrides_Vtbl,
-    0x8952afe3_c320_51da_92db_224e61ab57d1
+    0x8952afe3_c320_51da_92db_224e61ab57d1,
+    b"Test.IOverrides"
 );
-impl windows_core::RuntimeType for IOverrides {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IOverrides");
-}
 windows_core::imp::interface_hierarchy!(
     IOverrides,
     windows_core::IUnknown,
@@ -241,7 +232,7 @@ impl IOverrides_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IOverrides, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             OnSomething: OnSomething::<Identity, OFFSET>,
         }
     }

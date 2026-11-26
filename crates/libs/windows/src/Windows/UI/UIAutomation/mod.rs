@@ -32,6 +32,7 @@ impl windows_core::RuntimeType for AutomationConnection {
 unsafe impl windows_core::Interface for AutomationConnection {
     type Vtable = <IAutomationConnection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAutomationConnection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AutomationConnection {
     const NAME: &'static str = "Windows.UI.UIAutomation.AutomationConnection";
@@ -46,7 +47,7 @@ impl AutomationConnectionBoundObject {
     pub fn Connection(&self) -> windows_core::Result<AutomationConnection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -56,6 +57,7 @@ impl windows_core::RuntimeType for AutomationConnectionBoundObject {
 unsafe impl windows_core::Interface for AutomationConnectionBoundObject {
     type Vtable = <IAutomationConnectionBoundObject as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAutomationConnectionBoundObject as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AutomationConnectionBoundObject {
     const NAME: &'static str = "Windows.UI.UIAutomation.AutomationConnectionBoundObject";
@@ -94,6 +96,7 @@ impl windows_core::RuntimeType for AutomationElement {
 unsafe impl windows_core::Interface for AutomationElement {
     type Vtable = <IAutomationElement as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAutomationElement as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AutomationElement {
     const NAME: &'static str = "Windows.UI.UIAutomation.AutomationElement";
@@ -110,17 +113,14 @@ impl windows_core::RuntimeType for AutomationTextRange {
 unsafe impl windows_core::Interface for AutomationTextRange {
     type Vtable = <IAutomationTextRange as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAutomationTextRange as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AutomationTextRange {
     const NAME: &'static str = "Windows.UI.UIAutomation.AutomationTextRange";
 }
 unsafe impl Send for AutomationTextRange {}
 unsafe impl Sync for AutomationTextRange {}
-windows_core::imp::define_interface!(IAutomationConnection, IAutomationConnection_Vtbl, 0xaad262ed_0ef4_5d43_97be_a834e27b65b9);
-impl windows_core::RuntimeType for IAutomationConnection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.UIAutomation.IAutomationConnection");
-}
+windows_core::imp::define_winrt_interface!(IAutomationConnection, IAutomationConnection_Vtbl, 0xaad262ed_0ef4_5d43_97be_a834e27b65b9, b"Windows.UI.UIAutomation.IAutomationConnection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAutomationConnection_Vtbl {
@@ -129,22 +129,14 @@ pub struct IAutomationConnection_Vtbl {
     pub AppUserModelId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ExecutableFileName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAutomationConnectionBoundObject, IAutomationConnectionBoundObject_Vtbl, 0x5e8558fb_ca52_5b65_9830_dd2905816093);
-impl windows_core::RuntimeType for IAutomationConnectionBoundObject {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.UIAutomation.IAutomationConnectionBoundObject");
-}
+windows_core::imp::define_winrt_interface!(IAutomationConnectionBoundObject, IAutomationConnectionBoundObject_Vtbl, 0x5e8558fb_ca52_5b65_9830_dd2905816093, b"Windows.UI.UIAutomation.IAutomationConnectionBoundObject");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAutomationConnectionBoundObject_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Connection: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAutomationElement, IAutomationElement_Vtbl, 0xa1898370_2c07_56fd_993f_61a72a08058c);
-impl windows_core::RuntimeType for IAutomationElement {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.UIAutomation.IAutomationElement");
-}
+windows_core::imp::define_winrt_interface!(IAutomationElement, IAutomationElement_Vtbl, 0xa1898370_2c07_56fd_993f_61a72a08058c, b"Windows.UI.UIAutomation.IAutomationElement");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAutomationElement_Vtbl {
@@ -153,11 +145,7 @@ pub struct IAutomationElement_Vtbl {
     pub AppUserModelId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ExecutableFileName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAutomationTextRange, IAutomationTextRange_Vtbl, 0x7e101b65_40d3_5994_85a9_0a0cb9a4ec98);
-impl windows_core::RuntimeType for IAutomationTextRange {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.UIAutomation.IAutomationTextRange");
-}
+windows_core::imp::define_winrt_interface!(IAutomationTextRange, IAutomationTextRange_Vtbl, 0x7e101b65_40d3_5994_85a9_0a0cb9a4ec98, b"Windows.UI.UIAutomation.IAutomationTextRange");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAutomationTextRange_Vtbl {

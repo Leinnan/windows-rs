@@ -2,7 +2,7 @@
 #[inline]
 pub unsafe fn XAudio2CreateWithVersionInfo(ppxaudio2: *mut Option<IXAudio2>, flags: super::UINT32, xaudio2processor: XAUDIO2_PROCESSOR, ntddiversion: super::DWORD) -> windows_core::HRESULT {
     windows_core::link!("xaudio2_9.dll" "system" fn XAudio2CreateWithVersionInfo(ppxaudio2 : *mut *mut core::ffi::c_void, flags : super::UINT32, xaudio2processor : XAUDIO2_PROCESSOR, ntddiversion : super::DWORD) -> windows_core::HRESULT);
-    unsafe { XAudio2CreateWithVersionInfo(core::mem::transmute(ppxaudio2), flags, xaudio2processor, ntddiversion) }
+    unsafe { XAudio2CreateWithVersionInfo(ppxaudio2 as _, flags, xaudio2processor, ntddiversion) }
 }
 pub const BandPassFilter: XAUDIO2_FILTER_TYPE = 1;
 pub const FACILITY_XAUDIO2: i32 = 2198;
@@ -32,18 +32,18 @@ impl IXAudio2 {
     where
         P4: windows_core::Param<IXAudio2VoiceCallback>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateSourceVoice)(windows_core::Interface::as_raw(self), core::mem::transmute(ppsourcevoice), psourceformat, flags, maxfrequencyratio, pcallback.param().abi(), psendlist.unwrap_or(core::mem::zeroed()) as _, peffectchain.unwrap_or(core::mem::zeroed()) as _) }
+        unsafe { (windows_core::Interface::vtable(self).CreateSourceVoice)(windows_core::Interface::as_raw(self), ppsourcevoice as _, psourceformat, flags, maxfrequencyratio, pcallback.param().abi(), psendlist.unwrap_or(core::mem::zeroed()) as _, peffectchain.unwrap_or(core::mem::zeroed()) as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn CreateSubmixVoice(&self, ppsubmixvoice: *mut Option<IXAudio2SubmixVoice>, inputchannels: super::UINT32, inputsamplerate: super::UINT32, flags: super::UINT32, processingstage: super::UINT32, psendlist: Option<*const XAUDIO2_VOICE_SENDS>, peffectchain: Option<*const XAUDIO2_EFFECT_CHAIN>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).CreateSubmixVoice)(windows_core::Interface::as_raw(self), core::mem::transmute(ppsubmixvoice), inputchannels, inputsamplerate, flags, processingstage, psendlist.unwrap_or(core::mem::zeroed()) as _, peffectchain.unwrap_or(core::mem::zeroed()) as _) }
+        unsafe { (windows_core::Interface::vtable(self).CreateSubmixVoice)(windows_core::Interface::as_raw(self), ppsubmixvoice as _, inputchannels, inputsamplerate, flags, processingstage, psendlist.unwrap_or(core::mem::zeroed()) as _, peffectchain.unwrap_or(core::mem::zeroed()) as _) }
     }
     #[cfg(all(feature = "audiosessiontypes", feature = "shared"))]
     pub unsafe fn CreateMasteringVoice<P4>(&self, ppmasteringvoice: *mut Option<IXAudio2MasteringVoice>, inputchannels: super::UINT32, inputsamplerate: super::UINT32, flags: super::UINT32, szdeviceid: P4, peffectchain: Option<*const XAUDIO2_EFFECT_CHAIN>, streamcategory: super::AUDIO_STREAM_CATEGORY) -> windows_core::HRESULT
     where
         P4: windows_core::Param<windows_core::PCWSTR>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateMasteringVoice)(windows_core::Interface::as_raw(self), core::mem::transmute(ppmasteringvoice), inputchannels, inputsamplerate, flags, szdeviceid.param().abi(), peffectchain.unwrap_or(core::mem::zeroed()) as _, streamcategory) }
+        unsafe { (windows_core::Interface::vtable(self).CreateMasteringVoice)(windows_core::Interface::as_raw(self), ppmasteringvoice as _, inputchannels, inputsamplerate, flags, szdeviceid.param().abi(), peffectchain.unwrap_or(core::mem::zeroed()) as _, streamcategory) }
     }
     pub unsafe fn StartEngine(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).StartEngine)(windows_core::Interface::as_raw(self)) }
@@ -146,7 +146,7 @@ impl IXAudio2_Vtbl {
         unsafe extern "system" fn CreateMasteringVoice<Identity: IXAudio2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppmasteringvoice: *mut *mut core::ffi::c_void, inputchannels: super::UINT32, inputsamplerate: super::UINT32, flags: super::UINT32, szdeviceid: windows_core::PCWSTR, peffectchain: *const XAUDIO2_EFFECT_CHAIN, streamcategory: super::AUDIO_STREAM_CATEGORY) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IXAudio2_Impl::CreateMasteringVoice(this, core::mem::transmute_copy(&ppmasteringvoice), core::mem::transmute_copy(&inputchannels), core::mem::transmute_copy(&inputsamplerate), core::mem::transmute_copy(&flags), core::mem::transmute(&szdeviceid), core::mem::transmute_copy(&peffectchain), core::mem::transmute_copy(&streamcategory))
+                IXAudio2_Impl::CreateMasteringVoice(this, core::mem::transmute_copy(&ppmasteringvoice), core::mem::transmute_copy(&inputchannels), core::mem::transmute_copy(&inputsamplerate), core::mem::transmute_copy(&flags), &*(&raw const szdeviceid).cast(), core::mem::transmute_copy(&peffectchain), core::mem::transmute_copy(&streamcategory))
             }
         }
         unsafe extern "system" fn StartEngine<Identity: IXAudio2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -267,7 +267,7 @@ impl IXAudio2EngineCallback {
     pub fn new<'a, T: IXAudio2EngineCallback_Impl>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
         let this = windows_core::ScopedHeap { vtable: &IXAudio2EngineCallback_ImplVtbl::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
     }
 }
 windows_core::imp::define_interface!(IXAudio2Extension, IXAudio2Extension_Vtbl, 0x84ac29bb_d619_44d2_b197_e4acf7df3ed6);
@@ -378,7 +378,7 @@ impl IXAudio2MasteringVoice {
     pub fn new<'a, T: IXAudio2MasteringVoice_Impl>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
         let this = windows_core::ScopedHeap { vtable: &IXAudio2MasteringVoice_ImplVtbl::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
     }
 }
 windows_core::imp::define_interface!(IXAudio2SourceVoice, IXAudio2SourceVoice_Vtbl);
@@ -580,7 +580,7 @@ impl IXAudio2SourceVoice {
     pub fn new<'a, T: IXAudio2SourceVoice_Impl>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
         let this = windows_core::ScopedHeap { vtable: &IXAudio2SourceVoice_ImplVtbl::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
     }
 }
 windows_core::imp::define_interface!(IXAudio2SubmixVoice, IXAudio2SubmixVoice_Vtbl);
@@ -615,7 +615,7 @@ impl IXAudio2SubmixVoice {
     pub fn new<'a, T: IXAudio2SubmixVoice_Impl>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
         let this = windows_core::ScopedHeap { vtable: &IXAudio2SubmixVoice_ImplVtbl::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
     }
 }
 windows_core::imp::define_interface!(IXAudio2Voice, IXAudio2Voice_Vtbl);
@@ -981,7 +981,7 @@ impl IXAudio2Voice {
     pub fn new<'a, T: IXAudio2Voice_Impl>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
         let this = windows_core::ScopedHeap { vtable: &IXAudio2Voice_ImplVtbl::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
     }
 }
 windows_core::imp::define_interface!(IXAudio2VoiceCallback, IXAudio2VoiceCallback_Vtbl);
@@ -1121,7 +1121,7 @@ impl IXAudio2VoiceCallback {
     pub fn new<'a, T: IXAudio2VoiceCallback_Impl>(this: &'a T) -> windows_core::ScopedInterface<'a, Self> {
         let this = windows_core::ScopedHeap { vtable: &IXAudio2VoiceCallback_ImplVtbl::<T>::VTABLE as *const _ as *const _, this: this as *const _ as *const _ };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe { windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(this as *mut _)) }
     }
 }
 pub const LowPassFilter: XAUDIO2_FILTER_TYPE = 0;
@@ -1166,7 +1166,7 @@ pub const XAUDIO2_1024_QUANTUM: i32 = 32768;
 pub const XAUDIO2_ANY_PROCESSOR: u32 = 4294967295;
 #[repr(C, packed(1))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct XAUDIO2_BUFFER {
     pub Flags: super::UINT32,
     pub AudioBytes: super::UINT32,
@@ -1178,12 +1178,24 @@ pub struct XAUDIO2_BUFFER {
     pub LoopCount: super::UINT32,
     pub pContext: *mut core::ffi::c_void,
 }
+#[cfg(feature = "shared")]
+impl Default for XAUDIO2_BUFFER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(1))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct XAUDIO2_BUFFER_WMA {
     pub pDecodedPacketCumulativeBytes: *const super::UINT32,
     pub PacketCount: super::UINT32,
+}
+#[cfg(feature = "shared")]
+impl Default for XAUDIO2_BUFFER_WMA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const XAUDIO2_COMMIT_ALL: i32 = 0;
 pub const XAUDIO2_COMMIT_NOW: i32 = 0;
@@ -1211,10 +1223,16 @@ pub const XAUDIO2_DLL_A: windows_core::PCSTR = windows_core::s!("xaudio2_9.dll")
 pub const XAUDIO2_DLL_W: windows_core::PCWSTR = windows_core::w!("xaudio2_9.dll");
 #[repr(C, packed(1))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct XAUDIO2_EFFECT_CHAIN {
     pub EffectCount: super::UINT32,
     pub pEffectDescriptors: *mut XAUDIO2_EFFECT_DESCRIPTOR,
+}
+#[cfg(feature = "shared")]
+impl Default for XAUDIO2_EFFECT_CHAIN {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C, packed(1))]
 #[cfg(feature = "shared")]
@@ -1315,17 +1333,29 @@ pub const XAUDIO2_VOICE_NOSAMPLESPLAYED: i32 = 256;
 pub const XAUDIO2_VOICE_NOSRC: i32 = 4;
 #[repr(C, packed(1))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct XAUDIO2_VOICE_SENDS {
     pub SendCount: super::UINT32,
     pub pSends: *mut XAUDIO2_SEND_DESCRIPTOR,
 }
+#[cfg(feature = "shared")]
+impl Default for XAUDIO2_VOICE_SENDS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(1))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct XAUDIO2_VOICE_STATE {
     pub pCurrentBufferContext: *mut core::ffi::c_void,
     pub BuffersQueued: super::UINT32,
     pub SamplesPlayed: super::UINT64,
+}
+#[cfg(feature = "shared")]
+impl Default for XAUDIO2_VOICE_STATE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const XAUDIO2_VOICE_USEFILTER: i32 = 8;

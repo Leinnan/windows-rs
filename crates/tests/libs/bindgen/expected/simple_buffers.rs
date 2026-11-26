@@ -69,7 +69,7 @@ impl Buffers {
                 &T::IID,
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn QueryArray(
@@ -334,6 +334,10 @@ impl Buffers {
             this: this as *const _ as *const _,
         };
         let this = windows_core::imp::box_into_raw(windows_core::imp::box_new(this));
-        unsafe { windows_core::ScopedInterface::new(core::mem::transmute(this)) }
+        unsafe {
+            windows_core::ScopedInterface::new(<Self as windows_core::Interface>::from_raw(
+                this as *mut _,
+            ))
+        }
     }
 }

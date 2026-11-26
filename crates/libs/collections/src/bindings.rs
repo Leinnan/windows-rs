@@ -18,35 +18,7 @@ impl windows_core::RuntimeType for CollectionChange {
         b"Windows.Foundation.Collections.CollectionChange",
     );
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IIterable<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
-where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IIterable<T>
-{
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IIterable<T>
-{
-}
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface for IIterable<T> {
-    type Vtable = IIterable_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IIterable<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({faa585ea-6214-4217-afda-7f46de5869b3}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IIterable`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IIterable < T >, IIterable_Vtbl < T, >, 0xfaa585ea_6214_4217_afda_7f46de5869b3, b"Windows.Foundation.Collections.IIterable`1");
 impl<T: windows_core::RuntimeType + 'static> IIterable<T> {
     pub fn First(&self) -> windows_core::Result<IIterator<T>> {
         unsafe {
@@ -55,7 +27,7 @@ impl<T: windows_core::RuntimeType + 'static> IIterable<T> {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -85,8 +57,7 @@ impl<T: windows_core::RuntimeType + 'static> IIterable_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IIterable_Impl::First(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -97,7 +68,7 @@ impl<T: windows_core::RuntimeType + 'static> IIterable_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IIterable<T>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             First: First::<T, Identity, OFFSET>,
             T: core::marker::PhantomData::<T>,
         }
@@ -132,44 +103,17 @@ impl<T: windows_core::RuntimeType> IntoIterator for &IIterable<T> {
         windows_collections::BufferedIterator::new(self.First().unwrap())
     }
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IIterator<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
-where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IIterator<T>
-{
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IIterator<T>
-{
-}
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface for IIterator<T> {
-    type Vtable = IIterator_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IIterator<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({6a79e863-4300-459a-9966-cbb660963ee1}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IIterator`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IIterator < T >, IIterator_Vtbl < T, >, 0x6a79e863_4300_459a_9966_cbb660963ee1, b"Windows.Foundation.Collections.IIterator`1");
 impl<T: windows_core::RuntimeType + 'static> IIterator<T> {
     pub fn Current(&self) -> windows_core::Result<T> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<T as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).Current)(
                 windows_core::Interface::as_raw(self),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn HasCurrent(&self) -> windows_core::Result<bool> {
@@ -194,8 +138,11 @@ impl<T: windows_core::RuntimeType + 'static> IIterator<T> {
     }
     pub fn GetMany(
         &self,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<<T as windows_core::imp::Type>::Default>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(
@@ -222,7 +169,7 @@ where
     fn MoveNext(&self) -> windows_core::Result<bool>;
     fn GetMany(
         &self,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32>;
 }
 impl<T: windows_core::RuntimeType + 'static> IIterator_Vtbl<T> {
@@ -240,8 +187,7 @@ impl<T: windows_core::RuntimeType + 'static> IIterator_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IIterator_Impl::Current(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -329,7 +275,7 @@ impl<T: windows_core::RuntimeType + 'static> IIterator_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IIterator<T>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Current: Current::<T, Identity, OFFSET>,
             HasCurrent: HasCurrent::<T, Identity, OFFSET>,
             MoveNext: MoveNext::<T, Identity, OFFSET>,
@@ -377,69 +323,30 @@ impl<T: windows_core::RuntimeType> Iterator for IIterator<T> {
         result
     }
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IKeyValuePair<K, V>(
-    windows_core::IUnknown,
-    core::marker::PhantomData<K>,
-    core::marker::PhantomData<V>,
-)
-where
-    K: windows_core::RuntimeType + 'static,
-    V: windows_core::RuntimeType + 'static;
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown> for IKeyValuePair<K, V>
-{
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable> for IKeyValuePair<K, V>
-{
-}
-unsafe impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::Interface for IKeyValuePair<K, V>
-{
-    type Vtable = IKeyValuePair_Vtbl<K, V>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::RuntimeType for IKeyValuePair<K, V>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({02b51929-c1c4-4a7e-8940-0312b5c18500}")
-        .push_slice(b";")
-        .push_other(K::SIGNATURE)
-        .push_slice(b";")
-        .push_other(V::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IKeyValuePair`2<")
-        .push_other(K::NAME)
-        .push_slice(b", ")
-        .push_other(V::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IKeyValuePair < K, V >, IKeyValuePair_Vtbl < K, V, >, 0x02b51929_c1c4_4a7e_8940_0312b5c18500, b"Windows.Foundation.Collections.IKeyValuePair`2");
 impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
     IKeyValuePair<K, V>
 {
     pub fn Key(&self) -> windows_core::Result<K> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<K as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).Key)(
                 windows_core::Interface::as_raw(self),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Value(&self) -> windows_core::Result<V> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<V as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).Value)(
                 windows_core::Interface::as_raw(self),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
 }
@@ -476,8 +383,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IKeyValuePair_Impl::Key(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -501,8 +407,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IKeyValuePair_Impl::Value(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -513,7 +418,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IKeyValuePair<K, V>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Key: Key::<K, V, Identity, OFFSET>,
             Value: Value::<K, V, Identity, OFFSET>,
             K: core::marker::PhantomData::<K>,
@@ -542,48 +447,7 @@ where
     K: core::marker::PhantomData<K>,
     V: core::marker::PhantomData<V>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IMap<K, V>(
-    windows_core::IUnknown,
-    core::marker::PhantomData<K>,
-    core::marker::PhantomData<V>,
-)
-where
-    K: windows_core::RuntimeType + 'static,
-    V: windows_core::RuntimeType + 'static;
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown> for IMap<K, V>
-{
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable> for IMap<K, V>
-{
-}
-unsafe impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::Interface for IMap<K, V>
-{
-    type Vtable = IMap_Vtbl<K, V>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::RuntimeType for IMap<K, V>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({3c2925fe-8519-45c1-aa79-197b6718c1c1}")
-        .push_slice(b";")
-        .push_other(K::SIGNATURE)
-        .push_slice(b";")
-        .push_other(V::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IMap`2<")
-        .push_other(K::NAME)
-        .push_slice(b", ")
-        .push_other(V::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IMap < K, V >, IMap_Vtbl < K, V, >, 0x3c2925fe_8519_45c1_aa79_197b6718c1c1, b"Windows.Foundation.Collections.IMap`2");
 impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
     windows_core::imp::CanInto<IIterable<IKeyValuePair<K, V>>> for IMap<K, V>
 {
@@ -595,13 +459,14 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
         P0: windows_core::Param<K>,
     {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<V as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).Lookup)(
                 windows_core::Interface::as_raw(self),
                 key.param().abi(),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -635,7 +500,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert<P0, P1>(&self, key: P0, value: P1) -> windows_core::Result<bool>
@@ -680,7 +545,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -745,8 +610,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMap_Impl::Lookup(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -819,8 +683,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMap_Impl::GetView(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -890,7 +753,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IMap<K, V>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Lookup: Lookup::<K, V, Identity, OFFSET>,
             Size: Size::<K, V, Identity, OFFSET>,
             HasKey: HasKey::<K, V, Identity, OFFSET>,
@@ -942,37 +805,7 @@ where
     K: core::marker::PhantomData<K>,
     V: core::marker::PhantomData<V>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IMapChangedEventArgs<K>(windows_core::IUnknown, core::marker::PhantomData<K>)
-where
-    K: windows_core::RuntimeType + 'static;
-impl<K: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IMapChangedEventArgs<K>
-{
-}
-impl<K: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IMapChangedEventArgs<K>
-{
-}
-unsafe impl<K: windows_core::RuntimeType + 'static> windows_core::Interface
-    for IMapChangedEventArgs<K>
-{
-    type Vtable = IMapChangedEventArgs_Vtbl<K>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<K: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IMapChangedEventArgs<K> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({9939f4df-050a-4c0f-aa60-77075f9c4777}")
-        .push_slice(b";")
-        .push_other(K::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IMapChangedEventArgs`1<")
-        .push_other(K::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IMapChangedEventArgs < K >, IMapChangedEventArgs_Vtbl < K, >, 0x9939f4df_050a_4c0f_aa60_77075f9c4777, b"Windows.Foundation.Collections.IMapChangedEventArgs`1");
 impl<K: windows_core::RuntimeType + 'static> IMapChangedEventArgs<K> {
     pub fn CollectionChange(&self) -> windows_core::Result<CollectionChange> {
         unsafe {
@@ -986,12 +819,13 @@ impl<K: windows_core::RuntimeType + 'static> IMapChangedEventArgs<K> {
     }
     pub fn Key(&self) -> windows_core::Result<K> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<K as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).Key)(
                 windows_core::Interface::as_raw(self),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
 }
@@ -1045,8 +879,7 @@ impl<K: windows_core::RuntimeType + 'static> IMapChangedEventArgs_Vtbl<K> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMapChangedEventArgs_Impl::Key(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1057,8 +890,7 @@ impl<K: windows_core::RuntimeType + 'static> IMapChangedEventArgs_Vtbl<K> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IMapChangedEventArgs<K>, OFFSET>(
-            ),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             CollectionChange: CollectionChange::<K, Identity, OFFSET>,
             Key: Key::<K, Identity, OFFSET>,
             K: core::marker::PhantomData::<K>,
@@ -1084,48 +916,7 @@ where
     ) -> windows_core::HRESULT,
     K: core::marker::PhantomData<K>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IMapView<K, V>(
-    windows_core::IUnknown,
-    core::marker::PhantomData<K>,
-    core::marker::PhantomData<V>,
-)
-where
-    K: windows_core::RuntimeType + 'static,
-    V: windows_core::RuntimeType + 'static;
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown> for IMapView<K, V>
-{
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable> for IMapView<K, V>
-{
-}
-unsafe impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::Interface for IMapView<K, V>
-{
-    type Vtable = IMapView_Vtbl<K, V>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::RuntimeType for IMapView<K, V>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({e480ce40-a338-4ada-adcf-272272e48cb9}")
-        .push_slice(b";")
-        .push_other(K::SIGNATURE)
-        .push_slice(b";")
-        .push_other(V::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IMapView`2<")
-        .push_other(K::NAME)
-        .push_slice(b", ")
-        .push_other(V::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IMapView < K, V >, IMapView_Vtbl < K, V, >, 0xe480ce40_a338_4ada_adcf_272272e48cb9, b"Windows.Foundation.Collections.IMapView`2");
 impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
     windows_core::imp::CanInto<IIterable<IKeyValuePair<K, V>>> for IMapView<K, V>
 {
@@ -1139,13 +930,14 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
         P0: windows_core::Param<K>,
     {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<V as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).Lookup)(
                 windows_core::Interface::as_raw(self),
                 key.param().abi(),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1177,6 +969,12 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
         first: &mut Option<Self>,
         second: &mut Option<Self>,
     ) -> windows_core::Result<()> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *first = unsafe { core::mem::zeroed() };
+        }
+        if core::mem::needs_drop::<Option<Self>>() {
+            *second = unsafe { core::mem::zeroed() };
+        }
         unsafe {
             (windows_core::Interface::vtable(self).Split)(
                 windows_core::Interface::as_raw(self),
@@ -1194,7 +992,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1256,8 +1054,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMapView_Impl::Lookup(this, core::mem::transmute_copy(&key)) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1338,7 +1135,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IMapView<K, V>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Lookup: Lookup::<K, V, Identity, OFFSET>,
             Size: Size::<K, V, Identity, OFFSET>,
             HasKey: HasKey::<K, V, Identity, OFFSET>,
@@ -1377,48 +1174,7 @@ where
     K: core::marker::PhantomData<K>,
     V: core::marker::PhantomData<V>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IObservableMap<K, V>(
-    windows_core::IUnknown,
-    core::marker::PhantomData<K>,
-    core::marker::PhantomData<V>,
-)
-where
-    K: windows_core::RuntimeType + 'static,
-    V: windows_core::RuntimeType + 'static;
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IUnknown> for IObservableMap<K, V>
-{
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::imp::CanInto<windows_core::IInspectable> for IObservableMap<K, V>
-{
-}
-unsafe impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::Interface for IObservableMap<K, V>
-{
-    type Vtable = IObservableMap_Vtbl<K, V>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
-    windows_core::RuntimeType for IObservableMap<K, V>
-{
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({65df2bf5-bf39-41b5-aebc-5a9d865e472b}")
-        .push_slice(b";")
-        .push_other(K::SIGNATURE)
-        .push_slice(b";")
-        .push_other(V::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IObservableMap`2<")
-        .push_other(K::NAME)
-        .push_slice(b", ")
-        .push_other(V::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IObservableMap < K, V >, IObservableMap_Vtbl < K, V, >, 0x65df2bf5_bf39_41b5_aebc_5a9d865e472b, b"Windows.Foundation.Collections.IObservableMap`2");
 impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
     windows_core::imp::CanInto<IIterable<IKeyValuePair<K, V>>> for IObservableMap<K, V>
 {
@@ -1434,7 +1190,10 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
 {
     pub fn MapChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<IMapChangedEventArgs<K>>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<IMapChangedEventArgs<K>>)
+            + Send
+            + Sync
+            + 'static,
     {
         let handler = <MapChangedEventHandler<K, V>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -1463,7 +1222,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup<P0>(&self, key: P0) -> windows_core::Result<V>
@@ -1472,13 +1231,14 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
     {
         let this = &windows_core::Interface::cast::<IMap<K, V>>(self)?;
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<V as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(this).Lookup)(
                 windows_core::Interface::as_raw(this),
                 key.param().abi(),
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1515,7 +1275,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert<P0, P1>(&self, key: P0, value: P1) -> windows_core::Result<bool>
@@ -1637,8 +1397,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IObservableMap<K, V>, OFFSET>(
-            ),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             MapChanged: MapChanged::<K, V, Identity, OFFSET>,
             RemoveMapChanged: RemoveMapChanged::<K, V, Identity, OFFSET>,
             K: core::marker::PhantomData::<K>,
@@ -1666,37 +1425,7 @@ where
     K: core::marker::PhantomData<K>,
     V: core::marker::PhantomData<V>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IObservableVector<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
-where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IObservableVector<T>
-{
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IObservableVector<T>
-{
-}
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface
-    for IObservableVector<T>
-{
-    type Vtable = IObservableVector_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IObservableVector<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({5917eb53-50b4-4a0d-b309-65862b3f1dbc}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IObservableVector`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IObservableVector < T >, IObservableVector_Vtbl < T, >, 0x5917eb53_50b4_4a0d_b309_65862b3f1dbc, b"Windows.Foundation.Collections.IObservableVector`1");
 impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IIterable<T>>
     for IObservableVector<T>
 {
@@ -1710,7 +1439,10 @@ impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IVector<
 impl<T: windows_core::RuntimeType + 'static> IObservableVector<T> {
     pub fn VectorChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<IVectorChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<IVectorChangedEventArgs>)
+            + Send
+            + Sync
+            + 'static,
     {
         let handler = <VectorChangedEventHandler<T>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -1739,19 +1471,20 @@ impl<T: windows_core::RuntimeType + 'static> IObservableVector<T> {
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAt(&self, index: u32) -> windows_core::Result<T> {
         let this = &windows_core::Interface::cast::<IVector<T>>(self)?;
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<T as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(this).GetAt)(
                 windows_core::Interface::as_raw(this),
                 index,
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1773,7 +1506,7 @@ impl<T: windows_core::RuntimeType + 'static> IObservableVector<T> {
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -1862,9 +1595,12 @@ impl<T: windows_core::RuntimeType + 'static> IObservableVector<T> {
     pub fn GetMany(
         &self,
         startindex: u32,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<IVector<T>>(self)?;
+        if core::mem::needs_drop::<<T as windows_core::imp::Type>::Default>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(
@@ -1879,14 +1615,14 @@ impl<T: windows_core::RuntimeType + 'static> IObservableVector<T> {
     }
     pub fn ReplaceAll(
         &self,
-        items: &[<T as windows_core::imp::Type<T>>::Default],
+        items: &[<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<IVector<T>>(self)?;
         unsafe {
             (windows_core::Interface::vtable(this).ReplaceAll)(
                 windows_core::Interface::as_raw(this),
                 items.len().try_into().unwrap(),
-                core::mem::transmute(items.as_ptr()),
+                items.as_ptr().cast(),
             )
             .ok()
         }
@@ -1965,8 +1701,7 @@ impl<T: windows_core::RuntimeType + 'static> IObservableVector_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IObservableVector<T>, OFFSET>(
-            ),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             VectorChanged: VectorChanged::<T, Identity, OFFSET>,
             RemoveVectorChanged: RemoveVectorChanged::<T, Identity, OFFSET>,
             T: core::marker::PhantomData::<T>,
@@ -1991,35 +1726,7 @@ where
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     T: core::marker::PhantomData<T>,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IVector<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
-where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IVector<T>
-{
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IVector<T>
-{
-}
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface for IVector<T> {
-    type Vtable = IVector_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IVector<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({913337e9-11a1-4345-a3a2-4e7f956e222d}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IVector`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IVector < T >, IVector_Vtbl < T, >, 0x913337e9_11a1_4345_a3a2_4e7f956e222d, b"Windows.Foundation.Collections.IVector`1");
 impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IIterable<T>>
     for IVector<T>
 {
@@ -2028,13 +1735,14 @@ impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IIterabl
 impl<T: windows_core::RuntimeType + 'static> IVector<T> {
     pub fn GetAt(&self, index: u32) -> windows_core::Result<T> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<T as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).GetAt)(
                 windows_core::Interface::as_raw(self),
                 index,
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -2054,7 +1762,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector<T> {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -2136,8 +1844,11 @@ impl<T: windows_core::RuntimeType + 'static> IVector<T> {
     pub fn GetMany(
         &self,
         startindex: u32,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<<T as windows_core::imp::Type>::Default>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(
@@ -2152,13 +1863,13 @@ impl<T: windows_core::RuntimeType + 'static> IVector<T> {
     }
     pub fn ReplaceAll(
         &self,
-        items: &[<T as windows_core::imp::Type<T>>::Default],
+        items: &[<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<()> {
         unsafe {
             (windows_core::Interface::vtable(self).ReplaceAll)(
                 windows_core::Interface::as_raw(self),
                 items.len().try_into().unwrap(),
-                core::mem::transmute(items.as_ptr()),
+                items.as_ptr().cast(),
             )
             .ok()
         }
@@ -2171,7 +1882,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector<T> {
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2211,11 +1922,11 @@ where
     fn GetMany(
         &self,
         startIndex: u32,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32>;
     fn ReplaceAll(
         &self,
-        items: &[<T as windows_core::imp::Type<T>>::Default],
+        items: &[<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<()>;
 }
 impl<T: windows_core::RuntimeType + 'static> IVector_Vtbl<T> {
@@ -2234,8 +1945,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IVector_Impl::GetAt(this, index) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2281,8 +1991,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IVector_Impl::GetView(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2461,7 +2170,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IVector<T>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetAt: GetAt::<T, Identity, OFFSET>,
             Size: Size::<T, Identity, OFFSET>,
             GetView: GetView::<T, Identity, OFFSET>,
@@ -2534,18 +2243,12 @@ where
     ) -> windows_core::HRESULT,
     T: core::marker::PhantomData<T>,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IVectorChangedEventArgs,
     IVectorChangedEventArgs_Vtbl,
-    0x575933df_34fe_4480_af15_07691f3d5d9b
+    0x575933df_34fe_4480_af15_07691f3d5d9b,
+    b"Windows.Foundation.Collections.IVectorChangedEventArgs"
 );
-impl windows_core::RuntimeType for IVectorChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(
-        b"Windows.Foundation.Collections.IVectorChangedEventArgs",
-    );
-}
 windows_core::imp::interface_hierarchy!(
     IVectorChangedEventArgs,
     windows_core::IUnknown,
@@ -2627,8 +2330,7 @@ impl IVectorChangedEventArgs_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IVectorChangedEventArgs, OFFSET>(
-            ),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             CollectionChange: CollectionChange::<Identity, OFFSET>,
             Index: Index::<Identity, OFFSET>,
         }
@@ -2646,35 +2348,7 @@ pub struct IVectorChangedEventArgs_Vtbl {
     ) -> windows_core::HRESULT,
     pub Index: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IVectorView<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
-where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IVectorView<T>
-{
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IVectorView<T>
-{
-}
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface for IVectorView<T> {
-    type Vtable = IVectorView_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IVectorView<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({bbe1fa4c-b0e3-4583-baef-1f1b2e483e56}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.Collections.IVectorView`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
-}
+windows_core::imp::define_winrt_interface!(IVectorView < T >, IVectorView_Vtbl < T, >, 0xbbe1fa4c_b0e3_4583_baef_1f1b2e483e56, b"Windows.Foundation.Collections.IVectorView`1");
 impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IIterable<T>>
     for IVectorView<T>
 {
@@ -2683,13 +2357,14 @@ impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IIterabl
 impl<T: windows_core::RuntimeType + 'static> IVectorView<T> {
     pub fn GetAt(&self, index: u32) -> windows_core::Result<T> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<T as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).GetAt)(
                 windows_core::Interface::as_raw(self),
                 index,
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -2720,8 +2395,11 @@ impl<T: windows_core::RuntimeType + 'static> IVectorView<T> {
     pub fn GetMany(
         &self,
         startindex: u32,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32> {
+        if core::mem::needs_drop::<<T as windows_core::imp::Type>::Default>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(self).GetMany)(
@@ -2742,7 +2420,7 @@ impl<T: windows_core::RuntimeType + 'static> IVectorView<T> {
                 windows_core::Interface::as_raw(this),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2775,7 +2453,7 @@ where
     fn GetMany(
         &self,
         startIndex: u32,
-        items: &mut [<T as windows_core::imp::Type<T>>::Default],
+        items: &mut [<T as windows_core::imp::Type>::Default],
     ) -> windows_core::Result<u32>;
 }
 impl<T: windows_core::RuntimeType + 'static> IVectorView_Vtbl<T> {
@@ -2794,8 +2472,7 @@ impl<T: windows_core::RuntimeType + 'static> IVectorView_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IVectorView_Impl::GetAt(this, index) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2891,7 +2568,7 @@ impl<T: windows_core::RuntimeType + 'static> IVectorView_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IVectorView<T>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetAt: GetAt::<T, Identity, OFFSET>,
             Size: Size::<T, Identity, OFFSET>,
             IndexOf: IndexOf::<T, Identity, OFFSET>,
@@ -2967,6 +2644,7 @@ impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'sta
                 windows_core::Ref<IMapChangedEventArgs<K>>,
             ) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -3015,6 +2693,7 @@ struct MapChangedEventHandlerBox<
             windows_core::Ref<IMapChangedEventArgs<K>>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(K, V, fn() -> F)>)
 where
@@ -3028,6 +2707,7 @@ impl<
             windows_core::Ref<IMapChangedEventArgs<K>>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > MapChangedEventHandlerBox<K, V, F>
 {
@@ -3048,7 +2728,7 @@ impl<
         event: *mut core::ffi::c_void,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<MapChangedEventHandler<K, V>, F>);
             (this.invoke)(
                 core::mem::transmute_copy(&sender),
@@ -3086,6 +2766,7 @@ impl<T: windows_core::RuntimeType + 'static> VectorChangedEventHandler<T> {
                 windows_core::Ref<IVectorChangedEventArgs>,
             ) -> windows_core::Result<()>
             + Send
+            + Sync
             + 'static,
     >(
         invoke: F,
@@ -3131,6 +2812,7 @@ struct VectorChangedEventHandlerBox<
             windows_core::Ref<IVectorChangedEventArgs>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 >(core::marker::PhantomData<(T, fn() -> F)>)
 where
@@ -3142,6 +2824,7 @@ impl<
             windows_core::Ref<IVectorChangedEventArgs>,
         ) -> windows_core::Result<()>
         + Send
+        + Sync
         + 'static,
 > VectorChangedEventHandlerBox<T, F>
 {
@@ -3161,7 +2844,7 @@ impl<
         event: *mut core::ffi::c_void,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<VectorChangedEventHandler<T>, F>);
             (this.invoke)(
                 core::mem::transmute_copy(&sender),

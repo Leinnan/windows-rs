@@ -159,11 +159,7 @@ impl windows_core::RuntimeType for HeadsetOperation {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Gaming.Input.Preview.HeadsetOperation;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Gaming.Input.Preview.HeadsetOperation");
 }
-windows_core::imp::define_interface!(IGameControllerProviderInfoStatics, IGameControllerProviderInfoStatics_Vtbl, 0x0be1e6c5_d9bd_44ee_8362_488b2e464bfb);
-impl windows_core::RuntimeType for IGameControllerProviderInfoStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Gaming.Input.Preview.IGameControllerProviderInfoStatics");
-}
+windows_core::imp::define_winrt_interface!(IGameControllerProviderInfoStatics, IGameControllerProviderInfoStatics_Vtbl, 0x0be1e6c5_d9bd_44ee_8362_488b2e464bfb, b"Windows.Gaming.Input.Preview.IGameControllerProviderInfoStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IGameControllerProviderInfoStatics_Vtbl {
@@ -177,11 +173,7 @@ pub struct IGameControllerProviderInfoStatics_Vtbl {
     #[cfg(not(feature = "Gaming_Input_Custom"))]
     GetProviderId: usize,
 }
-windows_core::imp::define_interface!(ILegacyGipGameControllerProvider, ILegacyGipGameControllerProvider_Vtbl, 0x2da3ed52_ffd9_43e2_825c_1d2790e04d14);
-impl windows_core::RuntimeType for ILegacyGipGameControllerProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Gaming.Input.Preview.ILegacyGipGameControllerProvider");
-}
+windows_core::imp::define_winrt_interface!(ILegacyGipGameControllerProvider, ILegacyGipGameControllerProvider_Vtbl, 0x2da3ed52_ffd9_43e2_825c_1d2790e04d14, b"Windows.Gaming.Input.Preview.ILegacyGipGameControllerProvider");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILegacyGipGameControllerProvider_Vtbl {
@@ -209,11 +201,7 @@ pub struct ILegacyGipGameControllerProvider_Vtbl {
     #[cfg(not(feature = "System"))]
     GetStandardControllerButtonRemapping: usize,
 }
-windows_core::imp::define_interface!(ILegacyGipGameControllerProviderStatics, ILegacyGipGameControllerProviderStatics_Vtbl, 0xd40dda17_b1f4_499a_874c_7095aac15291);
-impl windows_core::RuntimeType for ILegacyGipGameControllerProviderStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Gaming.Input.Preview.ILegacyGipGameControllerProviderStatics");
-}
+windows_core::imp::define_winrt_interface!(ILegacyGipGameControllerProviderStatics, ILegacyGipGameControllerProviderStatics_Vtbl, 0xd40dda17_b1f4_499a_874c_7095aac15291, b"Windows.Gaming.Input.Preview.ILegacyGipGameControllerProviderStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILegacyGipGameControllerProviderStatics_Vtbl {
@@ -290,7 +278,7 @@ impl LegacyGipGameControllerProvider {
     pub fn PreferredTypes(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PreferredTypes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PreferredTypes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ExecuteCommand(&self, command: DeviceCommand) -> windows_core::Result<()> {
@@ -301,8 +289,9 @@ impl LegacyGipGameControllerProvider {
     }
     pub fn GetExtendedDeviceInfo(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetExtendedDeviceInfo)(windows_core::Interface::as_raw(self), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetExtendedDeviceInfo)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetHeadsetOperation(&self, operation: HeadsetOperation, buffer: &[u8]) -> windows_core::Result<()> {
@@ -310,8 +299,9 @@ impl LegacyGipGameControllerProvider {
     }
     pub fn GetHeadsetOperation(&self, operation: HeadsetOperation) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetHeadsetOperation)(windows_core::Interface::as_raw(self), operation, windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetHeadsetOperation)(windows_core::Interface::as_raw(self), operation, &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn AppCompatVersion(&self) -> windows_core::Result<u32> {
@@ -335,7 +325,7 @@ impl LegacyGipGameControllerProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStandardControllerButtonRemapping)(windows_core::Interface::as_raw(self), user.param().abi(), previous, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStandardControllerButtonRemapping)(windows_core::Interface::as_raw(self), user.param().abi(), previous, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FromGameController<P0>(controller: P0) -> windows_core::Result<Self>
@@ -344,7 +334,7 @@ impl LegacyGipGameControllerProvider {
     {
         Self::ILegacyGipGameControllerProviderStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromGameController)(windows_core::Interface::as_raw(this), controller.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromGameController)(windows_core::Interface::as_raw(this), controller.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Gaming_Input_Custom")]
@@ -354,7 +344,7 @@ impl LegacyGipGameControllerProvider {
     {
         Self::ILegacyGipGameControllerProviderStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromGameControllerProvider)(windows_core::Interface::as_raw(this), provider.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromGameControllerProvider)(windows_core::Interface::as_raw(this), provider.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "System")]
@@ -402,6 +392,7 @@ impl windows_core::RuntimeType for LegacyGipGameControllerProvider {
 unsafe impl windows_core::Interface for LegacyGipGameControllerProvider {
     type Vtable = <ILegacyGipGameControllerProvider as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILegacyGipGameControllerProvider as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LegacyGipGameControllerProvider {
     const NAME: &'static str = "Windows.Gaming.Input.Preview.LegacyGipGameControllerProvider";

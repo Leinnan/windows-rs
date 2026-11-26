@@ -2,6 +2,55 @@ fn main() {
     println!("cargo:rerun-if-changed=build.rs");
     windows_reactor_setup::as_self_contained();
 
+    let winmd = "..\\..\\..\\tools\\reactor-metadata\\winmd";
+    println!("cargo:rerun-if-changed={winmd}");
+    windows_bindgen::builder()
+        .input(winmd)
+        .input_default()
+        .output(
+            std::path::Path::new(&std::env::var_os("OUT_DIR").unwrap())
+                .join("collection_bindings.rs"),
+        )
+        .filters([
+            "Microsoft.UI.Xaml.Controls.Border::CreateInstance",
+            "Microsoft.UI.Xaml.Controls.ComboBox::CreateInstance",
+            "Microsoft.UI.Xaml.Controls.AutoSuggestBox::CreateInstance",
+            "Microsoft.UI.Xaml.Controls.IItemsControl::{ItemsSource,Items}",
+            "Microsoft.UI.Xaml.Controls.Primitives.ISelector::{SelectedIndex,SelectedItem}",
+            "Microsoft.UI.Xaml.Controls.ItemsSourceView::CreateInstance",
+            "Microsoft.UI.Xaml.Controls.IItemsSourceView::{Count,GetAt}",
+            "Microsoft.UI.Xaml.Window::CreateInstance",
+            "Microsoft.UI.Xaml.IWindow::{Content,Title,Activate,Close}",
+            "Microsoft.UI.Xaml.IFrameworkElement::FindName",
+            "Microsoft.UI.Xaml.Markup.XamlReader::Load",
+            "Microsoft.UI.Xaml.Controls.RadioButtons::CreateInstance",
+            "Microsoft.UI.Xaml.Controls.IRadioButtons::{ItemsSource,SelectedIndex,SelectedItem}",
+            "Microsoft.UI.Xaml.Controls.BreadcrumbBar::CreateInstance",
+            "Microsoft.UI.Xaml.Controls.IBreadcrumbBar::ItemsSource",
+            "Microsoft.UI.Xaml.Controls.IAutoSuggestBox::{Text,IsSuggestionListOpen}",
+            "Microsoft.UI.Xaml.IUIElement::Focus",
+            "IMarshal::GetUnmarshalClass",
+            "MSHCTX_INPROC",
+            "MSHLFLAGS_NORMAL",
+            "CoCreateFreeThreadedMarshaler",
+            "CoInitializeEx",
+            "CoUninitialize",
+            "COINIT_MULTITHREADED",
+        ])
+        .write();
+
+    windows_bindgen::builder()
+        .output(
+            std::path::Path::new(&std::env::var_os("OUT_DIR").unwrap()).join("canvas_bindings.rs"),
+        )
+        .filters([
+            "ID3D11Device::SetPrivateDataInterface",
+            "ID2D1DeviceContext::{}",
+            "ID2D1RenderTarget::PopAxisAlignedClip",
+            "D2DERR_PUSH_POP_UNBALANCED",
+        ])
+        .write();
+
     windows_bindgen::builder()
         .output(std::path::Path::new(&std::env::var_os("OUT_DIR").unwrap()).join("bindings.rs"))
         .implements([
@@ -22,7 +71,7 @@ fn main() {
             "IUIAutomation5::AddNotificationEventHandler",
             "IUIAutomationEventHandler",
             "IUIAutomationNotificationEventHandler",
-            "IUIAutomationElement::{FindAll,CurrentName,CurrentAutomationId,CurrentControlType,CurrentIsOffscreen,CurrentNativeWindowHandle,CurrentBoundingRectangle,GetCurrentPatternAs,SetFocus,CurrentHelpText,GetCurrentPropertyValue}",
+            "IUIAutomationElement::{FindAll,CurrentName,CurrentAutomationId,CurrentControlType,CurrentIsEnabled,CurrentIsOffscreen,CurrentNativeWindowHandle,CurrentBoundingRectangle,GetCurrentPatternAs,SetFocus,CurrentHelpText,GetCurrentPropertyValue}",
             "IUIAutomationElement2::CurrentLiveSetting",
             "IUIAutomationElement6::CurrentFullDescription",
             "IUIAutomationElementArray::{Length,GetElement}",
@@ -54,6 +103,7 @@ fn main() {
             "KEYEVENTF_UNICODE",
             "KEYEVENTF_KEYUP",
             "VK_CONTROL",
+            "VK_SHIFT",
             "VK_SPACE",
             "VK_RETURN",
             "INPUT_MOUSE",
@@ -64,12 +114,21 @@ fn main() {
             "MOUSEEVENTF_LEFTDOWN",
             "MOUSEEVENTF_LEFTUP",
             "GetSystemMetrics",
+            "SystemParametersInfoW",
+            "SPI_GETCLIENTAREAANIMATION",
             "SM_XVIRTUALSCREEN",
             "SM_YVIRTUALSCREEN",
             "SM_CXVIRTUALSCREEN",
             "SM_CYVIRTUALSCREEN",
             "WindowFromPoint",
             "GetCursorPos",
+            "GetCursorInfo",
+            "CURSORINFO",
+            "LoadCursorW",
+            "IDC_ARROW",
+            "IDC_HAND",
+            "IDC_IBEAM",
+            "IDC_SIZEWE",
             "SetThreadDpiAwarenessContext",
             "DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2",
             "IDataObject",
@@ -128,6 +187,16 @@ fn main() {
             "GetDC",
             "ReleaseDC",
             "GetPixel",
+            "CreateCompatibleDC",
+            "CreateCompatibleBitmap",
+            "SelectObject",
+            "BitBlt",
+            "GetDIBits",
+            "DeleteObject",
+            "DeleteDC",
+            "BITMAPINFO",
+            "DIB_RGB_COLORS",
+            "SRCCOPY",
             "GetTokenInformation",
             "TokenElevation",
             "TOKEN_ELEVATION",
@@ -138,9 +207,22 @@ fn main() {
             "WM_USER",
             "WM_CONTEXTMENU",
             "NIN_SELECT",
+            "Shell_NotifyIconW",
+            "NIM_DELETE",
+            "RegisterWindowMessageW",
             "WM_CLOSE",
             "GetClientRect",
             "GetWindowRect",
+            "GetWindowLongW",
+            "GWL_STYLE",
+            "GWL_EXSTYLE",
+            "WS_EX_TOPMOST",
+            "WS_MINIMIZEBOX",
+            "WS_MAXIMIZEBOX",
+            "WS_THICKFRAME",
+            "IsZoomed",
+            "WM_NCLBUTTONDBLCLK",
+            "HTCAPTION",
             "SetWindowPos",
             "SWP_NOACTIVATE",
             "SWP_NOZORDER",
@@ -148,11 +230,29 @@ fn main() {
             "SendMessageTimeoutW",
             "SMTO_ABORTIFHUNG",
             "SMTO_BLOCK",
+            "WM_NULL",
+            "GetClassNameW",
+            "GetForegroundWindow",
+            "WindowFromPoint",
             "WM_GETICON",
             "ICON_BIG",
             "ICON_SMALL",
         ])
-        .flat()
-        .minimal()
+        .write();
+
+    println!("cargo:rerun-if-changed=../../../tools/reactor-metadata/winmd");
+    windows_bindgen::builder()
+        .input("../../../tools/reactor-metadata/winmd")
+        .input_default()
+        .output(
+            std::path::Path::new(&std::env::var_os("OUT_DIR").unwrap())
+                .join("callback_bindings.rs"),
+        )
+        .filters([
+            "Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread",
+            "Microsoft.UI.Dispatching.DispatcherQueueHandler",
+            "Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal",
+            "Microsoft.UI.Dispatching.IDispatcherQueue.TryEnqueueWithPriority",
+        ])
         .write();
 }

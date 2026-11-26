@@ -1,17 +1,28 @@
 use super::*;
 
-pub struct ComponentContext<C: Component> {
+pub struct ComponentContext<'a, C: Component> {
+    pub(super) input: &'a C::Input,
     pub(super) reference: ElementRef,
     pub(super) local_sender: LocalSender<C::Message>,
-    pub(super) sender: ComponentSender<C::Message>,
-    pub(super) services: Arc<dyn ComponentServices>,
-    pub(super) tasks: Arc<Mutex<Vec<SyncWeak<TaskControl>>>>,
-    pub(super) ui_services: Rc<dyn ComponentUiServices>,
+    pub(super) services: Arc<ComponentServices>,
+    pub(super) tasks: Rc<RefCell<Vec<SyncWeak<TaskControl>>>>,
+    pub(super) ui_services: Rc<WindowServices>,
 }
 
-impl<C: Component> ComponentContext<C> {
+impl<C: Component> ComponentContext<'_, C> {
+    /// Returns the input most recently applied to this component.
+    ///
+    /// The input is borrowed for this lifecycle call. Clone any values needed by background work.
+    pub fn input(&self) -> &C::Input {
+        self.input
+    }
+
     pub fn sender(&self) -> LocalSender<C::Message> {
         self.local_sender.clone()
+    }
+
+    pub fn completion(&self) -> ComponentCompletion<C::Message> {
+        self.local_sender.completion()
     }
 
     pub fn callback<T>(&self, map: impl Fn(T) -> C::Message + 'static) -> Callback<T> {
@@ -75,39 +86,18 @@ impl<C: Component> ComponentContext<C> {
         delay: Duration,
         message: impl FnOnce() -> C::Message + Send + 'static,
     ) -> ComponentTimer {
-        let control = Arc::new(TaskControl::default());
-        let mut tasks = self.tasks.lock().unwrap();
-        tasks.retain(|task| task.strong_count() != 0);
-        tasks.push(Arc::downgrade(&control));
-        drop(tasks);
-        let component = self.sender.component;
-        let queue = Arc::clone(&self.sender.queue);
+        let control = self.register_task();
+        let sender = self.local_sender.shared();
         let timer_control = Arc::clone(&control);
         let registration = self.services.set_timeout(
             delay,
             Box::new(move || {
                 timer_control.timer_fired();
-                if !timer_control.queue() {
-                    return;
-                }
-                let mut queue = queue.lock().unwrap();
-                if queue.closed || queue.messages.len() >= MESSAGE_CAPACITY {
-                    timer_control.reject();
-                    return;
-                }
-                let sequence = queue.next_sequence;
-                queue.next_sequence = queue.next_sequence.wrapping_add(1);
-                queue.messages.push_back(Message {
-                    component,
-                    control: Some(Arc::clone(&timer_control)),
-                    sequence,
-                    value: MessageValue::Local(Box::new(move || Box::new(message()))),
-                });
-                let wake = (!queue.wake_pending).then(|| queue.waker.clone()).flatten();
-                queue.wake_pending |= wake.is_some();
-                drop(queue);
-                if let Some(wake) = wake {
-                    wake();
+                if timer_control.queue() {
+                    sender.enqueue(
+                        MessageValue::Local(Box::new(move || Box::new(message()))),
+                        Some(Arc::clone(&timer_control)),
+                    );
                 }
             }),
         );
@@ -116,27 +106,27 @@ impl<C: Component> ComponentContext<C> {
             task: ComponentTask { control },
         }
     }
+
+    fn register_task(&self) -> Arc<TaskControl> {
+        let control = Arc::new(TaskControl::default());
+        let mut tasks = self.tasks.borrow_mut();
+        tasks.retain(|task| task.strong_count() != 0);
+        tasks.push(Arc::downgrade(&control));
+        control
+    }
 }
 
-impl<C> ComponentContext<C>
+impl<C> ComponentContext<'_, C>
 where
     C: Component,
     C::Message: Send,
 {
-    pub fn completion(&self) -> ComponentCompletion<C::Message> {
-        self.sender.completion()
-    }
-
     pub fn spawn_background(
         &self,
         work: impl FnOnce(CancellationToken) -> C::Message + Send + 'static,
     ) -> ComponentTask {
-        let control = Arc::new(TaskControl::default());
-        let mut tasks = self.tasks.lock().unwrap();
-        tasks.retain(|task| task.strong_count() != 0);
-        tasks.push(Arc::downgrade(&control));
-        drop(tasks);
-        let sender = self.sender.clone();
+        let control = self.register_task();
+        let sender = self.local_sender.shared();
         let thread_control = Arc::clone(&control);
         self.services.spawn_background(Box::new(move || {
             let message = work(CancellationToken {
@@ -151,12 +141,8 @@ where
 
     #[must_use = "dropping the timer cancels message delivery"]
     pub fn set_timeout(&self, delay: Duration, message: C::Message) -> ComponentTimer {
-        let control = Arc::new(TaskControl::default());
-        let mut tasks = self.tasks.lock().unwrap();
-        tasks.retain(|task| task.strong_count() != 0);
-        tasks.push(Arc::downgrade(&control));
-        drop(tasks);
-        let sender = self.sender.clone();
+        let control = self.register_task();
+        let sender = self.local_sender.shared();
         let timer_control = Arc::clone(&control);
         let registration = self.services.set_timeout(
             delay,
@@ -174,36 +160,41 @@ where
     }
 }
 
-pub struct ViewContext<'a, C: Component> {
-    pub(super) context: ComponentContext<C>,
-    pub(super) contexts: &'a HashMap<ContextId, ContextValue>,
+pub struct ViewContext<C: Component> {
+    pub(super) reference: ElementRef,
+    pub(super) local_sender: LocalSender<C::Message>,
+    pub(super) contexts: ContextEnvironment,
     pub(super) dependencies: HashSet<ContextId>,
     pub(super) effects: EffectDraft,
     pub(super) window: WindowPublication,
 }
 
-impl<C: Component> ViewContext<'_, C> {
+impl<C: Component> ViewContext<C> {
     pub fn sender(&self) -> LocalSender<C::Message> {
-        self.context.sender()
+        self.local_sender.clone()
+    }
+
+    pub fn completion(&self) -> ComponentCompletion<C::Message> {
+        self.local_sender.completion()
     }
 
     pub fn callback<T>(&self, map: impl Fn(T) -> C::Message + 'static) -> Callback<T> {
-        self.context.callback(map)
+        self.local_sender.callback(map)
     }
 
     pub fn forward(&self) -> Callback<C::Message> {
-        self.context.forward()
+        self.local_sender.forward()
     }
 
     pub fn message(&self, message: C::Message) -> Callback<()>
     where
         C::Message: Clone,
     {
-        self.context.message(message)
+        self.local_sender.message(message)
     }
 
     pub fn root(&self) -> ElementRef {
-        self.context.root()
+        self.reference.clone()
     }
 
     pub fn use_context<T: Clone + 'static>(&mut self, context: &Context<T>) -> T {
@@ -243,7 +234,7 @@ impl<C: Component> ViewContext<'_, C> {
     /// Observes native size changes without replaying them when the callback is replaced.
     pub fn on_window_size(&mut self, callback: impl IntoPayloadCallback<WindowSize>) {
         let previous = self.window.on_size.replace(WindowObserverDeclaration {
-            owner: self.context.local_sender.component,
+            owner: self.local_sender.component,
             generation: 0,
             callback: callback.into_payload_callback(),
         });
@@ -262,7 +253,7 @@ impl<C: Component> ViewContext<'_, C> {
     /// a new subscription.
     pub fn on_window_placement(&mut self, callback: impl IntoPayloadCallback<WindowPlacement>) {
         let previous = self.window.on_placement.replace(WindowObserverDeclaration {
-            owner: self.context.local_sender.component,
+            owner: self.local_sender.component,
             generation: 0,
             callback: callback.into_payload_callback(),
         });
@@ -282,7 +273,7 @@ impl<C: Component> ViewContext<'_, C> {
             .window
             .on_color_scheme
             .replace(WindowObserverDeclaration {
-                owner: self.context.local_sender.component,
+                owner: self.local_sender.component,
                 generation: 0,
                 callback: callback.into_payload_callback(),
             });
@@ -313,15 +304,5 @@ impl<C: Component> ViewContext<'_, C> {
     pub fn window_visuals(&mut self, visuals: WindowVisuals) {
         let previous = self.window.visuals.replace(visuals);
         assert!(previous.is_none(), "window visuals declared more than once");
-    }
-}
-
-impl<C> ViewContext<'_, C>
-where
-    C: Component,
-    C::Message: Send,
-{
-    pub fn completion(&self) -> ComponentCompletion<C::Message> {
-        self.context.completion()
     }
 }

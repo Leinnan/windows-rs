@@ -3,7 +3,7 @@
 use std::borrow::Borrow;
 use std::hash::{Hash, Hasher};
 use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering::SeqCst};
+use std::sync::atomic::{AtomicBool, AtomicU32, Ordering::SeqCst};
 use windows_core::{
     ComObject, IUnknown, IUnknownImpl, Interface, InterfaceRef, implement, interface,
 };
@@ -378,6 +378,47 @@ fn to_object() {
 }
 
 #[test]
+fn provenance_to_object() {
+    let app = MyApp::new(42);
+    let tombstone = app.tombstone.clone();
+    let mut survivor = app.to_object();
+    drop(app);
+    survivor.get_mut().unwrap().set_x(43);
+    assert_eq!(survivor.get_x_direct(), 43);
+    drop(survivor);
+    assert!(tombstone.is_dead());
+}
+
+#[test]
+fn provenance_take() {
+    let app = MyApp::new(42);
+    let tombstone = app.tombstone.clone();
+    let survivor = app.to_object();
+    drop(app);
+    let inner = survivor.take().unwrap();
+    assert_eq!(inner.get_x_direct(), 42);
+    assert!(!tombstone.is_dead());
+    drop(inner);
+    assert!(tombstone.is_dead());
+}
+
+#[test]
+fn object_size() {
+    // One vtable pointer per interface chain plus the reference count.
+    assert_eq!(
+        size_of::<MyApp_Impl>(),
+        size_of::<MyApp>() + 4 * size_of::<usize>()
+    );
+}
+
+#[test]
+#[should_panic]
+fn interface_out_of_bounds() {
+    // No interface is published; the test only exercises the storage bounds check.
+    let outer = unsafe { MyApp::default().into_outer() };
+    outer.__com.interface(100);
+}
+#[test]
 fn dynamic_cast() {
     let app = MyApp::new(42);
     let unknown = app.to_interface::<IUnknown>();
@@ -465,15 +506,14 @@ fn iunknown_identity() {
     );
 }
 
-// Compilation verifies that `ComObject` accepts a non-`Send` implementation.
 #[implement(IBar)]
-struct UnsendableThing {
-    cell: core::cell::Cell<u32>,
+struct MutableThing {
+    value: AtomicU32,
 }
 
-impl IBar_Impl for UnsendableThing_Impl {
+impl IBar_Impl for MutableThing_Impl {
     unsafe fn say_hello(&self) {
-        println!("{}", self.cell.get());
+        println!("{}", self.value.load(SeqCst));
     }
 
     unsafe fn common(&self) -> u64 {
@@ -481,8 +521,8 @@ impl IBar_Impl for UnsendableThing_Impl {
     }
 }
 
-static_assertions::assert_not_impl_all!(UnsendableThing: Send, Sync);
-static_assertions::assert_not_impl_all!(ComObject<UnsendableThing>: Send, Sync);
+static_assertions::assert_impl_all!(MutableThing: Send, Sync);
+static_assertions::assert_impl_all!(ComObject<MutableThing>: Send, Sync);
 
 #[implement(IBar)]
 struct SendableThing {

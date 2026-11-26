@@ -1,5 +1,6 @@
 #![cfg(windows)]
-use windows::{Foundation::*, core::*};
+use test_implement::*;
+use windows_core::*;
 
 #[implement(IStringable, IClosable)]
 struct Test;
@@ -70,13 +71,13 @@ fn identity_from() -> Result<()> {
         let inspectable = Into::<&IInspectable>::into(&closable);
         assert_eq!(
             inspectable.GetRuntimeClassName()?,
-            "Windows.Foundation.IClosable"
+            "Windows.Foundation.IStringable"
         );
 
         let inspectable = Into::<IInspectable>::into(closable.clone());
         assert_eq!(
             inspectable.GetRuntimeClassName()?,
-            "Windows.Foundation.IClosable"
+            "Windows.Foundation.IStringable"
         );
 
         let unknown = Into::<&IUnknown>::into(&closable);

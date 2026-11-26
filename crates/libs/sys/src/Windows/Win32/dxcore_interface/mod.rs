@@ -46,10 +46,16 @@ impl DXCoreAdapterPreference {
 }
 #[repr(C)]
 #[cfg(feature = "stdint")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DXCoreAdapterProcessSetQueryInput {
     pub arraySize: super::uint32_t,
     pub processIds: *mut super::uint32_t,
+}
+#[cfg(feature = "stdint")]
+impl Default for DXCoreAdapterProcessSetQueryInput {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "stdint")]
@@ -100,11 +106,17 @@ impl DXCoreAdapterState {
 }
 #[repr(C)]
 #[cfg(feature = "stdint")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DXCoreEngineNamePropertyInput {
     pub adapterEngineIndex: DXCoreAdapterEngineIndex,
     pub engineNameLength: super::uint32_t,
     pub engineName: *mut u16,
+}
+#[cfg(feature = "stdint")]
+impl Default for DXCoreEngineNamePropertyInput {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "stdint")]
@@ -182,6 +194,7 @@ pub struct DXCoreMemoryType(pub u32);
 impl DXCoreMemoryType {
     pub const Dedicated: Self = Self(0);
     pub const Shared: Self = Self(1);
+    pub const ReservedPartition: Self = Self(2);
 }
 #[repr(C)]
 #[cfg(feature = "stdint")]
@@ -222,6 +235,30 @@ pub struct DXCoreProcessMemoryQueryOutput {
 }
 #[repr(transparent)]
 #[derive(Clone, Copy)]
+pub struct DXCoreReservedAcceleratorMemoryFlags(pub u32);
+impl DXCoreReservedAcceleratorMemoryFlags {
+    pub const None: Self = Self(0);
+    pub const UserConfigured: Self = Self(1);
+}
+#[repr(C)]
+#[cfg(feature = "stdint")]
+#[derive(Clone, Copy)]
+pub struct DXCoreReservedAcceleratorMemoryInfo {
+    pub maximumSize: super::uint64_t,
+    pub recommendedSize: super::uint64_t,
+    pub currentSize: super::uint64_t,
+    pub userConfiguredSize: super::uint64_t,
+    pub currentCacheSize: super::uint64_t,
+    pub flags: DXCoreReservedAcceleratorMemoryFlags,
+}
+#[cfg(feature = "stdint")]
+impl Default for DXCoreReservedAcceleratorMemoryInfo {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(transparent)]
+#[derive(Clone, Copy)]
 pub struct DXCoreRuntimeFilterFlags(pub u32);
 impl DXCoreRuntimeFilterFlags {
     pub const None: Self = Self(0);
@@ -256,6 +293,7 @@ pub const IID_IDXCoreAdapter: windows_sys::core::GUID = windows_sys::core::GUID:
 pub const IID_IDXCoreAdapter1: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xa0783366_cfa3_43be_9d79_55b2da97c63c);
 pub const IID_IDXCoreAdapterFactory: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x78ee5945_c36e_4b13_a669_005dd11c0f06);
 pub const IID_IDXCoreAdapterFactory1: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xd5682e19_6d21_401c_827a_9a51a4ea35d7);
+pub const IID_IDXCoreAdapterFactory2: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xb2b98767_bfed_412b_bbde_509171b226ba);
 pub const IID_IDXCoreAdapterList: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x526c7776_40e9_459b_b711_f32ad76dfc28);
 pub type PFN_DXCORE_NOTIFICATION_CALLBACK = Option<unsafe extern "system" fn(notificationtype: DXCoreNotificationType, object: *mut core::ffi::c_void, context: *const core::ffi::c_void)>;
 pub const _FACDXCORE: i32 = 2176;

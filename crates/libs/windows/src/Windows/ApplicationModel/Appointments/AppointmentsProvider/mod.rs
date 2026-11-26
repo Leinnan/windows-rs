@@ -6,7 +6,7 @@ impl AddAppointmentOperation {
     pub fn AppointmentInformation(&self) -> windows_core::Result<super::Appointment> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AppointmentInformation)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AppointmentInformation)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SourcePackageFamilyName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -34,6 +34,7 @@ impl windows_core::RuntimeType for AddAppointmentOperation {
 unsafe impl windows_core::Interface for AddAppointmentOperation {
     type Vtable = <IAddAppointmentOperation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAddAppointmentOperation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AddAppointmentOperation {
     const NAME: &'static str = "Windows.ApplicationModel.Appointments.AppointmentsProvider.AddAppointmentOperation";
@@ -84,11 +85,7 @@ impl AppointmentsProviderLaunchActionVerbs {
 impl windows_core::RuntimeName for AppointmentsProviderLaunchActionVerbs {
     const NAME: &'static str = "Windows.ApplicationModel.Appointments.AppointmentsProvider.AppointmentsProviderLaunchActionVerbs";
 }
-windows_core::imp::define_interface!(IAddAppointmentOperation, IAddAppointmentOperation_Vtbl, 0xec4a9af3_620d_4c69_add7_9794e918081f);
-impl windows_core::RuntimeType for IAddAppointmentOperation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IAddAppointmentOperation");
-}
+windows_core::imp::define_winrt_interface!(IAddAppointmentOperation, IAddAppointmentOperation_Vtbl, 0xec4a9af3_620d_4c69_add7_9794e918081f, b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IAddAppointmentOperation");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAddAppointmentOperation_Vtbl {
@@ -100,11 +97,7 @@ pub struct IAddAppointmentOperation_Vtbl {
     pub ReportError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub DismissUI: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppointmentsProviderLaunchActionVerbsStatics, IAppointmentsProviderLaunchActionVerbsStatics_Vtbl, 0x36dbba28_9e2e_49c6_8ef7_3ab7a5dcc8b8);
-impl windows_core::RuntimeType for IAppointmentsProviderLaunchActionVerbsStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IAppointmentsProviderLaunchActionVerbsStatics");
-}
+windows_core::imp::define_winrt_interface!(IAppointmentsProviderLaunchActionVerbsStatics, IAppointmentsProviderLaunchActionVerbsStatics_Vtbl, 0x36dbba28_9e2e_49c6_8ef7_3ab7a5dcc8b8, b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IAppointmentsProviderLaunchActionVerbsStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppointmentsProviderLaunchActionVerbsStatics_Vtbl {
@@ -114,22 +107,14 @@ pub struct IAppointmentsProviderLaunchActionVerbsStatics_Vtbl {
     pub RemoveAppointment: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ShowTimeFrame: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppointmentsProviderLaunchActionVerbsStatics2, IAppointmentsProviderLaunchActionVerbsStatics2_Vtbl, 0xef9049a4_af21_473c_88dc_76cd89f60ca5);
-impl windows_core::RuntimeType for IAppointmentsProviderLaunchActionVerbsStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IAppointmentsProviderLaunchActionVerbsStatics2");
-}
+windows_core::imp::define_winrt_interface!(IAppointmentsProviderLaunchActionVerbsStatics2, IAppointmentsProviderLaunchActionVerbsStatics2_Vtbl, 0xef9049a4_af21_473c_88dc_76cd89f60ca5, b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IAppointmentsProviderLaunchActionVerbsStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppointmentsProviderLaunchActionVerbsStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ShowAppointmentDetails: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRemoveAppointmentOperation, IRemoveAppointmentOperation_Vtbl, 0x08b66aba_fe33_46cd_a50c_a8ffb3260537);
-impl windows_core::RuntimeType for IRemoveAppointmentOperation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IRemoveAppointmentOperation");
-}
+windows_core::imp::define_winrt_interface!(IRemoveAppointmentOperation, IRemoveAppointmentOperation_Vtbl, 0x08b66aba_fe33_46cd_a50c_a8ffb3260537, b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IRemoveAppointmentOperation");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoveAppointmentOperation_Vtbl {
@@ -142,11 +127,7 @@ pub struct IRemoveAppointmentOperation_Vtbl {
     pub ReportError: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub DismissUI: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IReplaceAppointmentOperation, IReplaceAppointmentOperation_Vtbl, 0xf4903d9b_9e61_4de2_a732_2687c07d1de8);
-impl windows_core::RuntimeType for IReplaceAppointmentOperation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IReplaceAppointmentOperation");
-}
+windows_core::imp::define_winrt_interface!(IReplaceAppointmentOperation, IReplaceAppointmentOperation_Vtbl, 0xf4903d9b_9e61_4de2_a732_2687c07d1de8, b"Windows.ApplicationModel.Appointments.AppointmentsProvider.IReplaceAppointmentOperation");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IReplaceAppointmentOperation_Vtbl {
@@ -174,7 +155,7 @@ impl RemoveAppointmentOperation {
     pub fn InstanceStartDate(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InstanceStartDate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).InstanceStartDate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SourcePackageFamilyName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -202,6 +183,7 @@ impl windows_core::RuntimeType for RemoveAppointmentOperation {
 unsafe impl windows_core::Interface for RemoveAppointmentOperation {
     type Vtable = <IRemoveAppointmentOperation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IRemoveAppointmentOperation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for RemoveAppointmentOperation {
     const NAME: &'static str = "Windows.ApplicationModel.Appointments.AppointmentsProvider.RemoveAppointmentOperation";
@@ -222,13 +204,13 @@ impl ReplaceAppointmentOperation {
     pub fn AppointmentInformation(&self) -> windows_core::Result<super::Appointment> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AppointmentInformation)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AppointmentInformation)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn InstanceStartDate(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InstanceStartDate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).InstanceStartDate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SourcePackageFamilyName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -256,6 +238,7 @@ impl windows_core::RuntimeType for ReplaceAppointmentOperation {
 unsafe impl windows_core::Interface for ReplaceAppointmentOperation {
     type Vtable = <IReplaceAppointmentOperation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IReplaceAppointmentOperation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ReplaceAppointmentOperation {
     const NAME: &'static str = "Windows.ApplicationModel.Appointments.AppointmentsProvider.ReplaceAppointmentOperation";

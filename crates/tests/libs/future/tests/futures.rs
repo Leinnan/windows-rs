@@ -1,6 +1,7 @@
 #![cfg(windows)]
 
-use windows::{Storage::Streams::*, System::Threading::*, core::*};
+use test_future::*;
+use windows_core::*;
 
 #[test]
 fn simple_sync() -> Result<()> {
@@ -50,9 +51,10 @@ fn switch_context() -> Result<()> {
 
     let mut pool = LocalPool::new();
     let (sender, receiver) = std::sync::mpsc::channel::<()>();
+    let receiver = std::sync::Mutex::new(receiver);
 
     let async_future = ThreadPool::RunAsync(&WorkItemHandler::new(move |_| {
-        receiver.recv().unwrap();
+        receiver.lock().unwrap().recv().unwrap();
         Ok(())
     }))?
     .into_future();
@@ -84,4 +86,63 @@ fn switch_context() -> Result<()> {
     pool.run();
 
     Ok(())
+}
+
+#[test]
+fn waker_replacement_survives_future_drop() -> Result<()> {
+    use std::{
+        future::{Future, IntoFuture},
+        sync::{Arc, Mutex, mpsc},
+        task::{Context, Wake, Waker},
+        time::Duration,
+    };
+
+    struct Notify {
+        id: u8,
+        wakes: mpsc::Sender<u8>,
+        drops: mpsc::Sender<u8>,
+    }
+
+    impl Wake for Notify {
+        fn wake(self: Arc<Self>) {
+            self.wakes.send(self.id).unwrap();
+        }
+    }
+
+    impl Drop for Notify {
+        fn drop(&mut self) {
+            self.drops.send(self.id).unwrap();
+        }
+    }
+
+    let (start, wait) = mpsc::channel();
+    let wait = Mutex::new(wait);
+    let operation = ThreadPool::RunAsync(&WorkItemHandler::new(move |_| {
+        wait.lock().unwrap().recv().unwrap();
+        Ok(())
+    }))?;
+    let mut future = Box::pin(operation.clone().into_future());
+    let (wakes, woke) = mpsc::channel();
+    let (drops, dropped) = mpsc::channel();
+    for id in 0..2 {
+        let waker = Waker::from(Arc::new(Notify {
+            id,
+            wakes: wakes.clone(),
+            drops: drops.clone(),
+        }));
+        assert!(
+            future
+                .as_mut()
+                .poll(&mut Context::from_waker(&waker))
+                .is_pending()
+        );
+    }
+    assert_eq!(dropped.recv_timeout(Duration::from_secs(10)).unwrap(), 0);
+    drop(future);
+    assert!(dropped.try_recv().is_err());
+    start.send(()).unwrap();
+    assert_eq!(woke.recv_timeout(Duration::from_secs(10)).unwrap(), 1);
+    assert_eq!(dropped.recv_timeout(Duration::from_secs(10)).unwrap(), 1);
+    assert!(woke.try_recv().is_err());
+    operation.GetResults()
 }

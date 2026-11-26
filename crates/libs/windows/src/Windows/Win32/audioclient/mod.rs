@@ -5,7 +5,7 @@ pub const AMBISONICS_NORMALIZATION_N3D: AMBISONICS_NORMALIZATION = 1;
 pub const AMBISONICS_NORMALIZATION_SN3D: AMBISONICS_NORMALIZATION = 0;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AMBISONICS_PARAMS {
     pub u32Size: super::UINT32,
     pub u32Version: super::UINT32,
@@ -15,6 +15,12 @@ pub struct AMBISONICS_PARAMS {
     pub u32Order: super::UINT32,
     pub u32NumChannels: super::UINT32,
     pub pu32ChannelMap: *mut super::UINT32,
+}
+#[cfg(feature = "shared")]
+impl Default for AMBISONICS_PARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const AMBISONICS_PARAM_VERSION_1: i32 = 1;
 pub type AMBISONICS_TYPE = i32;
@@ -125,7 +131,7 @@ impl IAcousticEchoCancellationControl_Vtbl {
         unsafe extern "system" fn SetEchoCancellationRenderEndpoint<Identity: IAcousticEchoCancellationControl_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, endpointid: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAcousticEchoCancellationControl_Impl::SetEchoCancellationRenderEndpoint(this, core::mem::transmute(&endpointid))
+                IAcousticEchoCancellationControl_Impl::SetEchoCancellationRenderEndpoint(this, &*(&raw const endpointid).cast())
             }
         }
         Self {
@@ -338,7 +344,7 @@ impl IAudioClient {
         T: windows_core::Interface,
     {
         let mut result__ = core::ptr::null_mut();
-        unsafe { (windows_core::Interface::vtable(self).GetService)(windows_core::Interface::as_raw(self), &T::IID, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+        unsafe { (windows_core::Interface::vtable(self).GetService)(windows_core::Interface::as_raw(self), &T::IID, &mut result__).and_then(|| windows_core::imp::from_abi(result__)) }
     }
 }
 #[repr(C)]
@@ -928,7 +934,7 @@ impl IAudioEffectsManager_Vtbl {
         unsafe extern "system" fn SetAudioEffectState<Identity: IAudioEffectsManager_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, effectid: windows_core::GUID, state: AUDIO_EFFECT_STATE) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAudioEffectsManager_Impl::SetAudioEffectState(this, core::mem::transmute(&effectid), core::mem::transmute_copy(&state))
+                IAudioEffectsManager_Impl::SetAudioEffectState(this, &*(&raw const effectid).cast(), core::mem::transmute_copy(&state))
             }
         }
         Self {

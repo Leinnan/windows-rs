@@ -8,7 +8,7 @@ impl windows_core::RuntimeType for Handler {
         windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl Handler {
-    pub fn new<F: Fn(i32) + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(i32) + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&HandlerBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -21,8 +21,8 @@ pub struct Handler_Vtbl {
         value: i32,
     ) -> windows_core::HRESULT,
 }
-struct HandlerBox<F: Fn(i32) + 'static>(core::marker::PhantomData<(fn() -> F,)>);
-impl<F: Fn(i32) + 'static> HandlerBox<F> {
+struct HandlerBox<F: Fn(i32) + Send + Sync + 'static>(core::marker::PhantomData<(fn() -> F,)>);
+impl<F: Fn(i32) + Send + Sync + 'static> HandlerBox<F> {
     const VTABLE: Handler_Vtbl = Handler_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<Handler, F>::QueryInterface,
@@ -36,18 +36,14 @@ impl<F: Fn(i32) + 'static> HandlerBox<F> {
         value: i32,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<Handler, F>);
             (this.invoke)(value);
             windows_core::HRESULT(0)
         }
     }
 }
-windows_core::imp::define_interface!(Sink, Sink_Vtbl, 0xfbb9e298_5149_534a_843a_fce157f2a8f2);
-impl windows_core::RuntimeType for Sink {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-}
+windows_core::imp::define_winrt_interface!(Sink, Sink_Vtbl, 0xfbb9e298_5149_534a_843a_fce157f2a8f2);
 windows_core::imp::interface_hierarchy!(Sink, windows_core::IUnknown, windows_core::IInspectable);
 impl Sink {
     pub fn Subscribe<P0>(&self, handler: P0) -> windows_core::Result<i32>

@@ -18,7 +18,7 @@ impl AppTaskContent {
     pub fn CreateSequenceOfSteps(completedsteps: &[windows_core::HSTRING], executingstep: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IAppTaskContentStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateSequenceOfSteps)(windows_core::Interface::as_raw(this), completedsteps.len().try_into().unwrap(), core::mem::transmute(completedsteps.as_ptr()), core::mem::transmute_copy(executingstep), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateSequenceOfSteps)(windows_core::Interface::as_raw(this), completedsteps.len().try_into().unwrap(), completedsteps.as_ptr().cast(), core::mem::transmute_copy(executingstep), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreatePreviewThumbnail<P0>(imageuri: P0, executingstep: &windows_core::HSTRING) -> windows_core::Result<Self>
@@ -27,19 +27,19 @@ impl AppTaskContent {
     {
         Self::IAppTaskContentStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreatePreviewThumbnail)(windows_core::Interface::as_raw(this), imageuri.param().abi(), core::mem::transmute_copy(executingstep), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreatePreviewThumbnail)(windows_core::Interface::as_raw(this), imageuri.param().abi(), core::mem::transmute_copy(executingstep), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateTextSummaryResult(text: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IAppTaskContentStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateTextSummaryResult)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(text), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateTextSummaryResult)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(text), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateGeneratedAssetsResult(assets: &[Option<AppTaskResultAsset>]) -> windows_core::Result<Self> {
         Self::IAppTaskContentStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateGeneratedAssetsResult)(windows_core::Interface::as_raw(this), assets.len().try_into().unwrap(), core::mem::transmute(assets.as_ptr()), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateGeneratedAssetsResult)(windows_core::Interface::as_raw(this), assets.len().try_into().unwrap(), assets.as_ptr().cast(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn MaxButtons() -> windows_core::Result<u32> {
@@ -59,6 +59,7 @@ impl windows_core::RuntimeType for AppTaskContent {
 unsafe impl windows_core::Interface for AppTaskContent {
     type Vtable = <IAppTaskContent as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppTaskContent as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppTaskContent {
     const NAME: &'static str = "Windows.UI.Shell.Tasks.AppTaskContent";
@@ -87,8 +88,9 @@ impl AppTaskInfo {
     }
     pub fn GetCompletedSteps(&self) -> windows_core::Result<windows_core::Array<windows_core::HSTRING>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetCompletedSteps)(windows_core::Interface::as_raw(self), windows_core::Array::<windows_core::HSTRING>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetCompletedSteps)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<windows_core::HSTRING>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn GetExecutingStep(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -112,13 +114,13 @@ impl AppTaskInfo {
     pub fn DeepLink(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DeepLink)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DeepLink)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IconUri(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).IconUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).IconUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn State(&self) -> windows_core::Result<AppTaskState> {
@@ -136,7 +138,7 @@ impl AppTaskInfo {
     pub fn EndTime(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EndTime)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).EndTime)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn Id(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -168,8 +170,9 @@ impl AppTaskInfo {
     }
     pub fn FindAll() -> windows_core::Result<windows_core::Array<Self>> {
         Self::IAppTaskInfoStatics(|this| unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(this).FindAll)(windows_core::Interface::as_raw(this), windows_core::Array::<Self>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(this).FindAll)(windows_core::Interface::as_raw(this), &mut result_size__, &mut result__).map(|| windows_core::Array::<Self>::from_raw_parts(result__.cast(), result_size__))
         })
     }
     pub fn Create<P2, P3, P4>(title: &windows_core::HSTRING, subtitle: &windows_core::HSTRING, deeplink: P2, iconuri: P3, content: P4) -> windows_core::Result<Self>
@@ -180,7 +183,7 @@ impl AppTaskInfo {
     {
         Self::IAppTaskInfoStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(title), core::mem::transmute_copy(subtitle), deeplink.param().abi(), iconuri.param().abi(), content.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(title), core::mem::transmute_copy(subtitle), deeplink.param().abi(), iconuri.param().abi(), content.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IAppTaskInfoStatics<R, F: FnOnce(&IAppTaskInfoStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -194,6 +197,7 @@ impl windows_core::RuntimeType for AppTaskInfo {
 unsafe impl windows_core::Interface for AppTaskInfo {
     type Vtable = <IAppTaskInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppTaskInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppTaskInfo {
     const NAME: &'static str = "Windows.UI.Shell.Tasks.AppTaskInfo";
@@ -212,7 +216,7 @@ impl AppTaskResultAsset {
     {
         Self::IAppTaskResultAssetFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(context), iconuri.param().abi(), asseturi.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(context), iconuri.param().abi(), asseturi.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IAppTaskResultAssetFactory<R, F: FnOnce(&IAppTaskResultAssetFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -226,6 +230,7 @@ impl windows_core::RuntimeType for AppTaskResultAsset {
 unsafe impl windows_core::Interface for AppTaskResultAsset {
     type Vtable = <IAppTaskResultAsset as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppTaskResultAsset as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppTaskResultAsset {
     const NAME: &'static str = "Windows.UI.Shell.Tasks.AppTaskResultAsset";
@@ -249,11 +254,7 @@ impl windows_core::RuntimeType for AppTaskState {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.UI.Shell.Tasks.AppTaskState;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.AppTaskState");
 }
-windows_core::imp::define_interface!(IAppTaskContent, IAppTaskContent_Vtbl, 0x2411bf59_1b2d_5b63_8181_03d6c2248a68);
-impl windows_core::RuntimeType for IAppTaskContent {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskContent");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskContent, IAppTaskContent_Vtbl, 0x2411bf59_1b2d_5b63_8181_03d6c2248a68, b"Windows.UI.Shell.Tasks.IAppTaskContent");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskContent_Vtbl {
@@ -262,11 +263,7 @@ pub struct IAppTaskContent_Vtbl {
     pub SetTextInput: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetQuestion: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppTaskContentStatics, IAppTaskContentStatics_Vtbl, 0xaabd19f6_7afc_5b1b_94f6_5dc9dc9af9e7);
-impl windows_core::RuntimeType for IAppTaskContentStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskContentStatics");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskContentStatics, IAppTaskContentStatics_Vtbl, 0xaabd19f6_7afc_5b1b_94f6_5dc9dc9af9e7, b"Windows.UI.Shell.Tasks.IAppTaskContentStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskContentStatics_Vtbl {
@@ -277,11 +274,7 @@ pub struct IAppTaskContentStatics_Vtbl {
     pub CreateGeneratedAssetsResult: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const AppTaskResultAsset, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub MaxButtons: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppTaskInfo, IAppTaskInfo_Vtbl, 0x6720eed6_435b_5db9_be66_9343b70654f7);
-impl windows_core::RuntimeType for IAppTaskInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskInfo");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskInfo, IAppTaskInfo_Vtbl, 0x6720eed6_435b_5db9_be66_9343b70654f7, b"Windows.UI.Shell.Tasks.IAppTaskInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskInfo_Vtbl {
@@ -300,11 +293,7 @@ pub struct IAppTaskInfo_Vtbl {
     pub StartTime: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::DateTime) -> windows_core::HRESULT,
     pub EndTime: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppTaskInfo2, IAppTaskInfo2_Vtbl, 0xad724d71_f137_51c0_8111_3552436bf447);
-impl windows_core::RuntimeType for IAppTaskInfo2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskInfo2");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskInfo2, IAppTaskInfo2_Vtbl, 0xad724d71_f137_51c0_8111_3552436bf447, b"Windows.UI.Shell.Tasks.IAppTaskInfo2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskInfo2_Vtbl {
@@ -313,11 +302,7 @@ pub struct IAppTaskInfo2_Vtbl {
     pub HiddenByUser: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub UpdateDeepLink: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppTaskInfoStatics, IAppTaskInfoStatics_Vtbl, 0xa0b0434f_c640_5800_88c9_d7691ac2f48f);
-impl windows_core::RuntimeType for IAppTaskInfoStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskInfoStatics");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskInfoStatics, IAppTaskInfoStatics_Vtbl, 0xa0b0434f_c640_5800_88c9_d7691ac2f48f, b"Windows.UI.Shell.Tasks.IAppTaskInfoStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskInfoStatics_Vtbl {
@@ -326,21 +311,13 @@ pub struct IAppTaskInfoStatics_Vtbl {
     pub FindAll: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32, *mut *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppTaskResultAsset, IAppTaskResultAsset_Vtbl, 0x75d0c2b3_8a31_5f8f_bda4_bdca96e95532);
-impl windows_core::RuntimeType for IAppTaskResultAsset {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskResultAsset");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskResultAsset, IAppTaskResultAsset_Vtbl, 0x75d0c2b3_8a31_5f8f_bda4_bdca96e95532, b"Windows.UI.Shell.Tasks.IAppTaskResultAsset");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskResultAsset_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(IAppTaskResultAssetFactory, IAppTaskResultAssetFactory_Vtbl, 0x0334d9df_0e06_5999_ba41_85d72e980085);
-impl windows_core::RuntimeType for IAppTaskResultAssetFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.Shell.Tasks.IAppTaskResultAssetFactory");
-}
+windows_core::imp::define_winrt_interface!(IAppTaskResultAssetFactory, IAppTaskResultAssetFactory_Vtbl, 0x0334d9df_0e06_5999_ba41_85d72e980085, b"Windows.UI.Shell.Tasks.IAppTaskResultAssetFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppTaskResultAssetFactory_Vtbl {

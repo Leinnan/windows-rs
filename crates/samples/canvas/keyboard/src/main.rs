@@ -1,7 +1,9 @@
 #![windows_subsystem = "windows"]
 
 use windows_canvas::*;
+
 use windows_reactor::*;
+use windows_text::TextFormat;
 
 #[derive(Clone)]
 enum Message {
@@ -30,7 +32,7 @@ impl Component for Sample {
             color_scheme: ColorScheme::Light,
             focused: false,
             status: "Click the canvas or press Tab to focus".to_string(),
-            format: TextFormat::new("Cascadia Mono", 28.0).unwrap(),
+            format: TextFormat::new("Cascadia Mono", 28.0),
         }
     }
 
@@ -132,7 +134,7 @@ impl Component for Sample {
                     .content("Clear text"),
             ));
 
-        cx.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Acrylic));
+        cx.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Acrylic));
         cx.on_color_scheme(cx.callback(Message::ColorScheme));
         cx.window_frame("Canvas keyboard", content)
     }

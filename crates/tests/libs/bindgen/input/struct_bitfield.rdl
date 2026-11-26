@@ -1,4 +1,4 @@
-//! --filter Test --flat
+//! --filter Test --full
 #[win32]
 mod Test {
     struct Flags {
@@ -21,6 +21,12 @@ mod Test {
             Delta: 4,
             Flag: 1,
         },
+    }
+    union Partial {
+        bits: u32 {
+            Low: 4,
+        },
+        byte: u8,
     }
 }
 #[win32]

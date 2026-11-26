@@ -1,7 +1,11 @@
 use super::*;
 
 fn open(ui: &Automation, label: &str) -> Result<IUIAutomationElement> {
-    ui.invoke("open")?;
+    if unsafe { ui.element("open")?.CurrentName()? } == "Context menu" {
+        ui.press_keys("open", &[0x10, 0x79])?;
+    } else {
+        ui.invoke("open")?;
+    }
     let item = ui.menu_item(label)?;
     ui.menu_item("More")?;
     Ok(item)
@@ -47,6 +51,25 @@ fn menu_bar_callback_replacement_and_removal() -> Result<()> {
     process::run("menu-bar", callback_replacement_and_removal)
 }
 
+#[test]
+fn context_menu_callback_replacement_and_removal() -> Result<()> {
+    process::run("menu-context", callback_replacement_and_removal)
+}
+
+#[test]
+fn context_menu_removal_restores_native_text_commands() -> Result<()> {
+    process::run("menu-text-context", |ui| {
+        ui.focus("replace")?;
+        open(ui, "Command")?;
+        ui.invoke("remove")?;
+        ui.name("state", "Generation 0; attached false")?;
+        closed(ui, "Command")?;
+        ui.press_keys("open", &[0x10, 0x79])?;
+        ui.menu_item("Select All")?;
+        ui.menu_gone("Command")
+    })
+}
+
 fn callback_replacement_and_removal(ui: &Automation) -> Result<()> {
     ui.focus("replace")?;
     ui.name("state", "Generation 0; attached true")?;
@@ -79,6 +102,11 @@ fn dropdown_content_replacement_retires_open_items() -> Result<()> {
 #[test]
 fn menu_bar_content_replacement_retires_open_items() -> Result<()> {
     process::run("menu-bar", content_replacement_retires_open_items)
+}
+
+#[test]
+fn context_menu_content_replacement_retires_open_items() -> Result<()> {
+    process::run("menu-context", content_replacement_retires_open_items)
 }
 
 fn content_replacement_retires_open_items(ui: &Automation) -> Result<()> {
@@ -173,6 +201,11 @@ fn dropdown_owner_replacement_retires_open_items() -> Result<()> {
 #[test]
 fn menu_bar_owner_replacement_retires_open_items() -> Result<()> {
     process::run("menu-bar", owner_replacement_retires_open_items)
+}
+
+#[test]
+fn context_menu_owner_replacement_retires_open_items() -> Result<()> {
+    process::run("menu-context", owner_replacement_retires_open_items)
 }
 
 fn owner_replacement_retires_open_items(ui: &Automation) -> Result<()> {
@@ -277,6 +310,128 @@ fn command_content_replacement_retires_open_items() -> Result<()> {
             "Selected 0; calls 1",
             Duration::from_millis(250),
         )
+    })
+}
+
+#[test]
+fn refused_tray_image_retries_latest_path_with_pending_tooltip() -> Result<()> {
+    fn rejected(ui: &Automation, property: &str) -> Result<usize> {
+        Ok(ui
+            .stderr()?
+            .matches(&format!("failed to update notification-area {property}"))
+            .count())
+    }
+
+    process::run("tray", |ui| {
+        ui.focus("image")?;
+        ui.remove_tray_registration()?;
+        ui.invoke("image")?;
+        ui.name("state", "Generation 1; attached true")?;
+        assert_eq!(rejected(ui, "image")?, 1);
+
+        ui.invoke("tooltip")?;
+        ui.name("state", "Generation 2; attached true")?;
+        assert_eq!(rejected(ui, "image")?, 2);
+        assert_eq!(rejected(ui, "tooltip")?, 1);
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 0; refreshes 1")?;
+        assert_eq!(rejected(ui, "image")?, 3);
+        assert_eq!(rejected(ui, "tooltip")?, 2);
+
+        ui.invoke("image")?;
+        ui.name("state", "Generation 3; attached true")?;
+        ui.activate_tray_icon()?;
+        ui.name("updates", "Activated 3; refreshes 1")?;
+        ui.name("state", "Generation 4; attached true")?;
+        assert_eq!(rejected(ui, "image")?, 5);
+        assert_eq!(rejected(ui, "tooltip")?, 4);
+
+        ui.recover_tray_registration()?;
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 3; refreshes 2")?;
+        assert_eq!(rejected(ui, "image")?, 5);
+        assert_eq!(rejected(ui, "tooltip")?, 4);
+
+        ui.remove_tray_registration()?;
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 3; refreshes 3")?;
+        assert_eq!(rejected(ui, "image")?, 5);
+        assert_eq!(rejected(ui, "tooltip")?, 4);
+        ui.invoke("image")?;
+        ui.name("state", "Generation 5; attached true")?;
+        assert_eq!(rejected(ui, "image")?, 6);
+
+        ui.invoke("remove")?;
+        ui.name("activation", "Remove icon")?;
+        ui.activate_tray_icon()?;
+        ui.name("state", "Generation 5; attached false")?;
+        ui.name("updates", "Activated 5; refreshes 3")?;
+        ui.tray_gone()?;
+        let failures = rejected(ui, "image")?;
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 5; refreshes 4")?;
+        ui.tray_gone()?;
+        assert_eq!(rejected(ui, "image")?, failures);
+        Ok(())
+    })
+}
+
+#[test]
+fn refused_tray_tooltip_retries_without_retaining_old_callbacks() -> Result<()> {
+    fn rejected(ui: &Automation) -> Result<usize> {
+        Ok(ui
+            .stderr()?
+            .matches("failed to update notification-area tooltip")
+            .count())
+    }
+
+    process::run("tray", |ui| {
+        ui.focus("tooltip")?;
+        // The callback window remains alive, but the real Shell must reject NIM_MODIFY.
+        ui.remove_tray_registration()?;
+        ui.invoke("tooltip")?;
+        ui.name("state", "Generation 1; attached true")?;
+        assert_eq!(rejected(ui)?, 1);
+
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 0; refreshes 1")?;
+        assert_eq!(rejected(ui)?, 2);
+
+        ui.activate_tray_icon()?;
+        ui.name("updates", "Activated 1; refreshes 1")?;
+        ui.name("state", "Generation 2; attached true")?;
+        ui.open_tray_menu()?;
+        invoke(&ui.menu_item("Command")?)?;
+        ui.name("selection", "Selected 2; calls 1")?;
+        closed(ui, "Command")?;
+        assert_eq!(rejected(ui)?, 4);
+
+        ui.recover_tray_registration()?;
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 1; refreshes 2")?;
+        assert_eq!(rejected(ui)?, 4);
+
+        // A successful retry clears pending work; an unchanged declaration makes no Shell call.
+        ui.remove_tray_registration()?;
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 1; refreshes 3")?;
+        assert_eq!(rejected(ui)?, 4);
+
+        ui.invoke("tooltip")?;
+        ui.name("state", "Generation 3; attached true")?;
+        assert_eq!(rejected(ui)?, 5);
+        ui.invoke("remove")?;
+        ui.name("activation", "Remove icon")?;
+        ui.activate_tray_icon()?;
+        ui.name("state", "Generation 3; attached false")?;
+        ui.name("updates", "Activated 3; refreshes 3")?;
+        ui.tray_gone()?;
+        let failures = rejected(ui)?;
+        ui.invoke("refresh")?;
+        ui.name("updates", "Activated 3; refreshes 4")?;
+        ui.tray_gone()?;
+        assert_eq!(rejected(ui)?, failures);
+        Ok(())
     })
 }
 

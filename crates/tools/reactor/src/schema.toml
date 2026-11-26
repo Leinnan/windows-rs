@@ -139,6 +139,10 @@ name = "Opacity"
 owner = "Microsoft.UI.Xaml.UIElement"
 
 [[visual_properties]]
+name = "IsHitTestVisible"
+owner = "Microsoft.UI.Xaml.UIElement"
+
+[[visual_properties]]
 name = "Transitions"
 owner = "Microsoft.UI.Xaml.UIElement"
 adapter = "theme_transitions"
@@ -207,6 +211,7 @@ name = "PlaceholderText"
 
 [[objects.properties]]
 name = "AcceptsReturn"
+coerces = "Text"
 
 [[objects.properties]]
 name = "IsReadOnly"
@@ -229,6 +234,14 @@ adapter = "theme_brush"
 name = "BorderThickness"
 validation = "finite_non_negative"
 
+[[objects.properties]]
+name = "Padding"
+validation = "finite_non_negative"
+
+[[objects.properties]]
+name = "CornerRadius"
+validation = "finite_non_negative"
+
 [[objects.relations]]
 name = "Header"
 
@@ -240,6 +253,10 @@ observes = "Text"
 name = "Button"
 enabled = true
 focus = true
+
+[[objects.properties]]
+name = "Padding"
+validation = "finite_non_negative"
 
 [[objects.properties]]
 name = "Background"
@@ -297,6 +314,10 @@ name = "Border"
 focus = true
 
 [[objects.properties]]
+name = "ChildTransitions"
+adapter = "theme_transitions"
+
+[[objects.properties]]
 name = "Background"
 adapter = "theme_brush"
 
@@ -349,6 +370,10 @@ name = "CapturePointerOnPress"
 adapter = "pointer_capture"
 
 [[objects.properties]]
+name = "PointerCursor"
+adapter = "pointer_cursor"
+
+[[objects.properties]]
 name = "FocusOnPointerRelease"
 adapter = "pointer_focus"
 
@@ -391,6 +416,9 @@ name = "PointerCaptureLost"
 
 [[objects.events]]
 name = "PointerCanceled"
+
+[[objects.events]]
+name = "DoubleTapped"
 
 [[objects.events]]
 name = "PreviewKeyDown"
@@ -438,6 +466,10 @@ name = "Grid"
 reference = true
 
 [[objects.properties]]
+name = "ChildrenTransitions"
+adapter = "theme_transitions"
+
+[[objects.properties]]
 name = "GridRows"
 adapter = "grid_rows"
 
@@ -467,6 +499,10 @@ identity = "Keyed"
 name = "StackPanel"
 
 [[objects.properties]]
+name = "ChildrenTransitions"
+adapter = "theme_transitions"
+
+[[objects.properties]]
 name = "Spacing"
 
 [[objects.properties]]
@@ -478,6 +514,10 @@ identity = "Keyed"
 
 [[objects]]
 name = "Canvas"
+
+[[objects.properties]]
+name = "ChildrenTransitions"
+adapter = "theme_transitions"
 
 [[objects.relations]]
 name = "Children"
@@ -721,6 +761,10 @@ payload_adapter = "inspectable_string"
 
 [[objects]]
 name = "VariableSizedWrapGrid"
+
+[[objects.properties]]
+name = "ChildrenTransitions"
+adapter = "theme_transitions"
 
 [[objects.properties]]
 name = "Orientation"
@@ -1049,6 +1093,7 @@ observe_only = true
 
 [[objects]]
 name = "RadioButtons"
+enabled = true
 
 [[objects.properties]]
 name = "MaxColumns"
@@ -1122,6 +1167,18 @@ name = "Initials"
 
 [[objects]]
 name = "ScrollView"
+reference = true
+
+[[objects.properties]]
+name = "ContentOrientation"
+
+[[objects.properties]]
+name = "HorizontalAnchorRatio"
+validation = "anchor_ratio"
+
+[[objects.properties]]
+name = "VerticalAnchorRatio"
+validation = "anchor_ratio"
 
 [[objects.properties]]
 name = "HorizontalScrollBarVisibility"
@@ -1157,9 +1214,11 @@ enabled = true
 
 [[objects.properties]]
 name = "Minimum"
+coerces = "Value"
 
 [[objects.properties]]
 name = "Maximum"
+coerces = "Value"
 
 [[objects.properties]]
 name = "Value"
@@ -1840,6 +1899,10 @@ name = "Content"
 [[objects]]
 name = "RelativePanel"
 
+[[objects.properties]]
+name = "ChildrenTransitions"
+adapter = "theme_transitions"
+
 [[objects.relations]]
 name = "Children"
 
@@ -1891,3 +1954,14 @@ reference = true
 [[objects]]
 name = "SwapChainPanel"
 reference = true
+
+[[objects]]
+name = "SystemBackdropElement"
+
+[[objects.properties]]
+name = "SystemBackdrop"
+adapter = "system_backdrop"
+
+[[objects.properties]]
+name = "CornerRadius"
+validation = "finite_non_negative"

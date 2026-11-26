@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IInkWorkspaceHostedAppManager, IInkWorkspaceHostedAppManager_Vtbl, 0xfe0a7990_5e59_4bb7_8a63_7d218cd96300);
-impl windows_core::RuntimeType for IInkWorkspaceHostedAppManager {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.InkWorkspace.IInkWorkspaceHostedAppManager");
-}
+windows_core::imp::define_winrt_interface!(IInkWorkspaceHostedAppManager, IInkWorkspaceHostedAppManager_Vtbl, 0xfe0a7990_5e59_4bb7_8a63_7d218cd96300, b"Windows.ApplicationModel.Preview.InkWorkspace.IInkWorkspaceHostedAppManager");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IInkWorkspaceHostedAppManager_Vtbl {
@@ -12,11 +8,7 @@ pub struct IInkWorkspaceHostedAppManager_Vtbl {
     #[cfg(not(feature = "Graphics_Imaging"))]
     SetThumbnailAsync: usize,
 }
-windows_core::imp::define_interface!(IInkWorkspaceHostedAppManagerStatics, IInkWorkspaceHostedAppManagerStatics_Vtbl, 0xcbfd8cc5_a162_4bc4_84ee_e8716d5233c5);
-impl windows_core::RuntimeType for IInkWorkspaceHostedAppManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.InkWorkspace.IInkWorkspaceHostedAppManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(IInkWorkspaceHostedAppManagerStatics, IInkWorkspaceHostedAppManagerStatics_Vtbl, 0xcbfd8cc5_a162_4bc4_84ee_e8716d5233c5, b"Windows.ApplicationModel.Preview.InkWorkspace.IInkWorkspaceHostedAppManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IInkWorkspaceHostedAppManagerStatics_Vtbl {
@@ -35,13 +27,13 @@ impl InkWorkspaceHostedAppManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SetThumbnailAsync)(windows_core::Interface::as_raw(self), bitmap.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SetThumbnailAsync)(windows_core::Interface::as_raw(self), bitmap.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetForCurrentApp() -> windows_core::Result<Self> {
         Self::IInkWorkspaceHostedAppManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentApp)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentApp)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IInkWorkspaceHostedAppManagerStatics<R, F: FnOnce(&IInkWorkspaceHostedAppManagerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -55,6 +47,7 @@ impl windows_core::RuntimeType for InkWorkspaceHostedAppManager {
 unsafe impl windows_core::Interface for InkWorkspaceHostedAppManager {
     type Vtable = <IInkWorkspaceHostedAppManager as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IInkWorkspaceHostedAppManager as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for InkWorkspaceHostedAppManager {
     const NAME: &'static str = "Windows.ApplicationModel.Preview.InkWorkspace.InkWorkspaceHostedAppManager";

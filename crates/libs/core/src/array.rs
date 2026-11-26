@@ -1,12 +1,12 @@
 use super::*;
 
 /// A WinRT array stores elements contiguously in a heap-allocated buffer.
-pub struct Array<T: Type<T>> {
+pub struct Array<T: Type> {
     pub(crate) data: *mut T::Default,
     pub(crate) len: u32,
 }
 
-impl<T: Type<T>> Default for Array<T> {
+impl<T: Type> Default for Array<T> {
     fn default() -> Self {
         Self {
             data: core::ptr::null_mut(),
@@ -15,7 +15,7 @@ impl<T: Type<T>> Default for Array<T> {
     }
 }
 
-impl<T: Type<T>> Array<T> {
+impl<T: Type> Array<T> {
     /// Creates an empty array.
     pub fn new() -> Self {
         Self::default()
@@ -45,10 +45,7 @@ impl<T: Type<T>> Array<T> {
     }
 
     /// Creates an array by copying the elements from the slice.
-    pub fn from_slice(values: &[T::Default]) -> Self
-    where
-        T::Default: Clone,
-    {
+    pub fn from_slice(values: &[T::Default]) -> Self {
         let mut array = Self::with_len(values.len());
         array.clone_from_slice(values);
         array
@@ -58,7 +55,8 @@ impl<T: Type<T>> Array<T> {
     ///
     /// # Safety
     ///
-    /// The `data` argument must have been allocated with `CoTaskMemAlloc`.
+    /// `data` must point to `len` initialized elements allocated with `CoTaskMemAlloc`.
+    /// It may be null if `len` is zero. Ownership of the buffer and elements transfers to the array.
     pub unsafe fn from_raw_parts(data: *mut T::Default, len: u32) -> Self {
         Self { data, len }
     }
@@ -80,7 +78,7 @@ impl<T: Type<T>> Array<T> {
 
     /// Clears the contents of the array.
     pub fn clear(&mut self) {
-        if self.is_empty() {
+        if self.data.is_null() {
             return;
         }
 
@@ -119,7 +117,7 @@ impl<T: Type<T>> Array<T> {
     }
 }
 
-impl<T: Type<T>> core::ops::Deref for Array<T> {
+impl<T: Type> core::ops::Deref for Array<T> {
     type Target = [T::Default];
 
     fn deref(&self) -> &[T::Default] {
@@ -132,7 +130,7 @@ impl<T: Type<T>> core::ops::Deref for Array<T> {
     }
 }
 
-impl<T: Type<T>> core::ops::DerefMut for Array<T> {
+impl<T: Type> core::ops::DerefMut for Array<T> {
     fn deref_mut(&mut self) -> &mut [T::Default] {
         if self.is_empty() {
             return &mut [];
@@ -143,13 +141,13 @@ impl<T: Type<T>> core::ops::DerefMut for Array<T> {
     }
 }
 
-impl<T: Type<T>> Drop for Array<T> {
+impl<T: Type> Drop for Array<T> {
     fn drop(&mut self) {
         self.clear();
     }
 }
 
-impl<T: Type<T>> core::fmt::Debug for Array<T>
+impl<T: Type> core::fmt::Debug for Array<T>
 where
     T::Default: core::fmt::Debug,
 {

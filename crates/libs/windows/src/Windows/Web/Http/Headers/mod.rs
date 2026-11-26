@@ -7,7 +7,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
     pub fn MaxAge(&self) -> windows_core::Result<windows_time::TimeSpan> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MaxAge)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(self).MaxAge)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
     pub fn SetMaxAge(&self, value: Option<windows_time::TimeSpan>) -> windows_core::Result<()> {
@@ -17,7 +17,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
     pub fn MaxStale(&self) -> windows_core::Result<windows_time::TimeSpan> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MaxStale)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(self).MaxStale)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
     pub fn SetMaxStale(&self, value: Option<windows_time::TimeSpan>) -> windows_core::Result<()> {
@@ -27,7 +27,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
     pub fn MinFresh(&self) -> windows_core::Result<windows_time::TimeSpan> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MinFresh)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(self).MinFresh)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
     pub fn SetMinFresh(&self, value: Option<windows_time::TimeSpan>) -> windows_core::Result<()> {
@@ -37,7 +37,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
     pub fn SharedMaxAge(&self) -> windows_core::Result<windows_time::TimeSpan> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SharedMaxAge)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(self).SharedMaxAge)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
     pub fn SetSharedMaxAge(&self, value: Option<windows_time::TimeSpan>) -> windows_core::Result<()> {
@@ -57,7 +57,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpNameValueHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -71,7 +71,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpNameValueHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -85,7 +85,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpNameValueHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -133,6 +133,9 @@ impl HttpCacheDirectiveHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpNameValueHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpNameValueHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpNameValueHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -140,7 +143,7 @@ impl HttpCacheDirectiveHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpNameValueHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpNameValueHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpCacheDirectiveHeaderValueCollection {
@@ -149,6 +152,7 @@ impl windows_core::RuntimeType for HttpCacheDirectiveHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpCacheDirectiveHeaderValueCollection {
     type Vtable = <IHttpCacheDirectiveHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpCacheDirectiveHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpCacheDirectiveHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpCacheDirectiveHeaderValueCollection";
@@ -178,7 +182,7 @@ impl HttpChallengeHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Scheme(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -196,22 +200,25 @@ impl HttpChallengeHeaderValue {
     pub fn CreateFromScheme(scheme: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpChallengeHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromScheme)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromScheme)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromSchemeWithToken(scheme: &windows_core::HSTRING, token: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpChallengeHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromSchemeWithToken)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromSchemeWithToken)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpChallengeHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, challengeheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *challengeheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpChallengeHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), challengeheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -239,6 +246,7 @@ impl windows_core::RuntimeType for HttpChallengeHeaderValue {
 unsafe impl windows_core::Interface for HttpChallengeHeaderValue {
     type Vtable = <IHttpChallengeHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpChallengeHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpChallengeHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpChallengeHeaderValue";
@@ -264,7 +272,7 @@ impl HttpChallengeHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpChallengeHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -278,7 +286,7 @@ impl HttpChallengeHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpChallengeHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -292,7 +300,7 @@ impl HttpChallengeHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpChallengeHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -340,6 +348,9 @@ impl HttpChallengeHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpChallengeHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpChallengeHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpChallengeHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -347,7 +358,7 @@ impl HttpChallengeHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpChallengeHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpChallengeHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpChallengeHeaderValueCollection {
@@ -356,6 +367,7 @@ impl windows_core::RuntimeType for HttpChallengeHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpChallengeHeaderValueCollection {
     type Vtable = <IHttpChallengeHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpChallengeHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpChallengeHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpChallengeHeaderValueCollection";
@@ -391,16 +403,19 @@ impl HttpConnectionOptionHeaderValue {
     pub fn Create(token: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpConnectionOptionHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpConnectionOptionHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, connectionoptionheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *connectionoptionheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpConnectionOptionHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), connectionoptionheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -428,6 +443,7 @@ impl windows_core::RuntimeType for HttpConnectionOptionHeaderValue {
 unsafe impl windows_core::Interface for HttpConnectionOptionHeaderValue {
     type Vtable = <IHttpConnectionOptionHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpConnectionOptionHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpConnectionOptionHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpConnectionOptionHeaderValue";
@@ -453,7 +469,7 @@ impl HttpConnectionOptionHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpConnectionOptionHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -467,7 +483,7 @@ impl HttpConnectionOptionHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpConnectionOptionHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -481,7 +497,7 @@ impl HttpConnectionOptionHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpConnectionOptionHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -529,6 +545,9 @@ impl HttpConnectionOptionHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpConnectionOptionHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpConnectionOptionHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpConnectionOptionHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -536,7 +555,7 @@ impl HttpConnectionOptionHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpConnectionOptionHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpConnectionOptionHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpConnectionOptionHeaderValueCollection {
@@ -545,6 +564,7 @@ impl windows_core::RuntimeType for HttpConnectionOptionHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpConnectionOptionHeaderValueCollection {
     type Vtable = <IHttpConnectionOptionHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpConnectionOptionHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpConnectionOptionHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpConnectionOptionHeaderValueCollection";
@@ -580,16 +600,19 @@ impl HttpContentCodingHeaderValue {
     pub fn Create(contentcoding: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentCodingHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(contentcoding), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(contentcoding), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentCodingHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, contentcodingheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *contentcodingheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpContentCodingHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), contentcodingheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -617,6 +640,7 @@ impl windows_core::RuntimeType for HttpContentCodingHeaderValue {
 unsafe impl windows_core::Interface for HttpContentCodingHeaderValue {
     type Vtable = <IHttpContentCodingHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentCodingHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentCodingHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentCodingHeaderValue";
@@ -642,7 +666,7 @@ impl HttpContentCodingHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpContentCodingHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -656,7 +680,7 @@ impl HttpContentCodingHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -670,7 +694,7 @@ impl HttpContentCodingHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -718,6 +742,9 @@ impl HttpContentCodingHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpContentCodingHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpContentCodingHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -725,7 +752,7 @@ impl HttpContentCodingHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpContentCodingHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpContentCodingHeaderValueCollection {
@@ -734,6 +761,7 @@ impl windows_core::RuntimeType for HttpContentCodingHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpContentCodingHeaderValueCollection {
     type Vtable = <IHttpContentCodingHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentCodingHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentCodingHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentCodingHeaderValueCollection";
@@ -769,28 +797,31 @@ impl HttpContentCodingWithQualityHeaderValue {
     pub fn Quality(&self) -> windows_core::Result<f64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Quality)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
+            (windows_core::Interface::vtable(self).Quality)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
         }
     }
     pub fn CreateFromValue(contentcoding: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentCodingWithQualityHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(contentcoding), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(contentcoding), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromValueWithQuality(contentcoding: &windows_core::HSTRING, quality: f64) -> windows_core::Result<Self> {
         Self::IHttpContentCodingWithQualityHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromValueWithQuality)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(contentcoding), quality, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromValueWithQuality)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(contentcoding), quality, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentCodingWithQualityHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, contentcodingwithqualityheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *contentcodingwithqualityheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpContentCodingWithQualityHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), contentcodingwithqualityheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -818,6 +849,7 @@ impl windows_core::RuntimeType for HttpContentCodingWithQualityHeaderValue {
 unsafe impl windows_core::Interface for HttpContentCodingWithQualityHeaderValue {
     type Vtable = <IHttpContentCodingWithQualityHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentCodingWithQualityHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentCodingWithQualityHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentCodingWithQualityHeaderValue";
@@ -843,7 +875,7 @@ impl HttpContentCodingWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpContentCodingWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -857,7 +889,7 @@ impl HttpContentCodingWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -871,7 +903,7 @@ impl HttpContentCodingWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -919,6 +951,9 @@ impl HttpContentCodingWithQualityHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpContentCodingWithQualityHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingWithQualityHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpContentCodingWithQualityHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -926,7 +961,7 @@ impl HttpContentCodingWithQualityHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpContentCodingWithQualityHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpContentCodingWithQualityHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpContentCodingWithQualityHeaderValueCollection {
@@ -935,6 +970,7 @@ impl windows_core::RuntimeType for HttpContentCodingWithQualityHeaderValueCollec
 unsafe impl windows_core::Interface for HttpContentCodingWithQualityHeaderValueCollection {
     type Vtable = <IHttpContentCodingWithQualityHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentCodingWithQualityHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentCodingWithQualityHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentCodingWithQualityHeaderValueCollection";
@@ -1000,13 +1036,13 @@ impl HttpContentDispositionHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Size)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).Size)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn SetSize(&self, value: Option<u64>) -> windows_core::Result<()> {
@@ -1016,16 +1052,19 @@ impl HttpContentDispositionHeaderValue {
     pub fn Create(dispositiontype: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentDispositionHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(dispositiontype), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(dispositiontype), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentDispositionHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, contentdispositionheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *contentdispositionheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpContentDispositionHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), contentdispositionheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -1053,6 +1092,7 @@ impl windows_core::RuntimeType for HttpContentDispositionHeaderValue {
 unsafe impl windows_core::Interface for HttpContentDispositionHeaderValue {
     type Vtable = <IHttpContentDispositionHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentDispositionHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentDispositionHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentDispositionHeaderValue";
@@ -1075,7 +1115,7 @@ impl HttpContentHeaderCollection {
     pub fn ContentDisposition(&self) -> windows_core::Result<HttpContentDispositionHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentDisposition)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentDisposition)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetContentDisposition<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1087,20 +1127,20 @@ impl HttpContentHeaderCollection {
     pub fn ContentEncoding(&self) -> windows_core::Result<HttpContentCodingHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Globalization")]
     pub fn ContentLanguage(&self) -> windows_core::Result<HttpLanguageHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentLanguage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentLanguage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ContentLength(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentLength)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).ContentLength)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn SetContentLength(&self, value: Option<u64>) -> windows_core::Result<()> {
@@ -1110,7 +1150,7 @@ impl HttpContentHeaderCollection {
     pub fn ContentLocation(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentLocation)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentLocation)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetContentLocation<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1123,7 +1163,7 @@ impl HttpContentHeaderCollection {
     pub fn ContentMD5(&self) -> windows_core::Result<super::super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentMD5)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentMD5)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -1136,7 +1176,7 @@ impl HttpContentHeaderCollection {
     pub fn ContentRange(&self) -> windows_core::Result<HttpContentRangeHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentRange)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentRange)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetContentRange<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1148,7 +1188,7 @@ impl HttpContentHeaderCollection {
     pub fn ContentType(&self) -> windows_core::Result<HttpMediaTypeHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ContentType)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ContentType)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetContentType<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1160,7 +1200,7 @@ impl HttpContentHeaderCollection {
     pub fn Expires(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Expires)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).Expires)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetExpires(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -1170,7 +1210,7 @@ impl HttpContentHeaderCollection {
     pub fn LastModified(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LastModified)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).LastModified)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetLastModified(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -1190,7 +1230,7 @@ impl HttpContentHeaderCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, windows_core::HSTRING>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -1218,7 +1258,7 @@ impl HttpContentHeaderCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IMap<windows_core::HSTRING, windows_core::HSTRING>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert(&self, key: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<bool> {
@@ -1250,6 +1290,7 @@ impl windows_core::RuntimeType for HttpContentHeaderCollection {
 unsafe impl windows_core::Interface for HttpContentHeaderCollection {
     type Vtable = <IHttpContentHeaderCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentHeaderCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentHeaderCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentHeaderCollection";
@@ -1279,19 +1320,19 @@ impl HttpContentRangeHeaderValue {
     pub fn FirstBytePosition(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FirstBytePosition)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).FirstBytePosition)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn LastBytePosition(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LastBytePosition)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).LastBytePosition)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn Length(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Length)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).Length)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn Unit(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1306,28 +1347,31 @@ impl HttpContentRangeHeaderValue {
     pub fn CreateFromLength(length: u64) -> windows_core::Result<Self> {
         Self::IHttpContentRangeHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromLength)(windows_core::Interface::as_raw(this), length, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromLength)(windows_core::Interface::as_raw(this), length, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromRange(from: u64, to: u64) -> windows_core::Result<Self> {
         Self::IHttpContentRangeHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromRange)(windows_core::Interface::as_raw(this), from, to, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromRange)(windows_core::Interface::as_raw(this), from, to, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromRangeWithLength(from: u64, to: u64, length: u64) -> windows_core::Result<Self> {
         Self::IHttpContentRangeHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromRangeWithLength)(windows_core::Interface::as_raw(this), from, to, length, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromRangeWithLength)(windows_core::Interface::as_raw(this), from, to, length, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpContentRangeHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, contentrangeheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *contentrangeheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpContentRangeHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), contentrangeheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -1355,6 +1399,7 @@ impl windows_core::RuntimeType for HttpContentRangeHeaderValue {
 unsafe impl windows_core::Interface for HttpContentRangeHeaderValue {
     type Vtable = <IHttpContentRangeHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpContentRangeHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpContentRangeHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpContentRangeHeaderValue";
@@ -1385,22 +1430,25 @@ impl HttpCookiePairHeaderValue {
     pub fn CreateFromName(name: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpCookiePairHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromNameWithValue(name: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpCookiePairHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromNameWithValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(value), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromNameWithValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(value), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpCookiePairHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, cookiepairheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *cookiepairheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpCookiePairHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), cookiepairheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -1428,6 +1476,7 @@ impl windows_core::RuntimeType for HttpCookiePairHeaderValue {
 unsafe impl windows_core::Interface for HttpCookiePairHeaderValue {
     type Vtable = <IHttpCookiePairHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpCookiePairHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpCookiePairHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpCookiePairHeaderValue";
@@ -1453,7 +1502,7 @@ impl HttpCookiePairHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpCookiePairHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1467,7 +1516,7 @@ impl HttpCookiePairHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpCookiePairHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1481,7 +1530,7 @@ impl HttpCookiePairHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpCookiePairHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -1529,6 +1578,9 @@ impl HttpCookiePairHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpCookiePairHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpCookiePairHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpCookiePairHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -1536,7 +1588,7 @@ impl HttpCookiePairHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpCookiePairHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpCookiePairHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpCookiePairHeaderValueCollection {
@@ -1545,6 +1597,7 @@ impl windows_core::RuntimeType for HttpCookiePairHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpCookiePairHeaderValueCollection {
     type Vtable = <IHttpCookiePairHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpCookiePairHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpCookiePairHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpCookiePairHeaderValueCollection";
@@ -1574,7 +1627,7 @@ impl HttpCredentialsHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Scheme(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1592,22 +1645,25 @@ impl HttpCredentialsHeaderValue {
     pub fn CreateFromScheme(scheme: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpCredentialsHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromScheme)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromScheme)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromSchemeWithToken(scheme: &windows_core::HSTRING, token: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpCredentialsHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromSchemeWithToken)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromSchemeWithToken)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(scheme), core::mem::transmute_copy(token), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpCredentialsHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, credentialsheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *credentialsheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpCredentialsHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), credentialsheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -1635,6 +1691,7 @@ impl windows_core::RuntimeType for HttpCredentialsHeaderValue {
 unsafe impl windows_core::Interface for HttpCredentialsHeaderValue {
     type Vtable = <IHttpCredentialsHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpCredentialsHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpCredentialsHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpCredentialsHeaderValue";
@@ -1650,22 +1707,25 @@ impl HttpDateOrDeltaHeaderValue {
     pub fn Date(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Date)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).Date)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn Delta(&self) -> windows_core::Result<windows_time::TimeSpan> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Delta)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(self).Delta)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpDateOrDeltaHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, dateordeltaheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *dateordeltaheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpDateOrDeltaHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), dateordeltaheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -1689,6 +1749,7 @@ impl windows_core::RuntimeType for HttpDateOrDeltaHeaderValue {
 unsafe impl windows_core::Interface for HttpDateOrDeltaHeaderValue {
     type Vtable = <IHttpDateOrDeltaHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpDateOrDeltaHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpDateOrDeltaHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpDateOrDeltaHeaderValue";
@@ -1719,28 +1780,31 @@ impl HttpExpectationHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateFromName(name: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpExpectationHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromNameWithValue(name: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpExpectationHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromNameWithValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(value), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromNameWithValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(value), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpExpectationHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, expectationheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *expectationheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpExpectationHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), expectationheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -1768,6 +1832,7 @@ impl windows_core::RuntimeType for HttpExpectationHeaderValue {
 unsafe impl windows_core::Interface for HttpExpectationHeaderValue {
     type Vtable = <IHttpExpectationHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpExpectationHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpExpectationHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpExpectationHeaderValue";
@@ -1793,7 +1858,7 @@ impl HttpExpectationHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpExpectationHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1807,7 +1872,7 @@ impl HttpExpectationHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpExpectationHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1821,7 +1886,7 @@ impl HttpExpectationHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpExpectationHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -1869,6 +1934,9 @@ impl HttpExpectationHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpExpectationHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpExpectationHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpExpectationHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -1876,7 +1944,7 @@ impl HttpExpectationHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpExpectationHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpExpectationHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpExpectationHeaderValueCollection {
@@ -1885,6 +1953,7 @@ impl windows_core::RuntimeType for HttpExpectationHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpExpectationHeaderValueCollection {
     type Vtable = <IHttpExpectationHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpExpectationHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpExpectationHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpExpectationHeaderValueCollection";
@@ -1928,7 +1997,7 @@ impl HttpLanguageHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<super::super::super::Globalization::Language>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1942,7 +2011,7 @@ impl HttpLanguageHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::super::super::Globalization::Language>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1956,7 +2025,7 @@ impl HttpLanguageHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::super::super::Globalization::Language>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -2004,6 +2073,9 @@ impl HttpLanguageHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<super::super::super::Globalization::Language>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::super::super::Globalization::Language>>(self)?;
+        if core::mem::needs_drop::<Option<super::super::super::Globalization::Language>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -2011,7 +2083,7 @@ impl HttpLanguageHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<super::super::super::Globalization::Language>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::super::super::Globalization::Language>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 #[cfg(feature = "Globalization")]
@@ -2022,6 +2094,7 @@ impl windows_core::RuntimeType for HttpLanguageHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpLanguageHeaderValueCollection {
     type Vtable = <IHttpLanguageHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpLanguageHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 #[cfg(feature = "Globalization")]
 impl windows_core::RuntimeName for HttpLanguageHeaderValueCollection {
@@ -2062,28 +2135,31 @@ impl HttpLanguageRangeWithQualityHeaderValue {
     pub fn Quality(&self) -> windows_core::Result<f64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Quality)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
+            (windows_core::Interface::vtable(self).Quality)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
         }
     }
     pub fn CreateFromLanguageRange(languagerange: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpLanguageRangeWithQualityHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromLanguageRange)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(languagerange), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromLanguageRange)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(languagerange), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromLanguageRangeWithQuality(languagerange: &windows_core::HSTRING, quality: f64) -> windows_core::Result<Self> {
         Self::IHttpLanguageRangeWithQualityHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromLanguageRangeWithQuality)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(languagerange), quality, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromLanguageRangeWithQuality)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(languagerange), quality, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpLanguageRangeWithQualityHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, languagerangewithqualityheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *languagerangewithqualityheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpLanguageRangeWithQualityHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), languagerangewithqualityheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -2111,6 +2187,7 @@ impl windows_core::RuntimeType for HttpLanguageRangeWithQualityHeaderValue {
 unsafe impl windows_core::Interface for HttpLanguageRangeWithQualityHeaderValue {
     type Vtable = <IHttpLanguageRangeWithQualityHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpLanguageRangeWithQualityHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpLanguageRangeWithQualityHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpLanguageRangeWithQualityHeaderValue";
@@ -2136,7 +2213,7 @@ impl HttpLanguageRangeWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpLanguageRangeWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2150,7 +2227,7 @@ impl HttpLanguageRangeWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpLanguageRangeWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -2164,7 +2241,7 @@ impl HttpLanguageRangeWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpLanguageRangeWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -2212,6 +2289,9 @@ impl HttpLanguageRangeWithQualityHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpLanguageRangeWithQualityHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpLanguageRangeWithQualityHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpLanguageRangeWithQualityHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -2219,7 +2299,7 @@ impl HttpLanguageRangeWithQualityHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpLanguageRangeWithQualityHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpLanguageRangeWithQualityHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpLanguageRangeWithQualityHeaderValueCollection {
@@ -2228,6 +2308,7 @@ impl windows_core::RuntimeType for HttpLanguageRangeWithQualityHeaderValueCollec
 unsafe impl windows_core::Interface for HttpLanguageRangeWithQualityHeaderValueCollection {
     type Vtable = <IHttpLanguageRangeWithQualityHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpLanguageRangeWithQualityHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpLanguageRangeWithQualityHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpLanguageRangeWithQualityHeaderValueCollection";
@@ -2275,22 +2356,25 @@ impl HttpMediaTypeHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Create(mediatype: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpMediaTypeHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(mediatype), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(mediatype), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpMediaTypeHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, mediatypeheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *mediatypeheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpMediaTypeHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), mediatypeheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -2318,6 +2402,7 @@ impl windows_core::RuntimeType for HttpMediaTypeHeaderValue {
 unsafe impl windows_core::Interface for HttpMediaTypeHeaderValue {
     type Vtable = <IHttpMediaTypeHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpMediaTypeHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpMediaTypeHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpMediaTypeHeaderValue";
@@ -2351,13 +2436,13 @@ impl HttpMediaTypeWithQualityHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Quality(&self) -> windows_core::Result<f64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Quality)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
+            (windows_core::Interface::vtable(self).Quality)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<f64>| r__.Value())
         }
     }
     pub fn SetQuality(&self, value: Option<f64>) -> windows_core::Result<()> {
@@ -2367,22 +2452,25 @@ impl HttpMediaTypeWithQualityHeaderValue {
     pub fn CreateFromMediaType(mediatype: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpMediaTypeWithQualityHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromMediaType)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(mediatype), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromMediaType)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(mediatype), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromMediaTypeWithQuality(mediatype: &windows_core::HSTRING, quality: f64) -> windows_core::Result<Self> {
         Self::IHttpMediaTypeWithQualityHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromMediaTypeWithQuality)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(mediatype), quality, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromMediaTypeWithQuality)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(mediatype), quality, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpMediaTypeWithQualityHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, mediatypewithqualityheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *mediatypewithqualityheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpMediaTypeWithQualityHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), mediatypewithqualityheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -2410,6 +2498,7 @@ impl windows_core::RuntimeType for HttpMediaTypeWithQualityHeaderValue {
 unsafe impl windows_core::Interface for HttpMediaTypeWithQualityHeaderValue {
     type Vtable = <IHttpMediaTypeWithQualityHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpMediaTypeWithQualityHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpMediaTypeWithQualityHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpMediaTypeWithQualityHeaderValue";
@@ -2435,7 +2524,7 @@ impl HttpMediaTypeWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpMediaTypeWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2449,7 +2538,7 @@ impl HttpMediaTypeWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpMediaTypeWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -2463,7 +2552,7 @@ impl HttpMediaTypeWithQualityHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpMediaTypeWithQualityHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -2511,6 +2600,9 @@ impl HttpMediaTypeWithQualityHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpMediaTypeWithQualityHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpMediaTypeWithQualityHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpMediaTypeWithQualityHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -2518,7 +2610,7 @@ impl HttpMediaTypeWithQualityHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpMediaTypeWithQualityHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpMediaTypeWithQualityHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpMediaTypeWithQualityHeaderValueCollection {
@@ -2527,6 +2619,7 @@ impl windows_core::RuntimeType for HttpMediaTypeWithQualityHeaderValueCollection
 unsafe impl windows_core::Interface for HttpMediaTypeWithQualityHeaderValueCollection {
     type Vtable = <IHttpMediaTypeWithQualityHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpMediaTypeWithQualityHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpMediaTypeWithQualityHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpMediaTypeWithQualityHeaderValueCollection";
@@ -2566,7 +2659,7 @@ impl HttpMethodHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<super::HttpMethod>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2580,7 +2673,7 @@ impl HttpMethodHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::HttpMethod>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -2594,7 +2687,7 @@ impl HttpMethodHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::HttpMethod>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -2642,6 +2735,9 @@ impl HttpMethodHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<super::HttpMethod>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::HttpMethod>>(self)?;
+        if core::mem::needs_drop::<Option<super::HttpMethod>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -2649,7 +2745,7 @@ impl HttpMethodHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<super::HttpMethod>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<super::HttpMethod>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpMethodHeaderValueCollection {
@@ -2658,6 +2754,7 @@ impl windows_core::RuntimeType for HttpMethodHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpMethodHeaderValueCollection {
     type Vtable = <IHttpMethodHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpMethodHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpMethodHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpMethodHeaderValueCollection";
@@ -2702,22 +2799,25 @@ impl HttpNameValueHeaderValue {
     pub fn CreateFromName(name: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpNameValueHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromNameWithValue(name: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpNameValueHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromNameWithValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(value), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromNameWithValue)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), core::mem::transmute_copy(value), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpNameValueHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, namevalueheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *namevalueheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpNameValueHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), namevalueheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -2745,6 +2845,7 @@ impl windows_core::RuntimeType for HttpNameValueHeaderValue {
 unsafe impl windows_core::Interface for HttpNameValueHeaderValue {
     type Vtable = <IHttpNameValueHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpNameValueHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpNameValueHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpNameValueHeaderValue";
@@ -2772,22 +2873,25 @@ impl HttpProductHeaderValue {
     pub fn CreateFromName(productname: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpProductHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productname), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productname), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromNameWithVersion(productname: &windows_core::HSTRING, productversion: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpProductHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromNameWithVersion)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productname), core::mem::transmute_copy(productversion), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromNameWithVersion)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productname), core::mem::transmute_copy(productversion), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpProductHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, productheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *productheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpProductHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), productheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -2815,6 +2919,7 @@ impl windows_core::RuntimeType for HttpProductHeaderValue {
 unsafe impl windows_core::Interface for HttpProductHeaderValue {
     type Vtable = <IHttpProductHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpProductHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpProductHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpProductHeaderValue";
@@ -2830,7 +2935,7 @@ impl HttpProductInfoHeaderValue {
     pub fn Product(&self) -> windows_core::Result<HttpProductHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Product)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Product)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Comment(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2842,22 +2947,25 @@ impl HttpProductInfoHeaderValue {
     pub fn CreateFromComment(productcomment: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpProductInfoHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromComment)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productcomment), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromComment)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productcomment), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateFromNameWithVersion(productname: &windows_core::HSTRING, productversion: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpProductInfoHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateFromNameWithVersion)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productname), core::mem::transmute_copy(productversion), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateFromNameWithVersion)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(productname), core::mem::transmute_copy(productversion), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpProductInfoHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, productinfoheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *productinfoheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpProductInfoHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), productinfoheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -2885,6 +2993,7 @@ impl windows_core::RuntimeType for HttpProductInfoHeaderValue {
 unsafe impl windows_core::Interface for HttpProductInfoHeaderValue {
     type Vtable = <IHttpProductInfoHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpProductInfoHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpProductInfoHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpProductInfoHeaderValue";
@@ -2910,7 +3019,7 @@ impl HttpProductInfoHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpProductInfoHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2924,7 +3033,7 @@ impl HttpProductInfoHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpProductInfoHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -2938,7 +3047,7 @@ impl HttpProductInfoHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpProductInfoHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -2986,6 +3095,9 @@ impl HttpProductInfoHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpProductInfoHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpProductInfoHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpProductInfoHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -2993,7 +3105,7 @@ impl HttpProductInfoHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpProductInfoHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpProductInfoHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpProductInfoHeaderValueCollection {
@@ -3002,6 +3114,7 @@ impl windows_core::RuntimeType for HttpProductInfoHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpProductInfoHeaderValueCollection {
     type Vtable = <IHttpProductInfoHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpProductInfoHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpProductInfoHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpProductInfoHeaderValueCollection";
@@ -3031,25 +3144,25 @@ impl HttpRequestHeaderCollection {
     pub fn Accept(&self) -> windows_core::Result<HttpMediaTypeWithQualityHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Accept)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Accept)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AcceptEncoding(&self) -> windows_core::Result<HttpContentCodingWithQualityHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AcceptEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AcceptEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AcceptLanguage(&self) -> windows_core::Result<HttpLanguageRangeWithQualityHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AcceptLanguage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AcceptLanguage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Authorization(&self) -> windows_core::Result<HttpCredentialsHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Authorization)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Authorization)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetAuthorization<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -3061,25 +3174,25 @@ impl HttpRequestHeaderCollection {
     pub fn CacheControl(&self) -> windows_core::Result<HttpCacheDirectiveHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CacheControl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CacheControl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Connection(&self) -> windows_core::Result<HttpConnectionOptionHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Cookie(&self) -> windows_core::Result<HttpCookiePairHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Cookie)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Cookie)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Date(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Date)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).Date)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetDate(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -3089,7 +3202,7 @@ impl HttpRequestHeaderCollection {
     pub fn Expect(&self) -> windows_core::Result<HttpExpectationHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Expect)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Expect)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn From(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -3105,7 +3218,7 @@ impl HttpRequestHeaderCollection {
     pub fn Host(&self) -> windows_core::Result<super::super::super::Networking::HostName> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Host)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Host)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Networking")]
@@ -3118,7 +3231,7 @@ impl HttpRequestHeaderCollection {
     pub fn IfModifiedSince(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).IfModifiedSince)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).IfModifiedSince)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetIfModifiedSince(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -3128,7 +3241,7 @@ impl HttpRequestHeaderCollection {
     pub fn IfUnmodifiedSince(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).IfUnmodifiedSince)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).IfUnmodifiedSince)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetIfUnmodifiedSince(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -3138,7 +3251,7 @@ impl HttpRequestHeaderCollection {
     pub fn MaxForwards(&self) -> windows_core::Result<u32> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MaxForwards)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u32>| r__.Value())
+            (windows_core::Interface::vtable(self).MaxForwards)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u32>| r__.Value())
         }
     }
     pub fn SetMaxForwards(&self, value: Option<u32>) -> windows_core::Result<()> {
@@ -3148,7 +3261,7 @@ impl HttpRequestHeaderCollection {
     pub fn ProxyAuthorization(&self) -> windows_core::Result<HttpCredentialsHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProxyAuthorization)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProxyAuthorization)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetProxyAuthorization<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -3160,7 +3273,7 @@ impl HttpRequestHeaderCollection {
     pub fn Referer(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Referer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Referer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetReferer<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -3172,13 +3285,13 @@ impl HttpRequestHeaderCollection {
     pub fn TransferEncoding(&self) -> windows_core::Result<HttpTransferCodingHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TransferEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TransferEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn UserAgent(&self) -> windows_core::Result<HttpProductInfoHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).UserAgent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).UserAgent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Append(&self, name: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -3194,7 +3307,7 @@ impl HttpRequestHeaderCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, windows_core::HSTRING>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -3222,7 +3335,7 @@ impl HttpRequestHeaderCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IMap<windows_core::HSTRING, windows_core::HSTRING>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert(&self, key: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<bool> {
@@ -3254,6 +3367,7 @@ impl windows_core::RuntimeType for HttpRequestHeaderCollection {
 unsafe impl windows_core::Interface for HttpRequestHeaderCollection {
     type Vtable = <IHttpRequestHeaderCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpRequestHeaderCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpRequestHeaderCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpRequestHeaderCollection";
@@ -3283,7 +3397,7 @@ impl HttpResponseHeaderCollection {
     pub fn Age(&self) -> windows_core::Result<windows_time::TimeSpan> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Age)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
+            (windows_core::Interface::vtable(self).Age)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::TimeSpan>| r__.Value())
         }
     }
     pub fn SetAge(&self, value: Option<windows_time::TimeSpan>) -> windows_core::Result<()> {
@@ -3293,25 +3407,25 @@ impl HttpResponseHeaderCollection {
     pub fn Allow(&self) -> windows_core::Result<HttpMethodHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Allow)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Allow)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CacheControl(&self) -> windows_core::Result<HttpCacheDirectiveHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CacheControl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CacheControl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Connection(&self) -> windows_core::Result<HttpConnectionOptionHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Connection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Date(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Date)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).Date)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn SetDate(&self, value: Option<windows_time::DateTime>) -> windows_core::Result<()> {
@@ -3321,7 +3435,7 @@ impl HttpResponseHeaderCollection {
     pub fn Location(&self) -> windows_core::Result<super::super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Location)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Location)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetLocation<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -3333,13 +3447,13 @@ impl HttpResponseHeaderCollection {
     pub fn ProxyAuthenticate(&self) -> windows_core::Result<HttpChallengeHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProxyAuthenticate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProxyAuthenticate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn RetryAfter(&self) -> windows_core::Result<HttpDateOrDeltaHeaderValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RetryAfter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RetryAfter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetRetryAfter<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -3351,13 +3465,13 @@ impl HttpResponseHeaderCollection {
     pub fn TransferEncoding(&self) -> windows_core::Result<HttpTransferCodingHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TransferEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TransferEncoding)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn WwwAuthenticate(&self) -> windows_core::Result<HttpChallengeHeaderValueCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).WwwAuthenticate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).WwwAuthenticate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Append(&self, name: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -3373,7 +3487,7 @@ impl HttpResponseHeaderCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, windows_core::HSTRING>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -3401,7 +3515,7 @@ impl HttpResponseHeaderCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IMap<windows_core::HSTRING, windows_core::HSTRING>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert(&self, key: &windows_core::HSTRING, value: &windows_core::HSTRING) -> windows_core::Result<bool> {
@@ -3433,6 +3547,7 @@ impl windows_core::RuntimeType for HttpResponseHeaderCollection {
 unsafe impl windows_core::Interface for HttpResponseHeaderCollection {
     type Vtable = <IHttpResponseHeaderCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpResponseHeaderCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpResponseHeaderCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpResponseHeaderCollection";
@@ -3462,7 +3577,7 @@ impl HttpTransferCodingHeaderValue {
     pub fn Parameters(&self) -> windows_core::Result<windows_collections::IVector<HttpNameValueHeaderValue>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Parameters)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Value(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -3474,16 +3589,19 @@ impl HttpTransferCodingHeaderValue {
     pub fn Create(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpTransferCodingHeaderValueFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Parse(input: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IHttpTransferCodingHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Parse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TryParse(input: &windows_core::HSTRING, transfercodingheadervalue: &mut Option<Self>) -> windows_core::Result<bool> {
+        if core::mem::needs_drop::<Option<Self>>() {
+            *transfercodingheadervalue = unsafe { core::mem::zeroed() };
+        }
         Self::IHttpTransferCodingHeaderValueStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).TryParse)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(input), transfercodingheadervalue as *mut _ as _, &mut result__).map(|| result__)
@@ -3511,6 +3629,7 @@ impl windows_core::RuntimeType for HttpTransferCodingHeaderValue {
 unsafe impl windows_core::Interface for HttpTransferCodingHeaderValue {
     type Vtable = <IHttpTransferCodingHeaderValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpTransferCodingHeaderValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpTransferCodingHeaderValue {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpTransferCodingHeaderValue";
@@ -3536,7 +3655,7 @@ impl HttpTransferCodingHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<HttpTransferCodingHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ToString(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -3550,7 +3669,7 @@ impl HttpTransferCodingHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpTransferCodingHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAt)(windows_core::Interface::as_raw(this), index, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -3564,7 +3683,7 @@ impl HttpTransferCodingHeaderValueCollection {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpTransferCodingHeaderValue>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IndexOf<P0>(&self, value: P0, index: &mut u32) -> windows_core::Result<bool>
@@ -3612,6 +3731,9 @@ impl HttpTransferCodingHeaderValueCollection {
     }
     pub fn GetMany(&self, startindex: u32, items: &mut [Option<HttpTransferCodingHeaderValue>]) -> windows_core::Result<u32> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpTransferCodingHeaderValue>>(self)?;
+        if core::mem::needs_drop::<Option<HttpTransferCodingHeaderValue>>() {
+            items.fill_with(|| unsafe { core::mem::zeroed() });
+        }
         unsafe {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).GetMany)(windows_core::Interface::as_raw(this), startindex, items.len().try_into().unwrap(), core::mem::transmute_copy(&items), &mut result__).map(|| result__)
@@ -3619,7 +3741,7 @@ impl HttpTransferCodingHeaderValueCollection {
     }
     pub fn ReplaceAll(&self, items: &[Option<HttpTransferCodingHeaderValue>]) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<windows_collections::IVector<HttpTransferCodingHeaderValue>>(self)?;
-        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), core::mem::transmute(items.as_ptr())).ok() }
+        unsafe { (windows_core::Interface::vtable(this).ReplaceAll)(windows_core::Interface::as_raw(this), items.len().try_into().unwrap(), items.as_ptr().cast()).ok() }
     }
 }
 impl windows_core::RuntimeType for HttpTransferCodingHeaderValueCollection {
@@ -3628,6 +3750,7 @@ impl windows_core::RuntimeType for HttpTransferCodingHeaderValueCollection {
 unsafe impl windows_core::Interface for HttpTransferCodingHeaderValueCollection {
     type Vtable = <IHttpTransferCodingHeaderValueCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHttpTransferCodingHeaderValueCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HttpTransferCodingHeaderValueCollection {
     const NAME: &'static str = "Windows.Web.Http.Headers.HttpTransferCodingHeaderValueCollection";
@@ -3648,11 +3771,7 @@ impl IntoIterator for &HttpTransferCodingHeaderValueCollection {
         windows_collections::BufferedIterator::new(self.First().unwrap())
     }
 }
-windows_core::imp::define_interface!(IHttpCacheDirectiveHeaderValueCollection, IHttpCacheDirectiveHeaderValueCollection_Vtbl, 0x9a586b89_d5d0_4fbe_bd9d_b5b3636811b4);
-impl windows_core::RuntimeType for IHttpCacheDirectiveHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCacheDirectiveHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpCacheDirectiveHeaderValueCollection, IHttpCacheDirectiveHeaderValueCollection_Vtbl, 0x9a586b89_d5d0_4fbe_bd9d_b5b3636811b4, b"Windows.Web.Http.Headers.IHttpCacheDirectiveHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCacheDirectiveHeaderValueCollection_Vtbl {
@@ -3668,11 +3787,7 @@ pub struct IHttpCacheDirectiveHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpChallengeHeaderValue, IHttpChallengeHeaderValue_Vtbl, 0x393361af_0f7d_4820_9fdd_a2b956eeaeab);
-impl windows_core::RuntimeType for IHttpChallengeHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpChallengeHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpChallengeHeaderValue, IHttpChallengeHeaderValue_Vtbl, 0x393361af_0f7d_4820_9fdd_a2b956eeaeab, b"Windows.Web.Http.Headers.IHttpChallengeHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpChallengeHeaderValue_Vtbl {
@@ -3681,11 +3796,7 @@ pub struct IHttpChallengeHeaderValue_Vtbl {
     pub Scheme: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Token: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpChallengeHeaderValueCollection, IHttpChallengeHeaderValueCollection_Vtbl, 0xca9e5f81_aee0_4353_a10b_e625babd64c2);
-impl windows_core::RuntimeType for IHttpChallengeHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpChallengeHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpChallengeHeaderValueCollection, IHttpChallengeHeaderValueCollection_Vtbl, 0xca9e5f81_aee0_4353_a10b_e625babd64c2, b"Windows.Web.Http.Headers.IHttpChallengeHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpChallengeHeaderValueCollection_Vtbl {
@@ -3693,11 +3804,7 @@ pub struct IHttpChallengeHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpChallengeHeaderValueFactory, IHttpChallengeHeaderValueFactory_Vtbl, 0xc452c451_d99c_40aa_9399_90eeb98fc613);
-impl windows_core::RuntimeType for IHttpChallengeHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpChallengeHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpChallengeHeaderValueFactory, IHttpChallengeHeaderValueFactory_Vtbl, 0xc452c451_d99c_40aa_9399_90eeb98fc613, b"Windows.Web.Http.Headers.IHttpChallengeHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpChallengeHeaderValueFactory_Vtbl {
@@ -3705,11 +3812,7 @@ pub struct IHttpChallengeHeaderValueFactory_Vtbl {
     pub CreateFromScheme: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromSchemeWithToken: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpChallengeHeaderValueStatics, IHttpChallengeHeaderValueStatics_Vtbl, 0xf3d38a72_fc01_4d01_a008_fcb7c459d635);
-impl windows_core::RuntimeType for IHttpChallengeHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpChallengeHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpChallengeHeaderValueStatics, IHttpChallengeHeaderValueStatics_Vtbl, 0xf3d38a72_fc01_4d01_a008_fcb7c459d635, b"Windows.Web.Http.Headers.IHttpChallengeHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpChallengeHeaderValueStatics_Vtbl {
@@ -3717,22 +3820,14 @@ pub struct IHttpChallengeHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpConnectionOptionHeaderValue, IHttpConnectionOptionHeaderValue_Vtbl, 0xcb4af27a_4e90_45eb_8dcd_fd1408f4c44f);
-impl windows_core::RuntimeType for IHttpConnectionOptionHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpConnectionOptionHeaderValue, IHttpConnectionOptionHeaderValue_Vtbl, 0xcb4af27a_4e90_45eb_8dcd_fd1408f4c44f, b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpConnectionOptionHeaderValue_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Token: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpConnectionOptionHeaderValueCollection, IHttpConnectionOptionHeaderValueCollection_Vtbl, 0xe4f56c1d_5142_4e00_8e0f_019509337629);
-impl windows_core::RuntimeType for IHttpConnectionOptionHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpConnectionOptionHeaderValueCollection, IHttpConnectionOptionHeaderValueCollection_Vtbl, 0xe4f56c1d_5142_4e00_8e0f_019509337629, b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpConnectionOptionHeaderValueCollection_Vtbl {
@@ -3740,22 +3835,14 @@ pub struct IHttpConnectionOptionHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpConnectionOptionHeaderValueFactory, IHttpConnectionOptionHeaderValueFactory_Vtbl, 0xd93ccc1e_0b7d_4c3f_a58d_a2a1bdeabc0a);
-impl windows_core::RuntimeType for IHttpConnectionOptionHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpConnectionOptionHeaderValueFactory, IHttpConnectionOptionHeaderValueFactory_Vtbl, 0xd93ccc1e_0b7d_4c3f_a58d_a2a1bdeabc0a, b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpConnectionOptionHeaderValueFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpConnectionOptionHeaderValueStatics, IHttpConnectionOptionHeaderValueStatics_Vtbl, 0xaaa75d37_a946_4b1f_85af_48b68b3c50bd);
-impl windows_core::RuntimeType for IHttpConnectionOptionHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpConnectionOptionHeaderValueStatics, IHttpConnectionOptionHeaderValueStatics_Vtbl, 0xaaa75d37_a946_4b1f_85af_48b68b3c50bd, b"Windows.Web.Http.Headers.IHttpConnectionOptionHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpConnectionOptionHeaderValueStatics_Vtbl {
@@ -3763,22 +3850,14 @@ pub struct IHttpConnectionOptionHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingHeaderValue, IHttpContentCodingHeaderValue_Vtbl, 0xbcf7f92a_9376_4d85_bccc_9f4f9acab434);
-impl windows_core::RuntimeType for IHttpContentCodingHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingHeaderValue, IHttpContentCodingHeaderValue_Vtbl, 0xbcf7f92a_9376_4d85_bccc_9f4f9acab434, b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingHeaderValue_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ContentCoding: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingHeaderValueCollection, IHttpContentCodingHeaderValueCollection_Vtbl, 0x7d221721_a6db_436e_8e83_91596192819c);
-impl windows_core::RuntimeType for IHttpContentCodingHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingHeaderValueCollection, IHttpContentCodingHeaderValueCollection_Vtbl, 0x7d221721_a6db_436e_8e83_91596192819c, b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingHeaderValueCollection_Vtbl {
@@ -3786,22 +3865,14 @@ pub struct IHttpContentCodingHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingHeaderValueFactory, IHttpContentCodingHeaderValueFactory_Vtbl, 0xc53d2bd7_332b_4350_8510_2e67a2289a5a);
-impl windows_core::RuntimeType for IHttpContentCodingHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingHeaderValueFactory, IHttpContentCodingHeaderValueFactory_Vtbl, 0xc53d2bd7_332b_4350_8510_2e67a2289a5a, b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingHeaderValueFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingHeaderValueStatics, IHttpContentCodingHeaderValueStatics_Vtbl, 0x94d8602e_f9bf_42f7_aa46_ed272a41e212);
-impl windows_core::RuntimeType for IHttpContentCodingHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingHeaderValueStatics, IHttpContentCodingHeaderValueStatics_Vtbl, 0x94d8602e_f9bf_42f7_aa46_ed272a41e212, b"Windows.Web.Http.Headers.IHttpContentCodingHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingHeaderValueStatics_Vtbl {
@@ -3809,11 +3880,7 @@ pub struct IHttpContentCodingHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingWithQualityHeaderValue, IHttpContentCodingWithQualityHeaderValue_Vtbl, 0x94531cd5_8b13_4d73_8651_f76b38f88495);
-impl windows_core::RuntimeType for IHttpContentCodingWithQualityHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingWithQualityHeaderValue, IHttpContentCodingWithQualityHeaderValue_Vtbl, 0x94531cd5_8b13_4d73_8651_f76b38f88495, b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingWithQualityHeaderValue_Vtbl {
@@ -3821,11 +3888,7 @@ pub struct IHttpContentCodingWithQualityHeaderValue_Vtbl {
     pub ContentCoding: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Quality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingWithQualityHeaderValueCollection, IHttpContentCodingWithQualityHeaderValueCollection_Vtbl, 0x7c0d753e_e899_4378_b5c8_412d820711cc);
-impl windows_core::RuntimeType for IHttpContentCodingWithQualityHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingWithQualityHeaderValueCollection, IHttpContentCodingWithQualityHeaderValueCollection_Vtbl, 0x7c0d753e_e899_4378_b5c8_412d820711cc, b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingWithQualityHeaderValueCollection_Vtbl {
@@ -3833,11 +3896,7 @@ pub struct IHttpContentCodingWithQualityHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingWithQualityHeaderValueFactory, IHttpContentCodingWithQualityHeaderValueFactory_Vtbl, 0xc45eee1a_c553_46fc_ade2_d75c1d53df7b);
-impl windows_core::RuntimeType for IHttpContentCodingWithQualityHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingWithQualityHeaderValueFactory, IHttpContentCodingWithQualityHeaderValueFactory_Vtbl, 0xc45eee1a_c553_46fc_ade2_d75c1d53df7b, b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingWithQualityHeaderValueFactory_Vtbl {
@@ -3845,11 +3904,7 @@ pub struct IHttpContentCodingWithQualityHeaderValueFactory_Vtbl {
     pub CreateFromValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromValueWithQuality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, f64, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentCodingWithQualityHeaderValueStatics, IHttpContentCodingWithQualityHeaderValueStatics_Vtbl, 0xe8c9357c_8f89_4801_8e75_4c9abfc3de71);
-impl windows_core::RuntimeType for IHttpContentCodingWithQualityHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentCodingWithQualityHeaderValueStatics, IHttpContentCodingWithQualityHeaderValueStatics_Vtbl, 0xe8c9357c_8f89_4801_8e75_4c9abfc3de71, b"Windows.Web.Http.Headers.IHttpContentCodingWithQualityHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentCodingWithQualityHeaderValueStatics_Vtbl {
@@ -3857,11 +3912,7 @@ pub struct IHttpContentCodingWithQualityHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentDispositionHeaderValue, IHttpContentDispositionHeaderValue_Vtbl, 0xf2a2eedc_2629_4b49_9908_96a168e9365e);
-impl windows_core::RuntimeType for IHttpContentDispositionHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentDispositionHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentDispositionHeaderValue, IHttpContentDispositionHeaderValue_Vtbl, 0xf2a2eedc_2629_4b49_9908_96a168e9365e, b"Windows.Web.Http.Headers.IHttpContentDispositionHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentDispositionHeaderValue_Vtbl {
@@ -3878,22 +3929,14 @@ pub struct IHttpContentDispositionHeaderValue_Vtbl {
     pub Size: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetSize: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentDispositionHeaderValueFactory, IHttpContentDispositionHeaderValueFactory_Vtbl, 0x9915bbc4_456c_4e81_8295_b2ab3cbcf545);
-impl windows_core::RuntimeType for IHttpContentDispositionHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentDispositionHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentDispositionHeaderValueFactory, IHttpContentDispositionHeaderValueFactory_Vtbl, 0x9915bbc4_456c_4e81_8295_b2ab3cbcf545, b"Windows.Web.Http.Headers.IHttpContentDispositionHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentDispositionHeaderValueFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentDispositionHeaderValueStatics, IHttpContentDispositionHeaderValueStatics_Vtbl, 0x29c56067_5a37_46e4_b074_c5177d69ca66);
-impl windows_core::RuntimeType for IHttpContentDispositionHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentDispositionHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentDispositionHeaderValueStatics, IHttpContentDispositionHeaderValueStatics_Vtbl, 0x29c56067_5a37_46e4_b074_c5177d69ca66, b"Windows.Web.Http.Headers.IHttpContentDispositionHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentDispositionHeaderValueStatics_Vtbl {
@@ -3901,11 +3944,7 @@ pub struct IHttpContentDispositionHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentHeaderCollection, IHttpContentHeaderCollection_Vtbl, 0x40612a44_47ae_4b7e_9124_69628b64aa18);
-impl windows_core::RuntimeType for IHttpContentHeaderCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentHeaderCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentHeaderCollection, IHttpContentHeaderCollection_Vtbl, 0x40612a44_47ae_4b7e_9124_69628b64aa18, b"Windows.Web.Http.Headers.IHttpContentHeaderCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentHeaderCollection_Vtbl {
@@ -3940,11 +3979,7 @@ pub struct IHttpContentHeaderCollection_Vtbl {
     pub Append: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryAppendWithoutValidation: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentRangeHeaderValue, IHttpContentRangeHeaderValue_Vtbl, 0x04d967d3_a4f6_495c_9530_8579fcba8aa9);
-impl windows_core::RuntimeType for IHttpContentRangeHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentRangeHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentRangeHeaderValue, IHttpContentRangeHeaderValue_Vtbl, 0x04d967d3_a4f6_495c_9530_8579fcba8aa9, b"Windows.Web.Http.Headers.IHttpContentRangeHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentRangeHeaderValue_Vtbl {
@@ -3955,11 +3990,7 @@ pub struct IHttpContentRangeHeaderValue_Vtbl {
     pub Unit: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetUnit: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentRangeHeaderValueFactory, IHttpContentRangeHeaderValueFactory_Vtbl, 0x3f5bd691_a03c_4456_9a6f_ef27ecd03cae);
-impl windows_core::RuntimeType for IHttpContentRangeHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentRangeHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentRangeHeaderValueFactory, IHttpContentRangeHeaderValueFactory_Vtbl, 0x3f5bd691_a03c_4456_9a6f_ef27ecd03cae, b"Windows.Web.Http.Headers.IHttpContentRangeHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentRangeHeaderValueFactory_Vtbl {
@@ -3968,11 +3999,7 @@ pub struct IHttpContentRangeHeaderValueFactory_Vtbl {
     pub CreateFromRange: unsafe extern "system" fn(*mut core::ffi::c_void, u64, u64, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromRangeWithLength: unsafe extern "system" fn(*mut core::ffi::c_void, u64, u64, u64, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpContentRangeHeaderValueStatics, IHttpContentRangeHeaderValueStatics_Vtbl, 0x80a346ca_174c_4fae_821c_134cd294aa38);
-impl windows_core::RuntimeType for IHttpContentRangeHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpContentRangeHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpContentRangeHeaderValueStatics, IHttpContentRangeHeaderValueStatics_Vtbl, 0x80a346ca_174c_4fae_821c_134cd294aa38, b"Windows.Web.Http.Headers.IHttpContentRangeHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpContentRangeHeaderValueStatics_Vtbl {
@@ -3980,11 +4007,7 @@ pub struct IHttpContentRangeHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCookiePairHeaderValue, IHttpCookiePairHeaderValue_Vtbl, 0xcbd46217_4b29_412b_bd90_b3d814ab8e1b);
-impl windows_core::RuntimeType for IHttpCookiePairHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpCookiePairHeaderValue, IHttpCookiePairHeaderValue_Vtbl, 0xcbd46217_4b29_412b_bd90_b3d814ab8e1b, b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCookiePairHeaderValue_Vtbl {
@@ -3993,11 +4016,7 @@ pub struct IHttpCookiePairHeaderValue_Vtbl {
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCookiePairHeaderValueCollection, IHttpCookiePairHeaderValueCollection_Vtbl, 0xf3f44350_581e_4ecc_9f59_e507d04f06e6);
-impl windows_core::RuntimeType for IHttpCookiePairHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpCookiePairHeaderValueCollection, IHttpCookiePairHeaderValueCollection_Vtbl, 0xf3f44350_581e_4ecc_9f59_e507d04f06e6, b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCookiePairHeaderValueCollection_Vtbl {
@@ -4005,11 +4024,7 @@ pub struct IHttpCookiePairHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCookiePairHeaderValueFactory, IHttpCookiePairHeaderValueFactory_Vtbl, 0x635e326f_146f_4f56_aa21_2cb7d6d58b1e);
-impl windows_core::RuntimeType for IHttpCookiePairHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpCookiePairHeaderValueFactory, IHttpCookiePairHeaderValueFactory_Vtbl, 0x635e326f_146f_4f56_aa21_2cb7d6d58b1e, b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCookiePairHeaderValueFactory_Vtbl {
@@ -4017,11 +4032,7 @@ pub struct IHttpCookiePairHeaderValueFactory_Vtbl {
     pub CreateFromName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromNameWithValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCookiePairHeaderValueStatics, IHttpCookiePairHeaderValueStatics_Vtbl, 0x6e866d48_06af_4462_8158_99388d5dca81);
-impl windows_core::RuntimeType for IHttpCookiePairHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpCookiePairHeaderValueStatics, IHttpCookiePairHeaderValueStatics_Vtbl, 0x6e866d48_06af_4462_8158_99388d5dca81, b"Windows.Web.Http.Headers.IHttpCookiePairHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCookiePairHeaderValueStatics_Vtbl {
@@ -4029,11 +4040,7 @@ pub struct IHttpCookiePairHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCredentialsHeaderValue, IHttpCredentialsHeaderValue_Vtbl, 0xc34cc3cb_542e_4177_a6c7_b674ce193fbf);
-impl windows_core::RuntimeType for IHttpCredentialsHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCredentialsHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpCredentialsHeaderValue, IHttpCredentialsHeaderValue_Vtbl, 0xc34cc3cb_542e_4177_a6c7_b674ce193fbf, b"Windows.Web.Http.Headers.IHttpCredentialsHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCredentialsHeaderValue_Vtbl {
@@ -4042,11 +4049,7 @@ pub struct IHttpCredentialsHeaderValue_Vtbl {
     pub Scheme: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Token: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCredentialsHeaderValueFactory, IHttpCredentialsHeaderValueFactory_Vtbl, 0xf21d9e91_4d1c_4182_bfd1_34470a62f950);
-impl windows_core::RuntimeType for IHttpCredentialsHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCredentialsHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpCredentialsHeaderValueFactory, IHttpCredentialsHeaderValueFactory_Vtbl, 0xf21d9e91_4d1c_4182_bfd1_34470a62f950, b"Windows.Web.Http.Headers.IHttpCredentialsHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCredentialsHeaderValueFactory_Vtbl {
@@ -4054,11 +4057,7 @@ pub struct IHttpCredentialsHeaderValueFactory_Vtbl {
     pub CreateFromScheme: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromSchemeWithToken: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpCredentialsHeaderValueStatics, IHttpCredentialsHeaderValueStatics_Vtbl, 0xa69b2be6_ce8c_4443_a35a_1b727b131036);
-impl windows_core::RuntimeType for IHttpCredentialsHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpCredentialsHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpCredentialsHeaderValueStatics, IHttpCredentialsHeaderValueStatics_Vtbl, 0xa69b2be6_ce8c_4443_a35a_1b727b131036, b"Windows.Web.Http.Headers.IHttpCredentialsHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpCredentialsHeaderValueStatics_Vtbl {
@@ -4066,11 +4065,7 @@ pub struct IHttpCredentialsHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpDateOrDeltaHeaderValue, IHttpDateOrDeltaHeaderValue_Vtbl, 0xeafcaa6a_c4dc_49e2_a27d_043adf5867a3);
-impl windows_core::RuntimeType for IHttpDateOrDeltaHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpDateOrDeltaHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpDateOrDeltaHeaderValue, IHttpDateOrDeltaHeaderValue_Vtbl, 0xeafcaa6a_c4dc_49e2_a27d_043adf5867a3, b"Windows.Web.Http.Headers.IHttpDateOrDeltaHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpDateOrDeltaHeaderValue_Vtbl {
@@ -4078,11 +4073,7 @@ pub struct IHttpDateOrDeltaHeaderValue_Vtbl {
     pub Date: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Delta: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpDateOrDeltaHeaderValueStatics, IHttpDateOrDeltaHeaderValueStatics_Vtbl, 0x7c2659a8_6672_4e90_9a9a_f39766f7f576);
-impl windows_core::RuntimeType for IHttpDateOrDeltaHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpDateOrDeltaHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpDateOrDeltaHeaderValueStatics, IHttpDateOrDeltaHeaderValueStatics_Vtbl, 0x7c2659a8_6672_4e90_9a9a_f39766f7f576, b"Windows.Web.Http.Headers.IHttpDateOrDeltaHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpDateOrDeltaHeaderValueStatics_Vtbl {
@@ -4090,11 +4081,7 @@ pub struct IHttpDateOrDeltaHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpExpectationHeaderValue, IHttpExpectationHeaderValue_Vtbl, 0x4ce585cd_3a99_43af_a2e6_ec232fea9658);
-impl windows_core::RuntimeType for IHttpExpectationHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpExpectationHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpExpectationHeaderValue, IHttpExpectationHeaderValue_Vtbl, 0x4ce585cd_3a99_43af_a2e6_ec232fea9658, b"Windows.Web.Http.Headers.IHttpExpectationHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpExpectationHeaderValue_Vtbl {
@@ -4104,11 +4091,7 @@ pub struct IHttpExpectationHeaderValue_Vtbl {
     pub SetValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Parameters: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpExpectationHeaderValueCollection, IHttpExpectationHeaderValueCollection_Vtbl, 0xe78521b3_a0e2_4ac4_9e66_79706cb9fd58);
-impl windows_core::RuntimeType for IHttpExpectationHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpExpectationHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpExpectationHeaderValueCollection, IHttpExpectationHeaderValueCollection_Vtbl, 0xe78521b3_a0e2_4ac4_9e66_79706cb9fd58, b"Windows.Web.Http.Headers.IHttpExpectationHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpExpectationHeaderValueCollection_Vtbl {
@@ -4116,11 +4099,7 @@ pub struct IHttpExpectationHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpExpectationHeaderValueFactory, IHttpExpectationHeaderValueFactory_Vtbl, 0x4ea275cb_d53e_4868_8856_1e21a5030dc0);
-impl windows_core::RuntimeType for IHttpExpectationHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpExpectationHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpExpectationHeaderValueFactory, IHttpExpectationHeaderValueFactory_Vtbl, 0x4ea275cb_d53e_4868_8856_1e21a5030dc0, b"Windows.Web.Http.Headers.IHttpExpectationHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpExpectationHeaderValueFactory_Vtbl {
@@ -4128,11 +4107,7 @@ pub struct IHttpExpectationHeaderValueFactory_Vtbl {
     pub CreateFromName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromNameWithValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpExpectationHeaderValueStatics, IHttpExpectationHeaderValueStatics_Vtbl, 0x3019abe2_cfe5_473b_a57f_fba5b14eb257);
-impl windows_core::RuntimeType for IHttpExpectationHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpExpectationHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpExpectationHeaderValueStatics, IHttpExpectationHeaderValueStatics_Vtbl, 0x3019abe2_cfe5_473b_a57f_fba5b14eb257, b"Windows.Web.Http.Headers.IHttpExpectationHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpExpectationHeaderValueStatics_Vtbl {
@@ -4140,11 +4115,7 @@ pub struct IHttpExpectationHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpLanguageHeaderValueCollection, IHttpLanguageHeaderValueCollection_Vtbl, 0x9ebd7ca3_8219_44f6_9902_8c56dfd3340c);
-impl windows_core::RuntimeType for IHttpLanguageHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpLanguageHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpLanguageHeaderValueCollection, IHttpLanguageHeaderValueCollection_Vtbl, 0x9ebd7ca3_8219_44f6_9902_8c56dfd3340c, b"Windows.Web.Http.Headers.IHttpLanguageHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpLanguageHeaderValueCollection_Vtbl {
@@ -4152,11 +4123,7 @@ pub struct IHttpLanguageHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpLanguageRangeWithQualityHeaderValue, IHttpLanguageRangeWithQualityHeaderValue_Vtbl, 0x7256e102_0080_4db4_a083_7de7b2e5ba4c);
-impl windows_core::RuntimeType for IHttpLanguageRangeWithQualityHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpLanguageRangeWithQualityHeaderValue, IHttpLanguageRangeWithQualityHeaderValue_Vtbl, 0x7256e102_0080_4db4_a083_7de7b2e5ba4c, b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpLanguageRangeWithQualityHeaderValue_Vtbl {
@@ -4164,11 +4131,7 @@ pub struct IHttpLanguageRangeWithQualityHeaderValue_Vtbl {
     pub LanguageRange: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Quality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpLanguageRangeWithQualityHeaderValueCollection, IHttpLanguageRangeWithQualityHeaderValueCollection_Vtbl, 0x885d5abd_4b4f_480a_89ce_8aedcee6e3a0);
-impl windows_core::RuntimeType for IHttpLanguageRangeWithQualityHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpLanguageRangeWithQualityHeaderValueCollection, IHttpLanguageRangeWithQualityHeaderValueCollection_Vtbl, 0x885d5abd_4b4f_480a_89ce_8aedcee6e3a0, b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpLanguageRangeWithQualityHeaderValueCollection_Vtbl {
@@ -4176,11 +4139,7 @@ pub struct IHttpLanguageRangeWithQualityHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpLanguageRangeWithQualityHeaderValueFactory, IHttpLanguageRangeWithQualityHeaderValueFactory_Vtbl, 0x7bb83970_780f_4c83_9fe4_dc3087f6bd55);
-impl windows_core::RuntimeType for IHttpLanguageRangeWithQualityHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpLanguageRangeWithQualityHeaderValueFactory, IHttpLanguageRangeWithQualityHeaderValueFactory_Vtbl, 0x7bb83970_780f_4c83_9fe4_dc3087f6bd55, b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpLanguageRangeWithQualityHeaderValueFactory_Vtbl {
@@ -4188,11 +4147,7 @@ pub struct IHttpLanguageRangeWithQualityHeaderValueFactory_Vtbl {
     pub CreateFromLanguageRange: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromLanguageRangeWithQuality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, f64, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpLanguageRangeWithQualityHeaderValueStatics, IHttpLanguageRangeWithQualityHeaderValueStatics_Vtbl, 0x2541e146_f308_46f5_b695_42f54024ec68);
-impl windows_core::RuntimeType for IHttpLanguageRangeWithQualityHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpLanguageRangeWithQualityHeaderValueStatics, IHttpLanguageRangeWithQualityHeaderValueStatics_Vtbl, 0x2541e146_f308_46f5_b695_42f54024ec68, b"Windows.Web.Http.Headers.IHttpLanguageRangeWithQualityHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpLanguageRangeWithQualityHeaderValueStatics_Vtbl {
@@ -4200,11 +4155,7 @@ pub struct IHttpLanguageRangeWithQualityHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeHeaderValue, IHttpMediaTypeHeaderValue_Vtbl, 0x16b28533_e728_4fcb_bdb0_08a431a14844);
-impl windows_core::RuntimeType for IHttpMediaTypeHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeHeaderValue, IHttpMediaTypeHeaderValue_Vtbl, 0x16b28533_e728_4fcb_bdb0_08a431a14844, b"Windows.Web.Http.Headers.IHttpMediaTypeHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeHeaderValue_Vtbl {
@@ -4215,22 +4166,14 @@ pub struct IHttpMediaTypeHeaderValue_Vtbl {
     pub SetMediaType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Parameters: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeHeaderValueFactory, IHttpMediaTypeHeaderValueFactory_Vtbl, 0xbed747a8_cd17_42dd_9367_ab9c5b56dd7d);
-impl windows_core::RuntimeType for IHttpMediaTypeHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeHeaderValueFactory, IHttpMediaTypeHeaderValueFactory_Vtbl, 0xbed747a8_cd17_42dd_9367_ab9c5b56dd7d, b"Windows.Web.Http.Headers.IHttpMediaTypeHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeHeaderValueFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeHeaderValueStatics, IHttpMediaTypeHeaderValueStatics_Vtbl, 0xe04d83df_1d41_4d8c_a2de_6fd2ed87399b);
-impl windows_core::RuntimeType for IHttpMediaTypeHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeHeaderValueStatics, IHttpMediaTypeHeaderValueStatics_Vtbl, 0xe04d83df_1d41_4d8c_a2de_6fd2ed87399b, b"Windows.Web.Http.Headers.IHttpMediaTypeHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeHeaderValueStatics_Vtbl {
@@ -4238,11 +4181,7 @@ pub struct IHttpMediaTypeHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeWithQualityHeaderValue, IHttpMediaTypeWithQualityHeaderValue_Vtbl, 0x188d5e32_76be_44a0_b1cd_2074bded2dde);
-impl windows_core::RuntimeType for IHttpMediaTypeWithQualityHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeWithQualityHeaderValue, IHttpMediaTypeWithQualityHeaderValue_Vtbl, 0x188d5e32_76be_44a0_b1cd_2074bded2dde, b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeWithQualityHeaderValue_Vtbl {
@@ -4255,11 +4194,7 @@ pub struct IHttpMediaTypeWithQualityHeaderValue_Vtbl {
     pub Quality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetQuality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeWithQualityHeaderValueCollection, IHttpMediaTypeWithQualityHeaderValueCollection_Vtbl, 0x3c0c6b73_1342_4587_a056_18d02ff67165);
-impl windows_core::RuntimeType for IHttpMediaTypeWithQualityHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeWithQualityHeaderValueCollection, IHttpMediaTypeWithQualityHeaderValueCollection_Vtbl, 0x3c0c6b73_1342_4587_a056_18d02ff67165, b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeWithQualityHeaderValueCollection_Vtbl {
@@ -4267,11 +4202,7 @@ pub struct IHttpMediaTypeWithQualityHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeWithQualityHeaderValueFactory, IHttpMediaTypeWithQualityHeaderValueFactory_Vtbl, 0x4c6d20f4_9457_44e6_a323_d122b958780b);
-impl windows_core::RuntimeType for IHttpMediaTypeWithQualityHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeWithQualityHeaderValueFactory, IHttpMediaTypeWithQualityHeaderValueFactory_Vtbl, 0x4c6d20f4_9457_44e6_a323_d122b958780b, b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeWithQualityHeaderValueFactory_Vtbl {
@@ -4279,11 +4210,7 @@ pub struct IHttpMediaTypeWithQualityHeaderValueFactory_Vtbl {
     pub CreateFromMediaType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromMediaTypeWithQuality: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, f64, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMediaTypeWithQualityHeaderValueStatics, IHttpMediaTypeWithQualityHeaderValueStatics_Vtbl, 0x5b070cd9_b560_4fc8_9835_7e6c0a657b24);
-impl windows_core::RuntimeType for IHttpMediaTypeWithQualityHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpMediaTypeWithQualityHeaderValueStatics, IHttpMediaTypeWithQualityHeaderValueStatics_Vtbl, 0x5b070cd9_b560_4fc8_9835_7e6c0a657b24, b"Windows.Web.Http.Headers.IHttpMediaTypeWithQualityHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMediaTypeWithQualityHeaderValueStatics_Vtbl {
@@ -4291,11 +4218,7 @@ pub struct IHttpMediaTypeWithQualityHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpMethodHeaderValueCollection, IHttpMethodHeaderValueCollection_Vtbl, 0x43bc3ff4_6119_4adf_938c_34bfffcf92ed);
-impl windows_core::RuntimeType for IHttpMethodHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpMethodHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpMethodHeaderValueCollection, IHttpMethodHeaderValueCollection_Vtbl, 0x43bc3ff4_6119_4adf_938c_34bfffcf92ed, b"Windows.Web.Http.Headers.IHttpMethodHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpMethodHeaderValueCollection_Vtbl {
@@ -4303,11 +4226,7 @@ pub struct IHttpMethodHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpNameValueHeaderValue, IHttpNameValueHeaderValue_Vtbl, 0xd8ba7463_5b9a_4d1b_93f9_aa5b44ecfddf);
-impl windows_core::RuntimeType for IHttpNameValueHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpNameValueHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpNameValueHeaderValue, IHttpNameValueHeaderValue_Vtbl, 0xd8ba7463_5b9a_4d1b_93f9_aa5b44ecfddf, b"Windows.Web.Http.Headers.IHttpNameValueHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpNameValueHeaderValue_Vtbl {
@@ -4316,11 +4235,7 @@ pub struct IHttpNameValueHeaderValue_Vtbl {
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpNameValueHeaderValueFactory, IHttpNameValueHeaderValueFactory_Vtbl, 0x770e2267_cbf8_4736_a925_93fbe10c7ca8);
-impl windows_core::RuntimeType for IHttpNameValueHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpNameValueHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpNameValueHeaderValueFactory, IHttpNameValueHeaderValueFactory_Vtbl, 0x770e2267_cbf8_4736_a925_93fbe10c7ca8, b"Windows.Web.Http.Headers.IHttpNameValueHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpNameValueHeaderValueFactory_Vtbl {
@@ -4328,11 +4243,7 @@ pub struct IHttpNameValueHeaderValueFactory_Vtbl {
     pub CreateFromName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromNameWithValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpNameValueHeaderValueStatics, IHttpNameValueHeaderValueStatics_Vtbl, 0xffd4030f_1130_4152_8659_256909a9d115);
-impl windows_core::RuntimeType for IHttpNameValueHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpNameValueHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpNameValueHeaderValueStatics, IHttpNameValueHeaderValueStatics_Vtbl, 0xffd4030f_1130_4152_8659_256909a9d115, b"Windows.Web.Http.Headers.IHttpNameValueHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpNameValueHeaderValueStatics_Vtbl {
@@ -4340,11 +4251,7 @@ pub struct IHttpNameValueHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductHeaderValue, IHttpProductHeaderValue_Vtbl, 0xf4feee03_ebd4_4160_b9ff_807c5183b6e6);
-impl windows_core::RuntimeType for IHttpProductHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductHeaderValue, IHttpProductHeaderValue_Vtbl, 0xf4feee03_ebd4_4160_b9ff_807c5183b6e6, b"Windows.Web.Http.Headers.IHttpProductHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductHeaderValue_Vtbl {
@@ -4352,11 +4259,7 @@ pub struct IHttpProductHeaderValue_Vtbl {
     pub Name: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Version: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductHeaderValueFactory, IHttpProductHeaderValueFactory_Vtbl, 0x611aa4f5_82bc_42fb_977b_dc00536e5e86);
-impl windows_core::RuntimeType for IHttpProductHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductHeaderValueFactory, IHttpProductHeaderValueFactory_Vtbl, 0x611aa4f5_82bc_42fb_977b_dc00536e5e86, b"Windows.Web.Http.Headers.IHttpProductHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductHeaderValueFactory_Vtbl {
@@ -4364,11 +4267,7 @@ pub struct IHttpProductHeaderValueFactory_Vtbl {
     pub CreateFromName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromNameWithVersion: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductHeaderValueStatics, IHttpProductHeaderValueStatics_Vtbl, 0x90c33e29_befc_4337_be62_49f097975f53);
-impl windows_core::RuntimeType for IHttpProductHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductHeaderValueStatics, IHttpProductHeaderValueStatics_Vtbl, 0x90c33e29_befc_4337_be62_49f097975f53, b"Windows.Web.Http.Headers.IHttpProductHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductHeaderValueStatics_Vtbl {
@@ -4376,11 +4275,7 @@ pub struct IHttpProductHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductInfoHeaderValue, IHttpProductInfoHeaderValue_Vtbl, 0x1b1a8732_4c35_486a_966f_646489198e4d);
-impl windows_core::RuntimeType for IHttpProductInfoHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductInfoHeaderValue, IHttpProductInfoHeaderValue_Vtbl, 0x1b1a8732_4c35_486a_966f_646489198e4d, b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductInfoHeaderValue_Vtbl {
@@ -4388,11 +4283,7 @@ pub struct IHttpProductInfoHeaderValue_Vtbl {
     pub Product: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Comment: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductInfoHeaderValueCollection, IHttpProductInfoHeaderValueCollection_Vtbl, 0x877df74a_d69b_44f8_ad4f_453af9c42ed0);
-impl windows_core::RuntimeType for IHttpProductInfoHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductInfoHeaderValueCollection, IHttpProductInfoHeaderValueCollection_Vtbl, 0x877df74a_d69b_44f8_ad4f_453af9c42ed0, b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductInfoHeaderValueCollection_Vtbl {
@@ -4400,11 +4291,7 @@ pub struct IHttpProductInfoHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductInfoHeaderValueFactory, IHttpProductInfoHeaderValueFactory_Vtbl, 0x24220fbe_eabe_4464_b460_ec010b7c41e2);
-impl windows_core::RuntimeType for IHttpProductInfoHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductInfoHeaderValueFactory, IHttpProductInfoHeaderValueFactory_Vtbl, 0x24220fbe_eabe_4464_b460_ec010b7c41e2, b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductInfoHeaderValueFactory_Vtbl {
@@ -4412,11 +4299,7 @@ pub struct IHttpProductInfoHeaderValueFactory_Vtbl {
     pub CreateFromComment: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CreateFromNameWithVersion: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpProductInfoHeaderValueStatics, IHttpProductInfoHeaderValueStatics_Vtbl, 0xdb7fd857_327a_4e73_81e5_7059a302b042);
-impl windows_core::RuntimeType for IHttpProductInfoHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpProductInfoHeaderValueStatics, IHttpProductInfoHeaderValueStatics_Vtbl, 0xdb7fd857_327a_4e73_81e5_7059a302b042, b"Windows.Web.Http.Headers.IHttpProductInfoHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpProductInfoHeaderValueStatics_Vtbl {
@@ -4424,11 +4307,7 @@ pub struct IHttpProductInfoHeaderValueStatics_Vtbl {
     pub Parse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpRequestHeaderCollection, IHttpRequestHeaderCollection_Vtbl, 0xaf40329b_b544_469b_86b9_ac3d466fea36);
-impl windows_core::RuntimeType for IHttpRequestHeaderCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpRequestHeaderCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpRequestHeaderCollection, IHttpRequestHeaderCollection_Vtbl, 0xaf40329b_b544_469b_86b9_ac3d466fea36, b"Windows.Web.Http.Headers.IHttpRequestHeaderCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpRequestHeaderCollection_Vtbl {
@@ -4469,11 +4348,7 @@ pub struct IHttpRequestHeaderCollection_Vtbl {
     pub Append: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryAppendWithoutValidation: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpResponseHeaderCollection, IHttpResponseHeaderCollection_Vtbl, 0x7a990969_fa3f_41ed_aac6_bf957975c16b);
-impl windows_core::RuntimeType for IHttpResponseHeaderCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpResponseHeaderCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpResponseHeaderCollection, IHttpResponseHeaderCollection_Vtbl, 0x7a990969_fa3f_41ed_aac6_bf957975c16b, b"Windows.Web.Http.Headers.IHttpResponseHeaderCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpResponseHeaderCollection_Vtbl {
@@ -4495,11 +4370,7 @@ pub struct IHttpResponseHeaderCollection_Vtbl {
     pub Append: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryAppendWithoutValidation: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpTransferCodingHeaderValue, IHttpTransferCodingHeaderValue_Vtbl, 0x436f32f9_3ded_42bd_b38a_5496a2511ce6);
-impl windows_core::RuntimeType for IHttpTransferCodingHeaderValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValue");
-}
+windows_core::imp::define_winrt_interface!(IHttpTransferCodingHeaderValue, IHttpTransferCodingHeaderValue_Vtbl, 0x436f32f9_3ded_42bd_b38a_5496a2511ce6, b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpTransferCodingHeaderValue_Vtbl {
@@ -4507,11 +4378,7 @@ pub struct IHttpTransferCodingHeaderValue_Vtbl {
     pub Parameters: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpTransferCodingHeaderValueCollection, IHttpTransferCodingHeaderValueCollection_Vtbl, 0x202c8c34_2c03_49b8_9665_73e27cb2fc79);
-impl windows_core::RuntimeType for IHttpTransferCodingHeaderValueCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValueCollection");
-}
+windows_core::imp::define_winrt_interface!(IHttpTransferCodingHeaderValueCollection, IHttpTransferCodingHeaderValueCollection_Vtbl, 0x202c8c34_2c03_49b8_9665_73e27cb2fc79, b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValueCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpTransferCodingHeaderValueCollection_Vtbl {
@@ -4519,22 +4386,14 @@ pub struct IHttpTransferCodingHeaderValueCollection_Vtbl {
     pub ParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TryParseAdd: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpTransferCodingHeaderValueFactory, IHttpTransferCodingHeaderValueFactory_Vtbl, 0xbb62dffc_e361_4f08_8e4f_c9e723de703b);
-impl windows_core::RuntimeType for IHttpTransferCodingHeaderValueFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValueFactory");
-}
+windows_core::imp::define_winrt_interface!(IHttpTransferCodingHeaderValueFactory, IHttpTransferCodingHeaderValueFactory_Vtbl, 0xbb62dffc_e361_4f08_8e4f_c9e723de703b, b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValueFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpTransferCodingHeaderValueFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHttpTransferCodingHeaderValueStatics, IHttpTransferCodingHeaderValueStatics_Vtbl, 0x6ab8892a_1a98_4d32_a906_7470a9875ce5);
-impl windows_core::RuntimeType for IHttpTransferCodingHeaderValueStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValueStatics");
-}
+windows_core::imp::define_winrt_interface!(IHttpTransferCodingHeaderValueStatics, IHttpTransferCodingHeaderValueStatics_Vtbl, 0x6ab8892a_1a98_4d32_a906_7470a9875ce5, b"Windows.Web.Http.Headers.IHttpTransferCodingHeaderValueStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHttpTransferCodingHeaderValueStatics_Vtbl {

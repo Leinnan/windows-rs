@@ -8,7 +8,7 @@ impl windows_core::RuntimeType for Delegate {
         windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl Delegate {
-    pub fn new<F: Fn(i32) -> windows_core::Result<()> + Send + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(i32) -> windows_core::Result<()> + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&DelegateBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -30,10 +30,10 @@ pub struct Delegate_Vtbl {
         sender: i32,
     ) -> windows_core::HRESULT,
 }
-struct DelegateBox<F: Fn(i32) -> windows_core::Result<()> + Send + 'static>(
+struct DelegateBox<F: Fn(i32) -> windows_core::Result<()> + Send + Sync + 'static>(
     core::marker::PhantomData<(fn() -> F,)>,
 );
-impl<F: Fn(i32) -> windows_core::Result<()> + Send + 'static> DelegateBox<F> {
+impl<F: Fn(i32) -> windows_core::Result<()> + Send + Sync + 'static> DelegateBox<F> {
     const VTABLE: Delegate_Vtbl = Delegate_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<Delegate, F>::QueryInterface,
@@ -47,23 +47,18 @@ impl<F: Fn(i32) -> windows_core::Result<()> + Send + 'static> DelegateBox<F> {
         sender: i32,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<Delegate, F>);
             (this.invoke)(sender).into()
         }
     }
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     Interface,
     Interface_Vtbl,
-    0xca5a6b51_8bab_5a2e_af33_e182fa13377f
+    0xca5a6b51_8bab_5a2e_af33_e182fa13377f,
+    b"Test.Interface"
 );
-impl windows_core::RuntimeType for Interface {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.Interface");
-}
 windows_core::imp::interface_hierarchy!(
     Interface,
     windows_core::IUnknown,
@@ -82,7 +77,7 @@ impl Interface {
     }
     pub fn Changed<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(i32) + Send + 'static,
+        F: Fn(i32) + Send + Sync + 'static,
     {
         let handler = <Delegate>::new(move |a0| {
             handler(a0);
@@ -164,7 +159,7 @@ impl Interface_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, Interface, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Method: Method::<Identity, OFFSET>,
             Changed: Changed::<Identity, OFFSET>,
             RemoveChanged: RemoveChanged::<Identity, OFFSET>,

@@ -16,7 +16,9 @@ impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for Handl
         .push_slice(b")");
 }
 impl<T: windows_core::RuntimeType + 'static> Handler<T> {
-    pub fn new<F: Fn(windows_core::Ref<T>, i32) -> windows_core::Result<()> + Send + 'static>(
+    pub fn new<
+        F: Fn(windows_core::Ref<T>, i32) -> windows_core::Result<()> + Send + Sync + 'static,
+    >(
         invoke: F,
     ) -> Self {
         let com =
@@ -50,14 +52,15 @@ where
     ) -> windows_core::HRESULT,
     T: core::marker::PhantomData<T>,
 }
-struct HandlerBox<T, F: Fn(windows_core::Ref<T>, i32) -> windows_core::Result<()> + Send + 'static>(
-    core::marker::PhantomData<(T, fn() -> F)>,
-)
+struct HandlerBox<
+    T,
+    F: Fn(windows_core::Ref<T>, i32) -> windows_core::Result<()> + Send + Sync + 'static,
+>(core::marker::PhantomData<(T, fn() -> F)>)
 where
     T: windows_core::RuntimeType + 'static;
 impl<
     T: windows_core::RuntimeType + 'static,
-    F: Fn(windows_core::Ref<T>, i32) -> windows_core::Result<()> + Send + 'static,
+    F: Fn(windows_core::Ref<T>, i32) -> windows_core::Result<()> + Send + Sync + 'static,
 > HandlerBox<T, F>
 {
     const VTABLE: Handler_Vtbl<T> = Handler_Vtbl::<T> {
@@ -75,23 +78,18 @@ impl<
         value: i32,
     ) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void
+            let this = &*(this as *mut *mut core::ffi::c_void
                 as *mut windows_core::imp::DelegateBox<Handler<T>, F>);
             (this.invoke)(core::mem::transmute_copy(&sender), value).into()
         }
     }
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     ISource,
     ISource_Vtbl,
-    0xc1f11ade_373b_528b_9be6_7b1e709e331a
+    0xc1f11ade_373b_528b_9be6_7b1e709e331a,
+    b"Test.ISource"
 );
-impl windows_core::RuntimeType for ISource {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.ISource");
-}
 windows_core::imp::interface_hierarchy!(
     ISource,
     windows_core::IUnknown,
@@ -100,7 +98,7 @@ windows_core::imp::interface_hierarchy!(
 impl ISource {
     pub fn Changed<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, i32) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, i32) + Send + Sync + 'static,
     {
         let handler = <Handler<Self>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -162,7 +160,7 @@ impl ISource_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ISource, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Changed: Changed::<Identity, OFFSET>,
             RemoveChanged: RemoveChanged::<Identity, OFFSET>,
         }

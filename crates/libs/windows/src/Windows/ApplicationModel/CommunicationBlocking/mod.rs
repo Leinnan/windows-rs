@@ -9,7 +9,7 @@ impl CommunicationBlockingAccessManager {
     pub fn IsBlockedNumberAsync(number: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<bool>> {
         Self::ICommunicationBlockingAccessManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsBlockedNumberAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(number), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).IsBlockedNumberAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(number), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn ShowBlockNumbersUI<P0>(phonenumbers: P0) -> windows_core::Result<bool>
@@ -58,7 +58,7 @@ impl CommunicationBlockingAppManager {
     pub fn RequestSetAsActiveBlockingAppAsync() -> windows_core::Result<windows_future::IAsyncOperation<bool>> {
         Self::ICommunicationBlockingAppManagerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestSetAsActiveBlockingAppAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestSetAsActiveBlockingAppAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICommunicationBlockingAppManagerStatics<R, F: FnOnce(&ICommunicationBlockingAppManagerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -73,11 +73,7 @@ impl CommunicationBlockingAppManager {
 impl windows_core::RuntimeName for CommunicationBlockingAppManager {
     const NAME: &'static str = "Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingAppManager";
 }
-windows_core::imp::define_interface!(ICommunicationBlockingAccessManagerStatics, ICommunicationBlockingAccessManagerStatics_Vtbl, 0x1c969998_9d2a_5db7_edd5_0ce407fc2595);
-impl windows_core::RuntimeType for ICommunicationBlockingAccessManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.CommunicationBlocking.ICommunicationBlockingAccessManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(ICommunicationBlockingAccessManagerStatics, ICommunicationBlockingAccessManagerStatics_Vtbl, 0x1c969998_9d2a_5db7_edd5_0ce407fc2595, b"Windows.ApplicationModel.CommunicationBlocking.ICommunicationBlockingAccessManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICommunicationBlockingAccessManagerStatics_Vtbl {
@@ -89,11 +85,7 @@ pub struct ICommunicationBlockingAccessManagerStatics_Vtbl {
     pub ShowBlockedCallsUI: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ShowBlockedMessagesUI: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICommunicationBlockingAppManagerStatics, ICommunicationBlockingAppManagerStatics_Vtbl, 0x77db58ec_14a6_4baa_942a_6a673d999bf2);
-impl windows_core::RuntimeType for ICommunicationBlockingAppManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.CommunicationBlocking.ICommunicationBlockingAppManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(ICommunicationBlockingAppManagerStatics, ICommunicationBlockingAppManagerStatics_Vtbl, 0x77db58ec_14a6_4baa_942a_6a673d999bf2, b"Windows.ApplicationModel.CommunicationBlocking.ICommunicationBlockingAppManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICommunicationBlockingAppManagerStatics_Vtbl {
@@ -101,11 +93,7 @@ pub struct ICommunicationBlockingAppManagerStatics_Vtbl {
     pub IsCurrentAppActiveBlockingApp: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub ShowCommunicationBlockingSettingsUI: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICommunicationBlockingAppManagerStatics2, ICommunicationBlockingAppManagerStatics2_Vtbl, 0x14a68edd_ed88_457a_a364_a3634d6f166d);
-impl windows_core::RuntimeType for ICommunicationBlockingAppManagerStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.CommunicationBlocking.ICommunicationBlockingAppManagerStatics2");
-}
+windows_core::imp::define_winrt_interface!(ICommunicationBlockingAppManagerStatics2, ICommunicationBlockingAppManagerStatics2_Vtbl, 0x14a68edd_ed88_457a_a364_a3634d6f166d, b"Windows.ApplicationModel.CommunicationBlocking.ICommunicationBlockingAppManagerStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICommunicationBlockingAppManagerStatics2_Vtbl {

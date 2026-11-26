@@ -6,12 +6,7 @@ extern crate self as windows_collections;
 #[cfg(feature = "std")]
 use windows_core::imp::ref_as_default;
 
-#[expect(
-    non_snake_case,
-    non_camel_case_types,
-    non_upper_case_globals,
-    clippy::missing_transmute_annotations
-)]
+#[expect(non_snake_case, non_camel_case_types, non_upper_case_globals)]
 mod bindings;
 pub use bindings::*;
 
@@ -21,6 +16,8 @@ pub use buffered_iterator::*;
 #[cfg(feature = "std")]
 const E_BOUNDS: windows_core::HRESULT = windows_core::HRESULT(0x8000000B_u32 as _);
 
+#[cfg(feature = "std")]
+mod immutable_vector;
 #[cfg(feature = "std")]
 mod iterable;
 #[cfg(feature = "std")]
@@ -34,6 +31,15 @@ mod observable_map;
 #[cfg(feature = "std")]
 mod observable_vector;
 #[cfg(feature = "std")]
+mod read_only_vector;
+#[cfg(feature = "std")]
+mod storage;
+#[cfg(feature = "std")]
 mod vector;
 #[cfg(feature = "std")]
 mod vector_view;
+
+#[cfg(all(test, feature = "std"))]
+mod map_tests;
+#[cfg(all(test, feature = "std"))]
+mod vector_tests;

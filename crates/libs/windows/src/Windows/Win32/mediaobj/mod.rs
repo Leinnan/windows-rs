@@ -11,7 +11,7 @@ pub const DMO_INPUT_STREAMF_SINGLE_SAMPLE_PER_BUFFER: _DMO_INPUT_STREAM_INFO_FLA
 pub const DMO_INPUT_STREAMF_WHOLE_SAMPLES: _DMO_INPUT_STREAM_INFO_FLAGS = 1;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DMO_MEDIA_TYPE {
     pub majortype: windows_core::GUID,
     pub subtype: windows_core::GUID,
@@ -22,6 +22,12 @@ pub struct DMO_MEDIA_TYPE {
     pub pUnk: core::mem::ManuallyDrop<Option<windows_core::IUnknown>>,
     pub cbFormat: super::ULONG,
     pub pbFormat: *mut super::BYTE,
+}
+#[cfg(feature = "shared")]
+impl Default for DMO_MEDIA_TYPE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[cfg(feature = "shared")]
@@ -224,7 +230,7 @@ impl IEnumDMO {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
     }
     pub unsafe fn Clone(&self, ppenum: *mut Option<Self>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), core::mem::transmute(ppenum)) }
+        unsafe { (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), ppenum as _) }
     }
 }
 #[repr(C)]
@@ -723,7 +729,7 @@ impl IMediaObjectInPlace {
         unsafe { (windows_core::Interface::vtable(self).Process)(windows_core::Interface::as_raw(self), ulsize, pdata as _, reftimestart, dwflags) }
     }
     pub unsafe fn Clone(&self, ppmediaobject: *mut Option<Self>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), core::mem::transmute(ppmediaobject)) }
+        unsafe { (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), ppmediaobject as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetLatency(&self, platencytime: *mut super::REFERENCE_TIME) -> windows_core::HRESULT {

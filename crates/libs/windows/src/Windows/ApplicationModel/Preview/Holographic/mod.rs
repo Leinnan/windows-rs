@@ -49,7 +49,7 @@ impl HolographicKeyboardPlacementOverridePreview {
     pub fn GetForCurrentView() -> windows_core::Result<Self> {
         Self::IHolographicKeyboardPlacementOverridePreviewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IHolographicKeyboardPlacementOverridePreviewStatics<R, F: FnOnce(&IHolographicKeyboardPlacementOverridePreviewStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -63,17 +63,14 @@ impl windows_core::RuntimeType for HolographicKeyboardPlacementOverridePreview {
 unsafe impl windows_core::Interface for HolographicKeyboardPlacementOverridePreview {
     type Vtable = <IHolographicKeyboardPlacementOverridePreview as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHolographicKeyboardPlacementOverridePreview as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HolographicKeyboardPlacementOverridePreview {
     const NAME: &'static str = "Windows.ApplicationModel.Preview.Holographic.HolographicKeyboardPlacementOverridePreview";
 }
 unsafe impl Send for HolographicKeyboardPlacementOverridePreview {}
 unsafe impl Sync for HolographicKeyboardPlacementOverridePreview {}
-windows_core::imp::define_interface!(IHolographicApplicationPreviewStatics, IHolographicApplicationPreviewStatics_Vtbl, 0xfe038691_2a3a_45a9_a208_7bed691919f3);
-impl windows_core::RuntimeType for IHolographicApplicationPreviewStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.Holographic.IHolographicApplicationPreviewStatics");
-}
+windows_core::imp::define_winrt_interface!(IHolographicApplicationPreviewStatics, IHolographicApplicationPreviewStatics_Vtbl, 0xfe038691_2a3a_45a9_a208_7bed691919f3, b"Windows.ApplicationModel.Preview.Holographic.IHolographicApplicationPreviewStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHolographicApplicationPreviewStatics_Vtbl {
@@ -84,11 +81,7 @@ pub struct IHolographicApplicationPreviewStatics_Vtbl {
     #[cfg(not(feature = "ApplicationModel_Activation"))]
     IsHolographicActivation: usize,
 }
-windows_core::imp::define_interface!(IHolographicKeyboardPlacementOverridePreview, IHolographicKeyboardPlacementOverridePreview_Vtbl, 0xc8a8ce3a_dfde_5a14_8d5f_182c526dd9c4);
-impl windows_core::RuntimeType for IHolographicKeyboardPlacementOverridePreview {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.Holographic.IHolographicKeyboardPlacementOverridePreview");
-}
+windows_core::imp::define_winrt_interface!(IHolographicKeyboardPlacementOverridePreview, IHolographicKeyboardPlacementOverridePreview_Vtbl, 0xc8a8ce3a_dfde_5a14_8d5f_182c526dd9c4, b"Windows.ApplicationModel.Preview.Holographic.IHolographicKeyboardPlacementOverridePreview");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHolographicKeyboardPlacementOverridePreview_Vtbl {
@@ -103,11 +96,7 @@ pub struct IHolographicKeyboardPlacementOverridePreview_Vtbl {
     SetPlacementOverrideWithMaxSize: usize,
     pub ResetPlacementOverride: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHolographicKeyboardPlacementOverridePreviewStatics, IHolographicKeyboardPlacementOverridePreviewStatics_Vtbl, 0x202e6039_1ff6_5a06_aac4_a5e24fa3ec4b);
-impl windows_core::RuntimeType for IHolographicKeyboardPlacementOverridePreviewStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.Holographic.IHolographicKeyboardPlacementOverridePreviewStatics");
-}
+windows_core::imp::define_winrt_interface!(IHolographicKeyboardPlacementOverridePreviewStatics, IHolographicKeyboardPlacementOverridePreviewStatics_Vtbl, 0x202e6039_1ff6_5a06_aac4_a5e24fa3ec4b, b"Windows.ApplicationModel.Preview.Holographic.IHolographicKeyboardPlacementOverridePreviewStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHolographicKeyboardPlacementOverridePreviewStatics_Vtbl {

@@ -1,15 +1,10 @@
 pub const E_NOTIMPL: windows_core::HRESULT = windows_core::HRESULT(0x80004001_u32 as _);
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     IPropertyValue,
     IPropertyValue_Vtbl,
-    0x4bd682dd_7554_40e9_9a9b_82654ede7e62
+    0x4bd682dd_7554_40e9_9a9b_82654ede7e62,
+    b"Windows.Foundation.IPropertyValue"
 );
-impl windows_core::RuntimeType for IPropertyValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.IPropertyValue");
-}
 windows_core::imp::interface_hierarchy!(
     IPropertyValue,
     windows_core::IUnknown,
@@ -335,8 +330,7 @@ impl IPropertyValue_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPropertyValue_Impl::GetString(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -866,7 +860,7 @@ impl IPropertyValue_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IPropertyValue, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Type: Type::<Identity, OFFSET>,
             IsNumericScalar: IsNumericScalar::<Identity, OFFSET>,
             GetUInt8: GetUInt8::<Identity, OFFSET>,
@@ -1061,34 +1055,24 @@ pub struct IPropertyValue_Vtbl {
         *mut *mut Rect,
     ) -> windows_core::HRESULT,
 }
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IReference<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
-where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
+windows_core::imp::define_winrt_interface!(IReference < T >, IReference_Vtbl < T, >, 0x61c17706_2d65_11e0_9ae8_d48564015472, b"Windows.Foundation.IReference`1");
+impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<IPropertyValue>
     for IReference<T>
 {
+    const QUERY: bool = true;
 }
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IReference<T>
-{
-}
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface for IReference<T> {
-    type Vtable = IReference_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
-}
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IReference<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({61c17706-2d65-11e0-9ae8-d48564015472}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Windows.Foundation.IReference`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
+impl<T: windows_core::RuntimeType + 'static> IReference<T> {
+    pub fn Value(&self) -> windows_core::Result<T> {
+        unsafe {
+            let mut result__ =
+                core::mem::MaybeUninit::<<T as windows_core::imp::Type>::Default>::zeroed();
+            (windows_core::Interface::vtable(self).Value)(
+                windows_core::Interface::as_raw(self),
+                result__.as_mut_ptr().cast(),
+            )
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
+        }
+    }
 }
 impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeName for IReference<T> {
     const NAME: &'static str = "Windows.Foundation.IReference";
@@ -1116,8 +1100,7 @@ impl<T: windows_core::RuntimeType + 'static> IReference_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IReference_Impl::Value(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1128,7 +1111,7 @@ impl<T: windows_core::RuntimeType + 'static> IReference_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IReference<T>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Value: Value::<T, Identity, OFFSET>,
             T: core::marker::PhantomData::<T>,
         }
@@ -1161,6 +1144,8 @@ impl windows_core::imp::TypeKind for Point {
 impl windows_core::RuntimeType for Point {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"struct(Windows.Foundation.Point;f4;f4)");
+    const NAME: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.Point");
 }
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -1214,6 +1199,8 @@ impl windows_core::imp::TypeKind for PropertyType {
 impl windows_core::RuntimeType for PropertyType {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Foundation.PropertyType;i4)");
+    const NAME: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.PropertyType");
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -1229,6 +1216,8 @@ impl windows_core::imp::TypeKind for Rect {
 impl windows_core::RuntimeType for Rect {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"struct(Windows.Foundation.Rect;f4;f4;f4;f4)");
+    const NAME: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.Rect");
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -1242,4 +1231,6 @@ impl windows_core::imp::TypeKind for Size {
 impl windows_core::RuntimeType for Size {
     const SIGNATURE: windows_core::imp::ConstBuffer =
         windows_core::imp::ConstBuffer::from_slice(b"struct(Windows.Foundation.Size;f4;f4)");
+    const NAME: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::from_slice(b"Windows.Foundation.Size");
 }

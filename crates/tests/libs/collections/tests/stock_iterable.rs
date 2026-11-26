@@ -6,11 +6,25 @@ const E_BOUNDS: HRESULT = HRESULT(0x8000000B_u32 as _);
 // Local stand-in avoids a dependency on Win32 error constants.
 const E_FAIL: HRESULT = HRESULT(0x80004005_u32 as _);
 
+#[test]
+fn generic_construction() -> Result<()> {
+    fn from_values<T: RuntimeType>(values: Vec<T::Default>) -> IIterable<T>
+    where
+        T::Default: Send + Sync,
+    {
+        values.into()
+    }
+
+    let able = from_values::<i32>(vec![42]);
+    assert_eq!(able.First()?.Current()?, 42);
+    Ok(())
+}
+
 // `Calendar` requires WinRT activation factory linker symbols.
 #[cfg(windows)]
 #[test]
 fn calendar() -> Result<()> {
-    use windows::Globalization::*;
+    use test_collections::*;
 
     let languages = IIterable::from(vec![HSTRING::from("he-IL"), HSTRING::from("ja-JP")]);
     let calendar = Calendar::CreateCalendar(
@@ -171,26 +185,26 @@ fn hstring() -> Result<()> {
 
 // `IStringable` is available only on Windows.
 #[cfg(windows)]
-#[implement(windows::Foundation::IStringable)]
+#[implement(test_collections::IStringable)]
 struct Stringable(HSTRING);
 
 #[cfg(windows)]
-impl windows::Foundation::IStringable_Impl for Stringable_Impl {
+impl test_collections::IStringable_Impl for Stringable_Impl {
     fn ToString(&self) -> Result<HSTRING> {
         Ok(self.0.clone())
     }
 }
 
 #[cfg(windows)]
-fn stringable(value: &str) -> windows::Foundation::IStringable {
+fn stringable(value: &str) -> test_collections::IStringable {
     Stringable(value.into()).into()
 }
 
 #[cfg(windows)]
 #[test]
 fn defaulted() -> Result<()> {
-    use windows::Foundation::IStringable;
-    let able = IIterable::<IStringable>::from(vec![]);
+    use test_collections::IStringable;
+    let able = unsafe { IIterable::<IStringable>::from_unchecked(vec![]) };
     let iter = able.First()?;
 
     assert_eq!(iter.Current().unwrap_err().code(), E_BOUNDS);
@@ -206,11 +220,14 @@ fn defaulted() -> Result<()> {
     values.resize(5, None);
     assert_eq!(iter.GetMany(&mut values)?, 0);
 
-    let able = IIterable::<IStringable>::from(vec![
-        Some(stringable("one")),
-        Some(stringable("two")),
-        Some(stringable("three")),
-    ]);
+    // Stringable contains only an immutable HSTRING.
+    let able = unsafe {
+        IIterable::<IStringable>::from_unchecked(vec![
+            Some(stringable("one")),
+            Some(stringable("two")),
+            Some(stringable("three")),
+        ])
+    };
     let iter = able.First()?;
 
     assert_eq!(iter.Current()?.ToString()?, "one");

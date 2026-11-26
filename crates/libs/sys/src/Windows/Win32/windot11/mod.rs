@@ -22,12 +22,18 @@ pub struct DOT11_AKM_CIPHER_PAIR {
 }
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_ANQP_QUERY_COMPLETE_PARAMETERS {
     pub Header: super::NDIS_OBJECT_HEADER,
     pub Status: DOT11_ANQP_QUERY_RESULT,
     pub hContext: super::HANDLE,
     pub uResponseLength: super::ULONG,
+}
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
+impl Default for DOT11_ANQP_QUERY_COMPLETE_PARAMETERS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DOT11_ANQP_QUERY_COMPLETE_PARAMETERS_REVISION_1: i32 = 1;
 pub type DOT11_ANQP_QUERY_RESULT = i32;
@@ -702,7 +708,7 @@ pub const DOT11_EXEMPT_ON_KEY_MAPPING_KEY_UNAVAILABLE: i32 = 2;
 pub const DOT11_EXEMPT_UNICAST: i32 = 1;
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "wlan"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_EXTAP_ATTRIBUTES {
     pub Header: super::NDIS_OBJECT_HEADER,
     pub uScanSSIDListSize: super::ULONG,
@@ -719,6 +725,12 @@ pub struct DOT11_EXTAP_ATTRIBUTES {
     pub uInfraNumSupportedMcastAlgoPairs: super::ULONG,
     pub pInfraSupportedMcastAlgoPairs: super::PDOT11_AUTH_CIPHER_PAIR,
 }
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "wlan"))]
+impl Default for DOT11_EXTAP_ATTRIBUTES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DOT11_EXTAP_ATTRIBUTES_REVISION_1: i32 = 1;
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
 pub type DOT11_EXTAP_RECV_CONTEXT = DOT11_EXTSTA_RECV_CONTEXT;
@@ -728,7 +740,7 @@ pub type DOT11_EXTAP_SEND_CONTEXT = DOT11_EXTSTA_SEND_CONTEXT;
 pub const DOT11_EXTAP_SEND_CONTEXT_REVISION_1: i32 = 1;
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "wlan"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_EXTSTA_ATTRIBUTES {
     pub Header: super::NDIS_OBJECT_HEADER,
     pub uScanSSIDListSize: super::ULONG,
@@ -765,6 +777,12 @@ pub struct DOT11_EXTSTA_ATTRIBUTES {
     pub bANQPQueryOffloadSupported: super::BOOLEAN,
     pub bHESSIDConnectionSupported: super::BOOLEAN,
 }
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "wlan"))]
+impl Default for DOT11_EXTSTA_ATTRIBUTES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DOT11_EXTSTA_ATTRIBUTES_REVISION_1: i32 = 1;
 pub const DOT11_EXTSTA_ATTRIBUTES_REVISION_2: i32 = 2;
 pub const DOT11_EXTSTA_ATTRIBUTES_REVISION_3: i32 = 3;
@@ -791,7 +809,7 @@ pub struct DOT11_EXTSTA_CAPABILITY {
 pub const DOT11_EXTSTA_CAPABILITY_REVISION_1: i32 = 1;
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_EXTSTA_RECV_CONTEXT {
     pub Header: super::NDIS_OBJECT_HEADER,
     pub uReceiveFlags: super::ULONG,
@@ -804,10 +822,16 @@ pub struct DOT11_EXTSTA_RECV_CONTEXT {
     pub pvMediaSpecificInfo: super::PVOID,
     pub ullTimestamp: super::ULONGLONG,
 }
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
+impl Default for DOT11_EXTSTA_RECV_CONTEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DOT11_EXTSTA_RECV_CONTEXT_REVISION_1: i32 = 1;
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_EXTSTA_SEND_CONTEXT {
     pub Header: super::NDIS_OBJECT_HEADER,
     pub usExemptionActionType: super::USHORT,
@@ -815,6 +839,12 @@ pub struct DOT11_EXTSTA_SEND_CONTEXT {
     pub uDelayedSleepValue: super::ULONG,
     pub pvMediaSpecificInfo: super::PVOID,
     pub uSendFlags: super::ULONG,
+}
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
+impl Default for DOT11_EXTSTA_SEND_CONTEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DOT11_EXTSTA_SEND_CONTEXT_REVISION_1: i32 = 1;
 pub const DOT11_FLAGS_80211B_CHANNEL_AGILITY: i32 = 4;
@@ -1263,12 +1293,18 @@ pub struct DOT11_MAC_PARAMETERS {
 pub const DOT11_MAC_PARAMETERS_REVISION_1: i32 = 1;
 #[repr(C)]
 #[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_MANUFACTURING_CALLBACK_PARAMETERS {
     pub Header: super::NDIS_OBJECT_HEADER,
     pub dot11ManufacturingCallbackType: DOT11_MANUFACTURING_CALLBACK_TYPE,
     pub uStatus: super::ULONG,
     pub pvContext: super::PVOID,
+}
+#[cfg(all(feature = "objectheader", feature = "shared", feature = "winnt"))]
+impl Default for DOT11_MANUFACTURING_CALLBACK_PARAMETERS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DOT11_MANUFACTURING_CALLBACK_REVISION_1: i32 = 1;
 pub type DOT11_MANUFACTURING_CALLBACK_TYPE = i32;
@@ -1387,10 +1423,16 @@ impl Default for DOT11_MANUFACTURING_TEST_SET_DATA {
 }
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_MANUFACTURING_TEST_SLEEP {
     pub uSleepTime: super::ULONG,
     pub pvContext: super::PVOID,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for DOT11_MANUFACTURING_TEST_SLEEP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DOT11_MANUFACTURING_TEST_TYPE = i32;
 pub const DOT11_MAX_CHANNEL_HINTS: i32 = 4;
@@ -3445,12 +3487,18 @@ impl Default for DOT11_WME_UPDATE_IE {
 }
 #[repr(C)]
 #[cfg(all(feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DOT11_WPA_TSC {
     pub uReserved: super::ULONG,
     pub dot11OffloadType: DOT11_OFFLOAD_TYPE,
     pub hOffload: super::HANDLE,
     pub dot11IV48Counter: DOT11_IV48_COUNTER,
+}
+#[cfg(all(feature = "shared", feature = "winnt"))]
+impl Default for DOT11_WPA_TSC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DOT11_WPS_CONFIG_METHOD = i32;
 pub const DOT11_WPS_CONFIG_METHOD_DISPLAY: DOT11_WPS_CONFIG_METHOD = 8;
@@ -3819,9 +3867,11 @@ pub const OID_DOT11_RTS_THRESHOLD: i32 = 218170143;
 pub const OID_DOT11_SAFE_MODE_ENABLED: u32 = 234946973;
 pub const OID_DOT11_SAFE_MODE_HT_ENABLED: u32 = 234946976;
 pub const OID_DOT11_SCAN_REQUEST: i32 = 218170123;
+pub const OID_DOT11_SET_EPP_AUTH_PARAMS: u32 = 234946988;
 pub const OID_DOT11_SET_FT_REASSOCIATION_PARAMETERS: u32 = 234946920;
 pub const OID_DOT11_SET_NWF_PMKID_LIST: u32 = 234946933;
 pub const OID_DOT11_SET_SAE_AUTH_PARAMS: u32 = 234946930;
+pub const OID_DOT11_SET_ST_ROAM_PARAMS: u32 = 234946989;
 pub const OID_DOT11_SHORT_PREAMBLE_OPTION_IMPLEMENTED: i32 = 218170181;
 pub const OID_DOT11_SHORT_RETRY_LIMIT: i32 = 218170144;
 pub const OID_DOT11_SHORT_SLOT_TIME_OPTION_ENABLED: i32 = 218170211;
@@ -4327,6 +4377,7 @@ pub struct RSNA_AKM_CIPHER_PAIR {
 pub type RSNA_AKM_SUITE = i32;
 pub type RSNA_CIPHER_SUITE = i32;
 pub const RSNA_OUI_PREFIX: i32 = 11276032;
+pub type SECURITY_PROFILE_NUMBER = i32;
 #[repr(C)]
 #[cfg(feature = "shared")]
 #[derive(Clone, Copy, Default)]
@@ -4406,6 +4457,7 @@ pub const dot11_phy_type_hrdsss: DOT11_PHY_TYPE = 5;
 pub const dot11_phy_type_ht: DOT11_PHY_TYPE = 7;
 pub const dot11_phy_type_irbaseband: DOT11_PHY_TYPE = 3;
 pub const dot11_phy_type_ofdm: DOT11_PHY_TYPE = 4;
+pub const dot11_phy_type_uhr: DOT11_PHY_TYPE = 12;
 pub const dot11_phy_type_unknown: DOT11_PHY_TYPE = 0;
 pub const dot11_phy_type_vht: DOT11_PHY_TYPE = 8;
 pub const dot11_power_mode_active: DOT11_POWER_MODE = 1;
@@ -4442,6 +4494,7 @@ pub const rsna_akm_1x_sha256: RSNA_AKM_SUITE = 95162112;
 pub const rsna_akm_1x_sha384: RSNA_AKM_SUITE = 397152000;
 pub const rsna_akm_1x_suite_b_sha256: RSNA_AKM_SUITE = 195825408;
 pub const rsna_akm_1x_suite_b_sha384: RSNA_AKM_SUITE = 212602624;
+pub const rsna_akm_eppke: RSNA_AKM_SUITE = 497815296;
 pub const rsna_akm_fils_1x_sha256: RSNA_AKM_SUITE = 246157056;
 pub const rsna_akm_fils_1x_sha384: RSNA_AKM_SUITE = 262934272;
 pub const rsna_akm_ft_1x_sha256: RSNA_AKM_SUITE = 61607680;
@@ -4453,10 +4506,14 @@ pub const rsna_akm_ft_psk_sha256: RSNA_AKM_SUITE = 78384896;
 pub const rsna_akm_ft_psk_sha384: RSNA_AKM_SUITE = 330043136;
 pub const rsna_akm_ft_sae_pmk256: RSNA_AKM_SUITE = 162270976;
 pub const rsna_akm_ft_sae_pmk384: RSNA_AKM_SUITE = 430706432;
-pub const rsna_akm_max: RSNA_AKM_SUITE = 430706432;
+pub const rsna_akm_mapc_pasn: RSNA_AKM_SUITE = 514592512;
+pub const rsna_akm_max: RSNA_AKM_SUITE = 548146944;
 pub const rsna_akm_none: RSNA_AKM_SUITE = 11276032;
 pub const rsna_akm_owe: RSNA_AKM_SUITE = 313265920;
+pub const rsna_akm_pasn: RSNA_AKM_SUITE = 363597568;
 pub const rsna_akm_peerkey_sha256: RSNA_AKM_SUITE = 179048192;
+pub const rsna_akm_pqc_1x: RSNA_AKM_SUITE = 531369728;
+pub const rsna_akm_pqc_ft_1x: RSNA_AKM_SUITE = 548146944;
 pub const rsna_akm_psk: RSNA_AKM_SUITE = 44830464;
 pub const rsna_akm_psk_sha256: RSNA_AKM_SUITE = 111939328;
 pub const rsna_akm_psk_sha384: RSNA_AKM_SUITE = 346820352;
@@ -4478,6 +4535,30 @@ pub const rsna_cipher_reserved: RSNA_CIPHER_SUITE = 61607680;
 pub const rsna_cipher_tkip: RSNA_CIPHER_SUITE = 44830464;
 pub const rsna_cipher_wep104: RSNA_CIPHER_SUITE = 95162112;
 pub const rsna_cipher_wep40: RSNA_CIPHER_SUITE = 28053248;
+pub const security_profile_1x_akm_12: SECURITY_PROFILE_NUMBER = 15;
+pub const security_profile_1x_akm_23: SECURITY_PROFILE_NUMBER = 13;
+pub const security_profile_1x_akm_5: SECURITY_PROFILE_NUMBER = 11;
+pub const security_profile_1x_ft_akm_22: SECURITY_PROFILE_NUMBER = 14;
+pub const security_profile_1x_ft_akm_3: SECURITY_PROFILE_NUMBER = 12;
+pub const security_profile_encapsulated_1x_akm_12: SECURITY_PROFILE_NUMBER = 7;
+pub const security_profile_encapsulated_1x_akm_23: SECURITY_PROFILE_NUMBER = 5;
+pub const security_profile_encapsulated_1x_akm_5: SECURITY_PROFILE_NUMBER = 3;
+pub const security_profile_encapsulated_1x_ft_akm_22: SECURITY_PROFILE_NUMBER = 6;
+pub const security_profile_encapsulated_1x_ft_akm_3: SECURITY_PROFILE_NUMBER = 4;
+pub const security_profile_eppke_enhanced_open: SECURITY_PROFILE_NUMBER = 0;
+pub const security_profile_eppke_sae_akm_24: SECURITY_PROFILE_NUMBER = 1;
+pub const security_profile_eppke_sae_ft_akm_25: SECURITY_PROFILE_NUMBER = 2;
+pub const security_profile_owe_akm_18: SECURITY_PROFILE_NUMBER = 8;
+pub const security_profile_pqc_1x_ft_pqc_profile_0: SECURITY_PROFILE_NUMBER = 20;
+pub const security_profile_pqc_1x_ft_pqc_profile_1: SECURITY_PROFILE_NUMBER = 21;
+pub const security_profile_pqc_1x_ft_pqc_profile_2: SECURITY_PROFILE_NUMBER = 22;
+pub const security_profile_pqc_1x_ft_pqc_profile_3: SECURITY_PROFILE_NUMBER = 23;
+pub const security_profile_pqc_1x_pqc_profile_0: SECURITY_PROFILE_NUMBER = 16;
+pub const security_profile_pqc_1x_pqc_profile_1: SECURITY_PROFILE_NUMBER = 17;
+pub const security_profile_pqc_1x_pqc_profile_2: SECURITY_PROFILE_NUMBER = 18;
+pub const security_profile_pqc_1x_pqc_profile_3: SECURITY_PROFILE_NUMBER = 19;
+pub const security_profile_sae_akm_24: SECURITY_PROFILE_NUMBER = 9;
+pub const security_profile_sae_ft_akm_25: SECURITY_PROFILE_NUMBER = 10;
 pub const wpa_akm_1x: WPA_AKM_SUITE = 32657408;
 pub const wpa_akm_max: WPA_AKM_SUITE = 49434624;
 pub const wpa_akm_none: WPA_AKM_SUITE = 15880192;

@@ -111,6 +111,7 @@ pub enum ValueType {
     Vector2,
     SelectionIndex,
     StringList,
+    SystemBackdrop,
     Enum {
         kind: &'static str,
         variants: &'static [&'static str],
@@ -154,8 +155,7 @@ pub fn relation_accepts(contract: &RelationContract, kind: ObjectType) -> bool {
 
 #[cfg(test)]
 pub fn property_contracts(kind: ObjectType) -> &'static [PropertyContract] {
-    static CONTRACTS: std::sync::OnceLock<Vec<&'static [PropertyContract]>> =
-        std::sync::OnceLock::new();
+    static CONTRACTS: OnceLock<Vec<&'static [PropertyContract]>> = OnceLock::new();
     let contracts = CONTRACTS.get_or_init(|| {
         let mut unique = Vec::<&'static [PropertyContract]>::new();
         ALL_OBJECT_TYPES
@@ -300,7 +300,7 @@ fn validate_object(
         if let Some(flyout) = &attachments.flyout {
             if !matches!(
                 declaration.kind,
-                ObjectType::Button | ObjectType::SplitButton
+                ObjectType::Button | ObjectType::DropDownButton | ObjectType::SplitButton
             ) {
                 invalid_attachment(declaration.kind);
             }
@@ -317,10 +317,7 @@ fn validate_object(
             );
         }
         if let Some(menu) = &attachments.menu {
-            if !matches!(
-                declaration.kind,
-                ObjectType::Button | ObjectType::DropDownButton | ObjectType::MenuBarItem
-            ) {
+            if object_category(declaration.kind) != ObjectCategory::Visual {
                 invalid_attachment(declaration.kind);
             }
             validate_menu_items(&menu.menu.items, &mut HashSet::new());
@@ -513,6 +510,7 @@ pub(crate) fn validate_property(kind: ObjectType, property: &Property) {
         | (ValueType::RichText, PropertyValue::RichText(_))
         | (ValueType::SelectionIndex, PropertyValue::SelectionIndex(_))
         | (ValueType::StringList, PropertyValue::StringList(_))
+        | (ValueType::SystemBackdrop, PropertyValue::SystemBackdrop(_))
         | (ValueType::ThemeTransitions, PropertyValue::ThemeTransitions(_))
         | (ValueType::Thickness, PropertyValue::Thickness(_)) => true,
         (ValueType::Vector2, PropertyValue::Vector2(value)) => {

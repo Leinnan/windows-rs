@@ -23,28 +23,88 @@ concurrency:
 
 jobs:
   miri:
-    runs-on: windows-2025-vs2026
+    name: ${{ matrix.target }} (${{ matrix.borrows }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x86_64-pc-windows-msvc
+          - i686-pc-windows-msvc
+          - aarch64-pc-windows-msvc
+          - x86_64-unknown-linux-gnu
+          - i686-unknown-linux-gnu
+        borrows: [stacked, tree]
+    env:
+      MIRIFLAGS: -Zmiri-strict-provenance ${{ matrix.borrows == 'tree' && '-Zmiri-tree-borrows' || '' }}
+      RUSTFLAGS: -D warnings
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Update toolchain
-        run: rustup update --no-self-update nightly && rustup default nightly-x86_64-pc-windows-msvc
-      - name: Add toolchain target
-        run: rustup target add x86_64-pc-windows-msvc
-      - name: Add miri
-        run: rustup toolchain install nightly --component miri
+        run: rustup toolchain install nightly --component miri --profile minimal && rustup default nightly
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
-      - name: Check string literals
-        run:  cargo miri test -p test_strings --test literals
-      - name: Check generated pointer provenance
-        run: cargo miri test -p test_bindgen --lib provenance_tests
+        with:
+          key: miri-${{ matrix.target }}
+      - name: Check metadata reader
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_metadata --test reader -- in_memory_roundtrip boundaries blobs
+      - name: Check string literals and termination
+        if: contains(matrix.target, 'windows')
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_strings --test literals --test encoding
+      - name: Check generated ABI, records, and pointer provenance
+        if: contains(matrix.target, 'windows')
+        run: >-
+          cargo +nightly miri test --target ${{ matrix.target }} -p test_bindgen --lib --
+          provenance_tests delegate_tests interface_tests abi_tests record_tests ownership_tests
+          bitfield_storage nested_member_alignment
+          com_results_tests::native_results_preserve_status_and_explicit_outputs
+          com_results_tests::results_transfer_owned_references
+          com_results_tests::inout_query_keeps_incoming_storage residual_contracts_borrow_objects
+      - name: Check COM object ownership and weak references
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_implement_core --lib
+      - name: Check collection storage and retirement
+        # Windows event tokens call EncodePointer, which Miri does not support.
+        if: contains(matrix.target, 'linux')
+        run: |
+          cargo +nightly miri test --target ${{ matrix.target }} -p windows-collections --lib
+          cargo +nightly miri test --target ${{ matrix.target }} -p test_collections --test storage
+      - name: Check failed owning return storage
+        if: contains(matrix.target, 'windows')
+        env:
+          RUSTFLAGS: "-D warnings --cfg windows_slim_errors"
+        run: >-
+          cargo +nightly miri test --target ${{ matrix.target }} -p test_bindgen --lib
+          -- failed_owning_return_is_not_read com_results_tests
+      - name: Check declarative COM objects
+        # Error construction calls native APIs on Windows; those cases remain in test.yml.
+        run: >-
+          cargo +nightly miri test --target ${{ matrix.target }} -p test_interface_core
+          --test macro_rules_decl -- user_fields_not_shadowed test_iother test_iraw
+          refcount_drops_to_zero generic_implementer
+      - name: Check mixed and custom inspectable interfaces
+        if: contains(matrix.target, 'windows')
+        run: >-
+          cargo +nightly miri test --target ${{ matrix.target }} -p test_implement
+          --test identity -- mixed_interface_identity custom_inspectable_conversion
+      - name: Check packed COM objects
+        if: contains(matrix.target, 'windows')
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_core --test packed
+      - name: Check delegate lifetime and identity
+        if: contains(matrix.target, 'windows')
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_future --test delegate
       - name: Check scoped interface macro
-        run: cargo miri test -p test_interface --test non_com_new
-      - name: Check generated pointer provenance with Tree Borrows
-        env:
-          MIRIFLAGS: -Zmiri-tree-borrows
-        run: cargo miri test -p test_bindgen --lib provenance_tests
-      - name: Check scoped interface macro with Tree Borrows
-        env:
-          MIRIFLAGS: -Zmiri-tree-borrows
-        run: cargo miri test -p test_interface --test non_com_new
+        if: contains(matrix.target, 'windows')
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_interface --test non_com_new
+      - name: Check async completion ownership
+        if: contains(matrix.target, 'windows')
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p windows-future --features std --lib -- once_ future::tests
+      - name: Check UI callback ownership
+        if: contains(matrix.target, 'windows')
+        run: >-
+          cargo +nightly miri test --target ${{ matrix.target }} -p windows-reactor --lib --
+          native::local::tests callback_cancellation_can_cancel_owned_registrations completion_factory
+          shutdown_releases_callbacks_outside_queues
+      - name: Check HSTRING ownership and allocation
+        if: contains(matrix.target, 'linux')
+        # Exercise the real cross-platform allocator; native Windows interoperability stays in test.yml.
+        run: cargo +nightly miri test --target ${{ matrix.target }} -p test_strings --test hstring --test hstring_builder

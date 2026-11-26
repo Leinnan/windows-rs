@@ -70,18 +70,32 @@ pub const DBASYNCHPHASE_POPULATION: DBASYNCHPHASEENUM = 1;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBBINDEXT {
     pub pExtension: *mut super::BYTE,
     pub ulExtension: DBCOUNTITEM,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(feature = "shared")]
+impl Default for DBBINDEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBBINDEXT {
     pub pExtension: *mut super::BYTE,
     pub ulExtension: DBCOUNTITEM,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(feature = "shared")]
+impl Default for DBBINDEXT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBBINDFLAG = u32;
 pub type DBBINDFLAGENUM = i32;
@@ -89,7 +103,6 @@ pub const DBBINDFLAG_HTML: DBBINDFLAGENUM = 1;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "guiddef", feature = "oaidl", feature = "shared"))]
-#[derive(Default)]
 pub struct DBBINDING {
     pub iOrdinal: DBORDINAL,
     pub obValue: DBBYTEOFFSET,
@@ -107,10 +120,16 @@ pub struct DBBINDING {
     pub bPrecision: super::BYTE,
     pub bScale: super::BYTE,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "guiddef", feature = "oaidl", feature = "shared"))]
+impl Default for DBBINDING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "guiddef", feature = "oaidl", feature = "shared"))]
-#[derive(Default)]
 pub struct DBBINDING {
     pub iOrdinal: DBORDINAL,
     pub obValue: DBBYTEOFFSET,
@@ -127,6 +146,13 @@ pub struct DBBINDING {
     pub wType: DBTYPE,
     pub bPrecision: super::BYTE,
     pub bScale: super::BYTE,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "guiddef", feature = "oaidl", feature = "shared"))]
+impl Default for DBBINDING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBBINDSTATUS = u32;
 pub type DBBINDSTATUSENUM = i32;
@@ -400,7 +426,7 @@ pub const DBCOMPUTEMODE_NOTCOMPUTED: i32 = 3;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBCONSTRAINTDESC {
     pub pConstraintID: *mut DBID,
     pub ConstraintType: DBCONSTRAINTTYPE,
@@ -417,10 +443,17 @@ pub struct DBCONSTRAINTDESC {
     pub cReserved: DB_URESERVE,
     pub rgReserved: *mut DBPROPSET,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for DBCONSTRAINTDESC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBCONSTRAINTDESC {
     pub pConstraintID: *mut DBID,
     pub ConstraintType: DBCONSTRAINTTYPE,
@@ -436,6 +469,13 @@ pub struct DBCONSTRAINTDESC {
     pub Deferrability: DBDEFERRABILITY,
     pub cReserved: DB_URESERVE,
     pub rgReserved: *mut DBPROPSET,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for DBCONSTRAINTDESC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBCONSTRAINTTYPE = u32;
 pub type DBCONSTRAINTTYPEENUM = i32;
@@ -604,36 +644,62 @@ impl Default for DBID_1 {
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(feature = "guiddef")]
-#[derive(Default)]
 pub struct DBIMPLICITSESSION {
     pub pUnkOuter: core::mem::ManuallyDrop<Option<windows_core::IUnknown>>,
     pub piid: *mut super::IID,
     pub pSession: core::mem::ManuallyDrop<Option<windows_core::IUnknown>>,
+}
+#[cfg(target_arch = "x86")]
+#[cfg(feature = "guiddef")]
+impl Default for DBIMPLICITSESSION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(feature = "guiddef")]
-#[derive(Default)]
 pub struct DBIMPLICITSESSION {
     pub pUnkOuter: core::mem::ManuallyDrop<Option<windows_core::IUnknown>>,
     pub piid: *mut super::IID,
     pub pSession: core::mem::ManuallyDrop<Option<windows_core::IUnknown>>,
 }
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(feature = "guiddef")]
+impl Default for DBIMPLICITSESSION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBINDEXCOLUMNDESC {
     pub pColumnID: *mut DBID,
     pub eIndexColOrder: DBINDEX_COL_ORDER,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for DBINDEXCOLUMNDESC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBINDEXCOLUMNDESC {
     pub pColumnID: *mut DBID,
     pub eIndexColOrder: DBINDEX_COL_ORDER,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for DBINDEXCOLUMNDESC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBINDEX_COL_ORDER = u32;
 pub type DBINDEX_COL_ORDERENUM = i32;
@@ -656,7 +722,7 @@ pub type DBLITERALENUM21 = i32;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBLITERALINFO {
     pub pwszLiteralValue: super::LPOLESTR,
     pub pwszInvalidChars: super::LPOLESTR,
@@ -665,10 +731,17 @@ pub struct DBLITERALINFO {
     pub fSupported: windows_core::BOOL,
     pub cchMaxLen: super::ULONG,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for DBLITERALINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBLITERALINFO {
     pub pwszLiteralValue: super::LPOLESTR,
     pub pwszInvalidChars: super::LPOLESTR,
@@ -676,6 +749,13 @@ pub struct DBLITERALINFO {
     pub lt: DBLITERAL,
     pub fSupported: windows_core::BOOL,
     pub cchMaxLen: super::ULONG,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for DBLITERALINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DBLITERAL_BINARY_LITERAL: DBLITERALENUM = 1;
 pub const DBLITERAL_CATALOG_NAME: DBLITERALENUM = 2;
@@ -747,7 +827,7 @@ pub type DBORDINAL = usize;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPARAMBINDINFO {
     pub pwszDataSourceType: super::LPOLESTR,
     pub pwszName: super::LPOLESTR,
@@ -756,10 +836,17 @@ pub struct DBPARAMBINDINFO {
     pub bPrecision: super::BYTE,
     pub bScale: super::BYTE,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for DBPARAMBINDINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPARAMBINDINFO {
     pub pwszDataSourceType: super::LPOLESTR,
     pub pwszName: super::LPOLESTR,
@@ -767,6 +854,13 @@ pub struct DBPARAMBINDINFO {
     pub dwFlags: DBPARAMFLAGS,
     pub bPrecision: super::BYTE,
     pub bScale: super::BYTE,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for DBPARAMBINDINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBPARAMFLAGS = u32;
 pub type DBPARAMFLAGSENUM = i32;
@@ -780,7 +874,6 @@ pub const DBPARAMFLAGS_SCALEISNEGATIVE: DBPARAMFLAGSENUM20 = 256;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "oaidl", feature = "shared", feature = "wtypesbase"))]
-#[derive(Default)]
 pub struct DBPARAMINFO {
     pub dwFlags: DBPARAMFLAGS,
     pub iOrdinal: DBORDINAL,
@@ -791,10 +884,16 @@ pub struct DBPARAMINFO {
     pub bPrecision: super::BYTE,
     pub bScale: super::BYTE,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "oaidl", feature = "shared", feature = "wtypesbase"))]
+impl Default for DBPARAMINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "oaidl", feature = "shared", feature = "wtypesbase"))]
-#[derive(Default)]
 pub struct DBPARAMINFO {
     pub dwFlags: DBPARAMFLAGS,
     pub iOrdinal: DBORDINAL,
@@ -804,6 +903,13 @@ pub struct DBPARAMINFO {
     pub wType: DBTYPE,
     pub bPrecision: super::BYTE,
     pub bScale: super::BYTE,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "oaidl", feature = "shared", feature = "wtypesbase"))]
+impl Default for DBPARAMINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBPARAMIO = u32;
 pub type DBPARAMIOENUM = i32;
@@ -812,19 +918,31 @@ pub const DBPARAMIO_NOTPARAM: DBPARAMIOENUM = 0;
 pub const DBPARAMIO_OUTPUT: DBPARAMIOENUM = 2;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPARAMS {
     pub pData: *mut core::ffi::c_void,
     pub cParamSets: DB_UPARAMS,
     pub hAccessor: HACCESSOR,
 }
+#[cfg(target_arch = "x86")]
+impl Default for DBPARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPARAMS {
     pub pData: *mut core::ffi::c_void,
     pub cParamSets: DB_UPARAMS,
     pub hAccessor: HACCESSOR,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+impl Default for DBPARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DBPARAMTYPE_INPUT: i32 = 1;
 pub const DBPARAMTYPE_INPUTOUTPUT: i32 = 2;
@@ -933,21 +1051,35 @@ pub type DBPROPID = u32;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPROPIDSET {
     pub rgPropertyIDs: *mut DBPROPID,
     pub cPropertyIDs: super::ULONG,
     pub guidPropertySet: windows_core::GUID,
+}
+#[cfg(target_arch = "x86")]
+#[cfg(feature = "shared")]
+impl Default for DBPROPIDSET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPROPIDSET {
     pub rgPropertyIDs: *mut DBPROPID,
     pub cPropertyIDs: super::ULONG,
     pub guidPropertySet: windows_core::GUID,
 }
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(feature = "shared")]
+impl Default for DBPROPIDSET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
@@ -999,20 +1131,34 @@ impl Default for DBPROPINFO {
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPROPINFOSET {
     pub rgPropertyInfos: PDBPROPINFO,
     pub cPropertyInfos: super::ULONG,
     pub guidPropertySet: windows_core::GUID,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for DBPROPINFOSET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPROPINFOSET {
     pub rgPropertyInfos: PDBPROPINFO,
     pub cPropertyInfos: super::ULONG,
     pub guidPropertySet: windows_core::GUID,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for DBPROPINFOSET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBPROPOPTIONS = u32;
 pub type DBPROPOPTIONSENUM = i32;
@@ -1022,20 +1168,34 @@ pub const DBPROPOPTIONS_SETIFCHEAP: DBPROPOPTIONSENUM = 1;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPROPSET {
     pub rgProperties: *mut DBPROP,
     pub cProperties: super::ULONG,
     pub guidPropertySet: windows_core::GUID,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for DBPROPSET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBPROPSET {
     pub rgProperties: *mut DBPROP,
     pub cProperties: super::ULONG,
     pub guidPropertySet: windows_core::GUID,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for DBPROPSET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type DBPROPSTATUS = u32;
 pub type DBPROPSTATUSENUM = i32;
@@ -1707,17 +1867,29 @@ pub const DBUPDELRULE_SETDEFAULT: DBUPDELRULEENUM = 3;
 pub const DBUPDELRULE_SETNULL: DBUPDELRULEENUM = 2;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBVECTOR {
     pub size: DBLENGTH,
     pub ptr: *mut core::ffi::c_void,
 }
+#[cfg(target_arch = "x86")]
+impl Default for DBVECTOR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct DBVECTOR {
     pub size: DBLENGTH,
     pub ptr: *mut core::ffi::c_void,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+impl Default for DBVECTOR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const DBWATCHREGION_NULL: i32 = 0;
 pub const DB_ALL_EXCEPT_LIKE: i32 = 3;
@@ -2052,7 +2224,7 @@ impl IBindResource {
         P0: windows_core::Param<windows_core::IUnknown>,
         P5: windows_core::Param<super::IAuthenticate>,
     {
-        unsafe { (windows_core::Interface::vtable(self).Bind)(windows_core::Interface::as_raw(self), punkouter.param().abi(), pwszurl, dwbindurlflags, rguid, riid, pauthenticate.param().abi(), pimplsession.unwrap_or(core::mem::zeroed()) as _, pdwbindstatus.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppunk)) }
+        unsafe { (windows_core::Interface::vtable(self).Bind)(windows_core::Interface::as_raw(self), punkouter.param().abi(), pwszurl, dwbindurlflags, rguid, riid, pauthenticate.param().abi(), pimplsession.unwrap_or(core::mem::zeroed()) as _, pdwbindstatus.unwrap_or(core::mem::zeroed()) as _, ppunk as _) }
     }
 }
 #[repr(C)]
@@ -2244,7 +2416,7 @@ impl IColumnsRowset {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetColumnsRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), coptcolumns, rgoptcolumns, riid, cpropertysets, rgpropertysets.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppcolrowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetColumnsRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), coptcolumns, rgoptcolumns, riid, cpropertysets, rgpropertysets.unwrap_or(core::mem::zeroed()) as _, ppcolrowset as _) }
     }
 }
 #[repr(C)]
@@ -2307,7 +2479,7 @@ impl ICommand {
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetDBSession(&self, riid: *const super::IID, ppsession: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDBSession)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(ppsession)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDBSession)(windows_core::Interface::as_raw(self), riid, ppsession as _) }
     }
 }
 #[repr(C)]
@@ -2564,7 +2736,7 @@ windows_core::imp::interface_hierarchy!(ICommandStream, windows_core::IUnknown);
 impl ICommandStream {
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetCommandStream(&self, piid: Option<*mut super::IID>, pguiddialect: Option<*mut windows_core::GUID>, ppcommandstream: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetCommandStream)(windows_core::Interface::as_raw(self), piid.unwrap_or(core::mem::zeroed()) as _, pguiddialect.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppcommandstream)) }
+        unsafe { (windows_core::Interface::vtable(self).GetCommandStream)(windows_core::Interface::as_raw(self), piid.unwrap_or(core::mem::zeroed()) as _, pguiddialect.unwrap_or(core::mem::zeroed()) as _, ppcommandstream as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn SetCommandStream<P2>(&self, riid: *const super::IID, rguiddialect: *const windows_core::GUID, pcommandstream: P2) -> windows_core::HRESULT
@@ -2791,7 +2963,7 @@ impl ICreateRow {
         P0: windows_core::Param<windows_core::IUnknown>,
         P5: windows_core::Param<super::IAuthenticate>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateRow)(windows_core::Interface::as_raw(self), punkouter.param().abi(), pwszurl, dwbindurlflags, rguid, riid, pauthenticate.param().abi(), pimplsession.unwrap_or(core::mem::zeroed()) as _, pdwbindstatus as _, ppwsznewurl.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppunk)) }
+        unsafe { (windows_core::Interface::vtable(self).CreateRow)(windows_core::Interface::as_raw(self), punkouter.param().abi(), pwszurl, dwbindurlflags, rguid, riid, pauthenticate.param().abi(), pimplsession.unwrap_or(core::mem::zeroed()) as _, pdwbindstatus as _, ppwsznewurl.unwrap_or(core::mem::zeroed()) as _, ppunk as _) }
     }
 }
 #[repr(C)]
@@ -2990,7 +3162,7 @@ impl IDBCreateCommand {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateCommand)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, core::mem::transmute(ppcommand)) }
+        unsafe { (windows_core::Interface::vtable(self).CreateCommand)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, ppcommand as _) }
     }
 }
 #[repr(C)]
@@ -3031,7 +3203,7 @@ impl IDBCreateSession {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateSession)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, core::mem::transmute(ppdbsession)) }
+        unsafe { (windows_core::Interface::vtable(self).CreateSession)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, ppdbsession as _) }
     }
 }
 #[repr(C)]
@@ -3336,7 +3508,7 @@ impl IDBSchemaRowset {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), rguidschema, crestrictions, rgrestrictions.unwrap_or(core::mem::zeroed()) as _, riid, cpropertysets, rgpropertysets.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), rguidschema, crestrictions, rgrestrictions.unwrap_or(core::mem::zeroed()) as _, riid, cpropertysets, rgpropertysets.unwrap_or(core::mem::zeroed()) as _, pprowset as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetSchemas(&self, pcschemas: *mut super::ULONG, prgschemas: *mut *mut windows_core::GUID, prgrestrictionsupport: *mut *mut super::ULONG) -> windows_core::HRESULT {
@@ -3395,11 +3567,11 @@ windows_core::imp::interface_hierarchy!(IErrorLookup, windows_core::IUnknown);
 impl IErrorLookup {
     #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
     pub unsafe fn GetErrorDescription(&self, hrerror: windows_core::HRESULT, dwlookupid: super::DWORD, pdispparams: *const super::DISPPARAMS, lcid: super::LCID, pbstrsource: *mut windows_core::BSTR, pbstrdescription: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetErrorDescription)(windows_core::Interface::as_raw(self), hrerror, dwlookupid, pdispparams, lcid, core::mem::transmute(pbstrsource), core::mem::transmute(pbstrdescription)) }
+        unsafe { (windows_core::Interface::vtable(self).GetErrorDescription)(windows_core::Interface::as_raw(self), hrerror, dwlookupid, pdispparams, lcid, pbstrsource as _, pbstrdescription as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetHelpInfo(&self, hrerror: windows_core::HRESULT, dwlookupid: super::DWORD, lcid: super::LCID, pbstrhelpfile: *mut windows_core::BSTR, pdwhelpcontext: *mut super::DWORD) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetHelpInfo)(windows_core::Interface::as_raw(self), hrerror, dwlookupid, lcid, core::mem::transmute(pbstrhelpfile), pdwhelpcontext as _) }
+        unsafe { (windows_core::Interface::vtable(self).GetHelpInfo)(windows_core::Interface::as_raw(self), hrerror, dwlookupid, lcid, pbstrhelpfile as _, pdwhelpcontext as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn ReleaseErrors(&self, dwdynamicerrorid: super::DWORD) -> windows_core::HRESULT {
@@ -3479,13 +3651,13 @@ impl IErrorRecords {
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
     pub unsafe fn GetCustomErrorObject(&self, ulrecordnum: super::ULONG, riid: *const super::IID, ppobject: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetCustomErrorObject)(windows_core::Interface::as_raw(self), ulrecordnum, riid, core::mem::transmute(ppobject)) }
+        unsafe { (windows_core::Interface::vtable(self).GetCustomErrorObject)(windows_core::Interface::as_raw(self), ulrecordnum, riid, ppobject as _) }
     }
     #[cfg(all(feature = "oaidl", feature = "shared"))]
     pub unsafe fn GetErrorInfo(&self, ulrecordnum: super::ULONG, lcid: super::LCID) -> windows_core::Result<super::IErrorInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetErrorInfo)(windows_core::Interface::as_raw(self), ulrecordnum, lcid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetErrorInfo)(windows_core::Interface::as_raw(self), ulrecordnum, lcid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
@@ -3561,7 +3733,7 @@ impl IErrorRecords_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IErrorRecords_Impl::GetErrorInfo(this, core::mem::transmute_copy(&ulrecordnum), core::mem::transmute_copy(&lcid)) {
                     Ok(ok__) => {
-                        pperrorinfo.write(core::mem::transmute(ok__));
+                        pperrorinfo.cast::<super::IErrorInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3604,7 +3776,7 @@ windows_core::imp::interface_hierarchy!(IGetDataSource, windows_core::IUnknown);
 impl IGetDataSource {
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetDataSource(&self, riid: *const super::IID, ppdatasource: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDataSource)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(ppdatasource)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDataSource)(windows_core::Interface::as_raw(self), riid, ppdatasource as _) }
     }
 }
 #[repr(C)]
@@ -3645,7 +3817,7 @@ impl IGetRow {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetRowFromHROW)(windows_core::Interface::as_raw(self), punkouter.param().abi(), hrow, riid, core::mem::transmute(ppunk)) }
+        unsafe { (windows_core::Interface::vtable(self).GetRowFromHROW)(windows_core::Interface::as_raw(self), punkouter.param().abi(), hrow, riid, ppunk as _) }
     }
     #[cfg(feature = "wtypesbase")]
     pub unsafe fn GetURLFromHROW(&self, hrow: HROW, ppwszurl: *mut super::LPOLESTR) -> windows_core::HRESULT {
@@ -3702,7 +3874,7 @@ windows_core::imp::interface_hierarchy!(IGetSession, windows_core::IUnknown);
 impl IGetSession {
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetSession(&self, riid: *const super::IID, ppsession: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSession)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(ppsession)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSession)(windows_core::Interface::as_raw(self), riid, ppsession as _) }
     }
 }
 #[repr(C)]
@@ -3740,7 +3912,7 @@ windows_core::imp::interface_hierarchy!(IGetSourceRow, windows_core::IUnknown);
 impl IGetSourceRow {
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetSourceRow(&self, riid: *const super::IID, pprow: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSourceRow)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(pprow)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSourceRow)(windows_core::Interface::as_raw(self), riid, pprow as _) }
     }
 }
 #[repr(C)]
@@ -3846,14 +4018,14 @@ impl IMDDataset {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetAxisRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), iaxis, riid, cpropertysets, rgpropertysets as _, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetAxisRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), iaxis, riid, cpropertysets, rgpropertysets as _, pprowset as _) }
     }
     pub unsafe fn GetCellData(&self, haccessor: HACCESSOR, ulstartcell: DBORDINAL, ulendcell: DBORDINAL, pdata: *mut core::ffi::c_void) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).GetCellData)(windows_core::Interface::as_raw(self), haccessor, ulstartcell, ulendcell, pdata as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetSpecification(&self, riid: *const super::IID, ppspecification: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(ppspecification)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, ppspecification as _) }
     }
 }
 #[repr(C)]
@@ -3995,7 +4167,7 @@ impl IMDRangeRowset {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetRangeRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), ulstartcell, ulendcell, riid, cpropertysets, rgpropertysets as _, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetRangeRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), ulstartcell, ulendcell, riid, cpropertysets, rgpropertysets as _, pprowset as _) }
     }
 }
 #[repr(C)]
@@ -4223,7 +4395,7 @@ impl IParentRowset {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetChildRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), iordinal, riid, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetChildRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), iordinal, riid, pprowset as _) }
     }
 }
 #[repr(C)]
@@ -4454,7 +4626,7 @@ impl IRowPosition {
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetRowset(&self, riid: *const super::IID, pprowset: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetRowset)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetRowset)(windows_core::Interface::as_raw(self), riid, pprowset as _) }
     }
     pub unsafe fn Initialize<P0>(&self, prowset: P0) -> windows_core::HRESULT
     where
@@ -5039,11 +5211,11 @@ impl IRowsetInfo {
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetReferencedRowset(&self, iordinal: DBORDINAL, riid: *const super::IID, ppreferencedrowset: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetReferencedRowset)(windows_core::Interface::as_raw(self), iordinal, riid, core::mem::transmute(ppreferencedrowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetReferencedRowset)(windows_core::Interface::as_raw(self), iordinal, riid, ppreferencedrowset as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetSpecification(&self, riid: *const super::IID, ppspecification: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(ppspecification)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, ppspecification as _) }
     }
 }
 #[repr(C)]
@@ -5512,11 +5684,11 @@ impl IRowsetView {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateView)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, core::mem::transmute(ppview)) }
+        unsafe { (windows_core::Interface::vtable(self).CreateView)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, ppview as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetView(&self, hchapter: HCHAPTER, riid: *const super::IID, phchaptersource: *mut HCHAPTER, ppview: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetView)(windows_core::Interface::as_raw(self), hchapter, riid, phchaptersource as _, core::mem::transmute(ppview)) }
+        unsafe { (windows_core::Interface::vtable(self).GetView)(windows_core::Interface::as_raw(self), hchapter, riid, phchaptersource as _, ppview as _) }
     }
 }
 #[repr(C)]
@@ -5565,7 +5737,7 @@ windows_core::imp::interface_hierarchy!(ISQLErrorInfo, windows_core::IUnknown);
 impl ISQLErrorInfo {
     #[cfg(feature = "shared")]
     pub unsafe fn GetSQLInfo(&self, pbstrsqlstate: *mut windows_core::BSTR, plnativeerror: *mut super::LONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSQLInfo)(windows_core::Interface::as_raw(self), core::mem::transmute(pbstrsqlstate), plnativeerror as _) }
+        unsafe { (windows_core::Interface::vtable(self).GetSQLInfo)(windows_core::Interface::as_raw(self), pbstrsqlstate as _, plnativeerror as _) }
     }
 }
 #[repr(C)]
@@ -5759,7 +5931,7 @@ impl ISecurityInfo_Vtbl {
         unsafe extern "system" fn GetPermissions<Identity: ISecurityInfo_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, objecttype: windows_core::GUID, ppermissions: *mut super::ACCESS_MASK) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                ISecurityInfo_Impl::GetPermissions(this, core::mem::transmute(&objecttype), core::mem::transmute_copy(&ppermissions))
+                ISecurityInfo_Impl::GetPermissions(this, &*(&raw const objecttype).cast(), core::mem::transmute_copy(&ppermissions))
             }
         }
         Self {
@@ -5840,7 +6012,7 @@ impl ISourcesRowset {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).GetSourcesRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, cpropertysets, rgproperties.unwrap_or(core::mem::zeroed()) as _, core::mem::transmute(ppsourcesrowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSourcesRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, cpropertysets, rgproperties.unwrap_or(core::mem::zeroed()) as _, ppsourcesrowset as _) }
     }
 }
 #[repr(C)]
@@ -6027,7 +6199,7 @@ impl ITableDefinitionWithConstraints {
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateTableWithConstraints)(windows_core::Interface::as_raw(self), punkouter.param().abi(), ptableid, ccolumndescs, rgcolumndescs, cconstraintdescs, rgconstraintdescs, riid, cpropertysets, rgpropertysets as _, pptableid as _, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).CreateTableWithConstraints)(windows_core::Interface::as_raw(self), punkouter.param().abi(), ptableid, ccolumndescs, rgcolumndescs, cconstraintdescs, rgconstraintdescs, riid, cpropertysets, rgpropertysets as _, pptableid as _, pprowset as _) }
     }
     #[cfg(all(feature = "shared", feature = "wtypesbase"))]
     pub unsafe fn DropConstraint(&self, ptableid: *const DBID, pconstraintid: *const DBID) -> windows_core::HRESULT {
@@ -6098,7 +6270,7 @@ impl ITransactionJoin {
     pub unsafe fn GetOptionsObject(&self) -> windows_core::Result<super::ITransactionOptions> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetOptionsObject)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetOptionsObject)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "transact"))]
@@ -6136,7 +6308,7 @@ impl ITransactionJoin_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITransactionJoin_Impl::GetOptionsObject(this) {
                     Ok(ok__) => {
-                        ppoptions.write(core::mem::transmute(ok__));
+                        ppoptions.cast::<super::ITransactionOptions>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6180,7 +6352,7 @@ impl ITransactionLocal {
     pub unsafe fn GetOptionsObject(&self) -> windows_core::Result<super::ITransactionOptions> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetOptionsObject)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetOptionsObject)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -6215,7 +6387,7 @@ impl ITransactionLocal_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITransactionLocal_Impl::GetOptionsObject(this) {
                     Ok(ok__) => {
-                        ppoptions.write(core::mem::transmute(ok__));
+                        ppoptions.cast::<super::ITransactionOptions>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6250,7 +6422,7 @@ impl ITransactionObject {
     pub unsafe fn GetTransactionObject(&self, ultransactionlevel: super::ULONG) -> windows_core::Result<super::ITransaction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetTransactionObject)(windows_core::Interface::as_raw(self), ultransactionlevel, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetTransactionObject)(windows_core::Interface::as_raw(self), ultransactionlevel, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6275,7 +6447,7 @@ impl ITransactionObject_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITransactionObject_Impl::GetTransactionObject(this, core::mem::transmute_copy(&ultransactionlevel)) {
                     Ok(ok__) => {
-                        pptransactionobject.write(core::mem::transmute(ok__));
+                        pptransactionobject.cast::<super::ITransaction>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6508,7 +6680,7 @@ windows_core::imp::interface_hierarchy!(IViewChapter, windows_core::IUnknown);
 impl IViewChapter {
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetSpecification(&self, riid: *const super::IID, pprowset: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, pprowset as _) }
     }
     pub unsafe fn OpenViewChapter(&self, hsource: HCHAPTER, phviewchapter: Option<*mut HCHAPTER>) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).OpenViewChapter)(windows_core::Interface::as_raw(self), hsource, phviewchapter.unwrap_or(core::mem::zeroed()) as _) }
@@ -6626,14 +6798,14 @@ windows_core::imp::interface_hierarchy!(IViewRowset, windows_core::IUnknown);
 impl IViewRowset {
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetSpecification(&self, riid: *const super::IID, ppobject: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, core::mem::transmute(ppobject)) }
+        unsafe { (windows_core::Interface::vtable(self).GetSpecification)(windows_core::Interface::as_raw(self), riid, ppobject as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn OpenViewRowset<P0>(&self, punkouter: P0, riid: *const super::IID, pprowset: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT
     where
         P0: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).OpenViewRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, core::mem::transmute(pprowset)) }
+        unsafe { (windows_core::Interface::vtable(self).OpenViewRowset)(windows_core::Interface::as_raw(self), punkouter.param().abi(), riid, pprowset as _) }
     }
 }
 #[repr(C)]
@@ -6730,7 +6902,7 @@ impl windows_core::RuntimeName for IViewSort {}
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(feature = "wtypesbase")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct MDAXISINFO {
     pub cbSize: DBLENGTH,
     pub iAxis: DBCOUNTITEM,
@@ -6739,10 +6911,17 @@ pub struct MDAXISINFO {
     pub rgcColumns: *mut DBORDINAL,
     pub rgpwszDimensionNames: *mut super::LPOLESTR,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(feature = "wtypesbase")]
+impl Default for MDAXISINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(feature = "wtypesbase")]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct MDAXISINFO {
     pub cbSize: DBLENGTH,
     pub iAxis: DBCOUNTITEM,
@@ -6750,6 +6929,13 @@ pub struct MDAXISINFO {
     pub cCoordinates: DBCOUNTITEM,
     pub rgcColumns: *mut DBORDINAL,
     pub rgpwszDimensionNames: *mut super::LPOLESTR,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(feature = "wtypesbase")]
+impl Default for MDAXISINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const MDAXIS_CHAPTERS: i32 = 4;
 pub const MDAXIS_COLUMNS: i32 = 0;
@@ -6944,7 +7130,6 @@ pub const PERM_WRITEPERMISSIONS: ACCESS_MASKENUM = 262144;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "guiddef", feature = "minwindef", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Default)]
 pub struct RMTPACK {
     pub pISeqStream: core::mem::ManuallyDrop<Option<super::ISequentialStream>>,
     pub cbData: super::ULONG,
@@ -6961,10 +7146,16 @@ pub struct RMTPACK {
     pub cArray: super::ULONG,
     pub rgArray: *mut super::VARIANT,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "guiddef", feature = "minwindef", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for RMTPACK {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "guiddef", feature = "minwindef", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
-#[derive(Default)]
 pub struct RMTPACK {
     pub pISeqStream: core::mem::ManuallyDrop<Option<super::ISequentialStream>>,
     pub cbData: super::ULONG,
@@ -6980,23 +7171,44 @@ pub struct RMTPACK {
     pub rgPROPVARIANT: *mut super::PROPVARIANT,
     pub cArray: super::ULONG,
     pub rgArray: *mut super::VARIANT,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "guiddef", feature = "minwindef", feature = "oaidl", feature = "objidl", feature = "objidlbase", feature = "propidlbase", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
+impl Default for RMTPACK {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type SBYTE = i8;
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct SEC_OBJECT {
     pub cObjects: super::DWORD,
     pub prgObjects: *mut SEC_OBJECT_ELEMENT,
 }
+#[cfg(target_arch = "x86")]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for SEC_OBJECT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C, packed(8))]
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(all(feature = "shared", feature = "wtypesbase"))]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 pub struct SEC_OBJECT {
     pub cObjects: super::DWORD,
     pub prgObjects: *mut SEC_OBJECT_ELEMENT,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[cfg(all(feature = "shared", feature = "wtypesbase"))]
+impl Default for SEC_OBJECT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C, packed(2))]
 #[cfg(target_arch = "x86")]

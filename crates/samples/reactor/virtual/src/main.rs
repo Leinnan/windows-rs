@@ -16,8 +16,7 @@ struct Task {
 }
 
 struct TaskEditor {
-    load_generation: u64,
-    loading: bool,
+    load: Option<ComponentTask>,
     next_id: u64,
     selected: Option<u64>,
     on_row: Callback<RowAction>,
@@ -30,8 +29,7 @@ struct TaskEditor {
 enum Message {
     Add,
     Load,
-    Loaded { generation: u64, tasks: Vec<Task> },
-    LoadingCancelled(u64),
+    Loaded(Vec<Task>),
     MoveFirstToEnd,
     Reverse,
     Row(RowAction),
@@ -56,9 +54,7 @@ struct RowInput {
 struct TaskRow {
     draft: String,
     editing: bool,
-    id: u64,
     input: ElementRef<TextBox>,
-    on_action: Callback<RowAction>,
 }
 
 #[derive(Clone)]
@@ -102,8 +98,7 @@ impl Component for TaskEditor {
 
     fn create(_input: &Self::Input, context: &ComponentContext<Self>) -> Self {
         Self {
-            load_generation: 0,
-            loading: false,
+            load: None,
             next_id: INITIAL_TASKS as u64,
             selected: Some(0),
             on_row: context.callback(Message::Row),
@@ -133,36 +128,20 @@ impl Component for TaskEditor {
                 self.bump_source_revision();
                 self.status = format!("Inserted task {id} at the front");
             }
-            Message::Load if !self.loading => {
-                self.loading = true;
-                let generation = self.load_generation;
+            Message::Load if self.load.is_none() => {
                 let start = self.next_id;
                 self.next_id += LOAD_TASKS as u64;
                 self.status = "Loading 100 tasks in the background...".to_string();
-                context.spawn_background(move |cancellation| {
+                self.load = Some(context.spawn_background(move |_| {
                     std::thread::sleep(Duration::from_millis(250));
-                    if cancellation.is_cancelled() {
-                        Message::LoadingCancelled(generation)
-                    } else {
-                        Message::Loaded {
-                            generation,
-                            tasks: Self::tasks(start, LOAD_TASKS),
-                        }
-                    }
-                });
+                    Message::Loaded(Self::tasks(start, LOAD_TASKS))
+                }));
             }
-            Message::Loaded {
-                generation,
-                mut tasks,
-            } if generation == self.load_generation => {
-                self.tasks.extend(tasks.drain(..).map(Rc::new));
+            Message::Loaded(tasks) => {
+                self.tasks.extend(tasks.into_iter().map(Rc::new));
                 self.bump_source_revision();
-                self.loading = false;
+                self.load = None;
                 self.status = format!("Loaded; {} tasks", self.tasks.len());
-            }
-            Message::LoadingCancelled(generation) if generation == self.load_generation => {
-                self.loading = false;
-                self.status = "Loading cancelled".to_string();
             }
             Message::MoveFirstToEnd if self.tasks.len() > 1 => {
                 let first = self.tasks.remove(0);
@@ -176,8 +155,9 @@ impl Component for TaskEditor {
                 self.status = "Reversed all task keys".to_string();
             }
             Message::Stress => {
-                self.load_generation = self.load_generation.checked_add(1).unwrap();
-                self.loading = false;
+                if let Some(load) = self.load.take() {
+                    load.cancel();
+                }
                 self.tasks = Self::tasks(self.next_id, STRESS_TASKS)
                     .into_iter()
                     .map(Rc::new)
@@ -212,10 +192,7 @@ impl Component for TaskEditor {
                     self.status = format!("Task {id} is {}", if done { "done" } else { "open" });
                 }
             }
-            Message::Load
-            | Message::Loaded { .. }
-            | Message::LoadingCancelled(_)
-            | Message::MoveFirstToEnd => {}
+            Message::Load | Message::MoveFirstToEnd => {}
         }
     }
 
@@ -258,7 +235,7 @@ impl Component for TaskEditor {
                             .on_click(context.message(Message::Reverse))
                             .content("Reverse"),
                         Button::new()
-                            .is_enabled(!self.loading)
+                            .is_enabled(self.load.is_none())
                             .on_click(context.message(Message::Load))
                             .content("Load 100"),
                         Button::new()
@@ -268,7 +245,7 @@ impl Component for TaskEditor {
                     ProgressBar::new()
                         .minimum(0.0)
                         .maximum(1.0)
-                        .is_indeterminate(self.loading),
+                        .is_indeterminate(self.load.is_some()),
                 )),
                 ScrollViewer::new()
                     .grid_row(1)
@@ -287,51 +264,50 @@ impl Component for TaskRow {
         Self {
             draft: input.item.title.clone(),
             editing: false,
-            id: input.item.id,
             input: ElementRef::new(),
-            on_action: input.on_action.clone(),
         }
     }
 
     fn input_changed(&mut self, input: &Self::Input, _context: &ComponentContext<Self>) {
-        self.id = input.item.id;
-        self.on_action = input.on_action.clone();
         if !self.editing {
             self.draft.clone_from(&input.item.title);
         }
     }
 
-    fn update(&mut self, message: RowMessage, _context: &ComponentContext<Self>) {
+    fn update(&mut self, message: RowMessage, context: &ComponentContext<Self>) {
+        let input = context.input();
         match message {
             RowMessage::Draft(value) => {
                 self.draft.clone_from(&value);
                 if !value.trim().is_empty() {
-                    self.on_action.call(RowAction::Rename {
-                        id: self.id,
+                    input.on_action.call(RowAction::Rename {
+                        id: input.item.id,
                         title: value,
                     });
                 }
             }
             RowMessage::Edit => self.editing = true,
             RowMessage::Remove => {
-                self.on_action.call(RowAction::Remove(self.id));
+                input.on_action.call(RowAction::Remove(input.item.id));
             }
             RowMessage::Save if self.draft.trim().is_empty() => {
                 _ = self.input.request_focus();
             }
             RowMessage::Save => {
                 self.editing = false;
-                self.on_action.call(RowAction::Rename {
-                    id: self.id,
+                input.on_action.call(RowAction::Rename {
+                    id: input.item.id,
                     title: self.draft.clone(),
                 });
             }
             RowMessage::Select => {
-                self.on_action.call(RowAction::Select(self.id));
+                input.on_action.call(RowAction::Select(input.item.id));
             }
             RowMessage::SetDone(done) => {
-                self.on_action
-                    .call(RowAction::SetDone { id: self.id, done });
+                input.on_action.call(RowAction::SetDone {
+                    id: input.item.id,
+                    done,
+                });
             }
         }
     }

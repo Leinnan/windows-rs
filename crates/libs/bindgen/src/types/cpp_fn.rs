@@ -80,17 +80,12 @@ impl CppFn {
         }
     }
 
-    fn directly_selected(&self, config: &Config<'_>) -> bool {
-        config
-            .filter
-            .direct_types
-            .iter()
-            .any(|(namespace, name)| namespace == self.namespace && name == self.method.name())
-    }
-
     fn reject_variadic(&self, config: &Config<'_>, reason: &str) -> TokenStream {
         assert!(
-            !self.directly_selected(config),
+            !config
+                .plan
+                .selection
+                .names_type(self.namespace, self.method.name()),
             "windows-bindgen: selected variadic function `{}.{}` {reason}",
             self.namespace,
             self.method.name()
@@ -112,6 +107,14 @@ impl CppFn {
     pub fn write_link(&self, config: &Config, underlying_types: bool) -> TokenStream {
         let library = self.method.module_name();
         let symbol = self.method.import_name();
+        let ordinal = windows_metadata::import_ordinal(symbol.unwrap_or(self.method.name()))
+            .unwrap_or_else(|error| {
+                panic!(
+                    "windows-bindgen: function `{}.{}`: {error}",
+                    self.namespace,
+                    self.method.name()
+                )
+            });
         let name = to_ident(self.method.name());
         let abi = self.abi(config);
         let signature = self.write_extern_signature(config, underlying_types);
@@ -122,6 +125,11 @@ impl CppFn {
                 unsafe extern #abi {
                     pub fn #name #signature;
                 }
+            }
+        } else if let Some(ordinal) = ordinal {
+            let ordinal = Literal::u16_unsuffixed(ordinal);
+            quote! {
+                #link::link!(#library #abi ordinal(#ordinal) fn #name #signature);
             }
         } else {
             quote! {
@@ -134,23 +142,6 @@ impl CppFn {
         write_simple_cfg(self, config)
     }
 
-    pub fn combine_sys(&self, dependencies: &mut TypeMap, reader: &Reader) {
-        let signature = self.method.method_signature(&[], reader);
-
-        for ty in signature.types() {
-            ty.combine_sys(dependencies, reader);
-        }
-        for ty in self.method.associated_enums(reader) {
-            ty.combine_sys(dependencies, reader);
-        }
-
-        if let Some(dependency) = self.window_long_dependency(reader) {
-            reader
-                .unwrap_full_name(self.namespace, dependency)
-                .combine_sys(dependencies, reader);
-        }
-    }
-
     pub fn write(&self, config: &Config) -> TokenStream {
         let name = to_ident(self.method.name());
         let signature = self.method.method_signature(&[], config.reader);
@@ -159,7 +150,7 @@ impl CppFn {
         if variadic && !config.bindgen.style.is_sys() {
             return self.reject_variadic(
                 config,
-                "cannot be projected by rich or minimal bindings; use `--sys` for its raw \
+                "cannot be projected by full or minimal bindings; use `--sys` for its raw \
                  declaration",
             );
         }
@@ -217,7 +208,7 @@ impl CppFn {
                     pub unsafe fn #name<#generics T>(#params) -> #result Result<T> #where_clause {
                         #link
                         let mut result__ = core::ptr::null_mut();
-                        unsafe { #name(#args).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+                        unsafe { #name(#args).and_then(|| windows_core::imp::from_abi(result__)) }
                     }
                 }
             }
@@ -243,6 +234,7 @@ impl CppFn {
                 let map = ty
                     .projection_type(config.reader)
                     .write_result_map(config.reader);
+                let init = ty.projection_type(config.reader).write_result_init(config);
                 let return_type = ty.write_name(config);
 
                 quote! {
@@ -251,7 +243,7 @@ impl CppFn {
                     pub unsafe fn #name<#generics>(#params) -> #result Result<#return_type> #where_clause {
                         #link
                         unsafe {
-                            let mut result__ = core::mem::zeroed();
+                            #init
                             #name(#args).#map
                         }
                     }
@@ -275,7 +267,7 @@ impl CppFn {
                             unsafe {
                                 let mut result__ = core::mem::zeroed();
                                 #name(#args);
-                                windows_core::imp::Type::from_abi(result__)
+                                windows_core::imp::from_abi(result__)
                             }
                         }
                     }

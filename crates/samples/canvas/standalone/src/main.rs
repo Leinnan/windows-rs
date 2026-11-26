@@ -3,6 +3,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 use windows_canvas::*;
+use windows_text::{ParagraphAlignment, TextAlignment, TextFormat};
 use windows_window::*;
 
 struct Graphics {
@@ -90,7 +91,7 @@ fn draw_frame(chain: &mut SwapChain) -> Result<bool> {
 
     brush.set_color(ColorF::WHITE);
 
-    let format = TextFormat::new("Segoe UI", 24.0)?
+    let format = TextFormat::new("Segoe UI", 24.0)
         .with_alignment(TextAlignment::Center)
         .with_paragraph_alignment(ParagraphAlignment::Center);
 

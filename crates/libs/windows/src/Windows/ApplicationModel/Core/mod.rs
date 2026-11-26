@@ -6,13 +6,13 @@ impl AppListEntry {
     pub fn DisplayInfo(&self) -> windows_core::Result<super::AppDisplayInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DisplayInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DisplayInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn LaunchAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<bool>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LaunchAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LaunchAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AppUserModelId(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -30,14 +30,14 @@ impl AppListEntry {
         let this = &windows_core::Interface::cast::<IAppListEntry3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).LaunchForUserAsync)(windows_core::Interface::as_raw(this), user.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).LaunchForUserAsync)(windows_core::Interface::as_raw(this), user.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AppInfo(&self) -> windows_core::Result<super::AppInfo> {
         let this = &windows_core::Interface::cast::<IAppListEntry4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).AppInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).AppInfo)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -47,6 +47,7 @@ impl windows_core::RuntimeType for AppListEntry {
 unsafe impl windows_core::Interface for AppListEntry {
     type Vtable = <IAppListEntry as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAppListEntry as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AppListEntry {
     const NAME: &'static str = "Windows.ApplicationModel.Core.AppListEntry";
@@ -79,7 +80,7 @@ impl CoreApplication {
     }
     pub fn Suspending<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::SuspendingEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::SuspendingEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<super::SuspendingEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -93,7 +94,7 @@ impl CoreApplication {
     }
     pub fn Resuming<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -109,13 +110,13 @@ impl CoreApplication {
     pub fn Properties() -> windows_core::Result<super::super::Foundation::Collections::IPropertySet> {
         Self::ICoreApplication(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetCurrentView() -> windows_core::Result<CoreApplicationView> {
         Self::ICoreApplication(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Run<P0>(viewsource: P0) -> windows_core::Result<()>
@@ -133,7 +134,7 @@ impl CoreApplication {
     #[cfg(feature = "ApplicationModel_Activation")]
     pub fn BackgroundActivated<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::Activation::BackgroundActivatedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::Activation::BackgroundActivatedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<super::Activation::BackgroundActivatedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -147,7 +148,7 @@ impl CoreApplication {
     }
     pub fn LeavingBackground<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::LeavingBackgroundEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::LeavingBackgroundEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<super::LeavingBackgroundEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -161,7 +162,7 @@ impl CoreApplication {
     }
     pub fn EnteredBackground<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::EnteredBackgroundEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<super::EnteredBackgroundEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<super::EnteredBackgroundEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -179,7 +180,7 @@ impl CoreApplication {
     pub fn RequestRestartAsync(launcharguments: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<AppRestartFailureReason>> {
         Self::ICoreApplication3(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestRestartAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(launcharguments), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestRestartAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(launcharguments), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "System")]
@@ -189,7 +190,7 @@ impl CoreApplication {
     {
         Self::ICoreApplication3(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestRestartForUserAsync)(windows_core::Interface::as_raw(this), user.param().abi(), core::mem::transmute_copy(launcharguments), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestRestartForUserAsync)(windows_core::Interface::as_raw(this), user.param().abi(), core::mem::transmute_copy(launcharguments), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Exit() -> windows_core::Result<()> {
@@ -197,7 +198,7 @@ impl CoreApplication {
     }
     pub fn Exiting<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<windows_core::IInspectable>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -211,7 +212,7 @@ impl CoreApplication {
     }
     pub fn UnhandledErrorDetected<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<UnhandledErrorDetectedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<UnhandledErrorDetectedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<UnhandledErrorDetectedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -232,25 +233,25 @@ impl CoreApplication {
     pub fn Views() -> windows_core::Result<windows_collections::IVectorView<CoreApplicationView>> {
         Self::ICoreImmersiveApplication(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Views)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Views)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateNewView(runtimetype: &windows_core::HSTRING, entrypoint: &windows_core::HSTRING) -> windows_core::Result<CoreApplicationView> {
         Self::ICoreImmersiveApplication(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateNewView)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(runtimetype), core::mem::transmute_copy(entrypoint), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateNewView)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(runtimetype), core::mem::transmute_copy(entrypoint), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn MainView() -> windows_core::Result<CoreApplicationView> {
         Self::ICoreImmersiveApplication(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).MainView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).MainView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateNewViewFromMainView() -> windows_core::Result<CoreApplicationView> {
         Self::ICoreImmersiveApplication2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateNewViewFromMainView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateNewViewFromMainView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateNewViewWithViewSource<P0>(viewsource: P0) -> windows_core::Result<CoreApplicationView>
@@ -259,7 +260,7 @@ impl CoreApplication {
     {
         Self::ICoreImmersiveApplication3(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateNewViewWithViewSource)(windows_core::Interface::as_raw(this), viewsource.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateNewViewWithViewSource)(windows_core::Interface::as_raw(this), viewsource.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreApplication<R, F: FnOnce(&ICoreApplication) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -311,13 +312,13 @@ impl CoreApplicationView {
     pub fn CoreWindow(&self) -> windows_core::Result<super::super::UI::Core::CoreWindow> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CoreWindow)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CoreWindow)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "ApplicationModel_Activation")]
     pub fn Activated<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::Activation::IActivatedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<super::Activation::IActivatedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, super::Activation::IActivatedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -346,7 +347,7 @@ impl CoreApplicationView {
         let this = &windows_core::Interface::cast::<ICoreApplicationView2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Dispatcher)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Dispatcher)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsComponent(&self) -> windows_core::Result<bool> {
@@ -360,12 +361,12 @@ impl CoreApplicationView {
         let this = &windows_core::Interface::cast::<ICoreApplicationView3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TitleBar)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TitleBar)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn HostedViewClosing<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<HostedViewClosingEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<HostedViewClosingEventArgs>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreApplicationView3>(self)?;
         let handler = <super::super::Foundation::TypedEventHandler<Self, HostedViewClosingEventArgs>>::new(move |a0, a1| {
@@ -383,7 +384,7 @@ impl CoreApplicationView {
         let this = &windows_core::Interface::cast::<ICoreApplicationView5>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "System")]
@@ -391,7 +392,7 @@ impl CoreApplicationView {
         let this = &windows_core::Interface::cast::<ICoreApplicationView6>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DispatcherQueue)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DispatcherQueue)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -401,6 +402,7 @@ impl windows_core::RuntimeType for CoreApplicationView {
 unsafe impl windows_core::Interface for CoreApplicationView {
     type Vtable = <ICoreApplicationView as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreApplicationView as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreApplicationView {
     const NAME: &'static str = "Windows.ApplicationModel.Core.CoreApplicationView";
@@ -439,7 +441,7 @@ impl CoreApplicationViewTitleBar {
     }
     pub fn LayoutMetricsChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, windows_core::IInspectable>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -459,7 +461,7 @@ impl CoreApplicationViewTitleBar {
     }
     pub fn IsVisibleChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, windows_core::IInspectable>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -478,6 +480,7 @@ impl windows_core::RuntimeType for CoreApplicationViewTitleBar {
 unsafe impl windows_core::Interface for CoreApplicationViewTitleBar {
     type Vtable = <ICoreApplicationViewTitleBar as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreApplicationViewTitleBar as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreApplicationViewTitleBar {
     const NAME: &'static str = "Windows.ApplicationModel.Core.CoreApplicationViewTitleBar";
@@ -490,7 +493,7 @@ impl HostedViewClosingEventArgs {
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -500,17 +503,14 @@ impl windows_core::RuntimeType for HostedViewClosingEventArgs {
 unsafe impl windows_core::Interface for HostedViewClosingEventArgs {
     type Vtable = <IHostedViewClosingEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IHostedViewClosingEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for HostedViewClosingEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Core.HostedViewClosingEventArgs";
 }
 unsafe impl Send for HostedViewClosingEventArgs {}
 unsafe impl Sync for HostedViewClosingEventArgs {}
-windows_core::imp::define_interface!(IAppListEntry, IAppListEntry_Vtbl, 0xef00f07f_2108_490a_877a_8a9f17c25fad);
-impl windows_core::RuntimeType for IAppListEntry {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IAppListEntry");
-}
+windows_core::imp::define_winrt_interface!(IAppListEntry, IAppListEntry_Vtbl, 0xef00f07f_2108_490a_877a_8a9f17c25fad, b"Windows.ApplicationModel.Core.IAppListEntry");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppListEntry_Vtbl {
@@ -518,22 +518,14 @@ pub struct IAppListEntry_Vtbl {
     pub DisplayInfo: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub LaunchAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppListEntry2, IAppListEntry2_Vtbl, 0xd0a618ad_bf35_42ac_ac06_86eeeb41d04b);
-impl windows_core::RuntimeType for IAppListEntry2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IAppListEntry2");
-}
+windows_core::imp::define_winrt_interface!(IAppListEntry2, IAppListEntry2_Vtbl, 0xd0a618ad_bf35_42ac_ac06_86eeeb41d04b, b"Windows.ApplicationModel.Core.IAppListEntry2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppListEntry2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub AppUserModelId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IAppListEntry3, IAppListEntry3_Vtbl, 0x6099f28d_fc32_470a_bc69_4b061a76ef2e);
-impl windows_core::RuntimeType for IAppListEntry3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IAppListEntry3");
-}
+windows_core::imp::define_winrt_interface!(IAppListEntry3, IAppListEntry3_Vtbl, 0x6099f28d_fc32_470a_bc69_4b061a76ef2e, b"Windows.ApplicationModel.Core.IAppListEntry3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppListEntry3_Vtbl {
@@ -543,22 +535,14 @@ pub struct IAppListEntry3_Vtbl {
     #[cfg(not(feature = "System"))]
     LaunchForUserAsync: usize,
 }
-windows_core::imp::define_interface!(IAppListEntry4, IAppListEntry4_Vtbl, 0x2a131ed2_56f5_487c_8697_5166f3b33da0);
-impl windows_core::RuntimeType for IAppListEntry4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IAppListEntry4");
-}
+windows_core::imp::define_winrt_interface!(IAppListEntry4, IAppListEntry4_Vtbl, 0x2a131ed2_56f5_487c_8697_5166f3b33da0, b"Windows.ApplicationModel.Core.IAppListEntry4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAppListEntry4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub AppInfo: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplication, ICoreApplication_Vtbl, 0x0aacf7a4_5e1d_49df_8034_fb6a68bc5ed1);
-impl windows_core::RuntimeType for ICoreApplication {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplication");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplication, ICoreApplication_Vtbl, 0x0aacf7a4_5e1d_49df_8034_fb6a68bc5ed1, b"Windows.ApplicationModel.Core.ICoreApplication");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplication_Vtbl {
@@ -576,11 +560,7 @@ pub struct ICoreApplication_Vtbl {
     pub Run: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub RunWithActivationFactories: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplication2, ICoreApplication2_Vtbl, 0x998681fb_1ab6_4b7f_be4a_9a0645224c04);
-impl windows_core::RuntimeType for ICoreApplication2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplication2");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplication2, ICoreApplication2_Vtbl, 0x998681fb_1ab6_4b7f_be4a_9a0645224c04, b"Windows.ApplicationModel.Core.ICoreApplication2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplication2_Vtbl {
@@ -596,11 +576,7 @@ pub struct ICoreApplication2_Vtbl {
     pub RemoveEnteredBackground: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub EnablePrelaunch: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplication3, ICoreApplication3_Vtbl, 0xfeec0d39_598b_4507_8a67_772632580a57);
-impl windows_core::RuntimeType for ICoreApplication3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplication3");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplication3, ICoreApplication3_Vtbl, 0xfeec0d39_598b_4507_8a67_772632580a57, b"Windows.ApplicationModel.Core.ICoreApplication3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplication3_Vtbl {
@@ -611,11 +587,7 @@ pub struct ICoreApplication3_Vtbl {
     #[cfg(not(feature = "System"))]
     RequestRestartForUserAsync: usize,
 }
-windows_core::imp::define_interface!(ICoreApplicationExit, ICoreApplicationExit_Vtbl, 0xcf86461d_261e_4b72_9acd_44ed2ace6a29);
-impl windows_core::RuntimeType for ICoreApplicationExit {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationExit");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationExit, ICoreApplicationExit_Vtbl, 0xcf86461d_261e_4b72_9acd_44ed2ace6a29, b"Windows.ApplicationModel.Core.ICoreApplicationExit");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationExit_Vtbl {
@@ -624,16 +596,12 @@ pub struct ICoreApplicationExit_Vtbl {
     pub Exiting: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveExiting: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplicationUnhandledError, ICoreApplicationUnhandledError_Vtbl, 0xf0e24ab0_dd09_42e1_b0bc_e0e131f78d7e);
-impl windows_core::RuntimeType for ICoreApplicationUnhandledError {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationUnhandledError");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationUnhandledError, ICoreApplicationUnhandledError_Vtbl, 0xf0e24ab0_dd09_42e1_b0bc_e0e131f78d7e, b"Windows.ApplicationModel.Core.ICoreApplicationUnhandledError");
 windows_core::imp::interface_hierarchy!(ICoreApplicationUnhandledError, windows_core::IUnknown, windows_core::IInspectable);
 impl ICoreApplicationUnhandledError {
     pub fn UnhandledErrorDetected<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<UnhandledErrorDetectedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>, windows_core::Ref<UnhandledErrorDetectedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::EventHandler<UnhandledErrorDetectedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -677,7 +645,7 @@ impl ICoreApplicationUnhandledError_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ICoreApplicationUnhandledError, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             UnhandledErrorDetected: UnhandledErrorDetected::<Identity, OFFSET>,
             RemoveUnhandledErrorDetected: RemoveUnhandledErrorDetected::<Identity, OFFSET>,
         }
@@ -693,11 +661,7 @@ pub struct ICoreApplicationUnhandledError_Vtbl {
     pub UnhandledErrorDetected: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveUnhandledErrorDetected: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplicationUseCount, ICoreApplicationUseCount_Vtbl, 0x518dc408_c077_475b_809e_0bc0c57e4b74);
-impl windows_core::RuntimeType for ICoreApplicationUseCount {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationUseCount");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationUseCount, ICoreApplicationUseCount_Vtbl, 0x518dc408_c077_475b_809e_0bc0c57e4b74, b"Windows.ApplicationModel.Core.ICoreApplicationUseCount");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationUseCount_Vtbl {
@@ -705,11 +669,7 @@ pub struct ICoreApplicationUseCount_Vtbl {
     pub IncrementApplicationUseCount: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
     pub DecrementApplicationUseCount: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplicationView, ICoreApplicationView_Vtbl, 0x638bb2db_451d_4661_b099_414f34ffb9f1);
-impl windows_core::RuntimeType for ICoreApplicationView {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationView");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationView, ICoreApplicationView_Vtbl, 0x638bb2db_451d_4661_b099_414f34ffb9f1, b"Windows.ApplicationModel.Core.ICoreApplicationView");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationView_Vtbl {
@@ -726,11 +686,7 @@ pub struct ICoreApplicationView_Vtbl {
     pub IsMain: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub IsHosted: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplicationView2, ICoreApplicationView2_Vtbl, 0x68eb7adf_917f_48eb_9aeb_7de53e086ab1);
-impl windows_core::RuntimeType for ICoreApplicationView2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationView2");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationView2, ICoreApplicationView2_Vtbl, 0x68eb7adf_917f_48eb_9aeb_7de53e086ab1, b"Windows.ApplicationModel.Core.ICoreApplicationView2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationView2_Vtbl {
@@ -740,11 +696,7 @@ pub struct ICoreApplicationView2_Vtbl {
     #[cfg(not(feature = "UI_Core"))]
     Dispatcher: usize,
 }
-windows_core::imp::define_interface!(ICoreApplicationView3, ICoreApplicationView3_Vtbl, 0x07ebe1b3_a4cf_4550_ab70_b07e85330bc8);
-impl windows_core::RuntimeType for ICoreApplicationView3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationView3");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationView3, ICoreApplicationView3_Vtbl, 0x07ebe1b3_a4cf_4550_ab70_b07e85330bc8, b"Windows.ApplicationModel.Core.ICoreApplicationView3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationView3_Vtbl {
@@ -754,11 +706,7 @@ pub struct ICoreApplicationView3_Vtbl {
     pub HostedViewClosing: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveHostedViewClosing: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreApplicationView5, ICoreApplicationView5_Vtbl, 0x2bc095a8_8ef0_446d_9e60_3a3e0428c671);
-impl windows_core::RuntimeType for ICoreApplicationView5 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationView5");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationView5, ICoreApplicationView5_Vtbl, 0x2bc095a8_8ef0_446d_9e60_3a3e0428c671, b"Windows.ApplicationModel.Core.ICoreApplicationView5");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationView5_Vtbl {
@@ -768,11 +716,7 @@ pub struct ICoreApplicationView5_Vtbl {
     #[cfg(not(feature = "Foundation_Collections"))]
     Properties: usize,
 }
-windows_core::imp::define_interface!(ICoreApplicationView6, ICoreApplicationView6_Vtbl, 0xc119d49a_0679_49ba_803f_b79c5cf34cca);
-impl windows_core::RuntimeType for ICoreApplicationView6 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationView6");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationView6, ICoreApplicationView6_Vtbl, 0xc119d49a_0679_49ba_803f_b79c5cf34cca, b"Windows.ApplicationModel.Core.ICoreApplicationView6");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationView6_Vtbl {
@@ -782,11 +726,7 @@ pub struct ICoreApplicationView6_Vtbl {
     #[cfg(not(feature = "System"))]
     DispatcherQueue: usize,
 }
-windows_core::imp::define_interface!(ICoreApplicationViewTitleBar, ICoreApplicationViewTitleBar_Vtbl, 0x006d35e3_e1f1_431b_9508_29b96926ac53);
-impl windows_core::RuntimeType for ICoreApplicationViewTitleBar {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreApplicationViewTitleBar");
-}
+windows_core::imp::define_winrt_interface!(ICoreApplicationViewTitleBar, ICoreApplicationViewTitleBar_Vtbl, 0x006d35e3_e1f1_431b_9508_29b96926ac53, b"Windows.ApplicationModel.Core.ICoreApplicationViewTitleBar");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreApplicationViewTitleBar_Vtbl {
@@ -802,11 +742,7 @@ pub struct ICoreApplicationViewTitleBar_Vtbl {
     pub IsVisibleChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveIsVisibleChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreImmersiveApplication, ICoreImmersiveApplication_Vtbl, 0x1ada0e3e_e4a2_4123_b451_dc96bf800419);
-impl windows_core::RuntimeType for ICoreImmersiveApplication {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreImmersiveApplication");
-}
+windows_core::imp::define_winrt_interface!(ICoreImmersiveApplication, ICoreImmersiveApplication_Vtbl, 0x1ada0e3e_e4a2_4123_b451_dc96bf800419, b"Windows.ApplicationModel.Core.ICoreImmersiveApplication");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreImmersiveApplication_Vtbl {
@@ -815,33 +751,21 @@ pub struct ICoreImmersiveApplication_Vtbl {
     pub CreateNewView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub MainView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreImmersiveApplication2, ICoreImmersiveApplication2_Vtbl, 0x828e1e36_e9e3_4cfc_9b66_48b78ea9bb2c);
-impl windows_core::RuntimeType for ICoreImmersiveApplication2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreImmersiveApplication2");
-}
+windows_core::imp::define_winrt_interface!(ICoreImmersiveApplication2, ICoreImmersiveApplication2_Vtbl, 0x828e1e36_e9e3_4cfc_9b66_48b78ea9bb2c, b"Windows.ApplicationModel.Core.ICoreImmersiveApplication2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreImmersiveApplication2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateNewViewFromMainView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreImmersiveApplication3, ICoreImmersiveApplication3_Vtbl, 0x34a05b2f_ee0d_41e5_8314_cf10c91bf0af);
-impl windows_core::RuntimeType for ICoreImmersiveApplication3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.ICoreImmersiveApplication3");
-}
+windows_core::imp::define_winrt_interface!(ICoreImmersiveApplication3, ICoreImmersiveApplication3_Vtbl, 0x34a05b2f_ee0d_41e5_8314_cf10c91bf0af, b"Windows.ApplicationModel.Core.ICoreImmersiveApplication3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreImmersiveApplication3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateNewViewWithViewSource: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IFrameworkView, IFrameworkView_Vtbl, 0xfaab5cd0_8924_45ac_ad0f_a08fae5d0324);
-impl windows_core::RuntimeType for IFrameworkView {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IFrameworkView");
-}
+windows_core::imp::define_winrt_interface!(IFrameworkView, IFrameworkView_Vtbl, 0xfaab5cd0_8924_45ac_ad0f_a08fae5d0324, b"Windows.ApplicationModel.Core.IFrameworkView");
 windows_core::imp::interface_hierarchy!(IFrameworkView, windows_core::IUnknown, windows_core::IInspectable);
 impl IFrameworkView {
     pub fn Initialize<P0>(&self, applicationview: P0) -> windows_core::Result<()>
@@ -897,7 +821,7 @@ impl IFrameworkView_Vtbl {
         unsafe extern "system" fn Load<Identity: IFrameworkView_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, entrypoint: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IFrameworkView_Impl::Load(this, core::mem::transmute(&entrypoint)).into()
+                IFrameworkView_Impl::Load(this, &*(&raw const entrypoint).cast()).into()
             }
         }
         unsafe extern "system" fn Run<Identity: IFrameworkView_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -913,7 +837,7 @@ impl IFrameworkView_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IFrameworkView, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Initialize: Initialize::<Identity, OFFSET>,
             SetWindow: SetWindow::<Identity, OFFSET>,
             Load: Load::<Identity, OFFSET>,
@@ -938,17 +862,13 @@ pub struct IFrameworkView_Vtbl {
     pub Run: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Uninitialize: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IFrameworkViewSource, IFrameworkViewSource_Vtbl, 0xcd770614_65c4_426c_9494_34fc43554862);
-impl windows_core::RuntimeType for IFrameworkViewSource {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IFrameworkViewSource");
-}
+windows_core::imp::define_winrt_interface!(IFrameworkViewSource, IFrameworkViewSource_Vtbl, 0xcd770614_65c4_426c_9494_34fc43554862, b"Windows.ApplicationModel.Core.IFrameworkViewSource");
 windows_core::imp::interface_hierarchy!(IFrameworkViewSource, windows_core::IUnknown, windows_core::IInspectable);
 impl IFrameworkViewSource {
     pub fn CreateView(&self) -> windows_core::Result<IFrameworkView> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateView)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateView)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -965,8 +885,7 @@ impl IFrameworkViewSource_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IFrameworkViewSource_Impl::CreateView(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -976,7 +895,7 @@ impl IFrameworkViewSource_Vtbl {
                 }
             }
         }
-        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, IFrameworkViewSource, OFFSET>(), CreateView: CreateView::<Identity, OFFSET> }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), CreateView: CreateView::<Identity, OFFSET> }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<IFrameworkViewSource as windows_core::Interface>::IID
@@ -988,22 +907,14 @@ pub struct IFrameworkViewSource_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IHostedViewClosingEventArgs, IHostedViewClosingEventArgs_Vtbl, 0xd238943c_b24e_4790_acb5_3e4243c4ff87);
-impl windows_core::RuntimeType for IHostedViewClosingEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IHostedViewClosingEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IHostedViewClosingEventArgs, IHostedViewClosingEventArgs_Vtbl, 0xd238943c_b24e_4790_acb5_3e4243c4ff87, b"Windows.ApplicationModel.Core.IHostedViewClosingEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IHostedViewClosingEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUnhandledError, IUnhandledError_Vtbl, 0x9459b726_53b5_4686_9eaf_fa8162dc3980);
-impl windows_core::RuntimeType for IUnhandledError {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IUnhandledError");
-}
+windows_core::imp::define_winrt_interface!(IUnhandledError, IUnhandledError_Vtbl, 0x9459b726_53b5_4686_9eaf_fa8162dc3980, b"Windows.ApplicationModel.Core.IUnhandledError");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUnhandledError_Vtbl {
@@ -1011,11 +922,7 @@ pub struct IUnhandledError_Vtbl {
     pub Handled: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub Propagate: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUnhandledErrorDetectedEventArgs, IUnhandledErrorDetectedEventArgs_Vtbl, 0x679ab78b_b336_4822_ac40_0d750f0b7a2b);
-impl windows_core::RuntimeType for IUnhandledErrorDetectedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Core.IUnhandledErrorDetectedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IUnhandledErrorDetectedEventArgs, IUnhandledErrorDetectedEventArgs_Vtbl, 0x679ab78b_b336_4822_ac40_0d750f0b7a2b, b"Windows.ApplicationModel.Core.IUnhandledErrorDetectedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUnhandledErrorDetectedEventArgs_Vtbl {
@@ -1043,6 +950,7 @@ impl windows_core::RuntimeType for UnhandledError {
 unsafe impl windows_core::Interface for UnhandledError {
     type Vtable = <IUnhandledError as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUnhandledError as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UnhandledError {
     const NAME: &'static str = "Windows.ApplicationModel.Core.UnhandledError";
@@ -1057,7 +965,7 @@ impl UnhandledErrorDetectedEventArgs {
     pub fn UnhandledError(&self) -> windows_core::Result<UnhandledError> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).UnhandledError)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).UnhandledError)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1067,6 +975,7 @@ impl windows_core::RuntimeType for UnhandledErrorDetectedEventArgs {
 unsafe impl windows_core::Interface for UnhandledErrorDetectedEventArgs {
     type Vtable = <IUnhandledErrorDetectedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUnhandledErrorDetectedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UnhandledErrorDetectedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Core.UnhandledErrorDetectedEventArgs";

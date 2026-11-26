@@ -1,19 +1,11 @@
-windows_core::imp::define_interface!(IUserDataAvailabilityStateChangedEventArgs, IUserDataAvailabilityStateChangedEventArgs_Vtbl, 0xa76582c9_06a2_4273_a803_834c9f87fbeb);
-impl windows_core::RuntimeType for IUserDataAvailabilityStateChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.DataProtection.IUserDataAvailabilityStateChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IUserDataAvailabilityStateChangedEventArgs, IUserDataAvailabilityStateChangedEventArgs_Vtbl, 0xa76582c9_06a2_4273_a803_834c9f87fbeb, b"Windows.Security.DataProtection.IUserDataAvailabilityStateChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserDataAvailabilityStateChangedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUserDataBufferUnprotectResult, IUserDataBufferUnprotectResult_Vtbl, 0x8efd0e90_fa9a_46a4_a377_01cebf1e74d8);
-impl windows_core::RuntimeType for IUserDataBufferUnprotectResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.DataProtection.IUserDataBufferUnprotectResult");
-}
+windows_core::imp::define_winrt_interface!(IUserDataBufferUnprotectResult, IUserDataBufferUnprotectResult_Vtbl, 0x8efd0e90_fa9a_46a4_a377_01cebf1e74d8, b"Windows.Security.DataProtection.IUserDataBufferUnprotectResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserDataBufferUnprotectResult_Vtbl {
@@ -24,11 +16,7 @@ pub struct IUserDataBufferUnprotectResult_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     UnprotectedBuffer: usize,
 }
-windows_core::imp::define_interface!(IUserDataProtectionManager, IUserDataProtectionManager_Vtbl, 0x1f13237d_b42e_4a88_9480_0f240924c876);
-impl windows_core::RuntimeType for IUserDataProtectionManager {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.DataProtection.IUserDataProtectionManager");
-}
+windows_core::imp::define_winrt_interface!(IUserDataProtectionManager, IUserDataProtectionManager_Vtbl, 0x1f13237d_b42e_4a88_9480_0f240924c876, b"Windows.Security.DataProtection.IUserDataProtectionManager");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserDataProtectionManager_Vtbl {
@@ -53,11 +41,7 @@ pub struct IUserDataProtectionManager_Vtbl {
     pub DataAvailabilityStateChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveDataAvailabilityStateChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUserDataProtectionManagerStatics, IUserDataProtectionManagerStatics_Vtbl, 0x977780e8_6dce_4fae_af85_782ac2cf4572);
-impl windows_core::RuntimeType for IUserDataProtectionManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.DataProtection.IUserDataProtectionManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(IUserDataProtectionManagerStatics, IUserDataProtectionManagerStatics_Vtbl, 0x977780e8_6dce_4fae_af85_782ac2cf4572, b"Windows.Security.DataProtection.IUserDataProtectionManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserDataProtectionManagerStatics_Vtbl {
@@ -68,11 +52,7 @@ pub struct IUserDataProtectionManagerStatics_Vtbl {
     #[cfg(not(feature = "System"))]
     TryGetForUser: usize,
 }
-windows_core::imp::define_interface!(IUserDataStorageItemProtectionInfo, IUserDataStorageItemProtectionInfo_Vtbl, 0x5b6680f6_e87f_40a1_b19d_a6187a0c662f);
-impl windows_core::RuntimeType for IUserDataStorageItemProtectionInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.DataProtection.IUserDataStorageItemProtectionInfo");
-}
+windows_core::imp::define_winrt_interface!(IUserDataStorageItemProtectionInfo, IUserDataStorageItemProtectionInfo_Vtbl, 0x5b6680f6_e87f_40a1_b19d_a6187a0c662f, b"Windows.Security.DataProtection.IUserDataStorageItemProtectionInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserDataStorageItemProtectionInfo_Vtbl {
@@ -102,7 +82,7 @@ impl UserDataAvailabilityStateChangedEventArgs {
     pub fn GetDeferral(&self) -> windows_core::Result<super::super::Foundation::Deferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -112,6 +92,7 @@ impl windows_core::RuntimeType for UserDataAvailabilityStateChangedEventArgs {
 unsafe impl windows_core::Interface for UserDataAvailabilityStateChangedEventArgs {
     type Vtable = <IUserDataAvailabilityStateChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUserDataAvailabilityStateChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UserDataAvailabilityStateChangedEventArgs {
     const NAME: &'static str = "Windows.Security.DataProtection.UserDataAvailabilityStateChangedEventArgs";
@@ -133,7 +114,7 @@ impl UserDataBufferUnprotectResult {
     pub fn UnprotectedBuffer(&self) -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).UnprotectedBuffer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).UnprotectedBuffer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -143,6 +124,7 @@ impl windows_core::RuntimeType for UserDataBufferUnprotectResult {
 unsafe impl windows_core::Interface for UserDataBufferUnprotectResult {
     type Vtable = <IUserDataBufferUnprotectResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUserDataBufferUnprotectResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UserDataBufferUnprotectResult {
     const NAME: &'static str = "Windows.Security.DataProtection.UserDataBufferUnprotectResult";
@@ -175,7 +157,7 @@ impl UserDataProtectionManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProtectStorageItemAsync)(windows_core::Interface::as_raw(self), storageitem.param().abi(), availability, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProtectStorageItemAsync)(windows_core::Interface::as_raw(self), storageitem.param().abi(), availability, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage")]
@@ -185,7 +167,7 @@ impl UserDataProtectionManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStorageItemProtectionInfoAsync)(windows_core::Interface::as_raw(self), storageitem.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStorageItemProtectionInfoAsync)(windows_core::Interface::as_raw(self), storageitem.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -195,7 +177,7 @@ impl UserDataProtectionManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProtectBufferAsync)(windows_core::Interface::as_raw(self), unprotectedbuffer.param().abi(), availability, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProtectBufferAsync)(windows_core::Interface::as_raw(self), unprotectedbuffer.param().abi(), availability, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -205,7 +187,7 @@ impl UserDataProtectionManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).UnprotectBufferAsync)(windows_core::Interface::as_raw(self), protectedbuffer.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).UnprotectBufferAsync)(windows_core::Interface::as_raw(self), protectedbuffer.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsContinuedDataAvailabilityExpected(&self, availability: UserDataAvailability) -> windows_core::Result<bool> {
@@ -216,7 +198,7 @@ impl UserDataProtectionManager {
     }
     pub fn DataAvailabilityStateChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<UserDataAvailabilityStateChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<UserDataAvailabilityStateChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, UserDataAvailabilityStateChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -231,7 +213,7 @@ impl UserDataProtectionManager {
     pub fn TryGetDefault() -> windows_core::Result<Self> {
         Self::IUserDataProtectionManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryGetDefault)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryGetDefault)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "System")]
@@ -241,7 +223,7 @@ impl UserDataProtectionManager {
     {
         Self::IUserDataProtectionManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryGetForUser)(windows_core::Interface::as_raw(this), user.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryGetForUser)(windows_core::Interface::as_raw(this), user.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IUserDataProtectionManagerStatics<R, F: FnOnce(&IUserDataProtectionManagerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -255,6 +237,7 @@ impl windows_core::RuntimeType for UserDataProtectionManager {
 unsafe impl windows_core::Interface for UserDataProtectionManager {
     type Vtable = <IUserDataProtectionManager as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUserDataProtectionManager as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UserDataProtectionManager {
     const NAME: &'static str = "Windows.Security.DataProtection.UserDataProtectionManager";
@@ -279,6 +262,7 @@ impl windows_core::RuntimeType for UserDataStorageItemProtectionInfo {
 unsafe impl windows_core::Interface for UserDataStorageItemProtectionInfo {
     type Vtable = <IUserDataStorageItemProtectionInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUserDataStorageItemProtectionInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UserDataStorageItemProtectionInfo {
     const NAME: &'static str = "Windows.Security.DataProtection.UserDataStorageItemProtectionInfo";

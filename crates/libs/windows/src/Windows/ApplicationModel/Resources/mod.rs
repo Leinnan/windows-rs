@@ -2,55 +2,35 @@
 pub mod Core;
 #[cfg(feature = "ApplicationModel_Resources_Management")]
 pub mod Management;
-windows_core::imp::define_interface!(IResourceLoader, IResourceLoader_Vtbl, 0x08524908_16ef_45ad_a602_293637d7e61a);
-impl windows_core::RuntimeType for IResourceLoader {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoader");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoader, IResourceLoader_Vtbl, 0x08524908_16ef_45ad_a602_293637d7e61a, b"Windows.ApplicationModel.Resources.IResourceLoader");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoader_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetString: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceLoader2, IResourceLoader2_Vtbl, 0x10eb6ec6_8138_48c1_bc65_e1f14207367c);
-impl windows_core::RuntimeType for IResourceLoader2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoader2");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoader2, IResourceLoader2_Vtbl, 0x10eb6ec6_8138_48c1_bc65_e1f14207367c, b"Windows.ApplicationModel.Resources.IResourceLoader2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoader2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetStringForUri: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceLoaderFactory, IResourceLoaderFactory_Vtbl, 0xc33a3603_69dc_4285_a077_d5c0e47ccbe8);
-impl windows_core::RuntimeType for IResourceLoaderFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoaderFactory");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoaderFactory, IResourceLoaderFactory_Vtbl, 0xc33a3603_69dc_4285_a077_d5c0e47ccbe8, b"Windows.ApplicationModel.Resources.IResourceLoaderFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoaderFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateResourceLoaderByName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceLoaderStatics, IResourceLoaderStatics_Vtbl, 0xbf777ce1_19c8_49c2_953c_47e9227b334e);
-impl windows_core::RuntimeType for IResourceLoaderStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoaderStatics");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoaderStatics, IResourceLoaderStatics_Vtbl, 0xbf777ce1_19c8_49c2_953c_47e9227b334e, b"Windows.ApplicationModel.Resources.IResourceLoaderStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoaderStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetStringForReference: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceLoaderStatics2, IResourceLoaderStatics2_Vtbl, 0x0cc04141_6466_4989_9494_0b82dfc53f1f);
-impl windows_core::RuntimeType for IResourceLoaderStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoaderStatics2");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoaderStatics2, IResourceLoaderStatics2_Vtbl, 0x0cc04141_6466_4989_9494_0b82dfc53f1f, b"Windows.ApplicationModel.Resources.IResourceLoaderStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoaderStatics2_Vtbl {
@@ -60,11 +40,7 @@ pub struct IResourceLoaderStatics2_Vtbl {
     pub GetForViewIndependentUse: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetForViewIndependentUseWithName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IResourceLoaderStatics3, IResourceLoaderStatics3_Vtbl, 0x64609dfb_64ac_491b_8100_0e558d61c1d0);
-impl windows_core::RuntimeType for IResourceLoaderStatics3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoaderStatics3");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoaderStatics3, IResourceLoaderStatics3_Vtbl, 0x64609dfb_64ac_491b_8100_0e558d61c1d0, b"Windows.ApplicationModel.Resources.IResourceLoaderStatics3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoaderStatics3_Vtbl {
@@ -74,11 +50,7 @@ pub struct IResourceLoaderStatics3_Vtbl {
     #[cfg(not(feature = "UI"))]
     GetForUIContext: usize,
 }
-windows_core::imp::define_interface!(IResourceLoaderStatics4, IResourceLoaderStatics4_Vtbl, 0x9fb36c32_6c8c_4316_962e_909539b5c259);
-impl windows_core::RuntimeType for IResourceLoaderStatics4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Resources.IResourceLoaderStatics4");
-}
+windows_core::imp::define_winrt_interface!(IResourceLoaderStatics4, IResourceLoaderStatics4_Vtbl, 0x9fb36c32_6c8c_4316_962e_909539b5c259, b"Windows.ApplicationModel.Resources.IResourceLoaderStatics4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IResourceLoaderStatics4_Vtbl {
@@ -116,7 +88,7 @@ impl ResourceLoader {
     pub fn CreateResourceLoaderByName(name: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IResourceLoaderFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateResourceLoaderByName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateResourceLoaderByName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetStringForReference<P0>(uri: P0) -> windows_core::Result<windows_core::HSTRING>
@@ -131,25 +103,25 @@ impl ResourceLoader {
     pub fn GetForCurrentView() -> windows_core::Result<Self> {
         Self::IResourceLoaderStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetForCurrentViewWithName(name: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IResourceLoaderStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentViewWithName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentViewWithName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetForViewIndependentUse() -> windows_core::Result<Self> {
         Self::IResourceLoaderStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForViewIndependentUse)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForViewIndependentUse)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetForViewIndependentUseWithName(name: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IResourceLoaderStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForViewIndependentUseWithName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForViewIndependentUseWithName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "UI")]
@@ -159,7 +131,7 @@ impl ResourceLoader {
     {
         Self::IResourceLoaderStatics3(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetDefaultPriPath(packagefullname: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -195,6 +167,7 @@ impl windows_core::RuntimeType for ResourceLoader {
 unsafe impl windows_core::Interface for ResourceLoader {
     type Vtable = <IResourceLoader as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IResourceLoader as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ResourceLoader {
     const NAME: &'static str = "Windows.ApplicationModel.Resources.ResourceLoader";

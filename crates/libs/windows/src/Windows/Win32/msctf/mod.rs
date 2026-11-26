@@ -4,12 +4,12 @@ impl IEnumITfCompositionView {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, rgcompositionview: *mut Option<ITfCompositionView>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(rgcompositionview), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, rgcompositionview as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -49,7 +49,7 @@ impl IEnumITfCompositionView_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumITfCompositionView_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumITfCompositionView>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -97,12 +97,12 @@ impl IEnumTfContextViews {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, rgviews: *mut Option<ITfContextView>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(rgviews), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, rgviews as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -142,7 +142,7 @@ impl IEnumTfContextViews_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfContextViews_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfContextViews>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -190,12 +190,12 @@ impl IEnumTfContexts {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, rgcontext: *mut Option<ITfContext>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(rgcontext), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, rgcontext as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -235,7 +235,7 @@ impl IEnumTfContexts_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfContexts_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfContexts>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -283,12 +283,12 @@ impl IEnumTfDisplayAttributeInfo {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, rginfo: *mut Option<ITfDisplayAttributeInfo>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(rginfo), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, rginfo as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -328,7 +328,7 @@ impl IEnumTfDisplayAttributeInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfDisplayAttributeInfo_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfDisplayAttributeInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -376,12 +376,12 @@ impl IEnumTfDocumentMgrs {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, rgdocumentmgr: *mut Option<ITfDocumentMgr>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(rgdocumentmgr), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, rgdocumentmgr as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -421,7 +421,7 @@ impl IEnumTfDocumentMgrs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfDocumentMgrs_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfDocumentMgrs>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -469,12 +469,12 @@ impl IEnumTfFunctionProviders {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, ppcmdobj: *mut Option<ITfFunctionProvider>, pcfetch: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(ppcmdobj), pcfetch as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, ppcmdobj as _, pcfetch as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -514,7 +514,7 @@ impl IEnumTfFunctionProviders_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfFunctionProviders_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfFunctionProviders>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -562,7 +562,7 @@ impl IEnumTfInputProcessorProfiles {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "minwindef", feature = "shared"))]
@@ -607,7 +607,7 @@ impl IEnumTfInputProcessorProfiles_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfInputProcessorProfiles_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfInputProcessorProfiles>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -655,7 +655,7 @@ impl IEnumTfLanguageProfiles {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
@@ -700,7 +700,7 @@ impl IEnumTfLanguageProfiles_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfLanguageProfiles_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfLanguageProfiles>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -748,12 +748,12 @@ impl IEnumTfProperties {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, ppprop: *mut Option<ITfProperty>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(ppprop), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, ppprop as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -793,7 +793,7 @@ impl IEnumTfProperties_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfProperties_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfProperties>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -841,7 +841,7 @@ impl IEnumTfPropertyValue {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
@@ -886,7 +886,7 @@ impl IEnumTfPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfPropertyValue_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfPropertyValue>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -934,12 +934,12 @@ impl IEnumTfRanges {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, pprange: *mut Option<ITfRange>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(pprange), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, pprange as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -979,7 +979,7 @@ impl IEnumTfRanges_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumTfRanges_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfRanges>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1025,11 +1025,11 @@ windows_core::imp::define_interface!(IEnumTfUIElements, IEnumTfUIElements_Vtbl, 
 windows_core::imp::interface_hierarchy!(IEnumTfUIElements, windows_core::IUnknown);
 impl IEnumTfUIElements {
     pub unsafe fn Clone(&self, ppenum: *mut Option<Self>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), core::mem::transmute(ppenum)) }
+        unsafe { (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), ppenum as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn Next(&self, ulcount: super::ULONG, ppelement: *mut Option<ITfUIElement>, pcfetched: *mut super::ULONG) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, core::mem::transmute(ppelement), pcfetched as _) }
+        unsafe { (windows_core::Interface::vtable(self).Next)(windows_core::Interface::as_raw(self), ulcount, ppelement as _, pcfetched as _) }
     }
     pub unsafe fn Reset(&self) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).Reset)(windows_core::Interface::as_raw(self)) }
@@ -1133,7 +1133,7 @@ impl ITextStoreACPServices {
     pub unsafe fn CreateRange(&self, acpstart: super::LONG, acpend: super::LONG) -> windows_core::Result<ITfRangeACP> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateRange)(windows_core::Interface::as_raw(self), acpstart, acpend, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateRange)(windows_core::Interface::as_raw(self), acpstart, acpend, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1188,7 +1188,7 @@ impl ITextStoreACPServices_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITextStoreACPServices_Impl::CreateRange(this, core::mem::transmute_copy(&acpstart), core::mem::transmute_copy(&acpend)) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRangeACP>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1264,7 +1264,7 @@ impl ITfCandidateListUIElement {
         unsafe { (windows_core::Interface::vtable(self).GetUpdatedFlags)(windows_core::Interface::as_raw(self), pdwflags as _) }
     }
     pub unsafe fn GetDocumentMgr(&self, ppdim: *mut Option<ITfDocumentMgr>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDocumentMgr)(windows_core::Interface::as_raw(self), core::mem::transmute(ppdim)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDocumentMgr)(windows_core::Interface::as_raw(self), ppdim as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetCount(&self, pucount: *mut super::UINT) -> windows_core::HRESULT {
@@ -1276,7 +1276,7 @@ impl ITfCandidateListUIElement {
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetString(&self, uindex: super::UINT, pstr: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), uindex, core::mem::transmute(pstr)) }
+        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), uindex, pstr as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetPageIndex(&self, pindex: *mut super::UINT, usize: super::UINT, pupagecnt: *mut super::UINT) -> windows_core::HRESULT {
@@ -1489,11 +1489,11 @@ impl ITfCategoryMgr {
     }
     #[cfg(feature = "comcat")]
     pub unsafe fn EnumCategoriesInItem(&self, rguid: *const windows_core::GUID, ppenum: *mut Option<super::IEnumGUID>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).EnumCategoriesInItem)(windows_core::Interface::as_raw(self), rguid, core::mem::transmute(ppenum)) }
+        unsafe { (windows_core::Interface::vtable(self).EnumCategoriesInItem)(windows_core::Interface::as_raw(self), rguid, ppenum as _) }
     }
     #[cfg(feature = "comcat")]
     pub unsafe fn EnumItemsInCategory(&self, rcatid: *const windows_core::GUID, ppenum: *mut Option<super::IEnumGUID>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).EnumItemsInCategory)(windows_core::Interface::as_raw(self), rcatid, core::mem::transmute(ppenum)) }
+        unsafe { (windows_core::Interface::vtable(self).EnumItemsInCategory)(windows_core::Interface::as_raw(self), rcatid, ppenum as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn FindClosestCategory(&self, rguid: *const windows_core::GUID, pcatid: *mut windows_core::GUID, ppcatidlist: *const *const windows_core::GUID, ulcount: super::ULONG) -> windows_core::HRESULT {
@@ -1508,7 +1508,7 @@ impl ITfCategoryMgr {
         unsafe { (windows_core::Interface::vtable(self).UnregisterGUIDDescription)(windows_core::Interface::as_raw(self), rclsid, rguid) }
     }
     pub unsafe fn GetGUIDDescription(&self, rguid: *const windows_core::GUID, pbstrdesc: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetGUIDDescription)(windows_core::Interface::as_raw(self), rguid, core::mem::transmute(pbstrdesc)) }
+        unsafe { (windows_core::Interface::vtable(self).GetGUIDDescription)(windows_core::Interface::as_raw(self), rguid, pbstrdesc as _) }
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
     pub unsafe fn RegisterGUIDDWORD(&self, rclsid: *const super::IID, rguid: *const windows_core::GUID, dw: super::DWORD) -> windows_core::HRESULT {
@@ -1917,7 +1917,7 @@ impl ITfCompartmentMgr {
     pub unsafe fn GetCompartment(&self, rguid: *const windows_core::GUID) -> windows_core::Result<ITfCompartment> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCompartment)(windows_core::Interface::as_raw(self), rguid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCompartment)(windows_core::Interface::as_raw(self), rguid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn ClearCompartment(&self, tid: TfClientId, rguid: *const windows_core::GUID) -> windows_core::HRESULT {
@@ -1927,7 +1927,7 @@ impl ITfCompartmentMgr {
     pub unsafe fn EnumCompartments(&self) -> windows_core::Result<super::IEnumGUID> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumCompartments)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumCompartments)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1956,7 +1956,7 @@ impl ITfCompartmentMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfCompartmentMgr_Impl::GetCompartment(this, core::mem::transmute_copy(&rguid)) {
                     Ok(ok__) => {
-                        ppcomp.write(core::mem::transmute(ok__));
+                        ppcomp.cast::<ITfCompartment>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1977,7 +1977,7 @@ impl ITfCompartmentMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfCompartmentMgr_Impl::EnumCompartments(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<super::IEnumGUID>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2006,7 +2006,7 @@ impl ITfComposition {
     pub unsafe fn GetRange(&self) -> windows_core::Result<ITfRange> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRange)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRange)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn ShiftStart<P1>(&self, ecwrite: TfEditCookie, pnewstart: P1) -> windows_core::HRESULT
@@ -2047,7 +2047,7 @@ impl ITfComposition_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfComposition_Impl::GetRange(this) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2132,7 +2132,7 @@ impl ITfCompositionView {
     pub unsafe fn GetRange(&self) -> windows_core::Result<ITfRange> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRange)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRange)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2165,7 +2165,7 @@ impl ITfCompositionView_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfCompositionView_Impl::GetRange(this) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2257,25 +2257,25 @@ impl ITfContext {
     pub unsafe fn GetStart(&self, ec: TfEditCookie) -> windows_core::Result<ITfRange> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStart)(windows_core::Interface::as_raw(self), ec, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStart)(windows_core::Interface::as_raw(self), ec, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetEnd(&self, ec: TfEditCookie) -> windows_core::Result<ITfRange> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetEnd)(windows_core::Interface::as_raw(self), ec, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetEnd)(windows_core::Interface::as_raw(self), ec, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetActiveView(&self) -> windows_core::Result<ITfContextView> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetActiveView)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetActiveView)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumViews(&self) -> windows_core::Result<IEnumTfContextViews> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumViews)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumViews)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "textstor"))]
@@ -2285,32 +2285,32 @@ impl ITfContext {
     pub unsafe fn GetProperty(&self, guidprop: *const windows_core::GUID) -> windows_core::Result<ITfProperty> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetProperty)(windows_core::Interface::as_raw(self), guidprop, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetProperty)(windows_core::Interface::as_raw(self), guidprop, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetAppProperty(&self, guidprop: *const windows_core::GUID) -> windows_core::Result<ITfReadOnlyProperty> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAppProperty)(windows_core::Interface::as_raw(self), guidprop, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAppProperty)(windows_core::Interface::as_raw(self), guidprop, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn TrackProperties(&self, prgprop: *const *const windows_core::GUID, cprop: super::ULONG, prgappprop: *const *const windows_core::GUID, cappprop: super::ULONG) -> windows_core::Result<ITfReadOnlyProperty> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TrackProperties)(windows_core::Interface::as_raw(self), prgprop, cprop, prgappprop, cappprop, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TrackProperties)(windows_core::Interface::as_raw(self), prgprop, cprop, prgappprop, cappprop, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumProperties(&self) -> windows_core::Result<IEnumTfProperties> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumProperties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumProperties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetDocumentMgr(&self) -> windows_core::Result<ITfDocumentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDocumentMgr)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDocumentMgr)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn CreateRangeBackup<P1>(&self, ec: TfEditCookie, prange: P1) -> windows_core::Result<ITfRangeBackup>
@@ -2319,7 +2319,7 @@ impl ITfContext {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateRangeBackup)(windows_core::Interface::as_raw(self), ec, prange.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateRangeBackup)(windows_core::Interface::as_raw(self), ec, prange.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2408,7 +2408,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::GetStart(this, core::mem::transmute_copy(&ec)) {
                     Ok(ok__) => {
-                        ppstart.write(core::mem::transmute(ok__));
+                        ppstart.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2423,7 +2423,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::GetEnd(this, core::mem::transmute_copy(&ec)) {
                     Ok(ok__) => {
-                        ppend.write(core::mem::transmute(ok__));
+                        ppend.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2438,7 +2438,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::GetActiveView(this) {
                     Ok(ok__) => {
-                        ppview.write(core::mem::transmute(ok__));
+                        ppview.cast::<ITfContextView>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2453,7 +2453,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::EnumViews(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfContextViews>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2474,7 +2474,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::GetProperty(this, core::mem::transmute_copy(&guidprop)) {
                     Ok(ok__) => {
-                        ppprop.write(core::mem::transmute(ok__));
+                        ppprop.cast::<ITfProperty>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2489,7 +2489,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::GetAppProperty(this, core::mem::transmute_copy(&guidprop)) {
                     Ok(ok__) => {
-                        ppprop.write(core::mem::transmute(ok__));
+                        ppprop.cast::<ITfReadOnlyProperty>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2504,7 +2504,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::TrackProperties(this, core::mem::transmute_copy(&prgprop), core::mem::transmute_copy(&cprop), core::mem::transmute_copy(&prgappprop), core::mem::transmute_copy(&cappprop)) {
                     Ok(ok__) => {
-                        ppproperty.write(core::mem::transmute(ok__));
+                        ppproperty.cast::<ITfReadOnlyProperty>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2519,7 +2519,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::EnumProperties(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfProperties>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2534,7 +2534,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::GetDocumentMgr(this) {
                     Ok(ok__) => {
-                        ppdm.write(core::mem::transmute(ok__));
+                        ppdm.cast::<ITfDocumentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2549,7 +2549,7 @@ impl ITfContext_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContext_Impl::CreateRangeBackup(this, core::mem::transmute_copy(&ec), core::mem::transmute_copy(&prange)) {
                     Ok(ok__) => {
-                        ppbackup.write(core::mem::transmute(ok__));
+                        ppbackup.cast::<ITfRangeBackup>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2594,13 +2594,13 @@ impl ITfContextComposition {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).StartComposition)(windows_core::Interface::as_raw(self), ecwrite, pcompositionrange.param().abi(), psink.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).StartComposition)(windows_core::Interface::as_raw(self), ecwrite, pcompositionrange.param().abi(), psink.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumCompositions(&self) -> windows_core::Result<IEnumITfCompositionView> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumCompositions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumCompositions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn FindComposition<P1>(&self, ecread: TfEditCookie, ptestrange: P1) -> windows_core::Result<IEnumITfCompositionView>
@@ -2609,7 +2609,7 @@ impl ITfContextComposition {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FindComposition)(windows_core::Interface::as_raw(self), ecread, ptestrange.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).FindComposition)(windows_core::Interface::as_raw(self), ecread, ptestrange.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn TakeOwnership<P1, P2>(&self, ecwrite: TfEditCookie, pcomposition: P1, psink: P2) -> windows_core::Result<ITfComposition>
@@ -2619,7 +2619,7 @@ impl ITfContextComposition {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TakeOwnership)(windows_core::Interface::as_raw(self), ecwrite, pcomposition.param().abi(), psink.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TakeOwnership)(windows_core::Interface::as_raw(self), ecwrite, pcomposition.param().abi(), psink.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2645,7 +2645,7 @@ impl ITfContextComposition_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContextComposition_Impl::StartComposition(this, core::mem::transmute_copy(&ecwrite), core::mem::transmute_copy(&pcompositionrange), core::mem::transmute_copy(&psink)) {
                     Ok(ok__) => {
-                        ppcomposition.write(core::mem::transmute(ok__));
+                        ppcomposition.cast::<ITfComposition>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2660,7 +2660,7 @@ impl ITfContextComposition_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContextComposition_Impl::EnumCompositions(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumITfCompositionView>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2675,7 +2675,7 @@ impl ITfContextComposition_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContextComposition_Impl::FindComposition(this, core::mem::transmute_copy(&ecread), core::mem::transmute_copy(&ptestrange)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumITfCompositionView>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2690,7 +2690,7 @@ impl ITfContextComposition_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContextComposition_Impl::TakeOwnership(this, core::mem::transmute_copy(&ecwrite), core::mem::transmute_copy(&pcomposition), core::mem::transmute_copy(&psink)) {
                     Ok(ok__) => {
-                        ppcomposition.write(core::mem::transmute(ok__));
+                        ppcomposition.cast::<ITfComposition>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3072,7 +3072,7 @@ impl ITfContextOwnerServices {
     pub unsafe fn CreateRange(&self, acpstart: super::LONG, acpend: super::LONG) -> windows_core::Result<ITfRangeACP> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateRange)(windows_core::Interface::as_raw(self), acpstart, acpend, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateRange)(windows_core::Interface::as_raw(self), acpstart, acpend, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3154,7 +3154,7 @@ impl ITfContextOwnerServices_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContextOwnerServices_Impl::CreateRange(this, core::mem::transmute_copy(&acpstart), core::mem::transmute_copy(&acpend)) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRangeACP>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3188,7 +3188,7 @@ impl ITfContextView {
     pub unsafe fn GetRangeFromPoint(&self, ec: TfEditCookie, ppt: *const super::POINT, dwflags: super::DWORD) -> windows_core::Result<ITfRange> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRangeFromPoint)(windows_core::Interface::as_raw(self), ec, ppt, dwflags, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRangeFromPoint)(windows_core::Interface::as_raw(self), ec, ppt, dwflags, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "windef"))]
@@ -3243,7 +3243,7 @@ impl ITfContextView_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfContextView_Impl::GetRangeFromPoint(this, core::mem::transmute_copy(&ec), core::mem::transmute_copy(&ppt), core::mem::transmute_copy(&dwflags)) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3303,7 +3303,7 @@ impl ITfCreatePropertyStore {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePropertyStore)(windows_core::Interface::as_raw(self), guidprop, prange.param().abi(), cb, pstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePropertyStore)(windows_core::Interface::as_raw(self), guidprop, prange.param().abi(), cb, pstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3336,7 +3336,7 @@ impl ITfCreatePropertyStore_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfCreatePropertyStore_Impl::CreatePropertyStore(this, core::mem::transmute_copy(&guidprop), core::mem::transmute_copy(&prange), core::mem::transmute_copy(&cb), core::mem::transmute_copy(&pstream)) {
                     Ok(ok__) => {
-                        ppstore.write(core::mem::transmute(ok__));
+                        ppstore.cast::<ITfPropertyStore>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3365,7 +3365,7 @@ impl ITfDisplayAttributeInfo {
         unsafe { (windows_core::Interface::vtable(self).GetGUID)(windows_core::Interface::as_raw(self), pguid as _) }
     }
     pub unsafe fn GetDescription(&self, pbstrdesc: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDescription)(windows_core::Interface::as_raw(self), core::mem::transmute(pbstrdesc)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDescription)(windows_core::Interface::as_raw(self), pbstrdesc as _) }
     }
     #[cfg(feature = "windef")]
     pub unsafe fn GetAttributeInfo(&self, pda: *mut TF_DISPLAYATTRIBUTE) -> windows_core::HRESULT {
@@ -3458,11 +3458,11 @@ impl ITfDisplayAttributeMgr {
         unsafe { (windows_core::Interface::vtable(self).OnUpdateInfo)(windows_core::Interface::as_raw(self)) }
     }
     pub unsafe fn EnumDisplayAttributeInfo(&self, ppenum: *mut Option<IEnumTfDisplayAttributeInfo>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).EnumDisplayAttributeInfo)(windows_core::Interface::as_raw(self), core::mem::transmute(ppenum)) }
+        unsafe { (windows_core::Interface::vtable(self).EnumDisplayAttributeInfo)(windows_core::Interface::as_raw(self), ppenum as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetDisplayAttributeInfo(&self, guid: *const windows_core::GUID, ppinfo: *mut Option<ITfDisplayAttributeInfo>, pclsidowner: *mut super::CLSID) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDisplayAttributeInfo)(windows_core::Interface::as_raw(self), guid, core::mem::transmute(ppinfo), pclsidowner as _) }
+        unsafe { (windows_core::Interface::vtable(self).GetDisplayAttributeInfo)(windows_core::Interface::as_raw(self), guid, ppinfo as _, pclsidowner as _) }
     }
 }
 #[repr(C)]
@@ -3553,13 +3553,13 @@ impl ITfDisplayAttributeProvider {
     pub unsafe fn EnumDisplayAttributeInfo(&self) -> windows_core::Result<IEnumTfDisplayAttributeInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumDisplayAttributeInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumDisplayAttributeInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetDisplayAttributeInfo(&self, guid: *const windows_core::GUID) -> windows_core::Result<ITfDisplayAttributeInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDisplayAttributeInfo)(windows_core::Interface::as_raw(self), guid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDisplayAttributeInfo)(windows_core::Interface::as_raw(self), guid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3581,7 +3581,7 @@ impl ITfDisplayAttributeProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfDisplayAttributeProvider_Impl::EnumDisplayAttributeInfo(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfDisplayAttributeInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3596,7 +3596,7 @@ impl ITfDisplayAttributeProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfDisplayAttributeProvider_Impl::GetDisplayAttributeInfo(this, core::mem::transmute_copy(&guid)) {
                     Ok(ok__) => {
-                        ppinfo.write(core::mem::transmute(ok__));
+                        ppinfo.cast::<ITfDisplayAttributeInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3625,7 +3625,7 @@ impl ITfDocumentMgr {
     where
         P2: windows_core::Param<windows_core::IUnknown>,
     {
-        unsafe { (windows_core::Interface::vtable(self).CreateContext)(windows_core::Interface::as_raw(self), tidowner, dwflags, punk.param().abi(), core::mem::transmute(ppic), pectextstore as _) }
+        unsafe { (windows_core::Interface::vtable(self).CreateContext)(windows_core::Interface::as_raw(self), tidowner, dwflags, punk.param().abi(), ppic as _, pectextstore as _) }
     }
     pub unsafe fn Push<P0>(&self, pic: P0) -> windows_core::HRESULT
     where
@@ -3640,19 +3640,19 @@ impl ITfDocumentMgr {
     pub unsafe fn GetTop(&self) -> windows_core::Result<ITfContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetTop)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetTop)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetBase(&self) -> windows_core::Result<ITfContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetBase)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetBase)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumContexts(&self) -> windows_core::Result<IEnumTfContexts> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumContexts)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumContexts)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3708,7 +3708,7 @@ impl ITfDocumentMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfDocumentMgr_Impl::GetTop(this) {
                     Ok(ok__) => {
-                        ppic.write(core::mem::transmute(ok__));
+                        ppic.cast::<ITfContext>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3723,7 +3723,7 @@ impl ITfDocumentMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfDocumentMgr_Impl::GetBase(this) {
                     Ok(ok__) => {
-                        ppic.write(core::mem::transmute(ok__));
+                        ppic.cast::<ITfContext>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3738,7 +3738,7 @@ impl ITfDocumentMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfDocumentMgr_Impl::EnumContexts(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfContexts>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3774,7 +3774,7 @@ impl ITfEditRecord {
     pub unsafe fn GetTextAndPropertyUpdates(&self, dwflags: super::DWORD, prgproperties: *const *const windows_core::GUID, cproperties: super::ULONG) -> windows_core::Result<IEnumTfRanges> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetTextAndPropertyUpdates)(windows_core::Interface::as_raw(self), dwflags, prgproperties, cproperties, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetTextAndPropertyUpdates)(windows_core::Interface::as_raw(self), dwflags, prgproperties, cproperties, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3807,7 +3807,7 @@ impl ITfEditRecord_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfEditRecord_Impl::GetTextAndPropertyUpdates(this, core::mem::transmute_copy(&dwflags), core::mem::transmute_copy(&prgproperties), core::mem::transmute_copy(&cproperties)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfRanges>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3916,7 +3916,7 @@ windows_core::imp::define_interface!(ITfFunction, ITfFunction_Vtbl, 0xdb593490_0
 windows_core::imp::interface_hierarchy!(ITfFunction, windows_core::IUnknown);
 impl ITfFunction {
     pub unsafe fn GetDisplayName(&self, pbstrname: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDisplayName)(windows_core::Interface::as_raw(self), core::mem::transmute(pbstrname)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDisplayName)(windows_core::Interface::as_raw(self), pbstrname as _) }
     }
 }
 #[repr(C)]
@@ -3950,11 +3950,11 @@ impl ITfFunctionProvider {
         unsafe { (windows_core::Interface::vtable(self).GetType)(windows_core::Interface::as_raw(self), pguid as _) }
     }
     pub unsafe fn GetDescription(&self, pbstrdesc: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDescription)(windows_core::Interface::as_raw(self), core::mem::transmute(pbstrdesc)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDescription)(windows_core::Interface::as_raw(self), pbstrdesc as _) }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetFunction(&self, rguid: *const windows_core::GUID, riid: *const super::IID, ppunk: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetFunction)(windows_core::Interface::as_raw(self), rguid, riid, core::mem::transmute(ppunk)) }
+        unsafe { (windows_core::Interface::vtable(self).GetFunction)(windows_core::Interface::as_raw(self), rguid, riid, ppunk as _) }
     }
 }
 #[repr(C)]
@@ -4065,7 +4065,7 @@ impl ITfInputProcessorProfileMgr {
     pub unsafe fn EnumProfiles(&self, langid: super::LANGID) -> windows_core::Result<IEnumTfInputProcessorProfiles> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumProfiles)(windows_core::Interface::as_raw(self), langid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumProfiles)(windows_core::Interface::as_raw(self), langid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
@@ -4159,7 +4159,7 @@ impl ITfInputProcessorProfileMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfInputProcessorProfileMgr_Impl::EnumProfiles(this, core::mem::transmute_copy(&langid)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfInputProcessorProfiles>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4286,7 +4286,7 @@ impl ITfInputProcessorProfiles {
     pub unsafe fn EnumInputProcessorInfo(&self) -> windows_core::Result<super::IEnumGUID> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumInputProcessorInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumInputProcessorInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
@@ -4307,7 +4307,7 @@ impl ITfInputProcessorProfiles {
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
     pub unsafe fn GetLanguageProfileDescription(&self, rclsid: *const super::IID, langid: super::LANGID, guidprofile: *const windows_core::GUID, pbstrprofile: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetLanguageProfileDescription)(windows_core::Interface::as_raw(self), rclsid, langid, guidprofile, core::mem::transmute(pbstrprofile)) }
+        unsafe { (windows_core::Interface::vtable(self).GetLanguageProfileDescription)(windows_core::Interface::as_raw(self), rclsid, langid, guidprofile, pbstrprofile as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetCurrentLanguage(&self, plangid: *mut super::LANGID) -> windows_core::HRESULT {
@@ -4325,7 +4325,7 @@ impl ITfInputProcessorProfiles {
     pub unsafe fn EnumLanguageProfiles(&self, langid: super::LANGID) -> windows_core::Result<IEnumTfLanguageProfiles> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumLanguageProfiles)(windows_core::Interface::as_raw(self), langid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumLanguageProfiles)(windows_core::Interface::as_raw(self), langid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "shared"))]
@@ -4475,7 +4475,7 @@ impl ITfInputProcessorProfiles_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfInputProcessorProfiles_Impl::EnumInputProcessorInfo(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<super::IEnumGUID>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4538,7 +4538,7 @@ impl ITfInputProcessorProfiles_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfInputProcessorProfiles_Impl::EnumLanguageProfiles(this, core::mem::transmute_copy(&langid)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfLanguageProfiles>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4654,7 +4654,7 @@ impl ITfInsertAtSelection {
     pub unsafe fn InsertTextAtSelection(&self, ec: TfEditCookie, dwflags: super::DWORD, pchtext: *const super::WCHAR, cch: super::LONG) -> windows_core::Result<ITfRange> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InsertTextAtSelection)(windows_core::Interface::as_raw(self), ec, dwflags, pchtext, cch, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InsertTextAtSelection)(windows_core::Interface::as_raw(self), ec, dwflags, pchtext, cch, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "objidl", feature = "shared"))]
@@ -4664,7 +4664,7 @@ impl ITfInsertAtSelection {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InsertEmbeddedAtSelection)(windows_core::Interface::as_raw(self), ec, dwflags, pdataobject.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InsertEmbeddedAtSelection)(windows_core::Interface::as_raw(self), ec, dwflags, pdataobject.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -4694,7 +4694,7 @@ impl ITfInsertAtSelection_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfInsertAtSelection_Impl::InsertTextAtSelection(this, core::mem::transmute_copy(&ec), core::mem::transmute_copy(&dwflags), core::mem::transmute_copy(&pchtext), core::mem::transmute_copy(&cch)) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4709,7 +4709,7 @@ impl ITfInsertAtSelection_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfInsertAtSelection_Impl::InsertEmbeddedAtSelection(this, core::mem::transmute_copy(&ec), core::mem::transmute_copy(&dwflags), core::mem::transmute_copy(&pdataobject)) {
                     Ok(ok__) => {
-                        pprange.write(core::mem::transmute(ok__));
+                        pprange.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4972,7 +4972,7 @@ impl ITfKeystrokeMgr {
         unsafe { (windows_core::Interface::vtable(self).SetPreservedKeyDescription)(windows_core::Interface::as_raw(self), rguid, pchdesc, cchdesc) }
     }
     pub unsafe fn GetPreservedKeyDescription(&self, rguid: *const windows_core::GUID, pbstrdesc: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetPreservedKeyDescription)(windows_core::Interface::as_raw(self), rguid, core::mem::transmute(pbstrdesc)) }
+        unsafe { (windows_core::Interface::vtable(self).GetPreservedKeyDescription)(windows_core::Interface::as_raw(self), rguid, pbstrdesc as _) }
     }
     pub unsafe fn SimulatePreservedKey<P0>(&self, pic: P0, rguid: *const windows_core::GUID, pfeaten: *mut windows_core::BOOL) -> windows_core::HRESULT
     where
@@ -5467,7 +5467,7 @@ impl ITfPersistentPropertyLoaderACP {
     pub unsafe fn LoadProperty(&self, phdr: *const TF_PERSISTENT_PROPERTY_HEADER_ACP) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LoadProperty)(windows_core::Interface::as_raw(self), phdr, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LoadProperty)(windows_core::Interface::as_raw(self), phdr, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -5492,7 +5492,7 @@ impl ITfPersistentPropertyLoaderACP_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfPersistentPropertyLoaderACP_Impl::LoadProperty(this, core::mem::transmute_copy(&phdr)) {
                     Ok(ok__) => {
-                        ppstream.write(core::mem::transmute(ok__));
+                        ppstream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5561,7 +5561,7 @@ impl ITfProperty {
     where
         P1: windows_core::Param<ITfRange>,
     {
-        unsafe { (windows_core::Interface::vtable(self).FindRange)(windows_core::Interface::as_raw(self), ec, prange.param().abi(), core::mem::transmute(pprange), apos) }
+        unsafe { (windows_core::Interface::vtable(self).FindRange)(windows_core::Interface::as_raw(self), ec, prange.param().abi(), pprange as _, apos) }
     }
     pub unsafe fn SetValueStore<P1, P2>(&self, ec: TfEditCookie, prange: P1, ppropstore: P2) -> windows_core::HRESULT
     where
@@ -5678,13 +5678,13 @@ impl ITfPropertyStore {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Divide)(windows_core::Interface::as_raw(self), prangethis.param().abi(), prangenew.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Divide)(windows_core::Interface::as_raw(self), prangethis.param().abi(), prangenew.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "guiddef")]
@@ -5778,7 +5778,7 @@ impl ITfPropertyStore_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfPropertyStore_Impl::Divide(this, core::mem::transmute_copy(&prangethis), core::mem::transmute_copy(&prangenew)) {
                     Ok(ok__) => {
-                        pppropstore.write(core::mem::transmute(ok__));
+                        pppropstore.cast::<ITfPropertyStore>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5793,7 +5793,7 @@ impl ITfPropertyStore_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfPropertyStore_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppropstore.write(core::mem::transmute(ok__));
+                        ppropstore.cast::<ITfPropertyStore>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5887,12 +5887,12 @@ impl ITfRange {
     pub unsafe fn GetFormattedText(&self, ec: TfEditCookie) -> windows_core::Result<super::IDataObject> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFormattedText)(windows_core::Interface::as_raw(self), ec, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFormattedText)(windows_core::Interface::as_raw(self), ec, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "guiddef")]
     pub unsafe fn GetEmbedded(&self, ec: TfEditCookie, rguidservice: *const windows_core::GUID, riid: *const super::IID, ppunk: *mut Option<windows_core::IUnknown>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetEmbedded)(windows_core::Interface::as_raw(self), ec, rguidservice, riid, core::mem::transmute(ppunk)) }
+        unsafe { (windows_core::Interface::vtable(self).GetEmbedded)(windows_core::Interface::as_raw(self), ec, rguidservice, riid, ppunk as _) }
     }
     #[cfg(all(feature = "objidl", feature = "shared"))]
     pub unsafe fn InsertEmbedded<P2>(&self, ec: TfEditCookie, dwflags: super::DWORD, pdataobject: P2) -> windows_core::HRESULT
@@ -5972,13 +5972,13 @@ impl ITfRange {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetContext(&self) -> windows_core::Result<ITfContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6084,7 +6084,7 @@ impl ITfRange_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfRange_Impl::GetFormattedText(this, core::mem::transmute_copy(&ec)) {
                     Ok(ok__) => {
-                        ppdataobject.write(core::mem::transmute(ok__));
+                        ppdataobject.cast::<super::IDataObject>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6201,7 +6201,7 @@ impl ITfRange_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfRange_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppclone.write(core::mem::transmute(ok__));
+                        ppclone.cast::<ITfRange>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6216,7 +6216,7 @@ impl ITfRange_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfRange_Impl::GetContext(this) {
                     Ok(ok__) => {
-                        ppcontext.write(core::mem::transmute(ok__));
+                        ppcontext.cast::<ITfContext>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6361,7 +6361,7 @@ impl ITfReadOnlyProperty {
     where
         P2: windows_core::Param<ITfRange>,
     {
-        unsafe { (windows_core::Interface::vtable(self).EnumRanges)(windows_core::Interface::as_raw(self), ec, core::mem::transmute(ppenum), ptargetrange.param().abi()) }
+        unsafe { (windows_core::Interface::vtable(self).EnumRanges)(windows_core::Interface::as_raw(self), ec, ppenum as _, ptargetrange.param().abi()) }
     }
     #[cfg(all(feature = "minwindef", feature = "oaidl", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
     pub unsafe fn GetValue<P1>(&self, ec: TfEditCookie, prange: P1, pvarvalue: *mut super::VARIANT) -> windows_core::HRESULT
@@ -6373,7 +6373,7 @@ impl ITfReadOnlyProperty {
     pub unsafe fn GetContext(&self) -> windows_core::Result<ITfContext> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6422,7 +6422,7 @@ impl ITfReadOnlyProperty_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfReadOnlyProperty_Impl::GetContext(this) {
                     Ok(ok__) => {
-                        ppcontext.write(core::mem::transmute(ok__));
+                        ppcontext.cast::<ITfContext>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6460,10 +6460,10 @@ impl ITfReadingInformationUIElement {
         unsafe { (windows_core::Interface::vtable(self).GetUpdatedFlags)(windows_core::Interface::as_raw(self), pdwflags as _) }
     }
     pub unsafe fn GetContext(&self, ppic: *mut Option<ITfContext>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), core::mem::transmute(ppic)) }
+        unsafe { (windows_core::Interface::vtable(self).GetContext)(windows_core::Interface::as_raw(self), ppic as _) }
     }
     pub unsafe fn GetString(&self, pstr: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), core::mem::transmute(pstr)) }
+        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), pstr as _) }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetMaxReadingStringLength(&self, pcchmax: *mut super::UINT) -> windows_core::HRESULT {
@@ -6570,7 +6570,7 @@ impl ITfReverseConversion {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DoReverseConversion)(windows_core::Interface::as_raw(self), lpstr.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DoReverseConversion)(windows_core::Interface::as_raw(self), lpstr.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6588,9 +6588,9 @@ impl ITfReverseConversion_Vtbl {
         unsafe extern "system" fn DoReverseConversion<Identity: ITfReverseConversion_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lpstr: windows_core::PCWSTR, pplist: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match ITfReverseConversion_Impl::DoReverseConversion(this, core::mem::transmute(&lpstr)) {
+                match ITfReverseConversion_Impl::DoReverseConversion(this, &*(&raw const lpstr).cast()) {
                     Ok(ok__) => {
-                        pplist.write(core::mem::transmute(ok__));
+                        pplist.cast::<ITfReverseConversionList>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6616,7 +6616,7 @@ impl ITfReverseConversionList {
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetString(&self, uindex: super::UINT, pbstr: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), uindex, core::mem::transmute(pbstr)) }
+        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), uindex, pbstr as _) }
     }
 }
 #[repr(C)]
@@ -6671,7 +6671,7 @@ impl ITfReverseConversionMgr {
     pub unsafe fn GetReverseConversion(&self, langid: super::LANGID, guidprofile: *const windows_core::GUID, dwflag: super::DWORD) -> windows_core::Result<ITfReverseConversion> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetReverseConversion)(windows_core::Interface::as_raw(self), langid, guidprofile, dwflag, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetReverseConversion)(windows_core::Interface::as_raw(self), langid, guidprofile, dwflag, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6696,7 +6696,7 @@ impl ITfReverseConversionMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfReverseConversionMgr_Impl::GetReverseConversion(this, core::mem::transmute_copy(&langid), core::mem::transmute_copy(&guidprofile), core::mem::transmute_copy(&dwflag)) {
                     Ok(ok__) => {
-                        ppreverseconversion.write(core::mem::transmute(ok__));
+                        ppreverseconversion.cast::<ITfReverseConversion>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7099,19 +7099,19 @@ impl ITfThreadMgr {
     pub unsafe fn CreateDocumentMgr(&self) -> windows_core::Result<ITfDocumentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateDocumentMgr)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateDocumentMgr)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumDocumentMgrs(&self) -> windows_core::Result<IEnumTfDocumentMgrs> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumDocumentMgrs)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumDocumentMgrs)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetFocus(&self) -> windows_core::Result<ITfDocumentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFocus)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFocus)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetFocus<P0>(&self, pdimfocus: P0) -> windows_core::HRESULT
@@ -7127,7 +7127,7 @@ impl ITfThreadMgr {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AssociateFocus)(windows_core::Interface::as_raw(self), hwnd, pdimnew.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AssociateFocus)(windows_core::Interface::as_raw(self), hwnd, pdimnew.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn IsThreadFocus(&self, pfthreadfocus: *mut windows_core::BOOL) -> windows_core::HRESULT {
@@ -7137,19 +7137,19 @@ impl ITfThreadMgr {
     pub unsafe fn GetFunctionProvider(&self, clsid: *const super::IID) -> windows_core::Result<ITfFunctionProvider> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFunctionProvider)(windows_core::Interface::as_raw(self), clsid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFunctionProvider)(windows_core::Interface::as_raw(self), clsid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumFunctionProviders(&self) -> windows_core::Result<IEnumTfFunctionProviders> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumFunctionProviders)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumFunctionProviders)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetGlobalCompartment(&self) -> windows_core::Result<ITfCompartmentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetGlobalCompartment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetGlobalCompartment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -7209,7 +7209,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::CreateDocumentMgr(this) {
                     Ok(ok__) => {
-                        ppdim.write(core::mem::transmute(ok__));
+                        ppdim.cast::<ITfDocumentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7224,7 +7224,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::EnumDocumentMgrs(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfDocumentMgrs>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7239,7 +7239,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::GetFocus(this) {
                     Ok(ok__) => {
-                        ppdimfocus.write(core::mem::transmute(ok__));
+                        ppdimfocus.cast::<ITfDocumentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7260,7 +7260,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::AssociateFocus(this, core::mem::transmute_copy(&hwnd), core::mem::transmute_copy(&pdimnew)) {
                     Ok(ok__) => {
-                        ppdimprev.write(core::mem::transmute(ok__));
+                        ppdimprev.cast::<ITfDocumentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7281,7 +7281,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::GetFunctionProvider(this, core::mem::transmute_copy(&clsid)) {
                     Ok(ok__) => {
-                        ppfuncprov.write(core::mem::transmute(ok__));
+                        ppfuncprov.cast::<ITfFunctionProvider>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7296,7 +7296,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::EnumFunctionProviders(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfFunctionProviders>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7311,7 +7311,7 @@ impl ITfThreadMgr_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr_Impl::GetGlobalCompartment(this) {
                     Ok(ok__) => {
-                        ppcompmgr.write(core::mem::transmute(ok__));
+                        ppcompmgr.cast::<ITfCompartmentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7354,19 +7354,19 @@ impl ITfThreadMgr2 {
     pub unsafe fn CreateDocumentMgr(&self) -> windows_core::Result<ITfDocumentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateDocumentMgr)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateDocumentMgr)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumDocumentMgrs(&self) -> windows_core::Result<IEnumTfDocumentMgrs> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumDocumentMgrs)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumDocumentMgrs)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetFocus(&self) -> windows_core::Result<ITfDocumentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFocus)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFocus)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetFocus<P0>(&self, pdimfocus: P0) -> windows_core::HRESULT
@@ -7382,19 +7382,19 @@ impl ITfThreadMgr2 {
     pub unsafe fn GetFunctionProvider(&self, clsid: *const super::IID) -> windows_core::Result<ITfFunctionProvider> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFunctionProvider)(windows_core::Interface::as_raw(self), clsid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFunctionProvider)(windows_core::Interface::as_raw(self), clsid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn EnumFunctionProviders(&self) -> windows_core::Result<IEnumTfFunctionProviders> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumFunctionProviders)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumFunctionProviders)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetGlobalCompartment(&self) -> windows_core::Result<ITfCompartmentMgr> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetGlobalCompartment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetGlobalCompartment)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -7477,7 +7477,7 @@ impl ITfThreadMgr2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr2_Impl::CreateDocumentMgr(this) {
                     Ok(ok__) => {
-                        ppdim.write(core::mem::transmute(ok__));
+                        ppdim.cast::<ITfDocumentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7492,7 +7492,7 @@ impl ITfThreadMgr2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr2_Impl::EnumDocumentMgrs(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfDocumentMgrs>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7507,7 +7507,7 @@ impl ITfThreadMgr2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr2_Impl::GetFocus(this) {
                     Ok(ok__) => {
-                        ppdimfocus.write(core::mem::transmute(ok__));
+                        ppdimfocus.cast::<ITfDocumentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7534,7 +7534,7 @@ impl ITfThreadMgr2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr2_Impl::GetFunctionProvider(this, core::mem::transmute_copy(&clsid)) {
                     Ok(ok__) => {
-                        ppfuncprov.write(core::mem::transmute(ok__));
+                        ppfuncprov.cast::<ITfFunctionProvider>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7549,7 +7549,7 @@ impl ITfThreadMgr2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr2_Impl::EnumFunctionProviders(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumTfFunctionProviders>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7564,7 +7564,7 @@ impl ITfThreadMgr2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ITfThreadMgr2_Impl::GetGlobalCompartment(this) {
                     Ok(ok__) => {
-                        ppcompmgr.write(core::mem::transmute(ok__));
+                        ppcompmgr.cast::<ITfCompartmentMgr>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7793,7 +7793,7 @@ impl core::ops::Deref for ITfToolTipUIElement {
 windows_core::imp::interface_hierarchy!(ITfToolTipUIElement, windows_core::IUnknown, ITfUIElement);
 impl ITfToolTipUIElement {
     pub unsafe fn GetString(&self, pstr: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), core::mem::transmute(pstr)) }
+        unsafe { (windows_core::Interface::vtable(self).GetString)(windows_core::Interface::as_raw(self), pstr as _) }
     }
 }
 #[repr(C)]
@@ -7866,7 +7866,7 @@ impl core::ops::Deref for ITfTransitoryExtensionUIElement {
 windows_core::imp::interface_hierarchy!(ITfTransitoryExtensionUIElement, windows_core::IUnknown, ITfUIElement);
 impl ITfTransitoryExtensionUIElement {
     pub unsafe fn GetDocumentMgr(&self, ppdim: *mut Option<ITfDocumentMgr>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDocumentMgr)(windows_core::Interface::as_raw(self), core::mem::transmute(ppdim)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDocumentMgr)(windows_core::Interface::as_raw(self), ppdim as _) }
     }
 }
 #[repr(C)]
@@ -7897,7 +7897,7 @@ windows_core::imp::define_interface!(ITfUIElement, ITfUIElement_Vtbl, 0xea1ea137
 windows_core::imp::interface_hierarchy!(ITfUIElement, windows_core::IUnknown);
 impl ITfUIElement {
     pub unsafe fn GetDescription(&self, pbstrdescription: *mut windows_core::BSTR) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetDescription)(windows_core::Interface::as_raw(self), core::mem::transmute(pbstrdescription)) }
+        unsafe { (windows_core::Interface::vtable(self).GetDescription)(windows_core::Interface::as_raw(self), pbstrdescription as _) }
     }
     pub unsafe fn GetGUID(&self, pguid: *mut windows_core::GUID) -> windows_core::HRESULT {
         unsafe { (windows_core::Interface::vtable(self).GetGUID)(windows_core::Interface::as_raw(self), pguid as _) }
@@ -7983,10 +7983,10 @@ impl ITfUIElementMgr {
     }
     #[cfg(feature = "shared")]
     pub unsafe fn GetUIElement(&self, dwuielementid: super::DWORD, ppelement: *mut Option<ITfUIElement>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).GetUIElement)(windows_core::Interface::as_raw(self), dwuielementid, core::mem::transmute(ppelement)) }
+        unsafe { (windows_core::Interface::vtable(self).GetUIElement)(windows_core::Interface::as_raw(self), dwuielementid, ppelement as _) }
     }
     pub unsafe fn EnumUIElements(&self, ppenum: *mut Option<IEnumTfUIElements>) -> windows_core::HRESULT {
-        unsafe { (windows_core::Interface::vtable(self).EnumUIElements)(windows_core::Interface::as_raw(self), core::mem::transmute(ppenum)) }
+        unsafe { (windows_core::Interface::vtable(self).EnumUIElements)(windows_core::Interface::as_raw(self), ppenum as _) }
     }
 }
 #[repr(C)]
@@ -8270,7 +8270,7 @@ pub const TF_IAS_QUERYONLY: i32 = 2;
 pub const TF_IE_CORRECTION: i32 = 1;
 #[repr(C)]
 #[cfg(all(feature = "guiddef", feature = "minwindef", feature = "shared"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct TF_INPUTPROCESSORPROFILE {
     pub dwProfileType: super::DWORD,
     pub langid: super::LANGID,
@@ -8281,6 +8281,12 @@ pub struct TF_INPUTPROCESSORPROFILE {
     pub dwCaps: super::DWORD,
     pub hkl: super::HKL,
     pub dwFlags: super::DWORD,
+}
+#[cfg(all(feature = "guiddef", feature = "minwindef", feature = "shared"))]
+impl Default for TF_INPUTPROCESSORPROFILE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const TF_INVALID_COOKIE: u32 = 4294967295;
 pub const TF_INVALID_EDIT_COOKIE: i32 = 0;

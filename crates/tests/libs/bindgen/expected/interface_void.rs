@@ -1,14 +1,9 @@
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     Interface,
     Interface_Vtbl,
-    0xe42fee02_e196_5756_865b_aa4392a97a64
+    0xe42fee02_e196_5756_865b_aa4392a97a64,
+    b"Test.Interface"
 );
-impl windows_core::RuntimeType for Interface {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.Interface");
-}
 windows_core::imp::interface_hierarchy!(
     Interface,
     windows_core::IUnknown,
@@ -43,13 +38,14 @@ impl Interface {
     }
     pub fn Values(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
             (windows_core::Interface::vtable(self).Values)(
                 windows_core::Interface::as_raw(self),
-                windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)),
-                result__.as_mut_ptr() as *mut _ as _,
+                &mut result_size__,
+                &mut result__,
             )
-            .map(|| result__.assume_init())
+            .map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn Partial(&self, value: &mut u32) -> windows_core::Result<u32> {
@@ -113,8 +109,7 @@ impl Interface_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match Interface_Impl::Text(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -135,7 +130,7 @@ impl Interface_Vtbl {
                 match Interface_Impl::Values(this) {
                     Ok(ok__) => {
                         let (ok_data__, ok_data_len__) = ok__.into_abi();
-                        result__.write(ok_data__);
+                        result__.write(ok_data__.cast());
                         result_size__.write(ok_data_len__);
                         windows_core::HRESULT(0)
                     }
@@ -168,7 +163,7 @@ impl Interface_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, Interface, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             Execute: Execute::<Identity, OFFSET>,
             Method: Method::<Identity, OFFSET>,
             Text: Text::<Identity, OFFSET>,

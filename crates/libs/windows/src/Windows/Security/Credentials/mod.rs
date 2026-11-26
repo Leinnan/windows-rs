@@ -8,7 +8,7 @@ impl windows_core::RuntimeType for AttestationChallengeHandler {
 }
 #[cfg(feature = "Storage_Streams")]
 impl AttestationChallengeHandler {
-    pub fn new<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> windows_core::Result<super::super::Storage::Streams::IBuffer> + Send + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> windows_core::Result<super::super::Storage::Streams::IBuffer> + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&AttestationChallengeHandlerBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -18,7 +18,7 @@ impl AttestationChallengeHandler {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Invoke)(windows_core::Interface::as_raw(self), challenge.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Invoke)(windows_core::Interface::as_raw(self), challenge.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -30,9 +30,9 @@ pub struct AttestationChallengeHandler_Vtbl {
     Invoke: unsafe extern "system" fn(this: *mut core::ffi::c_void, challenge: *mut core::ffi::c_void, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
 #[cfg(feature = "Storage_Streams")]
-struct AttestationChallengeHandlerBox<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> windows_core::Result<super::super::Storage::Streams::IBuffer> + Send + 'static>(core::marker::PhantomData<(fn() -> F,)>);
+struct AttestationChallengeHandlerBox<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> windows_core::Result<super::super::Storage::Streams::IBuffer> + Send + Sync + 'static>(core::marker::PhantomData<(fn() -> F,)>);
 #[cfg(feature = "Storage_Streams")]
-impl<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> windows_core::Result<super::super::Storage::Streams::IBuffer> + Send + 'static> AttestationChallengeHandlerBox<F> {
+impl<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> windows_core::Result<super::super::Storage::Streams::IBuffer> + Send + Sync + 'static> AttestationChallengeHandlerBox<F> {
     const VTABLE: AttestationChallengeHandler_Vtbl = AttestationChallengeHandler_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<AttestationChallengeHandler, F>::QueryInterface,
@@ -43,11 +43,10 @@ impl<F: Fn(windows_core::Ref<super::super::Storage::Streams::IBuffer>) -> window
     };
     unsafe extern "system" fn Invoke(this: *mut core::ffi::c_void, challenge: *mut core::ffi::c_void, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<AttestationChallengeHandler, F>);
+            let this = &*(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<AttestationChallengeHandler, F>);
             match (this.invoke)(core::mem::transmute_copy(&challenge)) {
                 Ok(ok__) => {
-                    result__.write(core::mem::transmute_copy(&ok__));
-                    core::mem::forget(ok__);
+                    core::ptr::write(result__.cast(), ok__);
                     windows_core::HRESULT(0)
                 }
                 Err(err) => {
@@ -71,22 +70,14 @@ impl windows_core::RuntimeType for ChallengeResponseKind {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Security.Credentials.ChallengeResponseKind;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.ChallengeResponseKind");
 }
-windows_core::imp::define_interface!(ICredentialFactory, ICredentialFactory_Vtbl, 0x54ef13a1_bf26_47b5_97dd_de779b7cad58);
-impl windows_core::RuntimeType for ICredentialFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.ICredentialFactory");
-}
+windows_core::imp::define_winrt_interface!(ICredentialFactory, ICredentialFactory_Vtbl, 0x54ef13a1_bf26_47b5_97dd_de779b7cad58, b"Windows.Security.Credentials.ICredentialFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICredentialFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreatePasswordCredential: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredential, IKeyCredential_Vtbl, 0x9585ef8d_457b_4847_b11a_fa960bbdb138);
-impl windows_core::RuntimeType for IKeyCredential {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredential");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredential, IKeyCredential_Vtbl, 0x9585ef8d_457b_4847_b11a_fa960bbdb138, b"Windows.Security.Credentials.IKeyCredential");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredential_Vtbl {
@@ -106,11 +97,7 @@ pub struct IKeyCredential_Vtbl {
     RequestSignAsync: usize,
     pub GetAttestationAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredential2, IKeyCredential2_Vtbl, 0x3b7c5e09_7b72_5a05_b2f0_7119ca3fd5df);
-impl windows_core::RuntimeType for IKeyCredential2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredential2");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredential2, IKeyCredential2_Vtbl, 0x3b7c5e09_7b72_5a05_b2f0_7119ca3fd5df, b"Windows.Security.Credentials.IKeyCredential2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredential2_Vtbl {
@@ -124,11 +111,7 @@ pub struct IKeyCredential2_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     RetrieveAuthorizationContext: usize,
 }
-windows_core::imp::define_interface!(IKeyCredentialAttestationResult, IKeyCredentialAttestationResult_Vtbl, 0x78aab3a1_a3c1_4103_b6cc_472c44171cbb);
-impl windows_core::RuntimeType for IKeyCredentialAttestationResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialAttestationResult");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialAttestationResult, IKeyCredentialAttestationResult_Vtbl, 0x78aab3a1_a3c1_4103_b6cc_472c44171cbb, b"Windows.Security.Credentials.IKeyCredentialAttestationResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialAttestationResult_Vtbl {
@@ -143,11 +126,7 @@ pub struct IKeyCredentialAttestationResult_Vtbl {
     AttestationBuffer: usize,
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut KeyCredentialAttestationStatus) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredentialCacheConfiguration, IKeyCredentialCacheConfiguration_Vtbl, 0x438bd21a_61ff_5468_95a6_b1d5216e458d);
-impl windows_core::RuntimeType for IKeyCredentialCacheConfiguration {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialCacheConfiguration");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialCacheConfiguration, IKeyCredentialCacheConfiguration_Vtbl, 0x438bd21a_61ff_5468_95a6_b1d5216e458d, b"Windows.Security.Credentials.IKeyCredentialCacheConfiguration");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialCacheConfiguration_Vtbl {
@@ -156,17 +135,13 @@ pub struct IKeyCredentialCacheConfiguration_Vtbl {
     pub Timeout: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::TimeSpan) -> windows_core::HRESULT,
     pub UsageCount: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredentialCacheConfigurationFactory, IKeyCredentialCacheConfigurationFactory_Vtbl, 0x9948c31b_c827_5b58_9442_40acd8ab1e7d);
-impl windows_core::RuntimeType for IKeyCredentialCacheConfigurationFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialCacheConfigurationFactory");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialCacheConfigurationFactory, IKeyCredentialCacheConfigurationFactory_Vtbl, 0x9948c31b_c827_5b58_9442_40acd8ab1e7d, b"Windows.Security.Credentials.IKeyCredentialCacheConfigurationFactory");
 windows_core::imp::interface_hierarchy!(IKeyCredentialCacheConfigurationFactory, windows_core::IUnknown, windows_core::IInspectable);
 impl IKeyCredentialCacheConfigurationFactory {
     pub fn CreateInstance(&self, cacheoption: KeyCredentialCacheOption, timeout: windows_time::TimeSpan, usagecount: u32) -> windows_core::Result<KeyCredentialCacheConfiguration> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateInstance)(windows_core::Interface::as_raw(self), cacheoption, timeout, usagecount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateInstance)(windows_core::Interface::as_raw(self), cacheoption, timeout, usagecount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -181,10 +156,9 @@ impl IKeyCredentialCacheConfigurationFactory_Vtbl {
         unsafe extern "system" fn CreateInstance<Identity: IKeyCredentialCacheConfigurationFactory_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, cacheoption: KeyCredentialCacheOption, timeout: windows_time::TimeSpan, usagecount: u32, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IKeyCredentialCacheConfigurationFactory_Impl::CreateInstance(this, cacheoption, core::mem::transmute(&timeout), usagecount) {
+                match IKeyCredentialCacheConfigurationFactory_Impl::CreateInstance(this, cacheoption, &*(&raw const timeout).cast(), usagecount) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -194,10 +168,7 @@ impl IKeyCredentialCacheConfigurationFactory_Vtbl {
                 }
             }
         }
-        Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IKeyCredentialCacheConfigurationFactory, OFFSET>(),
-            CreateInstance: CreateInstance::<Identity, OFFSET>,
-        }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(), CreateInstance: CreateInstance::<Identity, OFFSET> }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
         iid == &<IKeyCredentialCacheConfigurationFactory as windows_core::Interface>::IID
@@ -209,11 +180,7 @@ pub struct IKeyCredentialCacheConfigurationFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(*mut core::ffi::c_void, KeyCredentialCacheOption, windows_time::TimeSpan, u32, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredentialManagerCreateWithWindowStatics, IKeyCredentialManagerCreateWithWindowStatics_Vtbl, 0x30b1b9c9_61ef_43e8_88ac_cc433b38d1a6);
-impl windows_core::RuntimeType for IKeyCredentialManagerCreateWithWindowStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialManagerCreateWithWindowStatics");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialManagerCreateWithWindowStatics, IKeyCredentialManagerCreateWithWindowStatics_Vtbl, 0x30b1b9c9_61ef_43e8_88ac_cc433b38d1a6, b"Windows.Security.Credentials.IKeyCredentialManagerCreateWithWindowStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialManagerCreateWithWindowStatics_Vtbl {
@@ -223,11 +190,7 @@ pub struct IKeyCredentialManagerCreateWithWindowStatics_Vtbl {
     #[cfg(not(feature = "UI"))]
     RequestCreateForWindowAsync: usize,
 }
-windows_core::imp::define_interface!(IKeyCredentialManagerStatics, IKeyCredentialManagerStatics_Vtbl, 0x6aac468b_0ef1_4ce0_8290_4106da6a63b5);
-impl windows_core::RuntimeType for IKeyCredentialManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialManagerStatics, IKeyCredentialManagerStatics_Vtbl, 0x6aac468b_0ef1_4ce0_8290_4106da6a63b5, b"Windows.Security.Credentials.IKeyCredentialManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialManagerStatics_Vtbl {
@@ -238,11 +201,7 @@ pub struct IKeyCredentialManagerStatics_Vtbl {
     pub OpenAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub DeleteAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredentialManagerStatics2, IKeyCredentialManagerStatics2_Vtbl, 0x6439895d_68c5_521b_9dc4_7c199794f0d8);
-impl windows_core::RuntimeType for IKeyCredentialManagerStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialManagerStatics2");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialManagerStatics2, IKeyCredentialManagerStatics2_Vtbl, 0x6439895d_68c5_521b_9dc4_7c199794f0d8, b"Windows.Security.Credentials.IKeyCredentialManagerStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialManagerStatics2_Vtbl {
@@ -260,11 +219,7 @@ pub struct IKeyCredentialManagerStatics2_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     GetSecureId: usize,
 }
-windows_core::imp::define_interface!(IKeyCredentialOperationResult, IKeyCredentialOperationResult_Vtbl, 0xf53786c1_5261_4cdd_976d_cc909ac71620);
-impl windows_core::RuntimeType for IKeyCredentialOperationResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialOperationResult");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialOperationResult, IKeyCredentialOperationResult_Vtbl, 0xf53786c1_5261_4cdd_976d_cc909ac71620, b"Windows.Security.Credentials.IKeyCredentialOperationResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialOperationResult_Vtbl {
@@ -275,11 +230,7 @@ pub struct IKeyCredentialOperationResult_Vtbl {
     Result: usize,
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut KeyCredentialStatus) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredentialRetrievalResult, IKeyCredentialRetrievalResult_Vtbl, 0x58cd7703_8d87_4249_9b58_f6598cc9644e);
-impl windows_core::RuntimeType for IKeyCredentialRetrievalResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialRetrievalResult");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialRetrievalResult, IKeyCredentialRetrievalResult_Vtbl, 0x58cd7703_8d87_4249_9b58_f6598cc9644e, b"Windows.Security.Credentials.IKeyCredentialRetrievalResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialRetrievalResult_Vtbl {
@@ -287,11 +238,7 @@ pub struct IKeyCredentialRetrievalResult_Vtbl {
     pub Credential: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Status: unsafe extern "system" fn(*mut core::ffi::c_void, *mut KeyCredentialStatus) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyCredentialWithWindow, IKeyCredentialWithWindow_Vtbl, 0x050deb3b_b19c_4635_9df6_5650d66c62b1);
-impl windows_core::RuntimeType for IKeyCredentialWithWindow {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IKeyCredentialWithWindow");
-}
+windows_core::imp::define_winrt_interface!(IKeyCredentialWithWindow, IKeyCredentialWithWindow_Vtbl, 0x050deb3b_b19c_4635_9df6_5650d66c62b1, b"Windows.Security.Credentials.IKeyCredentialWithWindow");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyCredentialWithWindow_Vtbl {
@@ -301,11 +248,7 @@ pub struct IKeyCredentialWithWindow_Vtbl {
     #[cfg(not(all(feature = "Storage_Streams", feature = "UI")))]
     RequestSignForWindowAsync: usize,
 }
-windows_core::imp::define_interface!(IPasswordCredential, IPasswordCredential_Vtbl, 0x6ab18989_c720_41a7_a6c1_feadb36329a0);
-impl windows_core::RuntimeType for IPasswordCredential {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IPasswordCredential");
-}
+windows_core::imp::define_winrt_interface!(IPasswordCredential, IPasswordCredential_Vtbl, 0x6ab18989_c720_41a7_a6c1_feadb36329a0, b"Windows.Security.Credentials.IPasswordCredential");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPasswordCredential_Vtbl {
@@ -322,11 +265,7 @@ pub struct IPasswordCredential_Vtbl {
     #[cfg(not(feature = "Foundation_Collections"))]
     Properties: usize,
 }
-windows_core::imp::define_interface!(IPasswordVault, IPasswordVault_Vtbl, 0x61fd2c0b_c8d4_48c1_a54f_bc5a64205af2);
-impl windows_core::RuntimeType for IPasswordVault {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IPasswordVault");
-}
+windows_core::imp::define_winrt_interface!(IPasswordVault, IPasswordVault_Vtbl, 0x61fd2c0b_c8d4_48c1_a54f_bc5a64205af2, b"Windows.Security.Credentials.IPasswordVault");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPasswordVault_Vtbl {
@@ -338,17 +277,13 @@ pub struct IPasswordVault_Vtbl {
     pub FindAllByUserName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub RetrieveAll: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccount, IWebAccount_Vtbl, 0x69473eb2_8031_49be_80bb_96cb46d99aba);
-impl windows_core::RuntimeType for IWebAccount {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccount");
-}
+windows_core::imp::define_winrt_interface!(IWebAccount, IWebAccount_Vtbl, 0x69473eb2_8031_49be_80bb_96cb46d99aba, b"Windows.Security.Credentials.IWebAccount");
 windows_core::imp::interface_hierarchy!(IWebAccount, windows_core::IUnknown, windows_core::IInspectable);
 impl IWebAccount {
     pub fn WebAccountProvider(&self) -> windows_core::Result<WebAccountProvider> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).WebAccountProvider)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).WebAccountProvider)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn UserName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -379,8 +314,7 @@ impl IWebAccount_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWebAccount_Impl::WebAccountProvider(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -395,8 +329,7 @@ impl IWebAccount_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IWebAccount_Impl::UserName(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -422,7 +355,7 @@ impl IWebAccount_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IWebAccount, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             WebAccountProvider: WebAccountProvider::<Identity, OFFSET>,
             UserName: UserName::<Identity, OFFSET>,
             State: State::<Identity, OFFSET>,
@@ -440,11 +373,7 @@ pub struct IWebAccount_Vtbl {
     pub UserName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub State: unsafe extern "system" fn(*mut core::ffi::c_void, *mut WebAccountState) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccount2, IWebAccount2_Vtbl, 0x7b56d6f8_990b_4eb5_94a7_5621f3a8b824);
-impl windows_core::RuntimeType for IWebAccount2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccount2");
-}
+windows_core::imp::define_winrt_interface!(IWebAccount2, IWebAccount2_Vtbl, 0x7b56d6f8_990b_4eb5_94a7_5621f3a8b824, b"Windows.Security.Credentials.IWebAccount2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccount2_Vtbl {
@@ -458,22 +387,14 @@ pub struct IWebAccount2_Vtbl {
     pub SignOutAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SignOutWithClientIdAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccountFactory, IWebAccountFactory_Vtbl, 0xac9afb39_1de9_4e92_b78f_0581a87f6e5c);
-impl windows_core::RuntimeType for IWebAccountFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccountFactory");
-}
+windows_core::imp::define_winrt_interface!(IWebAccountFactory, IWebAccountFactory_Vtbl, 0xac9afb39_1de9_4e92_b78f_0581a87f6e5c, b"Windows.Security.Credentials.IWebAccountFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccountFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateWebAccount: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, WebAccountState, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccountProvider, IWebAccountProvider_Vtbl, 0x29dcc8c3_7ab9_4a7c_a336_b942f9dbf7c7);
-impl windows_core::RuntimeType for IWebAccountProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccountProvider");
-}
+windows_core::imp::define_winrt_interface!(IWebAccountProvider, IWebAccountProvider_Vtbl, 0x29dcc8c3_7ab9_4a7c_a336_b942f9dbf7c7, b"Windows.Security.Credentials.IWebAccountProvider");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccountProvider_Vtbl {
@@ -482,11 +403,7 @@ pub struct IWebAccountProvider_Vtbl {
     pub DisplayName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub IconUri: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccountProvider2, IWebAccountProvider2_Vtbl, 0x4a01eb05_4e42_41d4_b518_e008a5163614);
-impl windows_core::RuntimeType for IWebAccountProvider2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccountProvider2");
-}
+windows_core::imp::define_winrt_interface!(IWebAccountProvider2, IWebAccountProvider2_Vtbl, 0x4a01eb05_4e42_41d4_b518_e008a5163614, b"Windows.Security.Credentials.IWebAccountProvider2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccountProvider2_Vtbl {
@@ -494,11 +411,7 @@ pub struct IWebAccountProvider2_Vtbl {
     pub DisplayPurpose: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Authority: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccountProvider3, IWebAccountProvider3_Vtbl, 0xda1c518b_970d_4d49_825c_f2706f8ca7fe);
-impl windows_core::RuntimeType for IWebAccountProvider3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccountProvider3");
-}
+windows_core::imp::define_winrt_interface!(IWebAccountProvider3, IWebAccountProvider3_Vtbl, 0xda1c518b_970d_4d49_825c_f2706f8ca7fe, b"Windows.Security.Credentials.IWebAccountProvider3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccountProvider3_Vtbl {
@@ -508,22 +421,14 @@ pub struct IWebAccountProvider3_Vtbl {
     #[cfg(not(feature = "System"))]
     User: usize,
 }
-windows_core::imp::define_interface!(IWebAccountProvider4, IWebAccountProvider4_Vtbl, 0x718fd8db_e796_4210_b74e_84d29894b080);
-impl windows_core::RuntimeType for IWebAccountProvider4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccountProvider4");
-}
+windows_core::imp::define_winrt_interface!(IWebAccountProvider4, IWebAccountProvider4_Vtbl, 0x718fd8db_e796_4210_b74e_84d29894b080, b"Windows.Security.Credentials.IWebAccountProvider4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccountProvider4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub IsSystemProvider: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWebAccountProviderFactory, IWebAccountProviderFactory_Vtbl, 0x1d767df1_e1e1_4b9a_a774_5c7c7e3bf371);
-impl windows_core::RuntimeType for IWebAccountProviderFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Credentials.IWebAccountProviderFactory");
-}
+windows_core::imp::define_winrt_interface!(IWebAccountProviderFactory, IWebAccountProviderFactory_Vtbl, 0x1d767df1_e1e1_4b9a_a774_5c7c7e3bf371, b"Windows.Security.Credentials.IWebAccountProviderFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWebAccountProviderFactory_Vtbl {
@@ -545,14 +450,14 @@ impl KeyCredential {
     pub fn RetrievePublicKeyWithDefaultBlobType(&self) -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RetrievePublicKeyWithDefaultBlobType)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RetrievePublicKeyWithDefaultBlobType)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "Security_Cryptography_Core", feature = "Storage_Streams"))]
     pub fn RetrievePublicKeyWithBlobType(&self, blobtype: super::Cryptography::Core::CryptographicPublicKeyBlobType) -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RetrievePublicKeyWithBlobType)(windows_core::Interface::as_raw(self), blobtype, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RetrievePublicKeyWithBlobType)(windows_core::Interface::as_raw(self), blobtype, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -562,13 +467,13 @@ impl KeyCredential {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RequestSignAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RequestSignAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAttestationAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<KeyCredentialAttestationResult>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAttestationAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAttestationAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "Storage_Streams", feature = "UI"))]
@@ -579,7 +484,7 @@ impl KeyCredential {
         let this = &windows_core::Interface::cast::<IKeyCredential2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestDeriveSharedSecretAsync)(windows_core::Interface::as_raw(this), windowid, core::mem::transmute_copy(message), encryptedrequest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestDeriveSharedSecretAsync)(windows_core::Interface::as_raw(this), windowid, core::mem::transmute_copy(message), encryptedrequest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -590,7 +495,7 @@ impl KeyCredential {
         let this = &windows_core::Interface::cast::<IKeyCredential2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RetrieveAuthorizationContext)(windows_core::Interface::as_raw(this), encryptedrequest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RetrieveAuthorizationContext)(windows_core::Interface::as_raw(this), encryptedrequest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "Storage_Streams", feature = "UI"))]
@@ -601,7 +506,7 @@ impl KeyCredential {
         let this = &windows_core::Interface::cast::<IKeyCredentialWithWindow>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestSignForWindowAsync)(windows_core::Interface::as_raw(this), window, data.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestSignForWindowAsync)(windows_core::Interface::as_raw(this), window, data.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -611,6 +516,7 @@ impl windows_core::RuntimeType for KeyCredential {
 unsafe impl windows_core::Interface for KeyCredential {
     type Vtable = <IKeyCredential as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IKeyCredential as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for KeyCredential {
     const NAME: &'static str = "Windows.Security.Credentials.KeyCredential";
@@ -626,14 +532,14 @@ impl KeyCredentialAttestationResult {
     pub fn CertificateChainBuffer(&self) -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CertificateChainBuffer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CertificateChainBuffer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
     pub fn AttestationBuffer(&self) -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AttestationBuffer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AttestationBuffer)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Status(&self) -> windows_core::Result<KeyCredentialAttestationStatus> {
@@ -649,6 +555,7 @@ impl windows_core::RuntimeType for KeyCredentialAttestationResult {
 unsafe impl windows_core::Interface for KeyCredentialAttestationResult {
     type Vtable = <IKeyCredentialAttestationResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IKeyCredentialAttestationResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for KeyCredentialAttestationResult {
     const NAME: &'static str = "Windows.Security.Credentials.KeyCredentialAttestationResult";
@@ -675,7 +582,6 @@ impl windows_core::RuntimeType for KeyCredentialAttestationStatus {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct KeyCredentialCacheConfiguration(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(KeyCredentialCacheConfiguration, windows_core::IUnknown, windows_core::IInspectable);
-windows_core::imp::required_hierarchy!(KeyCredentialCacheConfiguration, IKeyCredentialCacheConfigurationFactory);
 impl KeyCredentialCacheConfiguration {
     pub fn CacheOption(&self) -> windows_core::Result<KeyCredentialCacheOption> {
         unsafe {
@@ -698,7 +604,7 @@ impl KeyCredentialCacheConfiguration {
     pub fn CreateInstance(cacheoption: KeyCredentialCacheOption, timeout: windows_time::TimeSpan, usagecount: u32) -> windows_core::Result<Self> {
         Self::IKeyCredentialCacheConfigurationFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), cacheoption, timeout, usagecount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), cacheoption, timeout, usagecount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IKeyCredentialCacheConfigurationFactory<R, F: FnOnce(&IKeyCredentialCacheConfigurationFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -712,6 +618,7 @@ impl windows_core::RuntimeType for KeyCredentialCacheConfiguration {
 unsafe impl windows_core::Interface for KeyCredentialCacheConfiguration {
     type Vtable = <IKeyCredentialCacheConfiguration as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IKeyCredentialCacheConfiguration as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for KeyCredentialCacheConfiguration {
     const NAME: &'static str = "Windows.Security.Credentials.KeyCredentialCacheConfiguration";
@@ -752,37 +659,37 @@ impl KeyCredentialManager {
     pub fn RequestCreateForWindowAsync(window: super::super::UI::WindowId, name: &windows_core::HSTRING, option: KeyCredentialCreationOption) -> windows_core::Result<windows_future::IAsyncOperation<KeyCredentialRetrievalResult>> {
         Self::IKeyCredentialManagerCreateWithWindowStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestCreateForWindowAsync)(windows_core::Interface::as_raw(this), window, core::mem::transmute_copy(name), option, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestCreateForWindowAsync)(windows_core::Interface::as_raw(this), window, core::mem::transmute_copy(name), option, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn IsSupportedAsync() -> windows_core::Result<windows_future::IAsyncOperation<bool>> {
         Self::IKeyCredentialManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsSupportedAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).IsSupportedAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn RenewAttestationAsync() -> windows_core::Result<windows_future::IAsyncAction> {
         Self::IKeyCredentialManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RenewAttestationAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RenewAttestationAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn RequestCreateAsync(name: &windows_core::HSTRING, option: KeyCredentialCreationOption) -> windows_core::Result<windows_future::IAsyncOperation<KeyCredentialRetrievalResult>> {
         Self::IKeyCredentialManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestCreateAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), option, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestCreateAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), option, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn OpenAsync(name: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<KeyCredentialRetrievalResult>> {
         Self::IKeyCredentialManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).OpenAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).OpenAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn DeleteAsync(name: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncAction> {
         Self::IKeyCredentialManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DeleteAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DeleteAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(all(feature = "Storage_Streams", feature = "UI"))]
@@ -793,7 +700,7 @@ impl KeyCredentialManager {
     {
         Self::IKeyCredentialManagerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestCreateAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), option, core::mem::transmute_copy(algorithm), core::mem::transmute_copy(message), cacheconfiguration.param().abi(), windowid, callbacktype, attestationcallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestCreateAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), option, core::mem::transmute_copy(algorithm), core::mem::transmute_copy(message), cacheconfiguration.param().abi(), windowid, callbacktype, attestationcallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Storage_Streams")]
@@ -803,14 +710,14 @@ impl KeyCredentialManager {
     {
         Self::IKeyCredentialManagerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).OpenAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), callbacktype, attestationcallback.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).OpenAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(name), callbacktype, attestationcallback.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Storage_Streams")]
     pub fn GetSecureId() -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         Self::IKeyCredentialManagerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetSecureId)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetSecureId)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IKeyCredentialManagerCreateWithWindowStatics<R, F: FnOnce(&IKeyCredentialManagerCreateWithWindowStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -838,7 +745,7 @@ impl KeyCredentialOperationResult {
     pub fn Result(&self) -> windows_core::Result<super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Result)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Result)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Status(&self) -> windows_core::Result<KeyCredentialStatus> {
@@ -854,6 +761,7 @@ impl windows_core::RuntimeType for KeyCredentialOperationResult {
 unsafe impl windows_core::Interface for KeyCredentialOperationResult {
     type Vtable = <IKeyCredentialOperationResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IKeyCredentialOperationResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for KeyCredentialOperationResult {
     const NAME: &'static str = "Windows.Security.Credentials.KeyCredentialOperationResult";
@@ -868,7 +776,7 @@ impl KeyCredentialRetrievalResult {
     pub fn Credential(&self) -> windows_core::Result<KeyCredential> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Credential)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Credential)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Status(&self) -> windows_core::Result<KeyCredentialStatus> {
@@ -884,6 +792,7 @@ impl windows_core::RuntimeType for KeyCredentialRetrievalResult {
 unsafe impl windows_core::Interface for KeyCredentialRetrievalResult {
     type Vtable = <IKeyCredentialRetrievalResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IKeyCredentialRetrievalResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for KeyCredentialRetrievalResult {
     const NAME: &'static str = "Windows.Security.Credentials.KeyCredentialRetrievalResult";
@@ -925,7 +834,7 @@ impl PasswordCredential {
     pub fn CreatePasswordCredential(resource: &windows_core::HSTRING, username: &windows_core::HSTRING, password: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::ICredentialFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreatePasswordCredential)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(resource), core::mem::transmute_copy(username), core::mem::transmute_copy(password), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreatePasswordCredential)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(resource), core::mem::transmute_copy(username), core::mem::transmute_copy(password), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn Resource(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -962,7 +871,7 @@ impl PasswordCredential {
     pub fn Properties(&self) -> windows_core::Result<super::super::Foundation::Collections::IPropertySet> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Properties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Properties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     fn ICredentialFactory<R, F: FnOnce(&ICredentialFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -976,6 +885,7 @@ impl windows_core::RuntimeType for PasswordCredential {
 unsafe impl windows_core::Interface for PasswordCredential {
     type Vtable = <IPasswordCredential as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPasswordCredential as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PasswordCredential {
     const NAME: &'static str = "Windows.Security.Credentials.PasswordCredential";
@@ -1003,14 +913,14 @@ impl PasswordCredentialPropertyStore {
         let this = &windows_core::Interface::cast::<windows_collections::IIterable<windows_collections::IKeyValuePair<windows_core::HSTRING, windows_core::IInspectable>>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).First)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Lookup(&self, key: &windows_core::HSTRING) -> windows_core::Result<windows_core::IInspectable> {
         let this = &windows_core::Interface::cast::<windows_collections::IMap<windows_core::HSTRING, windows_core::IInspectable>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Lookup)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(key), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Lookup)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(key), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -1031,7 +941,7 @@ impl PasswordCredentialPropertyStore {
         let this = &windows_core::Interface::cast::<windows_collections::IMap<windows_core::HSTRING, windows_core::IInspectable>>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Insert<P1>(&self, key: &windows_core::HSTRING, value: P1) -> windows_core::Result<bool>
@@ -1054,7 +964,7 @@ impl PasswordCredentialPropertyStore {
     }
     pub fn MapChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_collections::IObservableMap<windows_core::HSTRING, windows_core::IInspectable>>, windows_core::Ref<windows_collections::IMapChangedEventArgs<windows_core::HSTRING>>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_collections::IObservableMap<windows_core::HSTRING, windows_core::IInspectable>>, windows_core::Ref<windows_collections::IMapChangedEventArgs<windows_core::HSTRING>>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<windows_collections::IObservableMap<windows_core::HSTRING, windows_core::IInspectable>>(self)?;
         let handler = <windows_collections::MapChangedEventHandler<windows_core::HSTRING, windows_core::IInspectable>>::new(move |a0, a1| {
@@ -1076,6 +986,7 @@ impl windows_core::RuntimeType for PasswordCredentialPropertyStore {
 unsafe impl windows_core::Interface for PasswordCredentialPropertyStore {
     type Vtable = <super::super::Foundation::Collections::IPropertySet as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <super::super::Foundation::Collections::IPropertySet as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 #[cfg(feature = "Foundation_Collections")]
 impl windows_core::RuntimeName for PasswordCredentialPropertyStore {
@@ -1128,25 +1039,25 @@ impl PasswordVault {
     pub fn Retrieve(&self, resource: &windows_core::HSTRING, username: &windows_core::HSTRING) -> windows_core::Result<PasswordCredential> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Retrieve)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), core::mem::transmute_copy(username), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Retrieve)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), core::mem::transmute_copy(username), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FindAllByResource(&self, resource: &windows_core::HSTRING) -> windows_core::Result<windows_collections::IVectorView<PasswordCredential>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FindAllByResource)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).FindAllByResource)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(resource), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FindAllByUserName(&self, username: &windows_core::HSTRING) -> windows_core::Result<windows_collections::IVectorView<PasswordCredential>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FindAllByUserName)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(username), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).FindAllByUserName)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(username), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn RetrieveAll(&self) -> windows_core::Result<windows_collections::IVectorView<PasswordCredential>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RetrieveAll)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RetrieveAll)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1156,6 +1067,7 @@ impl windows_core::RuntimeType for PasswordVault {
 unsafe impl windows_core::Interface for PasswordVault {
     type Vtable = <IPasswordVault as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPasswordVault as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PasswordVault {
     const NAME: &'static str = "Windows.Security.Credentials.PasswordVault";
@@ -1170,7 +1082,7 @@ impl WebAccount {
     pub fn WebAccountProvider(&self) -> windows_core::Result<WebAccountProvider> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).WebAccountProvider)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).WebAccountProvider)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn UserName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1196,7 +1108,7 @@ impl WebAccount {
         let this = &windows_core::Interface::cast::<IWebAccount2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -1204,21 +1116,21 @@ impl WebAccount {
         let this = &windows_core::Interface::cast::<IWebAccount2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetPictureAsync)(windows_core::Interface::as_raw(this), desizedsize, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetPictureAsync)(windows_core::Interface::as_raw(this), desizedsize, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SignOutAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         let this = &windows_core::Interface::cast::<IWebAccount2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).SignOutAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).SignOutAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SignOutWithClientIdAsync(&self, clientid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncAction> {
         let this = &windows_core::Interface::cast::<IWebAccount2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).SignOutWithClientIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(clientid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).SignOutWithClientIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(clientid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateWebAccount<P0>(webaccountprovider: P0, username: &windows_core::HSTRING, state: WebAccountState) -> windows_core::Result<Self>
@@ -1227,7 +1139,7 @@ impl WebAccount {
     {
         Self::IWebAccountFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateWebAccount)(windows_core::Interface::as_raw(this), webaccountprovider.param().abi(), core::mem::transmute_copy(username), state, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateWebAccount)(windows_core::Interface::as_raw(this), webaccountprovider.param().abi(), core::mem::transmute_copy(username), state, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IWebAccountFactory<R, F: FnOnce(&IWebAccountFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -1241,6 +1153,7 @@ impl windows_core::RuntimeType for WebAccount {
 unsafe impl windows_core::Interface for WebAccount {
     type Vtable = <IWebAccount as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWebAccount as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for WebAccount {
     const NAME: &'static str = "Windows.Security.Credentials.WebAccount";
@@ -1283,7 +1196,7 @@ impl WebAccountProvider {
     pub fn IconUri(&self) -> windows_core::Result<super::super::Foundation::Uri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).IconUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).IconUri)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DisplayPurpose(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -1305,7 +1218,7 @@ impl WebAccountProvider {
         let this = &windows_core::Interface::cast::<IWebAccountProvider3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).User)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).User)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsSystemProvider(&self) -> windows_core::Result<bool> {
@@ -1321,7 +1234,7 @@ impl WebAccountProvider {
     {
         Self::IWebAccountProviderFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateWebAccountProvider)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(id), core::mem::transmute_copy(displayname), iconuri.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateWebAccountProvider)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(id), core::mem::transmute_copy(displayname), iconuri.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IWebAccountProviderFactory<R, F: FnOnce(&IWebAccountProviderFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -1335,6 +1248,7 @@ impl windows_core::RuntimeType for WebAccountProvider {
 unsafe impl windows_core::Interface for WebAccountProvider {
     type Vtable = <IWebAccountProvider as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWebAccountProvider as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for WebAccountProvider {
     const NAME: &'static str = "Windows.Security.Credentials.WebAccountProvider";

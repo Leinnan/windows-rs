@@ -4,9 +4,10 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use windows_canvas::*;
 use windows_reactor::{
-    App, Border, Component, ComponentContext, PointerEventInfo, View, ViewContext, WindowBackdrop,
+    App, Border, Component, ComponentContext, PointerEventInfo, SystemBackdrop, View, ViewContext,
     WindowVisuals,
 };
+use windows_text::{TextAlignment, TextFormat};
 
 struct Sample {
     pointer: Rc<RefCell<Option<(f32, f32)>>>,
@@ -43,7 +44,7 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Canvas hit-testing");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
         let pointer = Rc::clone(&self.pointer);
         let star = Rc::clone(&self.star);
         Border::new()
@@ -83,7 +84,8 @@ impl Component for Sample {
                     ColorF::new(1.0, 0.8, 0.0, 1.0)
                 };
                 ctx.fill_path(path, &ctx.create_solid_brush(fill)?);
-                let format = TextFormat::with_weight("Segoe UI", 18.0, CanvasFontWeight::BOLD)?
+                let format = TextFormat::new("Segoe UI", 18.0)
+                    .with_weight(windows_text::FontWeight::BOLD)
                     .with_alignment(TextAlignment::Center);
                 let label = if inside {
                     "Inside the star"

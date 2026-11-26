@@ -2,9 +2,10 @@
 
 use std::cell::RefCell;
 use std::rc::Rc;
+use windows_canvas::Ellipse as CanvasEllipse;
 use windows_canvas::*;
-use windows_canvas::{Ellipse as CanvasEllipse, TextAlignment};
 use windows_reactor::*;
+use windows_text::{ParagraphAlignment, TextAlignment, TextFormat};
 
 struct Sample {
     points: Rc<RefCell<Vec<Vector2>>>,
@@ -34,7 +35,7 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Invalidate");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
         let points = Rc::clone(&self.points);
         Border::new()
             .on_pointer_pressed(context.forward())
@@ -50,7 +51,7 @@ fn draw(context: &DrawContext, points: &[Vector2]) -> Result<()> {
     context.clear(ColorF::from_rgb8(0x10, 0x12, 0x18));
     let brush = context.create_solid_brush(ColorF::CORNFLOWER_BLUE)?;
     if points.is_empty() {
-        let format = TextFormat::new("Segoe UI", 24.0)?
+        let format = TextFormat::new("Segoe UI", 24.0)
             .with_alignment(TextAlignment::Center)
             .with_paragraph_alignment(ParagraphAlignment::Center);
         context.draw_text(

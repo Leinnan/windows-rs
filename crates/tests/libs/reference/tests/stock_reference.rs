@@ -4,6 +4,16 @@ use windows_core::*;
 use windows_reference::*;
 
 #[test]
+fn unconstrained_consumer() -> Result<()> {
+    fn value<T: RuntimeType>(reference: &IReference<T>) -> Result<T> {
+        reference.Value()
+    }
+
+    assert_eq!(value(&IReference::<i32>::from(42))?, 42);
+    Ok(())
+}
+
+#[test]
 fn value_u8() -> Result<()> {
     let r = IReference::<u8>::from(255);
     assert_eq!(r.Value()?, 255);
@@ -128,6 +138,20 @@ fn guid_value() -> Result<()> {
 fn cast_to_inspectable() -> Result<()> {
     let r = IReference::<i32>::from(99);
     let _inspectable: IInspectable = r.cast()?;
+    Ok(())
+}
+
+#[test]
+fn inspectable_conversions() -> Result<()> {
+    let reference = IReference::<i32>::from(99);
+    let borrowed: &IInspectable = (&reference).into();
+    assert_eq!(borrowed.as_raw(), reference.as_raw());
+    assert_eq!(borrowed.cast::<IReference<i32>>()?.Value()?, 99);
+
+    let raw = reference.as_raw();
+    let owned: IInspectable = reference.into();
+    assert_eq!(owned.as_raw(), raw);
+    assert_eq!(owned.cast::<IReference<i32>>()?.Value()?, 99);
     Ok(())
 }
 

@@ -1,0 +1,125 @@
+--out crates/libs/text/src/bindings.rs
+--dead-code
+--implement
+    Windows.Win32.IDWritePixelSnapping
+    Windows.Win32.IDWriteTextRenderer
+    Windows.Win32.IDWriteTextRenderer1
+
+--filter
+    IDWriteTextRenderer1::{}
+    DWRITE_E_NOCOLOR
+    DWRITE_GLYPH_ORIENTATION_ANGLE_0_DEGREES
+    DWRITE_GLYPH_ORIENTATION_ANGLE_90_DEGREES
+    DWRITE_GLYPH_ORIENTATION_ANGLE_180_DEGREES
+    DWRITE_GLYPH_ORIENTATION_ANGLE_270_DEGREES
+    DWRITE_FACTORY_TYPE_SHARED
+    DWRITE_MEASURING_MODE_NATURAL
+    DWRITE_OUTLINE_THRESHOLD_ANTIALIASED
+    DWRITE_PIXEL_GEOMETRY_BGR
+    DWRITE_PIXEL_GEOMETRY_RGB
+    DWRITE_RENDERING_MODE1_NATURAL_SYMMETRIC
+    DWRITE_RENDERING_MODE1_OUTLINE
+    DWRITE_TEXT_ANTIALIAS_MODE_CLEARTYPE
+    DWRITE_TEXT_ANTIALIAS_MODE_GRAYSCALE
+    DWRITE_TEXTURE_ALIASED_1x1
+    DWRITE_TEXTURE_CLEARTYPE_3x1
+    DWRITE_FONT_STRETCH_NORMAL
+    DWRITE_FONT_STYLE_ITALIC
+    DWRITE_FONT_STYLE_NORMAL
+    DWRITE_FONT_STYLE_OBLIQUE
+    DWRITE_PARAGRAPH_ALIGNMENT_CENTER
+    DWRITE_PARAGRAPH_ALIGNMENT_FAR
+    DWRITE_PARAGRAPH_ALIGNMENT_NEAR
+    DWRITE_TEXT_ALIGNMENT_CENTER
+    DWRITE_TEXT_ALIGNMENT_JUSTIFIED
+    DWRITE_TEXT_ALIGNMENT_LEADING
+    DWRITE_TEXT_ALIGNMENT_TRAILING
+    DWRITE_WORD_WRAPPING_WRAP
+    DWRITE_WORD_WRAPPING_NO_WRAP
+    DWRITE_READING_DIRECTION_LEFT_TO_RIGHT
+    DWRITE_READING_DIRECTION_RIGHT_TO_LEFT
+    DWRITE_READING_DIRECTION_TOP_TO_BOTTOM
+    DWRITE_READING_DIRECTION_BOTTOM_TO_TOP
+    DWRITE_FLOW_DIRECTION_TOP_TO_BOTTOM
+    DWRITE_FLOW_DIRECTION_BOTTOM_TO_TOP
+    DWRITE_FLOW_DIRECTION_LEFT_TO_RIGHT
+    DWRITE_FLOW_DIRECTION_RIGHT_TO_LEFT
+    DWRITE_VERTICAL_GLYPH_ORIENTATION_DEFAULT
+    DWRITE_VERTICAL_GLYPH_ORIENTATION_STACKED
+    DWRITE_TRIMMING_GRANULARITY_NONE
+    DWRITE_TRIMMING_GRANULARITY_CHARACTER
+    DWRITE_TRIMMING_GRANULARITY_WORD
+    DWRITE_LINE_SPACING_METHOD_DEFAULT
+    DWRITE_LINE_SPACING_METHOD_UNIFORM
+    DWRITE_LINE_SPACING_METHOD_PROPORTIONAL
+    DWRITE_FONT_LINE_GAP_USAGE_DEFAULT
+    DWRITE_TEXT_METRICS1
+    DWRITE_TEXT_RANGE
+    DWRITE_LINE_METRICS
+    DWRITE_CLUSTER_METRICS
+    DWRITE_FONT_FEATURE
+    DWRITE_HIT_TEST_METRICS
+    DWriteCreateFactory
+    E_NOT_SUFFICIENT_BUFFER
+    FE_FONTSMOOTHINGCLEARTYPE
+    GetUserDefaultLocaleName
+    LOCALE_NAME_MAX_LENGTH
+    SPI_GETFONTSMOOTHING
+    SPI_GETFONTSMOOTHINGTYPE
+    SystemParametersInfoW
+    IDWriteFactory::{
+        CreateEllipsisTrimmingSign,
+        CreateRenderingParams,
+        CreateTextFormat,
+        CreateTextLayout,
+        CreateTypography,
+        RegisterFontFileLoader,
+    }
+    IDWriteFactory2::{CreateFontFallbackBuilder, GetSystemFontFallback, TranslateColorGlyphRun}
+    IDWriteFactory3::{CreateFontCollectionFromFontSet, CreateGlyphRunAnalysis, GetSystemFontCollection}
+    IDWriteFactory5::{CreateFontSetBuilder, CreateInMemoryFontFileLoader}
+    IDWriteColorGlyphRunEnumerator::{GetCurrentRun, MoveNext}
+    IDWriteFont::CreateFontFace
+    IDWriteFontCollection::{FindFamilyName, GetFontFamily, GetFontFamilyCount}
+    IDWriteFontFace::{GetDesignGlyphMetrics, GetGlyphIndices}
+    IDWriteFontFace1::GetMetrics
+    IDWriteFontFace2::IsColorFont
+    IDWriteFontFace3::{GetFamilyNames, GetRecommendedRenderingMode, GetStyle, GetWeight}
+    IDWriteFontFallbackBuilder::{AddMapping, AddMappings, CreateFontFallback}
+    IDWriteFontFamily::{GetFamilyNames, GetFirstMatchingFont}
+    IDWriteFontSetBuilder::CreateFontSet
+    IDWriteFontSetBuilder1::AddFontFile
+    IDWriteGlyphRunAnalysis::{CreateAlphaTexture, GetAlphaTextureBounds}
+    IDWriteInMemoryFontFileLoader::CreateInMemoryFontFileReference
+    IDWriteLocalizedStrings::{FindLocaleName, GetString, GetStringLength}
+    IDWriteRenderingParams::{GetClearTypeLevel, GetEnhancedContrast, GetGamma, GetPixelGeometry}
+    IDWriteRenderingParams1::GetGrayscaleEnhancedContrast
+    IDWriteInlineObject::Draw
+    IDWriteTextFormat::{
+        SetIncrementalTabStop,
+        SetReadingDirection,
+        SetFlowDirection,
+        GetReadingDirection,
+        GetFlowDirection,
+        SetTextAlignment,
+        SetParagraphAlignment,
+        SetTrimming,
+        SetWordWrapping,
+    }
+    IDWriteTextFormat1::{SetFontFallback, SetVerticalGlyphOrientation}
+    IDWriteTextFormat2::SetLineSpacing
+    IDWriteTextLayout::{HitTestPoint, HitTestTextPosition, HitTestTextRange, SetMaxWidth, SetMaxHeight}
+    IDWriteTextLayout2::GetMetrics
+    IDWriteTextLayout::{Draw, GetClusterMetrics, GetLineMetrics}
+    IDWriteTextLayout::{
+        SetFontCollection,
+        SetFontFamilyName,
+        SetFontSize,
+        SetFontStyle,
+        SetFontWeight,
+        SetLocaleName,
+        SetStrikethrough,
+        SetTypography,
+        SetUnderline,
+    }
+    IDWriteTypography::AddFontFeature

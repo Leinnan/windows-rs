@@ -1,4 +1,5 @@
 use super::*;
+use std::borrow::Cow;
 
 struct VirtualRow;
 
@@ -15,7 +16,7 @@ impl Component for VirtualRow {
     }
 }
 
-impl<A: Adapter> ComponentHost<A> {
+impl ComponentHost {
     /// Plans the realization at the front of the native queue, unless it targets a row whose batch
     /// is being applied or renders a row whose effects are not yet committed.
     pub(crate) fn next_realization_batch(&mut self) -> Option<NativeBatch> {
@@ -52,12 +53,8 @@ impl<A: Adapter> ComponentHost<A> {
                     self.mark_busy_ancestors(owner);
                 }
                 let existing = self.virtual_rows.get(&row_key).copied();
-                let contexts = owner.map_or_else(
-                    || self.contexts.clone(),
-                    |owner| self.scope(owner).unwrap().contexts.clone(),
-                );
-                let provided_contexts = owner.map_or_else(HashSet::new, |owner| {
-                    self.scope(owner).unwrap().provided_contexts.clone()
+                let contexts = owner.map_or_else(ContextEnvironment::default, |owner| {
+                    Rc::clone(&self.scope(owner).unwrap().contexts)
                 });
                 let mut expansion = ExpansionState::default();
                 let (id, view) = if let Some(id) = existing {
@@ -76,14 +73,7 @@ impl<A: Adapter> ComponentHost<A> {
                             None => None,
                         };
                         if let Some(render) = render {
-                            expansion.push_render(
-                                id,
-                                render,
-                                OwnedContextEnvironment {
-                                    contexts: contexts.clone(),
-                                    provided: provided_contexts.clone(),
-                                },
-                            )
+                            expansion.push_render(id, render, Rc::clone(&contexts))
                         } else {
                             scope.component.cached_view()
                         }
@@ -91,20 +81,11 @@ impl<A: Adapter> ComponentHost<A> {
                     (id, view)
                 } else {
                     let node = component::<VirtualRow>(lease.key.clone(), view);
-                    let (id, render) =
-                        self.create_scope(owner, node, contexts.clone(), provided_contexts.clone());
-                    let view = expansion.push_render(
-                        id,
-                        render,
-                        OwnedContextEnvironment {
-                            contexts: contexts.clone(),
-                            provided: provided_contexts.clone(),
-                        },
-                    );
+                    let (id, render) = self.create_scope(owner, node, Rc::clone(&contexts));
+                    let view = expansion.push_render(id, render, Rc::clone(&contexts));
                     (id, view)
                 };
                 self.scope_mut(id).unwrap().contexts = contexts;
-                self.scope_mut(id).unwrap().provided_contexts = provided_contexts;
                 let declaration = self.expand_virtual_view(id, view, &mut expansion);
                 let retired = self.unseen_scopes(&expansion.seen);
                 let publication = self.resolve_window_publication(&expansion.pending, &retired);
@@ -169,28 +150,26 @@ impl<A: Adapter> ComponentHost<A> {
         expansion: &mut ExpansionState,
     ) -> View {
         expansion.seen.entry(owner).or_default();
-        let contexts = self.scope(owner).unwrap().contexts.clone();
-        let provided_contexts = self.scope(owner).unwrap().provided_contexts.clone();
-        let environment = ContextEnvironment {
-            contexts: &contexts,
-            provided: &provided_contexts,
-        };
+        let environment = Rc::clone(&self.scope(owner).unwrap().contexts);
         let mut path = Vec::new();
         let declaration = match view.0 {
-            DeclaredNode::Object(declaration) => self.expand_declaration(
-                owner,
-                declaration,
-                &environment,
-                true,
-                ExpansionLocation {
-                    depth: 0,
-                    path: &mut path,
-                },
-                expansion,
-            ),
+            DeclaredNode::Object(declaration) => self
+                .expand_declaration(
+                    owner,
+                    Cow::Owned(declaration),
+                    &environment,
+                    true,
+                    ExpansionLocation {
+                        depth: 0,
+                        path: &mut path,
+                    },
+                    expansion,
+                )
+                .into_owned(),
             node => {
                 path.push(ComponentPathSegment::VirtualRoot);
-                self.expand_node(owner, node, &environment, 0, expansion, &mut path)
+                self.expand_node(owner, &node, &environment, 0, expansion, &mut path)
+                    .into_owned()
             }
         };
         View(DeclaredNode::Object(declaration))

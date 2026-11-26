@@ -59,7 +59,7 @@ impl ICertView {
     pub unsafe fn EnumCertViewColumn(&self, fresultcolumn: super::LONG) -> windows_core::Result<IEnumCERTVIEWCOLUMN> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumCertViewColumn)(windows_core::Interface::as_raw(self), fresultcolumn, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumCertViewColumn)(windows_core::Interface::as_raw(self), fresultcolumn, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -91,7 +91,7 @@ impl ICertView {
     pub unsafe fn OpenView(&self) -> windows_core::Result<IEnumCERTVIEWROW> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).OpenView)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).OpenView)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -144,7 +144,7 @@ impl ICertView_Vtbl {
         unsafe extern "system" fn OpenConnection<Identity: ICertView_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, strconfig: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                ICertView_Impl::OpenConnection(this, core::mem::transmute(&strconfig))
+                ICertView_Impl::OpenConnection(this, &*(&raw const strconfig).cast())
             }
         }
         unsafe extern "system" fn EnumCertViewColumn<Identity: ICertView_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, fresultcolumn: super::LONG, ppenum: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -152,7 +152,7 @@ impl ICertView_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICertView_Impl::EnumCertViewColumn(this, core::mem::transmute_copy(&fresultcolumn)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWCOLUMN>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -180,7 +180,7 @@ impl ICertView_Vtbl {
         unsafe extern "system" fn GetColumnIndex<Identity: ICertView_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, fresultcolumn: super::LONG, strcolumnname: *mut core::ffi::c_void, pcolumnindex: *mut super::LONG) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match ICertView_Impl::GetColumnIndex(this, core::mem::transmute_copy(&fresultcolumn), core::mem::transmute(&strcolumnname)) {
+                match ICertView_Impl::GetColumnIndex(this, core::mem::transmute_copy(&fresultcolumn), &*(&raw const strcolumnname).cast()) {
                     Ok(ok__) => {
                         pcolumnindex.write(ok__);
                         windows_core::HRESULT(0)
@@ -215,7 +215,7 @@ impl ICertView_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICertView_Impl::OpenView(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWROW>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -334,7 +334,7 @@ impl IEnumCERTVIEWATTRIBUTE {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -388,7 +388,7 @@ impl IEnumCERTVIEWATTRIBUTE_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWATTRIBUTE_Impl::GetName(this) {
                     Ok(ok__) => {
-                        pstrout.write(core::mem::transmute(ok__));
+                        pstrout.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -403,7 +403,7 @@ impl IEnumCERTVIEWATTRIBUTE_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWATTRIBUTE_Impl::GetValue(this) {
                     Ok(ok__) => {
-                        pstrout.write(core::mem::transmute(ok__));
+                        pstrout.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -430,7 +430,7 @@ impl IEnumCERTVIEWATTRIBUTE_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWATTRIBUTE_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWATTRIBUTE>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -526,7 +526,7 @@ impl IEnumCERTVIEWCOLUMN {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -600,7 +600,7 @@ impl IEnumCERTVIEWCOLUMN_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWCOLUMN_Impl::GetName(this) {
                     Ok(ok__) => {
-                        pstrout.write(core::mem::transmute(ok__));
+                        pstrout.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -615,7 +615,7 @@ impl IEnumCERTVIEWCOLUMN_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWCOLUMN_Impl::GetDisplayName(this) {
                     Ok(ok__) => {
-                        pstrout.write(core::mem::transmute(ok__));
+                        pstrout.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -675,7 +675,7 @@ impl IEnumCERTVIEWCOLUMN_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWCOLUMN_Impl::GetValue(this, core::mem::transmute_copy(&flags)) {
                     Ok(ok__) => {
-                        pvarvalue.write(core::mem::transmute(ok__));
+                        pvarvalue.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -702,7 +702,7 @@ impl IEnumCERTVIEWCOLUMN_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWCOLUMN_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWCOLUMN>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -782,7 +782,7 @@ impl IEnumCERTVIEWEXTENSION {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -844,7 +844,7 @@ impl IEnumCERTVIEWEXTENSION_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWEXTENSION_Impl::GetName(this) {
                     Ok(ok__) => {
-                        pstrout.write(core::mem::transmute(ok__));
+                        pstrout.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -874,7 +874,7 @@ impl IEnumCERTVIEWEXTENSION_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWEXTENSION_Impl::GetValue(this, core::mem::transmute_copy(&r#type), core::mem::transmute_copy(&flags)) {
                     Ok(ok__) => {
-                        pvarvalue.write(core::mem::transmute(ok__));
+                        pvarvalue.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -901,7 +901,7 @@ impl IEnumCERTVIEWEXTENSION_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWEXTENSION_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWEXTENSION>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -951,21 +951,21 @@ impl IEnumCERTVIEWROW {
     pub unsafe fn EnumCertViewColumn(&self) -> windows_core::Result<IEnumCERTVIEWCOLUMN> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumCertViewColumn)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumCertViewColumn)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn EnumCertViewAttribute(&self, flags: super::LONG) -> windows_core::Result<IEnumCERTVIEWATTRIBUTE> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumCertViewAttribute)(windows_core::Interface::as_raw(self), flags, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumCertViewAttribute)(windows_core::Interface::as_raw(self), flags, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
     pub unsafe fn EnumCertViewExtension(&self, flags: super::LONG) -> windows_core::Result<IEnumCERTVIEWEXTENSION> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnumCertViewExtension)(windows_core::Interface::as_raw(self), flags, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnumCertViewExtension)(windows_core::Interface::as_raw(self), flags, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -978,7 +978,7 @@ impl IEnumCERTVIEWROW {
     pub unsafe fn Clone(&self) -> windows_core::Result<Self> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Clone)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -1052,7 +1052,7 @@ impl IEnumCERTVIEWROW_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWROW_Impl::EnumCertViewColumn(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWCOLUMN>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1067,7 +1067,7 @@ impl IEnumCERTVIEWROW_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWROW_Impl::EnumCertViewAttribute(this, core::mem::transmute_copy(&flags)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWATTRIBUTE>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1082,7 +1082,7 @@ impl IEnumCERTVIEWROW_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWROW_Impl::EnumCertViewExtension(this, core::mem::transmute_copy(&flags)) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWEXTENSION>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1109,7 +1109,7 @@ impl IEnumCERTVIEWROW_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IEnumCERTVIEWROW_Impl::Clone(this) {
                     Ok(ok__) => {
-                        ppenum.write(core::mem::transmute(ok__));
+                        ppenum.cast::<IEnumCERTVIEWROW>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

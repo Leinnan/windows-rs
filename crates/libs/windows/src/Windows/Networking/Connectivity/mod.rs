@@ -31,7 +31,7 @@ impl AttributedNetworkUsage {
     pub fn AttributionThumbnail(&self) -> windows_core::Result<super::super::Storage::Streams::IRandomAccessStreamReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).AttributionThumbnail)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).AttributionThumbnail)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -41,6 +41,7 @@ impl windows_core::RuntimeType for AttributedNetworkUsage {
 unsafe impl windows_core::Interface for AttributedNetworkUsage {
     type Vtable = <IAttributedNetworkUsage as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IAttributedNetworkUsage as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for AttributedNetworkUsage {
     const NAME: &'static str = "Windows.Networking.Connectivity.AttributedNetworkUsage";
@@ -147,6 +148,7 @@ impl windows_core::RuntimeType for CellularApnContext {
 unsafe impl windows_core::Interface for CellularApnContext {
     type Vtable = <ICellularApnContext as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICellularApnContext as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CellularApnContext {
     const NAME: &'static str = "Windows.Networking.Connectivity.CellularApnContext";
@@ -196,6 +198,7 @@ impl windows_core::RuntimeType for ConnectionCost {
 unsafe impl windows_core::Interface for ConnectionCost {
     type Vtable = <IConnectionCost as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IConnectionCost as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ConnectionCost {
     const NAME: &'static str = "Windows.Networking.Connectivity.ConnectionCost";
@@ -222,43 +225,43 @@ impl ConnectionProfile {
     pub fn GetNetworkNames(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetNetworkNames)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetNetworkNames)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetConnectionCost(&self) -> windows_core::Result<ConnectionCost> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetConnectionCost)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetConnectionCost)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDataPlanStatus(&self) -> windows_core::Result<DataPlanStatus> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDataPlanStatus)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDataPlanStatus)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn NetworkAdapter(&self) -> windows_core::Result<NetworkAdapter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NetworkAdapter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).NetworkAdapter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetLocalUsage(&self, starttime: windows_time::DateTime, endtime: windows_time::DateTime) -> windows_core::Result<DataUsage> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetLocalUsage)(windows_core::Interface::as_raw(self), starttime, endtime, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetLocalUsage)(windows_core::Interface::as_raw(self), starttime, endtime, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetLocalUsagePerRoamingStates(&self, starttime: windows_time::DateTime, endtime: windows_time::DateTime, states: RoamingStates) -> windows_core::Result<DataUsage> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetLocalUsagePerRoamingStates)(windows_core::Interface::as_raw(self), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetLocalUsagePerRoamingStates)(windows_core::Interface::as_raw(self), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn NetworkSecuritySettings(&self) -> windows_core::Result<NetworkSecuritySettings> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NetworkSecuritySettings)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).NetworkSecuritySettings)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsWwanConnectionProfile(&self) -> windows_core::Result<bool> {
@@ -279,28 +282,28 @@ impl ConnectionProfile {
         let this = &windows_core::Interface::cast::<IConnectionProfile2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).WwanConnectionProfileDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).WwanConnectionProfileDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn WlanConnectionProfileDetails(&self) -> windows_core::Result<WlanConnectionProfileDetails> {
         let this = &windows_core::Interface::cast::<IConnectionProfile2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).WlanConnectionProfileDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).WlanConnectionProfileDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ServiceProviderGuid(&self) -> windows_core::Result<windows_core::GUID> {
         let this = &windows_core::Interface::cast::<IConnectionProfile2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ServiceProviderGuid)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_core::GUID>| r__.Value())
+            (windows_core::Interface::vtable(this).ServiceProviderGuid)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_core::GUID>| r__.Value())
         }
     }
     pub fn GetSignalBars(&self) -> windows_core::Result<u8> {
         let this = &windows_core::Interface::cast::<IConnectionProfile2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetSignalBars)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u8>| r__.Value())
+            (windows_core::Interface::vtable(this).GetSignalBars)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u8>| r__.Value())
         }
     }
     pub fn GetDomainConnectivityLevel(&self) -> windows_core::Result<DomainConnectivityLevel> {
@@ -314,28 +317,28 @@ impl ConnectionProfile {
         let this = &windows_core::Interface::cast::<IConnectionProfile2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetNetworkUsageAsync)(windows_core::Interface::as_raw(this), starttime, endtime, granularity, states, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetNetworkUsageAsync)(windows_core::Interface::as_raw(this), starttime, endtime, granularity, states, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetConnectivityIntervalsAsync(&self, starttime: windows_time::DateTime, endtime: windows_time::DateTime, states: NetworkUsageStates) -> windows_core::Result<windows_future::IAsyncOperation<windows_collections::IVectorView<ConnectivityInterval>>> {
         let this = &windows_core::Interface::cast::<IConnectionProfile2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetConnectivityIntervalsAsync)(windows_core::Interface::as_raw(this), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetConnectivityIntervalsAsync)(windows_core::Interface::as_raw(this), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetAttributedNetworkUsageAsync(&self, starttime: windows_time::DateTime, endtime: windows_time::DateTime, states: NetworkUsageStates) -> windows_core::Result<windows_future::IAsyncOperation<windows_collections::IVectorView<AttributedNetworkUsage>>> {
         let this = &windows_core::Interface::cast::<IConnectionProfile3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetAttributedNetworkUsageAsync)(windows_core::Interface::as_raw(this), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetAttributedNetworkUsageAsync)(windows_core::Interface::as_raw(this), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetProviderNetworkUsageAsync(&self, starttime: windows_time::DateTime, endtime: windows_time::DateTime, states: NetworkUsageStates) -> windows_core::Result<windows_future::IAsyncOperation<windows_collections::IVectorView<ProviderNetworkUsage>>> {
         let this = &windows_core::Interface::cast::<IConnectionProfile4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetProviderNetworkUsageAsync)(windows_core::Interface::as_raw(this), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetProviderNetworkUsageAsync)(windows_core::Interface::as_raw(this), starttime, endtime, states, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CanDelete(&self) -> windows_core::Result<bool> {
@@ -349,7 +352,7 @@ impl ConnectionProfile {
         let this = &windows_core::Interface::cast::<IConnectionProfile5>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TryDeleteAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TryDeleteAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsDomainAuthenticatedBy(&self, kind: DomainAuthenticationKind) -> windows_core::Result<bool> {
@@ -366,6 +369,7 @@ impl windows_core::RuntimeType for ConnectionProfile {
 unsafe impl windows_core::Interface for ConnectionProfile {
     type Vtable = <IConnectionProfile as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IConnectionProfile as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ConnectionProfile {
     const NAME: &'static str = "Windows.Networking.Connectivity.ConnectionProfile";
@@ -443,7 +447,7 @@ impl ConnectionProfileFilter {
     pub fn ServiceProviderGuid(&self) -> windows_core::Result<windows_core::GUID> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ServiceProviderGuid)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_core::GUID>| r__.Value())
+            (windows_core::Interface::vtable(self).ServiceProviderGuid)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_core::GUID>| r__.Value())
         }
     }
     pub fn SetIsRoaming(&self, value: Option<bool>) -> windows_core::Result<()> {
@@ -455,7 +459,7 @@ impl ConnectionProfileFilter {
         let this = &windows_core::Interface::cast::<IConnectionProfileFilter2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsRoaming)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<bool>| r__.Value())
+            (windows_core::Interface::vtable(this).IsRoaming)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<bool>| r__.Value())
         }
     }
     pub fn SetIsOverDataLimit(&self, value: Option<bool>) -> windows_core::Result<()> {
@@ -467,7 +471,7 @@ impl ConnectionProfileFilter {
         let this = &windows_core::Interface::cast::<IConnectionProfileFilter2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsOverDataLimit)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<bool>| r__.Value())
+            (windows_core::Interface::vtable(this).IsOverDataLimit)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<bool>| r__.Value())
         }
     }
     pub fn SetIsBackgroundDataUsageRestricted(&self, value: Option<bool>) -> windows_core::Result<()> {
@@ -479,7 +483,7 @@ impl ConnectionProfileFilter {
         let this = &windows_core::Interface::cast::<IConnectionProfileFilter2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsBackgroundDataUsageRestricted)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<bool>| r__.Value())
+            (windows_core::Interface::vtable(this).IsBackgroundDataUsageRestricted)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<bool>| r__.Value())
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -487,7 +491,7 @@ impl ConnectionProfileFilter {
         let this = &windows_core::Interface::cast::<IConnectionProfileFilter2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RawData)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RawData)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetPurposeGuid(&self, value: Option<windows_core::GUID>) -> windows_core::Result<()> {
@@ -499,7 +503,7 @@ impl ConnectionProfileFilter {
         let this = &windows_core::Interface::cast::<IConnectionProfileFilter3>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PurposeGuid)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_core::GUID>| r__.Value())
+            (windows_core::Interface::vtable(this).PurposeGuid)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_core::GUID>| r__.Value())
         }
     }
 }
@@ -509,6 +513,7 @@ impl windows_core::RuntimeType for ConnectionProfileFilter {
 unsafe impl windows_core::Interface for ConnectionProfileFilter {
     type Vtable = <IConnectionProfileFilter as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IConnectionProfileFilter as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ConnectionProfileFilter {
     const NAME: &'static str = "Windows.Networking.Connectivity.ConnectionProfileFilter";
@@ -528,7 +533,7 @@ impl ConnectionSession {
     pub fn ConnectionProfile(&self) -> windows_core::Result<ConnectionProfile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ConnectionProfile)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ConnectionProfile)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -538,6 +543,7 @@ impl windows_core::RuntimeType for ConnectionSession {
 unsafe impl windows_core::Interface for ConnectionSession {
     type Vtable = <IConnectionSession as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IConnectionSession as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ConnectionSession {
     const NAME: &'static str = "Windows.Networking.Connectivity.ConnectionSession";
@@ -568,6 +574,7 @@ impl windows_core::RuntimeType for ConnectivityInterval {
 unsafe impl windows_core::Interface for ConnectivityInterval {
     type Vtable = <IConnectivityInterval as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IConnectivityInterval as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ConnectivityInterval {
     const NAME: &'static str = "Windows.Networking.Connectivity.ConnectivityInterval";
@@ -582,7 +589,7 @@ impl ConnectivityManager {
     {
         Self::IConnectivityManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).AcquireConnectionAsync)(windows_core::Interface::as_raw(this), cellularapncontext.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).AcquireConnectionAsync)(windows_core::Interface::as_raw(this), cellularapncontext.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn AddHttpRoutePolicy<P0>(routepolicy: P0) -> windows_core::Result<()>
@@ -613,37 +620,37 @@ impl DataPlanStatus {
     pub fn DataPlanUsage(&self) -> windows_core::Result<DataPlanUsage> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DataPlanUsage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DataPlanUsage)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DataLimitInMegabytes(&self) -> windows_core::Result<u32> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DataLimitInMegabytes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u32>| r__.Value())
+            (windows_core::Interface::vtable(self).DataLimitInMegabytes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u32>| r__.Value())
         }
     }
     pub fn InboundBitsPerSecond(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InboundBitsPerSecond)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).InboundBitsPerSecond)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn OutboundBitsPerSecond(&self) -> windows_core::Result<u64> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).OutboundBitsPerSecond)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
+            (windows_core::Interface::vtable(self).OutboundBitsPerSecond)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u64>| r__.Value())
         }
     }
     pub fn NextBillingCycle(&self) -> windows_core::Result<windows_time::DateTime> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NextBillingCycle)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
+            (windows_core::Interface::vtable(self).NextBillingCycle)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<windows_time::DateTime>| r__.Value())
         }
     }
     pub fn MaxTransferSizeInMegabytes(&self) -> windows_core::Result<u32> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MaxTransferSizeInMegabytes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u32>| r__.Value())
+            (windows_core::Interface::vtable(self).MaxTransferSizeInMegabytes)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u32>| r__.Value())
         }
     }
 }
@@ -653,6 +660,7 @@ impl windows_core::RuntimeType for DataPlanStatus {
 unsafe impl windows_core::Interface for DataPlanStatus {
     type Vtable = <IDataPlanStatus as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDataPlanStatus as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for DataPlanStatus {
     const NAME: &'static str = "Windows.Networking.Connectivity.DataPlanStatus";
@@ -683,6 +691,7 @@ impl windows_core::RuntimeType for DataPlanUsage {
 unsafe impl windows_core::Interface for DataPlanUsage {
     type Vtable = <IDataPlanUsage as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDataPlanUsage as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for DataPlanUsage {
     const NAME: &'static str = "Windows.Networking.Connectivity.DataPlanUsage";
@@ -713,6 +722,7 @@ impl windows_core::RuntimeType for DataUsage {
 unsafe impl windows_core::Interface for DataUsage {
     type Vtable = <IDataUsage as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDataUsage as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for DataUsage {
     const NAME: &'static str = "Windows.Networking.Connectivity.DataUsage";
@@ -765,11 +775,7 @@ impl windows_core::RuntimeType for DomainConnectivityLevel {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Networking.Connectivity.DomainConnectivityLevel;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.DomainConnectivityLevel");
 }
-windows_core::imp::define_interface!(IAttributedNetworkUsage, IAttributedNetworkUsage_Vtbl, 0xf769b039_eca2_45eb_ade1_b0368b756c49);
-impl windows_core::RuntimeType for IAttributedNetworkUsage {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IAttributedNetworkUsage");
-}
+windows_core::imp::define_winrt_interface!(IAttributedNetworkUsage, IAttributedNetworkUsage_Vtbl, 0xf769b039_eca2_45eb_ade1_b0368b756c49, b"Windows.Networking.Connectivity.IAttributedNetworkUsage");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IAttributedNetworkUsage_Vtbl {
@@ -783,11 +789,7 @@ pub struct IAttributedNetworkUsage_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     AttributionThumbnail: usize,
 }
-windows_core::imp::define_interface!(ICellularApnContext, ICellularApnContext_Vtbl, 0x6fa529f4_effd_4542_9ab2_705bbf94943a);
-impl windows_core::RuntimeType for ICellularApnContext {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.ICellularApnContext");
-}
+windows_core::imp::define_winrt_interface!(ICellularApnContext, ICellularApnContext_Vtbl, 0x6fa529f4_effd_4542_9ab2_705bbf94943a, b"Windows.Networking.Connectivity.ICellularApnContext");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICellularApnContext_Vtbl {
@@ -805,11 +807,7 @@ pub struct ICellularApnContext_Vtbl {
     pub AuthenticationType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut CellularApnAuthenticationType) -> windows_core::HRESULT,
     pub SetAuthenticationType: unsafe extern "system" fn(*mut core::ffi::c_void, CellularApnAuthenticationType) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICellularApnContext2, ICellularApnContext2_Vtbl, 0x76b0eb1a_ac49_4350_b1e5_dc4763bc69c7);
-impl windows_core::RuntimeType for ICellularApnContext2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.ICellularApnContext2");
-}
+windows_core::imp::define_winrt_interface!(ICellularApnContext2, ICellularApnContext2_Vtbl, 0x76b0eb1a_ac49_4350_b1e5_dc4763bc69c7, b"Windows.Networking.Connectivity.ICellularApnContext2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICellularApnContext2_Vtbl {
@@ -817,11 +815,7 @@ pub struct ICellularApnContext2_Vtbl {
     pub ProfileName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetProfileName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionCost, IConnectionCost_Vtbl, 0xbad7d829_3416_4b10_a202_bac0b075bdae);
-impl windows_core::RuntimeType for IConnectionCost {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionCost");
-}
+windows_core::imp::define_winrt_interface!(IConnectionCost, IConnectionCost_Vtbl, 0xbad7d829_3416_4b10_a202_bac0b075bdae, b"Windows.Networking.Connectivity.IConnectionCost");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionCost_Vtbl {
@@ -831,22 +825,14 @@ pub struct IConnectionCost_Vtbl {
     pub OverDataLimit: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub ApproachingDataLimit: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionCost2, IConnectionCost2_Vtbl, 0x8e113a05_e209_4549_bb25_5e0db691cb05);
-impl windows_core::RuntimeType for IConnectionCost2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionCost2");
-}
+windows_core::imp::define_winrt_interface!(IConnectionCost2, IConnectionCost2_Vtbl, 0x8e113a05_e209_4549_bb25_5e0db691cb05, b"Windows.Networking.Connectivity.IConnectionCost2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionCost2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub BackgroundDataUsageRestricted: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfile, IConnectionProfile_Vtbl, 0x71ba143c_598e_49d0_84eb_8febaedcc195);
-impl windows_core::RuntimeType for IConnectionProfile {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfile");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfile, IConnectionProfile_Vtbl, 0x71ba143c_598e_49d0_84eb_8febaedcc195, b"Windows.Networking.Connectivity.IConnectionProfile");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfile_Vtbl {
@@ -861,11 +847,7 @@ pub struct IConnectionProfile_Vtbl {
     pub GetLocalUsagePerRoamingStates: unsafe extern "system" fn(*mut core::ffi::c_void, windows_time::DateTime, windows_time::DateTime, RoamingStates, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub NetworkSecuritySettings: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfile2, IConnectionProfile2_Vtbl, 0xe2045145_4c9f_400c_9150_7ec7d6e2888a);
-impl windows_core::RuntimeType for IConnectionProfile2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfile2");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfile2, IConnectionProfile2_Vtbl, 0xe2045145_4c9f_400c_9150_7ec7d6e2888a, b"Windows.Networking.Connectivity.IConnectionProfile2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfile2_Vtbl {
@@ -880,33 +862,21 @@ pub struct IConnectionProfile2_Vtbl {
     pub GetNetworkUsageAsync: unsafe extern "system" fn(*mut core::ffi::c_void, windows_time::DateTime, windows_time::DateTime, DataUsageGranularity, NetworkUsageStates, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetConnectivityIntervalsAsync: unsafe extern "system" fn(*mut core::ffi::c_void, windows_time::DateTime, windows_time::DateTime, NetworkUsageStates, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfile3, IConnectionProfile3_Vtbl, 0x578c2528_4cd9_4161_8045_201cfd5b115c);
-impl windows_core::RuntimeType for IConnectionProfile3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfile3");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfile3, IConnectionProfile3_Vtbl, 0x578c2528_4cd9_4161_8045_201cfd5b115c, b"Windows.Networking.Connectivity.IConnectionProfile3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfile3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetAttributedNetworkUsageAsync: unsafe extern "system" fn(*mut core::ffi::c_void, windows_time::DateTime, windows_time::DateTime, NetworkUsageStates, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfile4, IConnectionProfile4_Vtbl, 0x7a2d42cd_81e0_4ae6_abed_ab9ca13eb714);
-impl windows_core::RuntimeType for IConnectionProfile4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfile4");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfile4, IConnectionProfile4_Vtbl, 0x7a2d42cd_81e0_4ae6_abed_ab9ca13eb714, b"Windows.Networking.Connectivity.IConnectionProfile4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfile4_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetProviderNetworkUsageAsync: unsafe extern "system" fn(*mut core::ffi::c_void, windows_time::DateTime, windows_time::DateTime, NetworkUsageStates, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfile5, IConnectionProfile5_Vtbl, 0x85361ec7_9c73_4be0_8f14_578eec71ee0e);
-impl windows_core::RuntimeType for IConnectionProfile5 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfile5");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfile5, IConnectionProfile5_Vtbl, 0x85361ec7_9c73_4be0_8f14_578eec71ee0e, b"Windows.Networking.Connectivity.IConnectionProfile5");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfile5_Vtbl {
@@ -914,22 +884,14 @@ pub struct IConnectionProfile5_Vtbl {
     pub CanDelete: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub TryDeleteAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfile6, IConnectionProfile6_Vtbl, 0xdc27dfe2_7a6f_5d0e_9589_2fe2e5b6f9aa);
-impl windows_core::RuntimeType for IConnectionProfile6 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfile6");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfile6, IConnectionProfile6_Vtbl, 0xdc27dfe2_7a6f_5d0e_9589_2fe2e5b6f9aa, b"Windows.Networking.Connectivity.IConnectionProfile6");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfile6_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub IsDomainAuthenticatedBy: unsafe extern "system" fn(*mut core::ffi::c_void, DomainAuthenticationKind, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfileFilter, IConnectionProfileFilter_Vtbl, 0x204c7cc8_bd2d_4e8d_a4b3_455ec337388a);
-impl windows_core::RuntimeType for IConnectionProfileFilter {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfileFilter");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfileFilter, IConnectionProfileFilter_Vtbl, 0x204c7cc8_bd2d_4e8d_a4b3_455ec337388a, b"Windows.Networking.Connectivity.IConnectionProfileFilter");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfileFilter_Vtbl {
@@ -945,11 +907,7 @@ pub struct IConnectionProfileFilter_Vtbl {
     pub SetServiceProviderGuid: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ServiceProviderGuid: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionProfileFilter2, IConnectionProfileFilter2_Vtbl, 0xcd068ee1_c3fc_4fad_9ddc_593faa4b7885);
-impl windows_core::RuntimeType for IConnectionProfileFilter2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfileFilter2");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfileFilter2, IConnectionProfileFilter2_Vtbl, 0xcd068ee1_c3fc_4fad_9ddc_593faa4b7885, b"Windows.Networking.Connectivity.IConnectionProfileFilter2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfileFilter2_Vtbl {
@@ -965,11 +923,7 @@ pub struct IConnectionProfileFilter2_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     RawData: usize,
 }
-windows_core::imp::define_interface!(IConnectionProfileFilter3, IConnectionProfileFilter3_Vtbl, 0x0aaa09c0_5014_447c_8809_aee4cb0af94a);
-impl windows_core::RuntimeType for IConnectionProfileFilter3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionProfileFilter3");
-}
+windows_core::imp::define_winrt_interface!(IConnectionProfileFilter3, IConnectionProfileFilter3_Vtbl, 0x0aaa09c0_5014_447c_8809_aee4cb0af94a, b"Windows.Networking.Connectivity.IConnectionProfileFilter3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionProfileFilter3_Vtbl {
@@ -977,22 +931,14 @@ pub struct IConnectionProfileFilter3_Vtbl {
     pub SetPurposeGuid: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub PurposeGuid: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectionSession, IConnectionSession_Vtbl, 0xff905d4c_f83b_41b0_8a0c_1462d9c56b73);
-impl windows_core::RuntimeType for IConnectionSession {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectionSession");
-}
+windows_core::imp::define_winrt_interface!(IConnectionSession, IConnectionSession_Vtbl, 0xff905d4c_f83b_41b0_8a0c_1462d9c56b73, b"Windows.Networking.Connectivity.IConnectionSession");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectionSession_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ConnectionProfile: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectivityInterval, IConnectivityInterval_Vtbl, 0x4faa3fff_6746_4824_a964_eed8e87f8709);
-impl windows_core::RuntimeType for IConnectivityInterval {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectivityInterval");
-}
+windows_core::imp::define_winrt_interface!(IConnectivityInterval, IConnectivityInterval_Vtbl, 0x4faa3fff_6746_4824_a964_eed8e87f8709, b"Windows.Networking.Connectivity.IConnectivityInterval");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectivityInterval_Vtbl {
@@ -1000,11 +946,7 @@ pub struct IConnectivityInterval_Vtbl {
     pub StartTime: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::DateTime) -> windows_core::HRESULT,
     pub ConnectionDuration: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::TimeSpan) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IConnectivityManagerStatics, IConnectivityManagerStatics_Vtbl, 0x5120d4b1_4fb1_48b0_afc9_42e0092a8164);
-impl windows_core::RuntimeType for IConnectivityManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IConnectivityManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(IConnectivityManagerStatics, IConnectivityManagerStatics_Vtbl, 0x5120d4b1_4fb1_48b0_afc9_42e0092a8164, b"Windows.Networking.Connectivity.IConnectivityManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IConnectivityManagerStatics_Vtbl {
@@ -1013,11 +955,7 @@ pub struct IConnectivityManagerStatics_Vtbl {
     pub AddHttpRoutePolicy: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub RemoveHttpRoutePolicy: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IDataPlanStatus, IDataPlanStatus_Vtbl, 0x977a8b8c_3885_40f3_8851_42cd2bd568bb);
-impl windows_core::RuntimeType for IDataPlanStatus {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IDataPlanStatus");
-}
+windows_core::imp::define_winrt_interface!(IDataPlanStatus, IDataPlanStatus_Vtbl, 0x977a8b8c_3885_40f3_8851_42cd2bd568bb, b"Windows.Networking.Connectivity.IDataPlanStatus");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDataPlanStatus_Vtbl {
@@ -1029,11 +967,7 @@ pub struct IDataPlanStatus_Vtbl {
     pub NextBillingCycle: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub MaxTransferSizeInMegabytes: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IDataPlanUsage, IDataPlanUsage_Vtbl, 0xb921492d_3b44_47ff_b361_be59e69ed1b0);
-impl windows_core::RuntimeType for IDataPlanUsage {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IDataPlanUsage");
-}
+windows_core::imp::define_winrt_interface!(IDataPlanUsage, IDataPlanUsage_Vtbl, 0xb921492d_3b44_47ff_b361_be59e69ed1b0, b"Windows.Networking.Connectivity.IDataPlanUsage");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDataPlanUsage_Vtbl {
@@ -1041,11 +975,7 @@ pub struct IDataPlanUsage_Vtbl {
     pub MegabytesUsed: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
     pub LastSyncTime: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::DateTime) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IDataUsage, IDataUsage_Vtbl, 0xc1431dd3_b146_4d39_b959_0c69b096c512);
-impl windows_core::RuntimeType for IDataUsage {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IDataUsage");
-}
+windows_core::imp::define_winrt_interface!(IDataUsage, IDataUsage_Vtbl, 0xc1431dd3_b146_4d39_b959_0c69b096c512, b"Windows.Networking.Connectivity.IDataUsage");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDataUsage_Vtbl {
@@ -1053,11 +983,7 @@ pub struct IDataUsage_Vtbl {
     pub BytesSent: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u64) -> windows_core::HRESULT,
     pub BytesReceived: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IIPInformation, IIPInformation_Vtbl, 0xd85145e0_138f_47d7_9b3a_36bb488cef33);
-impl windows_core::RuntimeType for IIPInformation {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IIPInformation");
-}
+windows_core::imp::define_winrt_interface!(IIPInformation, IIPInformation_Vtbl, 0xd85145e0_138f_47d7_9b3a_36bb488cef33, b"Windows.Networking.Connectivity.IIPInformation");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IIPInformation_Vtbl {
@@ -1065,11 +991,7 @@ pub struct IIPInformation_Vtbl {
     pub NetworkAdapter: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub PrefixLength: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILanIdentifier, ILanIdentifier_Vtbl, 0x48aa53aa_1108_4546_a6cb_9a74da4b7ba0);
-impl windows_core::RuntimeType for ILanIdentifier {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.ILanIdentifier");
-}
+windows_core::imp::define_winrt_interface!(ILanIdentifier, ILanIdentifier_Vtbl, 0x48aa53aa_1108_4546_a6cb_9a74da4b7ba0, b"Windows.Networking.Connectivity.ILanIdentifier");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILanIdentifier_Vtbl {
@@ -1078,11 +1000,7 @@ pub struct ILanIdentifier_Vtbl {
     pub PortId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub NetworkAdapterId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::GUID) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ILanIdentifierData, ILanIdentifierData_Vtbl, 0xa74e83c3_d639_45be_a36a_c4e4aeaf6d9b);
-impl windows_core::RuntimeType for ILanIdentifierData {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.ILanIdentifierData");
-}
+windows_core::imp::define_winrt_interface!(ILanIdentifierData, ILanIdentifierData_Vtbl, 0xa74e83c3_d639_45be_a36a_c4e4aeaf6d9b, b"Windows.Networking.Connectivity.ILanIdentifierData");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILanIdentifierData_Vtbl {
@@ -1090,11 +1008,7 @@ pub struct ILanIdentifierData_Vtbl {
     pub Type: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkAdapter, INetworkAdapter_Vtbl, 0x3b542e03_5388_496c_a8a3_affd39aec2e6);
-impl windows_core::RuntimeType for INetworkAdapter {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkAdapter");
-}
+windows_core::imp::define_winrt_interface!(INetworkAdapter, INetworkAdapter_Vtbl, 0x3b542e03_5388_496c_a8a3_affd39aec2e6, b"Windows.Networking.Connectivity.INetworkAdapter");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkAdapter_Vtbl {
@@ -1106,11 +1020,7 @@ pub struct INetworkAdapter_Vtbl {
     pub NetworkAdapterId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::GUID) -> windows_core::HRESULT,
     pub GetConnectedProfileAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkInformationStatics, INetworkInformationStatics_Vtbl, 0x5074f851_950d_4165_9c15_365619481eea);
-impl windows_core::RuntimeType for INetworkInformationStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkInformationStatics");
-}
+windows_core::imp::define_winrt_interface!(INetworkInformationStatics, INetworkInformationStatics_Vtbl, 0x5074f851_950d_4165_9c15_365619481eea, b"Windows.Networking.Connectivity.INetworkInformationStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkInformationStatics_Vtbl {
@@ -1124,22 +1034,14 @@ pub struct INetworkInformationStatics_Vtbl {
     pub NetworkStatusChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveNetworkStatusChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkInformationStatics2, INetworkInformationStatics2_Vtbl, 0x459ced14_2832_49b6_ba6e_e265f04786a8);
-impl windows_core::RuntimeType for INetworkInformationStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkInformationStatics2");
-}
+windows_core::imp::define_winrt_interface!(INetworkInformationStatics2, INetworkInformationStatics2_Vtbl, 0x459ced14_2832_49b6_ba6e_e265f04786a8, b"Windows.Networking.Connectivity.INetworkInformationStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkInformationStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub FindConnectionProfilesAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkItem, INetworkItem_Vtbl, 0x01bc4d39_f5e0_4567_a28c_42080c831b2b);
-impl windows_core::RuntimeType for INetworkItem {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkItem");
-}
+windows_core::imp::define_winrt_interface!(INetworkItem, INetworkItem_Vtbl, 0x01bc4d39_f5e0_4567_a28c_42080c831b2b, b"Windows.Networking.Connectivity.INetworkItem");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkItem_Vtbl {
@@ -1147,11 +1049,7 @@ pub struct INetworkItem_Vtbl {
     pub NetworkId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_core::GUID) -> windows_core::HRESULT,
     pub GetNetworkTypes: unsafe extern "system" fn(*mut core::ffi::c_void, *mut NetworkTypes) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkSecuritySettings, INetworkSecuritySettings_Vtbl, 0x7ca07e8d_917b_4b5f_b84d_28f7a5ac5402);
-impl windows_core::RuntimeType for INetworkSecuritySettings {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkSecuritySettings");
-}
+windows_core::imp::define_winrt_interface!(INetworkSecuritySettings, INetworkSecuritySettings_Vtbl, 0x7ca07e8d_917b_4b5f_b84d_28f7a5ac5402, b"Windows.Networking.Connectivity.INetworkSecuritySettings");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkSecuritySettings_Vtbl {
@@ -1159,11 +1057,7 @@ pub struct INetworkSecuritySettings_Vtbl {
     pub NetworkAuthenticationType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut NetworkAuthenticationType) -> windows_core::HRESULT,
     pub NetworkEncryptionType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut NetworkEncryptionType) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkStateChangeEventDetails, INetworkStateChangeEventDetails_Vtbl, 0x1f0cf333_d7a6_44dd_a4e9_687c476b903d);
-impl windows_core::RuntimeType for INetworkStateChangeEventDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkStateChangeEventDetails");
-}
+windows_core::imp::define_winrt_interface!(INetworkStateChangeEventDetails, INetworkStateChangeEventDetails_Vtbl, 0x1f0cf333_d7a6_44dd_a4e9_687c476b903d, b"Windows.Networking.Connectivity.INetworkStateChangeEventDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkStateChangeEventDetails_Vtbl {
@@ -1175,11 +1069,7 @@ pub struct INetworkStateChangeEventDetails_Vtbl {
     pub HasNewHostNameList: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub HasNewWwanRegistrationState: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkStateChangeEventDetails2, INetworkStateChangeEventDetails2_Vtbl, 0xd643c0e8_30d3_4f6a_ad47_6a1873ceb3c1);
-impl windows_core::RuntimeType for INetworkStateChangeEventDetails2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkStateChangeEventDetails2");
-}
+windows_core::imp::define_winrt_interface!(INetworkStateChangeEventDetails2, INetworkStateChangeEventDetails2_Vtbl, 0xd643c0e8_30d3_4f6a_ad47_6a1873ceb3c1, b"Windows.Networking.Connectivity.INetworkStateChangeEventDetails2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkStateChangeEventDetails2_Vtbl {
@@ -1187,11 +1077,7 @@ pub struct INetworkStateChangeEventDetails2_Vtbl {
     pub HasNewTetheringOperationalState: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub HasNewTetheringClientCount: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(INetworkUsage, INetworkUsage_Vtbl, 0x49da8fce_9985_4927_bf5b_072b5c65f8d9);
-impl windows_core::RuntimeType for INetworkUsage {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.INetworkUsage");
-}
+windows_core::imp::define_winrt_interface!(INetworkUsage, INetworkUsage_Vtbl, 0x49da8fce_9985_4927_bf5b_072b5c65f8d9, b"Windows.Networking.Connectivity.INetworkUsage");
 #[repr(C)]
 #[doc(hidden)]
 pub struct INetworkUsage_Vtbl {
@@ -1208,13 +1094,13 @@ impl IPInformation {
     pub fn NetworkAdapter(&self) -> windows_core::Result<NetworkAdapter> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NetworkAdapter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).NetworkAdapter)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PrefixLength(&self) -> windows_core::Result<u8> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PrefixLength)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)).and_then(|r__: windows_reference::IReference<u8>| r__.Value())
+            (windows_core::Interface::vtable(self).PrefixLength)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__)).and_then(|r__: windows_reference::IReference<u8>| r__.Value())
         }
     }
 }
@@ -1224,17 +1110,14 @@ impl windows_core::RuntimeType for IPInformation {
 unsafe impl windows_core::Interface for IPInformation {
     type Vtable = <IIPInformation as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IIPInformation as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for IPInformation {
     const NAME: &'static str = "Windows.Networking.Connectivity.IPInformation";
 }
 unsafe impl Send for IPInformation {}
 unsafe impl Sync for IPInformation {}
-windows_core::imp::define_interface!(IProviderNetworkUsage, IProviderNetworkUsage_Vtbl, 0x5ec69e04_7931_48c8_b8f3_46300fa42728);
-impl windows_core::RuntimeType for IProviderNetworkUsage {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IProviderNetworkUsage");
-}
+windows_core::imp::define_winrt_interface!(IProviderNetworkUsage, IProviderNetworkUsage_Vtbl, 0x5ec69e04_7931_48c8_b8f3_46300fa42728, b"Windows.Networking.Connectivity.IProviderNetworkUsage");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IProviderNetworkUsage_Vtbl {
@@ -1243,11 +1126,7 @@ pub struct IProviderNetworkUsage_Vtbl {
     pub BytesReceived: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u64) -> windows_core::HRESULT,
     pub ProviderId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IProxyConfiguration, IProxyConfiguration_Vtbl, 0xef3a60b4_9004_4dd6_b7d8_b3e502f4aad0);
-impl windows_core::RuntimeType for IProxyConfiguration {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IProxyConfiguration");
-}
+windows_core::imp::define_winrt_interface!(IProxyConfiguration, IProxyConfiguration_Vtbl, 0xef3a60b4_9004_4dd6_b7d8_b3e502f4aad0, b"Windows.Networking.Connectivity.IProxyConfiguration");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IProxyConfiguration_Vtbl {
@@ -1255,11 +1134,7 @@ pub struct IProxyConfiguration_Vtbl {
     pub ProxyUris: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub CanConnectDirectly: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRoutePolicy, IRoutePolicy_Vtbl, 0x11abc4ac_0fc7_42e4_8742_569923b1ca11);
-impl windows_core::RuntimeType for IRoutePolicy {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IRoutePolicy");
-}
+windows_core::imp::define_winrt_interface!(IRoutePolicy, IRoutePolicy_Vtbl, 0x11abc4ac_0fc7_42e4_8742_569923b1ca11, b"Windows.Networking.Connectivity.IRoutePolicy");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRoutePolicy_Vtbl {
@@ -1268,33 +1143,21 @@ pub struct IRoutePolicy_Vtbl {
     pub HostName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub HostNameType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut super::DomainNameType) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRoutePolicyFactory, IRoutePolicyFactory_Vtbl, 0x36027933_a18e_4db5_a697_f58fa7364e44);
-impl windows_core::RuntimeType for IRoutePolicyFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IRoutePolicyFactory");
-}
+windows_core::imp::define_winrt_interface!(IRoutePolicyFactory, IRoutePolicyFactory_Vtbl, 0x36027933_a18e_4db5_a697_f58fa7364e44, b"Windows.Networking.Connectivity.IRoutePolicyFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRoutePolicyFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateRoutePolicy: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, super::DomainNameType, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWlanConnectionProfileDetails, IWlanConnectionProfileDetails_Vtbl, 0x562098cb_b35a_4bf1_a884_b7557e88ff86);
-impl windows_core::RuntimeType for IWlanConnectionProfileDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IWlanConnectionProfileDetails");
-}
+windows_core::imp::define_winrt_interface!(IWlanConnectionProfileDetails, IWlanConnectionProfileDetails_Vtbl, 0x562098cb_b35a_4bf1_a884_b7557e88ff86, b"Windows.Networking.Connectivity.IWlanConnectionProfileDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWlanConnectionProfileDetails_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetConnectedSsid: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWwanConnectionProfileDetails, IWwanConnectionProfileDetails_Vtbl, 0x0e4da8fe_835f_4df3_82fd_df556ebc09ef);
-impl windows_core::RuntimeType for IWwanConnectionProfileDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IWwanConnectionProfileDetails");
-}
+windows_core::imp::define_winrt_interface!(IWwanConnectionProfileDetails, IWwanConnectionProfileDetails_Vtbl, 0x0e4da8fe_835f_4df3_82fd_df556ebc09ef, b"Windows.Networking.Connectivity.IWwanConnectionProfileDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWwanConnectionProfileDetails_Vtbl {
@@ -1304,11 +1167,7 @@ pub struct IWwanConnectionProfileDetails_Vtbl {
     pub GetNetworkRegistrationState: unsafe extern "system" fn(*mut core::ffi::c_void, *mut WwanNetworkRegistrationState) -> windows_core::HRESULT,
     pub GetCurrentDataClass: unsafe extern "system" fn(*mut core::ffi::c_void, *mut WwanDataClass) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWwanConnectionProfileDetails2, IWwanConnectionProfileDetails2_Vtbl, 0x7a754ede_a1ed_48b2_8e92_b460033d52e2);
-impl windows_core::RuntimeType for IWwanConnectionProfileDetails2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Networking.Connectivity.IWwanConnectionProfileDetails2");
-}
+windows_core::imp::define_winrt_interface!(IWwanConnectionProfileDetails2, IWwanConnectionProfileDetails2_Vtbl, 0x7a754ede_a1ed_48b2_8e92_b460033d52e2, b"Windows.Networking.Connectivity.IWwanConnectionProfileDetails2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWwanConnectionProfileDetails2_Vtbl {
@@ -1324,13 +1183,13 @@ impl LanIdentifier {
     pub fn InfrastructureId(&self) -> windows_core::Result<LanIdentifierData> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InfrastructureId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InfrastructureId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PortId(&self) -> windows_core::Result<LanIdentifierData> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PortId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PortId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn NetworkAdapterId(&self) -> windows_core::Result<windows_core::GUID> {
@@ -1346,6 +1205,7 @@ impl windows_core::RuntimeType for LanIdentifier {
 unsafe impl windows_core::Interface for LanIdentifier {
     type Vtable = <ILanIdentifier as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILanIdentifier as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LanIdentifier {
     const NAME: &'static str = "Windows.Networking.Connectivity.LanIdentifier";
@@ -1366,7 +1226,7 @@ impl LanIdentifierData {
     pub fn Value(&self) -> windows_core::Result<windows_collections::IVectorView<u8>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Value)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Value)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1376,6 +1236,7 @@ impl windows_core::RuntimeType for LanIdentifierData {
 unsafe impl windows_core::Interface for LanIdentifierData {
     type Vtable = <ILanIdentifierData as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILanIdentifierData as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LanIdentifierData {
     const NAME: &'static str = "Windows.Networking.Connectivity.LanIdentifierData";
@@ -1408,7 +1269,7 @@ impl NetworkAdapter {
     pub fn NetworkItem(&self) -> windows_core::Result<NetworkItem> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NetworkItem)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).NetworkItem)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn NetworkAdapterId(&self) -> windows_core::Result<windows_core::GUID> {
@@ -1420,7 +1281,7 @@ impl NetworkAdapter {
     pub fn GetConnectedProfileAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<ConnectionProfile>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetConnectedProfileAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetConnectedProfileAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1430,6 +1291,7 @@ impl windows_core::RuntimeType for NetworkAdapter {
 unsafe impl windows_core::Interface for NetworkAdapter {
     type Vtable = <INetworkAdapter as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INetworkAdapter as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NetworkAdapter {
     const NAME: &'static str = "Windows.Networking.Connectivity.NetworkAdapter";
@@ -1524,25 +1386,25 @@ impl NetworkInformation {
     pub fn GetConnectionProfiles() -> windows_core::Result<windows_collections::IVectorView<ConnectionProfile>> {
         Self::INetworkInformationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetConnectionProfiles)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetConnectionProfiles)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetInternetConnectionProfile() -> windows_core::Result<ConnectionProfile> {
         Self::INetworkInformationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetInternetConnectionProfile)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetInternetConnectionProfile)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetLanIdentifiers() -> windows_core::Result<windows_collections::IVectorView<LanIdentifier>> {
         Self::INetworkInformationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetLanIdentifiers)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetLanIdentifiers)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetHostNames() -> windows_core::Result<windows_collections::IVectorView<super::HostName>> {
         Self::INetworkInformationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetHostNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetHostNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetProxyConfigurationAsync<P0>(uri: P0) -> windows_core::Result<windows_future::IAsyncOperation<ProxyConfiguration>>
@@ -1551,7 +1413,7 @@ impl NetworkInformation {
     {
         Self::INetworkInformationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetProxyConfigurationAsync)(windows_core::Interface::as_raw(this), uri.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetProxyConfigurationAsync)(windows_core::Interface::as_raw(this), uri.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetSortedEndpointPairs<P0>(destinationlist: P0, sortoptions: super::HostNameSortOptions) -> windows_core::Result<windows_collections::IVectorView<super::EndpointPair>>
@@ -1560,12 +1422,12 @@ impl NetworkInformation {
     {
         Self::INetworkInformationStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetSortedEndpointPairs)(windows_core::Interface::as_raw(this), destinationlist.param().abi(), sortoptions, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetSortedEndpointPairs)(windows_core::Interface::as_raw(this), destinationlist.param().abi(), sortoptions, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn NetworkStatusChanged<F>(handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let handler = <NetworkStatusChangedEventHandler>::new(move |a0| {
             handler(a0);
@@ -1583,7 +1445,7 @@ impl NetworkInformation {
     {
         Self::INetworkInformationStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FindConnectionProfilesAsync)(windows_core::Interface::as_raw(this), pprofilefilter.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FindConnectionProfilesAsync)(windows_core::Interface::as_raw(this), pprofilefilter.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn INetworkInformationStatics<R, F: FnOnce(&INetworkInformationStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -1622,6 +1484,7 @@ impl windows_core::RuntimeType for NetworkItem {
 unsafe impl windows_core::Interface for NetworkItem {
     type Vtable = <INetworkItem as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INetworkItem as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NetworkItem {
     const NAME: &'static str = "Windows.Networking.Connectivity.NetworkItem";
@@ -1652,6 +1515,7 @@ impl windows_core::RuntimeType for NetworkSecuritySettings {
 unsafe impl windows_core::Interface for NetworkSecuritySettings {
     type Vtable = <INetworkSecuritySettings as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INetworkSecuritySettings as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NetworkSecuritySettings {
     const NAME: &'static str = "Windows.Networking.Connectivity.NetworkSecuritySettings";
@@ -1720,6 +1584,7 @@ impl windows_core::RuntimeType for NetworkStateChangeEventDetails {
 unsafe impl windows_core::Interface for NetworkStateChangeEventDetails {
     type Vtable = <INetworkStateChangeEventDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INetworkStateChangeEventDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NetworkStateChangeEventDetails {
     const NAME: &'static str = "Windows.Networking.Connectivity.NetworkStateChangeEventDetails";
@@ -1731,7 +1596,7 @@ impl windows_core::RuntimeType for NetworkStatusChangedEventHandler {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl NetworkStatusChangedEventHandler {
-    pub fn new<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Result<()> + Send + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Result<()> + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&NetworkStatusChangedEventHandlerBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -1748,8 +1613,8 @@ pub struct NetworkStatusChangedEventHandler_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(this: *mut core::ffi::c_void, sender: *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-struct NetworkStatusChangedEventHandlerBox<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Result<()> + Send + 'static>(core::marker::PhantomData<(fn() -> F,)>);
-impl<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Result<()> + Send + 'static> NetworkStatusChangedEventHandlerBox<F> {
+struct NetworkStatusChangedEventHandlerBox<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Result<()> + Send + Sync + 'static>(core::marker::PhantomData<(fn() -> F,)>);
+impl<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Result<()> + Send + Sync + 'static> NetworkStatusChangedEventHandlerBox<F> {
     const VTABLE: NetworkStatusChangedEventHandler_Vtbl = NetworkStatusChangedEventHandler_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<NetworkStatusChangedEventHandler, F>::QueryInterface,
@@ -1760,7 +1625,7 @@ impl<F: Fn(windows_core::Ref<windows_core::IInspectable>) -> windows_core::Resul
     };
     unsafe extern "system" fn Invoke(this: *mut core::ffi::c_void, sender: *mut core::ffi::c_void) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<NetworkStatusChangedEventHandler, F>);
+            let this = &*(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<NetworkStatusChangedEventHandler, F>);
             (this.invoke)(core::mem::transmute_copy(&sender)).into()
         }
     }
@@ -1843,6 +1708,7 @@ impl windows_core::RuntimeType for NetworkUsage {
 unsafe impl windows_core::Interface for NetworkUsage {
     type Vtable = <INetworkUsage as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <INetworkUsage as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for NetworkUsage {
     const NAME: &'static str = "Windows.Networking.Connectivity.NetworkUsage";
@@ -1892,6 +1758,7 @@ impl windows_core::RuntimeType for ProviderNetworkUsage {
 unsafe impl windows_core::Interface for ProviderNetworkUsage {
     type Vtable = <IProviderNetworkUsage as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IProviderNetworkUsage as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ProviderNetworkUsage {
     const NAME: &'static str = "Windows.Networking.Connectivity.ProviderNetworkUsage";
@@ -1906,7 +1773,7 @@ impl ProxyConfiguration {
     pub fn ProxyUris(&self) -> windows_core::Result<windows_collections::IVectorView<super::super::Foundation::Uri>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProxyUris)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProxyUris)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CanConnectDirectly(&self) -> windows_core::Result<bool> {
@@ -1922,6 +1789,7 @@ impl windows_core::RuntimeType for ProxyConfiguration {
 unsafe impl windows_core::Interface for ProxyConfiguration {
     type Vtable = <IProxyConfiguration as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IProxyConfiguration as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ProxyConfiguration {
     const NAME: &'static str = "Windows.Networking.Connectivity.ProxyConfiguration";
@@ -1984,13 +1852,13 @@ impl RoutePolicy {
     pub fn ConnectionProfile(&self) -> windows_core::Result<ConnectionProfile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ConnectionProfile)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ConnectionProfile)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn HostName(&self) -> windows_core::Result<super::HostName> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).HostName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).HostName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn HostNameType(&self) -> windows_core::Result<super::DomainNameType> {
@@ -2006,7 +1874,7 @@ impl RoutePolicy {
     {
         Self::IRoutePolicyFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateRoutePolicy)(windows_core::Interface::as_raw(this), connectionprofile.param().abi(), hostname.param().abi(), r#type, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateRoutePolicy)(windows_core::Interface::as_raw(this), connectionprofile.param().abi(), hostname.param().abi(), r#type, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IRoutePolicyFactory<R, F: FnOnce(&IRoutePolicyFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -2020,6 +1888,7 @@ impl windows_core::RuntimeType for RoutePolicy {
 unsafe impl windows_core::Interface for RoutePolicy {
     type Vtable = <IRoutePolicy as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IRoutePolicy as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for RoutePolicy {
     const NAME: &'static str = "Windows.Networking.Connectivity.RoutePolicy";
@@ -2059,6 +1928,7 @@ impl windows_core::RuntimeType for WlanConnectionProfileDetails {
 unsafe impl windows_core::Interface for WlanConnectionProfileDetails {
     type Vtable = <IWlanConnectionProfileDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWlanConnectionProfileDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for WlanConnectionProfileDetails {
     const NAME: &'static str = "Windows.Networking.Connectivity.WlanConnectionProfileDetails";
@@ -2105,7 +1975,7 @@ impl WwanConnectionProfileDetails {
         let this = &windows_core::Interface::cast::<IWwanConnectionProfileDetails2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PurposeGuids)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).PurposeGuids)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2115,6 +1985,7 @@ impl windows_core::RuntimeType for WwanConnectionProfileDetails {
 unsafe impl windows_core::Interface for WwanConnectionProfileDetails {
     type Vtable = <IWwanConnectionProfileDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWwanConnectionProfileDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for WwanConnectionProfileDetails {
     const NAME: &'static str = "Windows.Networking.Connectivity.WwanConnectionProfileDetails";

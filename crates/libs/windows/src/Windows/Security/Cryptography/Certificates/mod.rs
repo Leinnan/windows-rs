@@ -9,7 +9,7 @@ impl Certificate {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BuildChainAsync)(windows_core::Interface::as_raw(self), certificates.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BuildChainAsync)(windows_core::Interface::as_raw(self), certificates.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn BuildChainWithParametersAsync<P0, P1>(&self, certificates: P0, parameters: P1) -> windows_core::Result<windows_future::IAsyncOperation<CertificateChain>>
@@ -19,32 +19,35 @@ impl Certificate {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).BuildChainWithParametersAsync)(windows_core::Interface::as_raw(self), certificates.param().abi(), parameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).BuildChainWithParametersAsync)(windows_core::Interface::as_raw(self), certificates.param().abi(), parameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SerialNumber(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).SerialNumber)(windows_core::Interface::as_raw(self), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).SerialNumber)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn GetHashValue(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetHashValue)(windows_core::Interface::as_raw(self), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetHashValue)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn GetHashValueWithAlgorithm(&self, hashalgorithmname: &windows_core::HSTRING) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).GetHashValueWithAlgorithm)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hashalgorithmname), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).GetHashValueWithAlgorithm)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(hashalgorithmname), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
     pub fn GetCertificateBlob(&self) -> windows_core::Result<super::super::super::Storage::Streams::IBuffer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCertificateBlob)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCertificateBlob)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Subject(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -86,7 +89,7 @@ impl Certificate {
     pub fn EnhancedKeyUsages(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnhancedKeyUsages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnhancedKeyUsages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetFriendlyName(&self, value: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -109,7 +112,7 @@ impl Certificate {
         let this = &windows_core::Interface::cast::<ICertificate2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).KeyUsages)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).KeyUsages)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn KeyAlgorithmName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -137,7 +140,7 @@ impl Certificate {
         let this = &windows_core::Interface::cast::<ICertificate2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).SubjectAlternativeName)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).SubjectAlternativeName)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IsPerUser(&self) -> windows_core::Result<bool> {
@@ -168,7 +171,7 @@ impl Certificate {
     {
         Self::ICertificateFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCertificate)(windows_core::Interface::as_raw(this), certblob.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCertificate)(windows_core::Interface::as_raw(this), certblob.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICertificateFactory<R, F: FnOnce(&ICertificateFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -182,6 +185,7 @@ impl windows_core::RuntimeType for Certificate {
 unsafe impl windows_core::Interface for Certificate {
     type Vtable = <ICertificate as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificate as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for Certificate {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.Certificate";
@@ -211,7 +215,7 @@ impl CertificateChain {
     pub fn GetCertificates(&self, includeroot: bool) -> windows_core::Result<windows_collections::IVectorView<Certificate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCertificates)(windows_core::Interface::as_raw(self), includeroot, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCertificates)(windows_core::Interface::as_raw(self), includeroot, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -221,6 +225,7 @@ impl windows_core::RuntimeType for CertificateChain {
 unsafe impl windows_core::Interface for CertificateChain {
     type Vtable = <ICertificateChain as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificateChain as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CertificateChain {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CertificateChain";
@@ -251,31 +256,31 @@ impl CertificateEnrollmentManager {
     {
         Self::ICertificateEnrollmentManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateRequestAsync)(windows_core::Interface::as_raw(this), request.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateRequestAsync)(windows_core::Interface::as_raw(this), request.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn InstallCertificateAsync(certificate: &windows_core::HSTRING, installoption: InstallOptions) -> windows_core::Result<windows_future::IAsyncAction> {
         Self::ICertificateEnrollmentManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).InstallCertificateAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(certificate), installoption, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).InstallCertificateAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(certificate), installoption, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn ImportPfxDataAsync(pfxdata: &windows_core::HSTRING, password: &windows_core::HSTRING, exportable: ExportOption, keyprotectionlevel: KeyProtectionLevel, installoption: InstallOptions, friendlyname: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncAction> {
         Self::ICertificateEnrollmentManagerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ImportPfxDataAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).ImportPfxDataAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn UserCertificateEnrollmentManager() -> windows_core::Result<UserCertificateEnrollmentManager> {
         Self::ICertificateEnrollmentManagerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).UserCertificateEnrollmentManager)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).UserCertificateEnrollmentManager)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn ImportPfxDataToKspAsync(pfxdata: &windows_core::HSTRING, password: &windows_core::HSTRING, exportable: ExportOption, keyprotectionlevel: KeyProtectionLevel, installoption: InstallOptions, friendlyname: &windows_core::HSTRING, keystorageprovider: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncAction> {
         Self::ICertificateEnrollmentManagerStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ImportPfxDataToKspAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), core::mem::transmute_copy(keystorageprovider), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).ImportPfxDataToKspAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), core::mem::transmute_copy(keystorageprovider), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn ImportPfxDataToKspWithParametersAsync<P2>(pfxdata: &windows_core::HSTRING, password: &windows_core::HSTRING, pfximportparameters: P2) -> windows_core::Result<windows_future::IAsyncAction>
@@ -284,7 +289,7 @@ impl CertificateEnrollmentManager {
     {
         Self::ICertificateEnrollmentManagerStatics3(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ImportPfxDataToKspWithParametersAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), pfximportparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).ImportPfxDataToKspWithParametersAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), pfximportparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICertificateEnrollmentManagerStatics<R, F: FnOnce(&ICertificateEnrollmentManagerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -338,8 +343,9 @@ impl CertificateExtension {
     }
     pub fn Value(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).Value)(windows_core::Interface::as_raw(self), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).Value)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetValue(&self, value: &[u8]) -> windows_core::Result<()> {
@@ -352,6 +358,7 @@ impl windows_core::RuntimeType for CertificateExtension {
 unsafe impl windows_core::Interface for CertificateExtension {
     type Vtable = <ICertificateExtension as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificateExtension as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CertificateExtension {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CertificateExtension";
@@ -449,6 +456,7 @@ impl windows_core::RuntimeType for CertificateKeyUsages {
 unsafe impl windows_core::Interface for CertificateKeyUsages {
     type Vtable = <ICertificateKeyUsages as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificateKeyUsages as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CertificateKeyUsages {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CertificateKeyUsages";
@@ -470,7 +478,7 @@ impl CertificateQuery {
     pub fn EnhancedKeyUsages(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnhancedKeyUsages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnhancedKeyUsages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IssuerName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -493,8 +501,9 @@ impl CertificateQuery {
     }
     pub fn Thumbprint(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).Thumbprint)(windows_core::Interface::as_raw(self), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).Thumbprint)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetThumbprint(&self, value: &[u8]) -> windows_core::Result<()> {
@@ -549,6 +558,7 @@ impl windows_core::RuntimeType for CertificateQuery {
 unsafe impl windows_core::Interface for CertificateQuery {
     type Vtable = <ICertificateQuery as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificateQuery as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CertificateQuery {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CertificateQuery";
@@ -663,7 +673,7 @@ impl CertificateRequestProperties {
         let this = &windows_core::Interface::cast::<ICertificateRequestProperties2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).SigningCertificate)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).SigningCertificate)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetSigningCertificate<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -677,7 +687,7 @@ impl CertificateRequestProperties {
         let this = &windows_core::Interface::cast::<ICertificateRequestProperties2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).AttestationCredentialCertificate)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).AttestationCredentialCertificate)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetAttestationCredentialCertificate<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -701,8 +711,9 @@ impl CertificateRequestProperties {
     pub fn CurveParameters(&self) -> windows_core::Result<windows_core::Array<u8>> {
         let this = &windows_core::Interface::cast::<ICertificateRequestProperties3>(self)?;
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(this).CurveParameters)(windows_core::Interface::as_raw(this), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(this).CurveParameters)(windows_core::Interface::as_raw(this), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn SetCurveParameters(&self, value: &[u8]) -> windows_core::Result<()> {
@@ -746,21 +757,21 @@ impl CertificateRequestProperties {
         let this = &windows_core::Interface::cast::<ICertificateRequestProperties4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).SuppressedDefaults)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).SuppressedDefaults)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SubjectAlternativeName(&self) -> windows_core::Result<SubjectAlternativeNameInfo> {
         let this = &windows_core::Interface::cast::<ICertificateRequestProperties4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).SubjectAlternativeName)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).SubjectAlternativeName)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Extensions(&self) -> windows_core::Result<windows_collections::IVector<CertificateExtension>> {
         let this = &windows_core::Interface::cast::<ICertificateRequestProperties4>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Extensions)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Extensions)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -770,6 +781,7 @@ impl windows_core::RuntimeType for CertificateRequestProperties {
 unsafe impl windows_core::Interface for CertificateRequestProperties {
     type Vtable = <ICertificateRequestProperties as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificateRequestProperties as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CertificateRequestProperties {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CertificateRequestProperties";
@@ -807,6 +819,7 @@ impl windows_core::RuntimeType for CertificateStore {
 unsafe impl windows_core::Interface for CertificateStore {
     type Vtable = <ICertificateStore as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICertificateStore as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CertificateStore {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CertificateStore";
@@ -818,7 +831,7 @@ impl CertificateStores {
     pub fn FindAllAsync() -> windows_core::Result<windows_future::IAsyncOperation<windows_collections::IVectorView<Certificate>>> {
         Self::ICertificateStoresStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FindAllAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FindAllAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn FindAllWithQueryAsync<P0>(query: P0) -> windows_core::Result<windows_future::IAsyncOperation<windows_collections::IVectorView<Certificate>>>
@@ -827,31 +840,31 @@ impl CertificateStores {
     {
         Self::ICertificateStoresStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FindAllWithQueryAsync)(windows_core::Interface::as_raw(this), query.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FindAllWithQueryAsync)(windows_core::Interface::as_raw(this), query.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn TrustedRootCertificationAuthorities() -> windows_core::Result<CertificateStore> {
         Self::ICertificateStoresStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).TrustedRootCertificationAuthorities)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).TrustedRootCertificationAuthorities)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn IntermediateCertificationAuthorities() -> windows_core::Result<CertificateStore> {
         Self::ICertificateStoresStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IntermediateCertificationAuthorities)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).IntermediateCertificationAuthorities)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetStoreByName(storename: &windows_core::HSTRING) -> windows_core::Result<CertificateStore> {
         Self::ICertificateStoresStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetStoreByName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(storename), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetStoreByName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(storename), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetUserStoreByName(storename: &windows_core::HSTRING) -> windows_core::Result<UserCertificateStore> {
         Self::ICertificateStoresStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetUserStoreByName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(storename), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetUserStoreByName)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(storename), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICertificateStoresStatics<R, F: FnOnce(&ICertificateStoresStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -881,7 +894,7 @@ impl ChainBuildingParameters {
     pub fn EnhancedKeyUsages(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EnhancedKeyUsages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EnhancedKeyUsages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ValidationTimestamp(&self) -> windows_core::Result<windows_time::DateTime> {
@@ -932,7 +945,7 @@ impl ChainBuildingParameters {
     pub fn ExclusiveTrustRoots(&self) -> windows_core::Result<windows_collections::IVector<Certificate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ExclusiveTrustRoots)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ExclusiveTrustRoots)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -942,6 +955,7 @@ impl windows_core::RuntimeType for ChainBuildingParameters {
 unsafe impl windows_core::Interface for ChainBuildingParameters {
     type Vtable = <IChainBuildingParameters as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IChainBuildingParameters as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ChainBuildingParameters {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.ChainBuildingParameters";
@@ -973,7 +987,7 @@ impl ChainValidationParameters {
     pub fn ServerDnsName(&self) -> windows_core::Result<super::super::super::Networking::HostName> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ServerDnsName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ServerDnsName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Networking")]
@@ -990,6 +1004,7 @@ impl windows_core::RuntimeType for ChainValidationParameters {
 unsafe impl windows_core::Interface for ChainValidationParameters {
     type Vtable = <IChainValidationParameters as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IChainValidationParameters as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ChainValidationParameters {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.ChainValidationParameters";
@@ -1030,19 +1045,20 @@ impl CmsAttachedSignature {
     pub fn Certificates(&self) -> windows_core::Result<windows_collections::IVectorView<Certificate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Content(&self) -> windows_core::Result<windows_core::Array<u8>> {
         unsafe {
-            let mut result__ = core::mem::MaybeUninit::zeroed();
-            (windows_core::Interface::vtable(self).Content)(windows_core::Interface::as_raw(self), windows_core::Array::<u8>::set_abi_len(core::mem::transmute(&mut result__)), result__.as_mut_ptr() as *mut _ as _).map(|| result__.assume_init())
+            let mut result__ = core::ptr::null_mut();
+            let mut result_size__ = 0;
+            (windows_core::Interface::vtable(self).Content)(windows_core::Interface::as_raw(self), &mut result_size__, &mut result__).map(|| windows_core::Array::<u8>::from_raw_parts(result__.cast(), result_size__))
         }
     }
     pub fn Signers(&self) -> windows_core::Result<windows_collections::IVectorView<CmsSignerInfo>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Signers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Signers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn VerifySignature(&self) -> windows_core::Result<SignatureValidationResult> {
@@ -1058,7 +1074,7 @@ impl CmsAttachedSignature {
     {
         Self::ICmsAttachedSignatureFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCmsAttachedSignature)(windows_core::Interface::as_raw(this), inputblob.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCmsAttachedSignature)(windows_core::Interface::as_raw(this), inputblob.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Storage_Streams")]
@@ -1070,7 +1086,7 @@ impl CmsAttachedSignature {
     {
         Self::ICmsAttachedSignatureStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GenerateSignatureAsync)(windows_core::Interface::as_raw(this), data.param().abi(), signers.param().abi(), certificates.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GenerateSignatureAsync)(windows_core::Interface::as_raw(this), data.param().abi(), signers.param().abi(), certificates.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICmsAttachedSignatureFactory<R, F: FnOnce(&ICmsAttachedSignatureFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -1088,6 +1104,7 @@ impl windows_core::RuntimeType for CmsAttachedSignature {
 unsafe impl windows_core::Interface for CmsAttachedSignature {
     type Vtable = <ICmsAttachedSignature as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICmsAttachedSignature as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CmsAttachedSignature {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CmsAttachedSignature";
@@ -1102,13 +1119,13 @@ impl CmsDetachedSignature {
     pub fn Certificates(&self) -> windows_core::Result<windows_collections::IVectorView<Certificate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Signers(&self) -> windows_core::Result<windows_collections::IVectorView<CmsSignerInfo>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Signers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Signers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -1118,7 +1135,7 @@ impl CmsDetachedSignature {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).VerifySignatureAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).VerifySignatureAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -1128,7 +1145,7 @@ impl CmsDetachedSignature {
     {
         Self::ICmsDetachedSignatureFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateCmsDetachedSignature)(windows_core::Interface::as_raw(this), inputblob.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateCmsDetachedSignature)(windows_core::Interface::as_raw(this), inputblob.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Storage_Streams")]
@@ -1140,7 +1157,7 @@ impl CmsDetachedSignature {
     {
         Self::ICmsDetachedSignatureStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GenerateSignatureAsync)(windows_core::Interface::as_raw(this), data.param().abi(), signers.param().abi(), certificates.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GenerateSignatureAsync)(windows_core::Interface::as_raw(this), data.param().abi(), signers.param().abi(), certificates.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICmsDetachedSignatureFactory<R, F: FnOnce(&ICmsDetachedSignatureFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -1158,6 +1175,7 @@ impl windows_core::RuntimeType for CmsDetachedSignature {
 unsafe impl windows_core::Interface for CmsDetachedSignature {
     type Vtable = <ICmsDetachedSignature as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICmsDetachedSignature as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CmsDetachedSignature {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CmsDetachedSignature";
@@ -1179,7 +1197,7 @@ impl CmsSignerInfo {
     pub fn Certificate(&self) -> windows_core::Result<Certificate> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Certificate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Certificate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetCertificate<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -1200,7 +1218,7 @@ impl CmsSignerInfo {
     pub fn TimestampInfo(&self) -> windows_core::Result<CmsTimestampInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).TimestampInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).TimestampInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1210,6 +1228,7 @@ impl windows_core::RuntimeType for CmsSignerInfo {
 unsafe impl windows_core::Interface for CmsSignerInfo {
     type Vtable = <ICmsSignerInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICmsSignerInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CmsSignerInfo {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CmsSignerInfo";
@@ -1224,13 +1243,13 @@ impl CmsTimestampInfo {
     pub fn SigningCertificate(&self) -> windows_core::Result<Certificate> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SigningCertificate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SigningCertificate)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Certificates(&self) -> windows_core::Result<windows_collections::IVectorView<Certificate>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Certificates)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Timestamp(&self) -> windows_core::Result<windows_time::DateTime> {
@@ -1246,6 +1265,7 @@ impl windows_core::RuntimeType for CmsTimestampInfo {
 unsafe impl windows_core::Interface for CmsTimestampInfo {
     type Vtable = <ICmsTimestampInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICmsTimestampInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CmsTimestampInfo {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.CmsTimestampInfo";
@@ -1316,11 +1336,7 @@ impl windows_core::RuntimeType for ExportOption {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Security.Cryptography.Certificates.ExportOption;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ExportOption");
 }
-windows_core::imp::define_interface!(ICertificate, ICertificate_Vtbl, 0x333f740c_04d8_43b3_b278_8c5fcc9be5a0);
-impl windows_core::RuntimeType for ICertificate {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificate");
-}
+windows_core::imp::define_winrt_interface!(ICertificate, ICertificate_Vtbl, 0x333f740c_04d8_43b3_b278_8c5fcc9be5a0, b"Windows.Security.Cryptography.Certificates.ICertificate");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificate_Vtbl {
@@ -1344,11 +1360,7 @@ pub struct ICertificate_Vtbl {
     pub SetFriendlyName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub FriendlyName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificate2, ICertificate2_Vtbl, 0x17b8374c_8a25_4d96_a492_8fc29ac4fda6);
-impl windows_core::RuntimeType for ICertificate2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificate2");
-}
+windows_core::imp::define_winrt_interface!(ICertificate2, ICertificate2_Vtbl, 0x17b8374c_8a25_4d96_a492_8fc29ac4fda6, b"Windows.Security.Cryptography.Certificates.ICertificate2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificate2_Vtbl {
@@ -1360,11 +1372,7 @@ pub struct ICertificate2_Vtbl {
     pub SignatureHashAlgorithmName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SubjectAlternativeName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificate3, ICertificate3_Vtbl, 0xbe51a966_ae5f_4652_ace7_c6d7e7724cf3);
-impl windows_core::RuntimeType for ICertificate3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificate3");
-}
+windows_core::imp::define_winrt_interface!(ICertificate3, ICertificate3_Vtbl, 0xbe51a966_ae5f_4652_ace7_c6d7e7724cf3, b"Windows.Security.Cryptography.Certificates.ICertificate3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificate3_Vtbl {
@@ -1373,11 +1381,7 @@ pub struct ICertificate3_Vtbl {
     pub StoreName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub KeyStorageProviderName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateChain, ICertificateChain_Vtbl, 0x20bf5385_3691_4501_a62c_fd97278b31ee);
-impl windows_core::RuntimeType for ICertificateChain {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateChain");
-}
+windows_core::imp::define_winrt_interface!(ICertificateChain, ICertificateChain_Vtbl, 0x20bf5385_3691_4501_a62c_fd97278b31ee, b"Windows.Security.Cryptography.Certificates.ICertificateChain");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateChain_Vtbl {
@@ -1386,11 +1390,7 @@ pub struct ICertificateChain_Vtbl {
     pub ValidateWithParameters: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut ChainValidationResult) -> windows_core::HRESULT,
     pub GetCertificates: unsafe extern "system" fn(*mut core::ffi::c_void, bool, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateEnrollmentManagerStatics, ICertificateEnrollmentManagerStatics_Vtbl, 0x8846ef3f_a986_48fb_9fd7_9aec06935bf1);
-impl windows_core::RuntimeType for ICertificateEnrollmentManagerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateEnrollmentManagerStatics");
-}
+windows_core::imp::define_winrt_interface!(ICertificateEnrollmentManagerStatics, ICertificateEnrollmentManagerStatics_Vtbl, 0x8846ef3f_a986_48fb_9fd7_9aec06935bf1, b"Windows.Security.Cryptography.Certificates.ICertificateEnrollmentManagerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateEnrollmentManagerStatics_Vtbl {
@@ -1399,11 +1399,7 @@ pub struct ICertificateEnrollmentManagerStatics_Vtbl {
     pub InstallCertificateAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, InstallOptions, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ImportPfxDataAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, ExportOption, KeyProtectionLevel, InstallOptions, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateEnrollmentManagerStatics2, ICertificateEnrollmentManagerStatics2_Vtbl, 0xdc5b1c33_6429_4014_999c_5d9735802d1d);
-impl windows_core::RuntimeType for ICertificateEnrollmentManagerStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateEnrollmentManagerStatics2");
-}
+windows_core::imp::define_winrt_interface!(ICertificateEnrollmentManagerStatics2, ICertificateEnrollmentManagerStatics2_Vtbl, 0xdc5b1c33_6429_4014_999c_5d9735802d1d, b"Windows.Security.Cryptography.Certificates.ICertificateEnrollmentManagerStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateEnrollmentManagerStatics2_Vtbl {
@@ -1411,22 +1407,14 @@ pub struct ICertificateEnrollmentManagerStatics2_Vtbl {
     pub UserCertificateEnrollmentManager: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ImportPfxDataToKspAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, ExportOption, KeyProtectionLevel, InstallOptions, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateEnrollmentManagerStatics3, ICertificateEnrollmentManagerStatics3_Vtbl, 0xfdec82be_617c_425a_b72d_398b26ac7264);
-impl windows_core::RuntimeType for ICertificateEnrollmentManagerStatics3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateEnrollmentManagerStatics3");
-}
+windows_core::imp::define_winrt_interface!(ICertificateEnrollmentManagerStatics3, ICertificateEnrollmentManagerStatics3_Vtbl, 0xfdec82be_617c_425a_b72d_398b26ac7264, b"Windows.Security.Cryptography.Certificates.ICertificateEnrollmentManagerStatics3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateEnrollmentManagerStatics3_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ImportPfxDataToKspWithParametersAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateExtension, ICertificateExtension_Vtbl, 0x84cf0656_a9e6_454d_8e45_2ea7c4bcd53b);
-impl windows_core::RuntimeType for ICertificateExtension {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateExtension");
-}
+windows_core::imp::define_winrt_interface!(ICertificateExtension, ICertificateExtension_Vtbl, 0x84cf0656_a9e6_454d_8e45_2ea7c4bcd53b, b"Windows.Security.Cryptography.Certificates.ICertificateExtension");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateExtension_Vtbl {
@@ -1439,11 +1427,7 @@ pub struct ICertificateExtension_Vtbl {
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32, *mut *mut u8) -> windows_core::HRESULT,
     pub SetValue: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const u8) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateFactory, ICertificateFactory_Vtbl, 0x17b4221c_4baf_44a2_9608_04fb62b16942);
-impl windows_core::RuntimeType for ICertificateFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateFactory");
-}
+windows_core::imp::define_winrt_interface!(ICertificateFactory, ICertificateFactory_Vtbl, 0x17b4221c_4baf_44a2_9608_04fb62b16942, b"Windows.Security.Cryptography.Certificates.ICertificateFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateFactory_Vtbl {
@@ -1453,11 +1437,7 @@ pub struct ICertificateFactory_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     CreateCertificate: usize,
 }
-windows_core::imp::define_interface!(ICertificateKeyUsages, ICertificateKeyUsages_Vtbl, 0x6ac6206f_e1cf_486a_b485_a69c83e46fd1);
-impl windows_core::RuntimeType for ICertificateKeyUsages {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateKeyUsages");
-}
+windows_core::imp::define_winrt_interface!(ICertificateKeyUsages, ICertificateKeyUsages_Vtbl, 0x6ac6206f_e1cf_486a_b485_a69c83e46fd1, b"Windows.Security.Cryptography.Certificates.ICertificateKeyUsages");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateKeyUsages_Vtbl {
@@ -1479,11 +1459,7 @@ pub struct ICertificateKeyUsages_Vtbl {
     pub DigitalSignature: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetDigitalSignature: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateQuery, ICertificateQuery_Vtbl, 0x5b082a31_a728_4916_b5ee_ffcb8acf2417);
-impl windows_core::RuntimeType for ICertificateQuery {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateQuery");
-}
+windows_core::imp::define_winrt_interface!(ICertificateQuery, ICertificateQuery_Vtbl, 0x5b082a31_a728_4916_b5ee_ffcb8acf2417, b"Windows.Security.Cryptography.Certificates.ICertificateQuery");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateQuery_Vtbl {
@@ -1498,11 +1474,7 @@ pub struct ICertificateQuery_Vtbl {
     pub HardwareOnly: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetHardwareOnly: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateQuery2, ICertificateQuery2_Vtbl, 0x935a0af7_0bd9_4f75_b8c2_e27a7f74eecd);
-impl windows_core::RuntimeType for ICertificateQuery2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateQuery2");
-}
+windows_core::imp::define_winrt_interface!(ICertificateQuery2, ICertificateQuery2_Vtbl, 0x935a0af7_0bd9_4f75_b8c2_e27a7f74eecd, b"Windows.Security.Cryptography.Certificates.ICertificateQuery2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateQuery2_Vtbl {
@@ -1514,11 +1486,7 @@ pub struct ICertificateQuery2_Vtbl {
     pub StoreName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetStoreName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateRequestProperties, ICertificateRequestProperties_Vtbl, 0x487e84f6_94e2_4dce_8833_1a700a37a29a);
-impl windows_core::RuntimeType for ICertificateRequestProperties {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties");
-}
+windows_core::imp::define_winrt_interface!(ICertificateRequestProperties, ICertificateRequestProperties_Vtbl, 0x487e84f6_94e2_4dce_8833_1a700a37a29a, b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateRequestProperties_Vtbl {
@@ -1542,11 +1510,7 @@ pub struct ICertificateRequestProperties_Vtbl {
     pub KeyStorageProviderName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetKeyStorageProviderName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateRequestProperties2, ICertificateRequestProperties2_Vtbl, 0x3da0c954_d73f_4ff3_a0a6_0677c0ada05b);
-impl windows_core::RuntimeType for ICertificateRequestProperties2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties2");
-}
+windows_core::imp::define_winrt_interface!(ICertificateRequestProperties2, ICertificateRequestProperties2_Vtbl, 0x3da0c954_d73f_4ff3_a0a6_0677c0ada05b, b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateRequestProperties2_Vtbl {
@@ -1558,11 +1522,7 @@ pub struct ICertificateRequestProperties2_Vtbl {
     pub AttestationCredentialCertificate: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetAttestationCredentialCertificate: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateRequestProperties3, ICertificateRequestProperties3_Vtbl, 0xe687f616_734d_46b1_9d4c_6edfdbfc845b);
-impl windows_core::RuntimeType for ICertificateRequestProperties3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties3");
-}
+windows_core::imp::define_winrt_interface!(ICertificateRequestProperties3, ICertificateRequestProperties3_Vtbl, 0xe687f616_734d_46b1_9d4c_6edfdbfc845b, b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateRequestProperties3_Vtbl {
@@ -1578,11 +1538,7 @@ pub struct ICertificateRequestProperties3_Vtbl {
     pub UseExistingKey: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetUseExistingKey: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateRequestProperties4, ICertificateRequestProperties4_Vtbl, 0x4e429ad2_1c61_4fea_b8fe_135fb19cdce4);
-impl windows_core::RuntimeType for ICertificateRequestProperties4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties4");
-}
+windows_core::imp::define_winrt_interface!(ICertificateRequestProperties4, ICertificateRequestProperties4_Vtbl, 0x4e429ad2_1c61_4fea_b8fe_135fb19cdce4, b"Windows.Security.Cryptography.Certificates.ICertificateRequestProperties4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateRequestProperties4_Vtbl {
@@ -1591,11 +1547,7 @@ pub struct ICertificateRequestProperties4_Vtbl {
     pub SubjectAlternativeName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Extensions: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateStore, ICertificateStore_Vtbl, 0xb0bff720_344e_4331_af14_a7f7a7ebc93a);
-impl windows_core::RuntimeType for ICertificateStore {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateStore");
-}
+windows_core::imp::define_winrt_interface!(ICertificateStore, ICertificateStore_Vtbl, 0xb0bff720_344e_4331_af14_a7f7a7ebc93a, b"Windows.Security.Cryptography.Certificates.ICertificateStore");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateStore_Vtbl {
@@ -1603,22 +1555,14 @@ pub struct ICertificateStore_Vtbl {
     pub Add: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Delete: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateStore2, ICertificateStore2_Vtbl, 0xc7e68e4a_417d_4d1a_babd_15687e549974);
-impl windows_core::RuntimeType for ICertificateStore2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateStore2");
-}
+windows_core::imp::define_winrt_interface!(ICertificateStore2, ICertificateStore2_Vtbl, 0xc7e68e4a_417d_4d1a_babd_15687e549974, b"Windows.Security.Cryptography.Certificates.ICertificateStore2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateStore2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Name: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateStoresStatics, ICertificateStoresStatics_Vtbl, 0xfbecc739_c6fe_4de7_99cf_74c3e596e032);
-impl windows_core::RuntimeType for ICertificateStoresStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateStoresStatics");
-}
+windows_core::imp::define_winrt_interface!(ICertificateStoresStatics, ICertificateStoresStatics_Vtbl, 0xfbecc739_c6fe_4de7_99cf_74c3e596e032, b"Windows.Security.Cryptography.Certificates.ICertificateStoresStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateStoresStatics_Vtbl {
@@ -1629,22 +1573,14 @@ pub struct ICertificateStoresStatics_Vtbl {
     pub IntermediateCertificationAuthorities: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetStoreByName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICertificateStoresStatics2, ICertificateStoresStatics2_Vtbl, 0xfa900b79_a0d4_4b8c_bc55_c0a37eb141ed);
-impl windows_core::RuntimeType for ICertificateStoresStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICertificateStoresStatics2");
-}
+windows_core::imp::define_winrt_interface!(ICertificateStoresStatics2, ICertificateStoresStatics2_Vtbl, 0xfa900b79_a0d4_4b8c_bc55_c0a37eb141ed, b"Windows.Security.Cryptography.Certificates.ICertificateStoresStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICertificateStoresStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetUserStoreByName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IChainBuildingParameters, IChainBuildingParameters_Vtbl, 0x422ba922_7c8d_47b7_b59b_b12703733ac3);
-impl windows_core::RuntimeType for IChainBuildingParameters {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IChainBuildingParameters");
-}
+windows_core::imp::define_winrt_interface!(IChainBuildingParameters, IChainBuildingParameters_Vtbl, 0x422ba922_7c8d_47b7_b59b_b12703733ac3, b"Windows.Security.Cryptography.Certificates.IChainBuildingParameters");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IChainBuildingParameters_Vtbl {
@@ -1662,11 +1598,7 @@ pub struct IChainBuildingParameters_Vtbl {
     pub SetCurrentTimeValidationEnabled: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
     pub ExclusiveTrustRoots: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IChainValidationParameters, IChainValidationParameters_Vtbl, 0xc4743b4a_7eb0_4b56_a040_b9c8e655ddf3);
-impl windows_core::RuntimeType for IChainValidationParameters {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IChainValidationParameters");
-}
+windows_core::imp::define_winrt_interface!(IChainValidationParameters, IChainValidationParameters_Vtbl, 0xc4743b4a_7eb0_4b56_a040_b9c8e655ddf3, b"Windows.Security.Cryptography.Certificates.IChainValidationParameters");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IChainValidationParameters_Vtbl {
@@ -1682,11 +1614,7 @@ pub struct IChainValidationParameters_Vtbl {
     #[cfg(not(feature = "Networking"))]
     SetServerDnsName: usize,
 }
-windows_core::imp::define_interface!(ICmsAttachedSignature, ICmsAttachedSignature_Vtbl, 0x61899d9d_3757_4ecb_bddc_0ca357d7a936);
-impl windows_core::RuntimeType for ICmsAttachedSignature {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsAttachedSignature");
-}
+windows_core::imp::define_winrt_interface!(ICmsAttachedSignature, ICmsAttachedSignature_Vtbl, 0x61899d9d_3757_4ecb_bddc_0ca357d7a936, b"Windows.Security.Cryptography.Certificates.ICmsAttachedSignature");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsAttachedSignature_Vtbl {
@@ -1696,11 +1624,7 @@ pub struct ICmsAttachedSignature_Vtbl {
     pub Signers: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub VerifySignature: unsafe extern "system" fn(*mut core::ffi::c_void, *mut SignatureValidationResult) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICmsAttachedSignatureFactory, ICmsAttachedSignatureFactory_Vtbl, 0xd0c8fc15_f757_4c64_a362_52cc1c77cffb);
-impl windows_core::RuntimeType for ICmsAttachedSignatureFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsAttachedSignatureFactory");
-}
+windows_core::imp::define_winrt_interface!(ICmsAttachedSignatureFactory, ICmsAttachedSignatureFactory_Vtbl, 0xd0c8fc15_f757_4c64_a362_52cc1c77cffb, b"Windows.Security.Cryptography.Certificates.ICmsAttachedSignatureFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsAttachedSignatureFactory_Vtbl {
@@ -1710,11 +1634,7 @@ pub struct ICmsAttachedSignatureFactory_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     CreateCmsAttachedSignature: usize,
 }
-windows_core::imp::define_interface!(ICmsAttachedSignatureStatics, ICmsAttachedSignatureStatics_Vtbl, 0x87989c8e_b0ad_498d_a7f5_78b59bce4b36);
-impl windows_core::RuntimeType for ICmsAttachedSignatureStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsAttachedSignatureStatics");
-}
+windows_core::imp::define_winrt_interface!(ICmsAttachedSignatureStatics, ICmsAttachedSignatureStatics_Vtbl, 0x87989c8e_b0ad_498d_a7f5_78b59bce4b36, b"Windows.Security.Cryptography.Certificates.ICmsAttachedSignatureStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsAttachedSignatureStatics_Vtbl {
@@ -1724,11 +1644,7 @@ pub struct ICmsAttachedSignatureStatics_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     GenerateSignatureAsync: usize,
 }
-windows_core::imp::define_interface!(ICmsDetachedSignature, ICmsDetachedSignature_Vtbl, 0x0f1ef154_f65e_4536_8339_5944081db2ca);
-impl windows_core::RuntimeType for ICmsDetachedSignature {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsDetachedSignature");
-}
+windows_core::imp::define_winrt_interface!(ICmsDetachedSignature, ICmsDetachedSignature_Vtbl, 0x0f1ef154_f65e_4536_8339_5944081db2ca, b"Windows.Security.Cryptography.Certificates.ICmsDetachedSignature");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsDetachedSignature_Vtbl {
@@ -1740,11 +1656,7 @@ pub struct ICmsDetachedSignature_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     VerifySignatureAsync: usize,
 }
-windows_core::imp::define_interface!(ICmsDetachedSignatureFactory, ICmsDetachedSignatureFactory_Vtbl, 0xc4ab3503_ae7f_4387_ad19_00f150e48ebb);
-impl windows_core::RuntimeType for ICmsDetachedSignatureFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsDetachedSignatureFactory");
-}
+windows_core::imp::define_winrt_interface!(ICmsDetachedSignatureFactory, ICmsDetachedSignatureFactory_Vtbl, 0xc4ab3503_ae7f_4387_ad19_00f150e48ebb, b"Windows.Security.Cryptography.Certificates.ICmsDetachedSignatureFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsDetachedSignatureFactory_Vtbl {
@@ -1754,11 +1666,7 @@ pub struct ICmsDetachedSignatureFactory_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     CreateCmsDetachedSignature: usize,
 }
-windows_core::imp::define_interface!(ICmsDetachedSignatureStatics, ICmsDetachedSignatureStatics_Vtbl, 0x3d114cfd_bf9b_4682_9be6_91f57c053808);
-impl windows_core::RuntimeType for ICmsDetachedSignatureStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsDetachedSignatureStatics");
-}
+windows_core::imp::define_winrt_interface!(ICmsDetachedSignatureStatics, ICmsDetachedSignatureStatics_Vtbl, 0x3d114cfd_bf9b_4682_9be6_91f57c053808, b"Windows.Security.Cryptography.Certificates.ICmsDetachedSignatureStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsDetachedSignatureStatics_Vtbl {
@@ -1768,11 +1676,7 @@ pub struct ICmsDetachedSignatureStatics_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     GenerateSignatureAsync: usize,
 }
-windows_core::imp::define_interface!(ICmsSignerInfo, ICmsSignerInfo_Vtbl, 0x50d020db_1d2f_4c1a_b5c5_d0188ff91f47);
-impl windows_core::RuntimeType for ICmsSignerInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsSignerInfo");
-}
+windows_core::imp::define_winrt_interface!(ICmsSignerInfo, ICmsSignerInfo_Vtbl, 0x50d020db_1d2f_4c1a_b5c5_d0188ff91f47, b"Windows.Security.Cryptography.Certificates.ICmsSignerInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsSignerInfo_Vtbl {
@@ -1783,11 +1687,7 @@ pub struct ICmsSignerInfo_Vtbl {
     pub SetHashAlgorithmName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub TimestampInfo: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICmsTimestampInfo, ICmsTimestampInfo_Vtbl, 0x2f5f00f2_2c18_4f88_8435_c534086076f5);
-impl windows_core::RuntimeType for ICmsTimestampInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ICmsTimestampInfo");
-}
+windows_core::imp::define_winrt_interface!(ICmsTimestampInfo, ICmsTimestampInfo_Vtbl, 0x2f5f00f2_2c18_4f88_8435_c534086076f5, b"Windows.Security.Cryptography.Certificates.ICmsTimestampInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICmsTimestampInfo_Vtbl {
@@ -1796,11 +1696,7 @@ pub struct ICmsTimestampInfo_Vtbl {
     pub Certificates: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Timestamp: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::DateTime) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyAlgorithmNamesStatics, IKeyAlgorithmNamesStatics_Vtbl, 0x479065d7_7ac7_4581_8c3b_d07027140448);
-impl windows_core::RuntimeType for IKeyAlgorithmNamesStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IKeyAlgorithmNamesStatics");
-}
+windows_core::imp::define_winrt_interface!(IKeyAlgorithmNamesStatics, IKeyAlgorithmNamesStatics_Vtbl, 0x479065d7_7ac7_4581_8c3b_d07027140448, b"Windows.Security.Cryptography.Certificates.IKeyAlgorithmNamesStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyAlgorithmNamesStatics_Vtbl {
@@ -1814,11 +1710,7 @@ pub struct IKeyAlgorithmNamesStatics_Vtbl {
     pub Ecdsa384: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Ecdsa521: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyAlgorithmNamesStatics2, IKeyAlgorithmNamesStatics2_Vtbl, 0xc99b5686_e1fd_4a4a_893d_a26f33dd8bb4);
-impl windows_core::RuntimeType for IKeyAlgorithmNamesStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IKeyAlgorithmNamesStatics2");
-}
+windows_core::imp::define_winrt_interface!(IKeyAlgorithmNamesStatics2, IKeyAlgorithmNamesStatics2_Vtbl, 0xc99b5686_e1fd_4a4a_893d_a26f33dd8bb4, b"Windows.Security.Cryptography.Certificates.IKeyAlgorithmNamesStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyAlgorithmNamesStatics2_Vtbl {
@@ -1826,11 +1718,7 @@ pub struct IKeyAlgorithmNamesStatics2_Vtbl {
     pub Ecdsa: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Ecdh: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyAttestationHelperStatics, IKeyAttestationHelperStatics_Vtbl, 0x1648e246_f644_4326_88be_3af102d30e0c);
-impl windows_core::RuntimeType for IKeyAttestationHelperStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IKeyAttestationHelperStatics");
-}
+windows_core::imp::define_winrt_interface!(IKeyAttestationHelperStatics, IKeyAttestationHelperStatics_Vtbl, 0x1648e246_f644_4326_88be_3af102d30e0c, b"Windows.Security.Cryptography.Certificates.IKeyAttestationHelperStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyAttestationHelperStatics_Vtbl {
@@ -1838,22 +1726,14 @@ pub struct IKeyAttestationHelperStatics_Vtbl {
     pub DecryptTpmAttestationCredentialAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetTpmAttestationCredentialId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyAttestationHelperStatics2, IKeyAttestationHelperStatics2_Vtbl, 0x9c590b2c_a6c6_4a5e_9e64_e85d5279df97);
-impl windows_core::RuntimeType for IKeyAttestationHelperStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IKeyAttestationHelperStatics2");
-}
+windows_core::imp::define_winrt_interface!(IKeyAttestationHelperStatics2, IKeyAttestationHelperStatics2_Vtbl, 0x9c590b2c_a6c6_4a5e_9e64_e85d5279df97, b"Windows.Security.Cryptography.Certificates.IKeyAttestationHelperStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyAttestationHelperStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub DecryptTpmAttestationCredentialWithContainerNameAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyStorageProviderNamesStatics, IKeyStorageProviderNamesStatics_Vtbl, 0xaf186ae0_5529_4602_bd94_0aab91957b5c);
-impl windows_core::RuntimeType for IKeyStorageProviderNamesStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IKeyStorageProviderNamesStatics");
-}
+windows_core::imp::define_winrt_interface!(IKeyStorageProviderNamesStatics, IKeyStorageProviderNamesStatics_Vtbl, 0xaf186ae0_5529_4602_bd94_0aab91957b5c, b"Windows.Security.Cryptography.Certificates.IKeyStorageProviderNamesStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyStorageProviderNamesStatics_Vtbl {
@@ -1862,22 +1742,14 @@ pub struct IKeyStorageProviderNamesStatics_Vtbl {
     pub SmartcardKeyStorageProvider: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub PlatformKeyStorageProvider: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IKeyStorageProviderNamesStatics2, IKeyStorageProviderNamesStatics2_Vtbl, 0x262d743d_9c2e_41cc_8812_c4d971dd7c60);
-impl windows_core::RuntimeType for IKeyStorageProviderNamesStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IKeyStorageProviderNamesStatics2");
-}
+windows_core::imp::define_winrt_interface!(IKeyStorageProviderNamesStatics2, IKeyStorageProviderNamesStatics2_Vtbl, 0x262d743d_9c2e_41cc_8812_c4d971dd7c60, b"Windows.Security.Cryptography.Certificates.IKeyStorageProviderNamesStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IKeyStorageProviderNamesStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub PassportKeyStorageProvider: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPfxImportParameters, IPfxImportParameters_Vtbl, 0x680d3511_9a08_47c8_864a_2edd4d8eb46c);
-impl windows_core::RuntimeType for IPfxImportParameters {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IPfxImportParameters");
-}
+windows_core::imp::define_winrt_interface!(IPfxImportParameters, IPfxImportParameters_Vtbl, 0x680d3511_9a08_47c8_864a_2edd4d8eb46c, b"Windows.Security.Cryptography.Certificates.IPfxImportParameters");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPfxImportParameters_Vtbl {
@@ -1897,11 +1769,7 @@ pub struct IPfxImportParameters_Vtbl {
     pub ReaderName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SetReaderName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IStandardCertificateStoreNamesStatics, IStandardCertificateStoreNamesStatics_Vtbl, 0x0c154adb_a496_41f8_8fe5_9e96f36efbf8);
-impl windows_core::RuntimeType for IStandardCertificateStoreNamesStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IStandardCertificateStoreNamesStatics");
-}
+windows_core::imp::define_winrt_interface!(IStandardCertificateStoreNamesStatics, IStandardCertificateStoreNamesStatics_Vtbl, 0x0c154adb_a496_41f8_8fe5_9e96f36efbf8, b"Windows.Security.Cryptography.Certificates.IStandardCertificateStoreNamesStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStandardCertificateStoreNamesStatics_Vtbl {
@@ -1910,11 +1778,7 @@ pub struct IStandardCertificateStoreNamesStatics_Vtbl {
     pub TrustedRootCertificationAuthorities: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub IntermediateCertificationAuthorities: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISubjectAlternativeNameInfo, ISubjectAlternativeNameInfo_Vtbl, 0x582859f1_569d_4c20_be7b_4e1c9a0bc52b);
-impl windows_core::RuntimeType for ISubjectAlternativeNameInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ISubjectAlternativeNameInfo");
-}
+windows_core::imp::define_winrt_interface!(ISubjectAlternativeNameInfo, ISubjectAlternativeNameInfo_Vtbl, 0x582859f1_569d_4c20_be7b_4e1c9a0bc52b, b"Windows.Security.Cryptography.Certificates.ISubjectAlternativeNameInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISubjectAlternativeNameInfo_Vtbl {
@@ -1926,11 +1790,7 @@ pub struct ISubjectAlternativeNameInfo_Vtbl {
     pub DistinguishedName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub PrincipalName: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISubjectAlternativeNameInfo2, ISubjectAlternativeNameInfo2_Vtbl, 0x437a78c6_1c51_41ea_b34a_3d654398a370);
-impl windows_core::RuntimeType for ISubjectAlternativeNameInfo2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.ISubjectAlternativeNameInfo2");
-}
+windows_core::imp::define_winrt_interface!(ISubjectAlternativeNameInfo2, ISubjectAlternativeNameInfo2_Vtbl, 0x437a78c6_1c51_41ea_b34a_3d654398a370, b"Windows.Security.Cryptography.Certificates.ISubjectAlternativeNameInfo2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISubjectAlternativeNameInfo2_Vtbl {
@@ -1943,11 +1803,7 @@ pub struct ISubjectAlternativeNameInfo2_Vtbl {
     pub PrincipalNames: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Extension: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUserCertificateEnrollmentManager, IUserCertificateEnrollmentManager_Vtbl, 0x96313718_22e1_4819_b20b_ab46a6eca06e);
-impl windows_core::RuntimeType for IUserCertificateEnrollmentManager {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IUserCertificateEnrollmentManager");
-}
+windows_core::imp::define_winrt_interface!(IUserCertificateEnrollmentManager, IUserCertificateEnrollmentManager_Vtbl, 0x96313718_22e1_4819_b20b_ab46a6eca06e, b"Windows.Security.Cryptography.Certificates.IUserCertificateEnrollmentManager");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserCertificateEnrollmentManager_Vtbl {
@@ -1957,22 +1813,14 @@ pub struct IUserCertificateEnrollmentManager_Vtbl {
     pub ImportPfxDataAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, ExportOption, KeyProtectionLevel, InstallOptions, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ImportPfxDataToKspAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, ExportOption, KeyProtectionLevel, InstallOptions, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUserCertificateEnrollmentManager2, IUserCertificateEnrollmentManager2_Vtbl, 0x0dad9cb1_65de_492a_b86d_fc5c482c3747);
-impl windows_core::RuntimeType for IUserCertificateEnrollmentManager2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IUserCertificateEnrollmentManager2");
-}
+windows_core::imp::define_winrt_interface!(IUserCertificateEnrollmentManager2, IUserCertificateEnrollmentManager2_Vtbl, 0x0dad9cb1_65de_492a_b86d_fc5c482c3747, b"Windows.Security.Cryptography.Certificates.IUserCertificateEnrollmentManager2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserCertificateEnrollmentManager2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ImportPfxDataToKspWithParametersAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUserCertificateStore, IUserCertificateStore_Vtbl, 0xc9fb1d83_789f_4b4e_9180_045a757aac6d);
-impl windows_core::RuntimeType for IUserCertificateStore {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.Certificates.IUserCertificateStore");
-}
+windows_core::imp::define_winrt_interface!(IUserCertificateStore, IUserCertificateStore_Vtbl, 0xc9fb1d83_789f_4b4e_9180_045a757aac6d, b"Windows.Security.Cryptography.Certificates.IUserCertificateStore");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUserCertificateStore_Vtbl {
@@ -2107,7 +1955,7 @@ impl KeyAttestationHelper {
     pub fn DecryptTpmAttestationCredentialAsync(credential: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<windows_core::HSTRING>> {
         Self::IKeyAttestationHelperStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DecryptTpmAttestationCredentialAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(credential), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DecryptTpmAttestationCredentialAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(credential), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetTpmAttestationCredentialId(credential: &windows_core::HSTRING) -> windows_core::Result<windows_core::HSTRING> {
@@ -2119,7 +1967,7 @@ impl KeyAttestationHelper {
     pub fn DecryptTpmAttestationCredentialWithContainerNameAsync(credential: &windows_core::HSTRING, containername: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<windows_core::HSTRING>> {
         Self::IKeyAttestationHelperStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DecryptTpmAttestationCredentialWithContainerNameAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(credential), core::mem::transmute_copy(containername), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DecryptTpmAttestationCredentialWithContainerNameAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(credential), core::mem::transmute_copy(containername), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IKeyAttestationHelperStatics<R, F: FnOnce(&IKeyAttestationHelperStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -2285,6 +2133,7 @@ impl windows_core::RuntimeType for PfxImportParameters {
 unsafe impl windows_core::Interface for PfxImportParameters {
     type Vtable = <IPfxImportParameters as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPfxImportParameters as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PfxImportParameters {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.PfxImportParameters";
@@ -2351,86 +2200,86 @@ impl SubjectAlternativeNameInfo {
     pub fn EmailName(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).EmailName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).EmailName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IPAddress(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).IPAddress)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).IPAddress)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Url(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Url)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Url)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DnsName(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DnsName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DnsName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DistinguishedName(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DistinguishedName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DistinguishedName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PrincipalName(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PrincipalName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PrincipalName)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn EmailNames(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).EmailNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).EmailNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn IPAddresses(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IPAddresses)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).IPAddresses)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Urls(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Urls)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Urls)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DnsNames(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DnsNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DnsNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DistinguishedNames(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DistinguishedNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DistinguishedNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PrincipalNames(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).PrincipalNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).PrincipalNames)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Extension(&self) -> windows_core::Result<CertificateExtension> {
         let this = &windows_core::Interface::cast::<ISubjectAlternativeNameInfo2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Extension)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Extension)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2440,6 +2289,7 @@ impl windows_core::RuntimeType for SubjectAlternativeNameInfo {
 unsafe impl windows_core::Interface for SubjectAlternativeNameInfo {
     type Vtable = <ISubjectAlternativeNameInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISubjectAlternativeNameInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SubjectAlternativeNameInfo {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.SubjectAlternativeNameInfo";
@@ -2457,25 +2307,25 @@ impl UserCertificateEnrollmentManager {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateRequestAsync)(windows_core::Interface::as_raw(self), request.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateRequestAsync)(windows_core::Interface::as_raw(self), request.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn InstallCertificateAsync(&self, certificate: &windows_core::HSTRING, installoption: InstallOptions) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).InstallCertificateAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(certificate), installoption, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).InstallCertificateAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(certificate), installoption, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ImportPfxDataAsync(&self, pfxdata: &windows_core::HSTRING, password: &windows_core::HSTRING, exportable: ExportOption, keyprotectionlevel: KeyProtectionLevel, installoption: InstallOptions, friendlyname: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ImportPfxDataAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ImportPfxDataAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ImportPfxDataToKspAsync(&self, pfxdata: &windows_core::HSTRING, password: &windows_core::HSTRING, exportable: ExportOption, keyprotectionlevel: KeyProtectionLevel, installoption: InstallOptions, friendlyname: &windows_core::HSTRING, keystorageprovider: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ImportPfxDataToKspAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), core::mem::transmute_copy(keystorageprovider), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ImportPfxDataToKspAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), exportable, keyprotectionlevel, installoption, core::mem::transmute_copy(friendlyname), core::mem::transmute_copy(keystorageprovider), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ImportPfxDataToKspWithParametersAsync<P2>(&self, pfxdata: &windows_core::HSTRING, password: &windows_core::HSTRING, pfximportparameters: P2) -> windows_core::Result<windows_future::IAsyncAction>
@@ -2485,7 +2335,7 @@ impl UserCertificateEnrollmentManager {
         let this = &windows_core::Interface::cast::<IUserCertificateEnrollmentManager2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).ImportPfxDataToKspWithParametersAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), pfximportparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).ImportPfxDataToKspWithParametersAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(pfxdata), core::mem::transmute_copy(password), pfximportparameters.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2495,6 +2345,7 @@ impl windows_core::RuntimeType for UserCertificateEnrollmentManager {
 unsafe impl windows_core::Interface for UserCertificateEnrollmentManager {
     type Vtable = <IUserCertificateEnrollmentManager as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUserCertificateEnrollmentManager as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UserCertificateEnrollmentManager {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.UserCertificateEnrollmentManager";
@@ -2512,7 +2363,7 @@ impl UserCertificateStore {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RequestAddAsync)(windows_core::Interface::as_raw(self), certificate.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RequestAddAsync)(windows_core::Interface::as_raw(self), certificate.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn RequestDeleteAsync<P0>(&self, certificate: P0) -> windows_core::Result<windows_future::IAsyncOperation<bool>>
@@ -2521,7 +2372,7 @@ impl UserCertificateStore {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).RequestDeleteAsync)(windows_core::Interface::as_raw(self), certificate.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).RequestDeleteAsync)(windows_core::Interface::as_raw(self), certificate.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Name(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -2537,6 +2388,7 @@ impl windows_core::RuntimeType for UserCertificateStore {
 unsafe impl windows_core::Interface for UserCertificateStore {
     type Vtable = <IUserCertificateStore as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUserCertificateStore as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UserCertificateStore {
     const NAME: &'static str = "Windows.Security.Cryptography.Certificates.UserCertificateStore";

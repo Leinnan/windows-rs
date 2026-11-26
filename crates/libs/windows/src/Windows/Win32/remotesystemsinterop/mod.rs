@@ -1,4 +1,4 @@
-windows_core::imp::define_interface!(ICorrelationVectorInformation, ICorrelationVectorInformation_Vtbl, 0x83c78b3c_d88b_4950_aa6e_22b8d22aabd3);
+windows_core::imp::define_interface!(ICorrelationVectorInformation, ICorrelationVectorInformation_Vtbl, 0x83c78b3c_d88b_4950_aa6e_22b8d22aabd3, inspectable);
 windows_core::imp::interface_hierarchy!(ICorrelationVectorInformation, windows_core::IUnknown, windows_core::IInspectable);
 impl ICorrelationVectorInformation {
     pub unsafe fn LastCorrelationVectorForThread(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -37,7 +37,7 @@ impl ICorrelationVectorInformation_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICorrelationVectorInformation_Impl::LastCorrelationVectorForThread(this) {
                     Ok(ok__) => {
-                        cv.write(core::mem::transmute(ok__));
+                        cv.cast::<windows_core::HSTRING>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -52,7 +52,7 @@ impl ICorrelationVectorInformation_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ICorrelationVectorInformation_Impl::NextCorrelationVectorForThread(this) {
                     Ok(ok__) => {
-                        cv.write(core::mem::transmute(ok__));
+                        cv.cast::<windows_core::HSTRING>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -65,11 +65,11 @@ impl ICorrelationVectorInformation_Vtbl {
         unsafe extern "system" fn SetNextCorrelationVectorForThread<Identity: ICorrelationVectorInformation_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, cv: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                ICorrelationVectorInformation_Impl::SetNextCorrelationVectorForThread(this, core::mem::transmute(&cv))
+                ICorrelationVectorInformation_Impl::SetNextCorrelationVectorForThread(this, &*(&raw const cv).cast())
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ICorrelationVectorInformation, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             LastCorrelationVectorForThread: LastCorrelationVectorForThread::<Identity, OFFSET>,
             NextCorrelationVectorForThread: NextCorrelationVectorForThread::<Identity, OFFSET>,
             SetNextCorrelationVectorForThread: SetNextCorrelationVectorForThread::<Identity, OFFSET>,

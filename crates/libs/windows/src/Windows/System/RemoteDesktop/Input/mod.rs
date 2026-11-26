@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IRemoteTextConnection, IRemoteTextConnection_Vtbl, 0x4e7bb02a_183e_5e66_b5e4_3e6e5c570cf1);
-impl windows_core::RuntimeType for IRemoteTextConnection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.RemoteDesktop.Input.IRemoteTextConnection");
-}
+windows_core::imp::define_winrt_interface!(IRemoteTextConnection, IRemoteTextConnection_Vtbl, 0x4e7bb02a_183e_5e66_b5e4_3e6e5c570cf1, b"Windows.System.RemoteDesktop.Input.IRemoteTextConnection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoteTextConnection_Vtbl {
@@ -13,33 +9,21 @@ pub struct IRemoteTextConnection_Vtbl {
     pub UnregisterThread: unsafe extern "system" fn(*mut core::ffi::c_void, u32) -> windows_core::HRESULT,
     pub ReportDataReceived: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const u8) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRemoteTextConnection2, IRemoteTextConnection2_Vtbl, 0x05f99345_84c8_56c5_934f_73ea00f8c2d5);
-impl windows_core::RuntimeType for IRemoteTextConnection2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.RemoteDesktop.Input.IRemoteTextConnection2");
-}
+windows_core::imp::define_winrt_interface!(IRemoteTextConnection2, IRemoteTextConnection2_Vtbl, 0x05f99345_84c8_56c5_934f_73ea00f8c2d5, b"Windows.System.RemoteDesktop.Input.IRemoteTextConnection2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoteTextConnection2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub ReportPredictedKeyEvent: unsafe extern "system" fn(*mut core::ffi::c_void, u16, RemoteKeyEventAttributes) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRemoteTextConnectionFactory, IRemoteTextConnectionFactory_Vtbl, 0x88e075c2_0cae_596c_850f_78d345cd728b);
-impl windows_core::RuntimeType for IRemoteTextConnectionFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.RemoteDesktop.Input.IRemoteTextConnectionFactory");
-}
+windows_core::imp::define_winrt_interface!(IRemoteTextConnectionFactory, IRemoteTextConnectionFactory_Vtbl, 0x88e075c2_0cae_596c_850f_78d345cd728b, b"Windows.System.RemoteDesktop.Input.IRemoteTextConnectionFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoteTextConnectionFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::GUID, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IRemoteTextConnectionFactory2, IRemoteTextConnectionFactory2_Vtbl, 0x9425c7d9_ed9b_5d00_99cc_b0b8dc9e4c60);
-impl windows_core::RuntimeType for IRemoteTextConnectionFactory2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.System.RemoteDesktop.Input.IRemoteTextConnectionFactory2");
-}
+windows_core::imp::define_winrt_interface!(IRemoteTextConnectionFactory2, IRemoteTextConnectionFactory2_Vtbl, 0x9425c7d9_ed9b_5d00_99cc_b0b8dc9e4c60, b"Windows.System.RemoteDesktop.Input.IRemoteTextConnectionFactory2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRemoteTextConnectionFactory2_Vtbl {
@@ -134,7 +118,7 @@ impl RemoteTextConnection {
     {
         Self::IRemoteTextConnectionFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), connectionid, pduforwarder.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), connectionid, pduforwarder.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn CreateInstance2<P1>(connectionid: windows_core::GUID, pduforwarder: P1, options: RemoteTextConnectionOptions) -> windows_core::Result<Self>
@@ -143,7 +127,7 @@ impl RemoteTextConnection {
     {
         Self::IRemoteTextConnectionFactory2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), connectionid, pduforwarder.param().abi(), options, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), connectionid, pduforwarder.param().abi(), options, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IRemoteTextConnectionFactory<R, F: FnOnce(&IRemoteTextConnectionFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -161,6 +145,7 @@ impl windows_core::RuntimeType for RemoteTextConnection {
 unsafe impl windows_core::Interface for RemoteTextConnection {
     type Vtable = <IRemoteTextConnection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IRemoteTextConnection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for RemoteTextConnection {
     const NAME: &'static str = "Windows.System.RemoteDesktop.Input.RemoteTextConnection";
@@ -172,7 +157,7 @@ impl windows_core::RuntimeType for RemoteTextConnectionDataHandler {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl RemoteTextConnectionDataHandler {
-    pub fn new<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + 'static>(invoke: F) -> Self {
+    pub fn new<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + Sync + 'static>(invoke: F) -> Self {
         let com = windows_core::imp::DelegateBox::<Self, F>::new(&RemoteTextConnectionDataHandlerBox::<F>::VTABLE, invoke);
         unsafe { core::mem::transmute(windows_core::imp::box_new(com)) }
     }
@@ -189,8 +174,8 @@ pub struct RemoteTextConnectionDataHandler_Vtbl {
     base__: windows_core::IUnknown_Vtbl,
     Invoke: unsafe extern "system" fn(this: *mut core::ffi::c_void, pdudata_array_size: u32, pdudata: *const u8, result__: *mut bool) -> windows_core::HRESULT,
 }
-struct RemoteTextConnectionDataHandlerBox<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + 'static>(core::marker::PhantomData<(fn() -> F,)>);
-impl<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + 'static> RemoteTextConnectionDataHandlerBox<F> {
+struct RemoteTextConnectionDataHandlerBox<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + Sync + 'static>(core::marker::PhantomData<(fn() -> F,)>);
+impl<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + Sync + 'static> RemoteTextConnectionDataHandlerBox<F> {
     const VTABLE: RemoteTextConnectionDataHandler_Vtbl = RemoteTextConnectionDataHandler_Vtbl {
         base__: windows_core::IUnknown_Vtbl {
             QueryInterface: windows_core::imp::DelegateBox::<RemoteTextConnectionDataHandler, F>::QueryInterface,
@@ -201,7 +186,7 @@ impl<F: Fn(&[u8]) -> windows_core::Result<bool> + Send + 'static> RemoteTextConn
     };
     unsafe extern "system" fn Invoke(this: *mut core::ffi::c_void, pdudata_array_size: u32, pdudata: *const u8, result__: *mut bool) -> windows_core::HRESULT {
         unsafe {
-            let this = &mut *(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<RemoteTextConnectionDataHandler, F>);
+            let this = &*(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox<RemoteTextConnectionDataHandler, F>);
             match (this.invoke)(windows_core::imp::array_slice(core::mem::transmute_copy(&pdudata), pdudata_array_size)) {
                 Ok(ok__) => {
                     result__.write(ok__);

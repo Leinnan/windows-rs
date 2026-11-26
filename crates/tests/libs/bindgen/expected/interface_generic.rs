@@ -1,42 +1,78 @@
-#[repr(transparent)]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct IVector<T>(windows_core::IUnknown, core::marker::PhantomData<T>)
+windows_core::imp::define_winrt_interface!(IPair < K, V >, IPair_Vtbl < K, V, >, 0x02b51929_c1c4_4a7e_8940_0312b5c18500, b"Test.IPair`2");
+impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
+    windows_core::RuntimeName for IPair<K, V>
+{
+    const NAME: &'static str = "Test.IPair";
+    const RUNTIME_CLASS_NAME: windows_core::imp::ConstBuffer =
+        <Self as windows_core::RuntimeType>::NAME;
+}
+pub trait IPair_Impl<K, V>: windows_core::IUnknownImpl
 where
-    T: windows_core::RuntimeType + 'static;
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IUnknown>
-    for IVector<T>
+    K: windows_core::RuntimeType + 'static,
+    V: windows_core::RuntimeType + 'static,
 {
 }
-impl<T: windows_core::RuntimeType + 'static> windows_core::imp::CanInto<windows_core::IInspectable>
-    for IVector<T>
+impl<K: windows_core::RuntimeType + 'static, V: windows_core::RuntimeType + 'static>
+    IPair_Vtbl<K, V>
 {
+    pub const fn new<Identity: IPair_Impl<K, V>, const OFFSET: isize>() -> Self {
+        Self {
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
+            K: core::marker::PhantomData::<K>,
+            V: core::marker::PhantomData::<V>,
+        }
+    }
+    pub fn matches(iid: &windows_core::GUID) -> bool {
+        iid == &<IPair<K, V> as windows_core::Interface>::IID
+    }
 }
-unsafe impl<T: windows_core::RuntimeType + 'static> windows_core::Interface for IVector<T> {
-    type Vtable = IVector_Vtbl<T>;
-    const IID: windows_core::GUID =
-        windows_core::GUID::from_signature(<Self as windows_core::RuntimeType>::SIGNATURE);
+#[repr(C)]
+pub struct IPair_Vtbl<K, V>
+where
+    K: windows_core::RuntimeType + 'static,
+    V: windows_core::RuntimeType + 'static,
+{
+    pub base__: windows_core::IInspectable_Vtbl,
+    K: core::marker::PhantomData<K>,
+    V: core::marker::PhantomData<V>,
 }
-impl<T: windows_core::RuntimeType + 'static> windows_core::RuntimeType for IVector<T> {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"pinterface({1b2776f1-623d-5a07-b5d8-9a225dfc1901}")
-        .push_slice(b";")
-        .push_other(T::SIGNATURE)
-        .push_slice(b")");
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::new()
-        .push_slice(b"Test.IVector`1<")
-        .push_other(T::NAME)
-        .push_slice(b">");
+windows_core::imp::define_winrt_interface!(
+    IValue,
+    IValue_Vtbl,
+    0x11111111_2222_3333_4444_555555555555,
+    b"Test.IValue"
+);
+windows_core::imp::interface_hierarchy!(IValue, windows_core::IUnknown, windows_core::IInspectable);
+impl windows_core::RuntimeName for IValue {
+    const NAME: &'static str = "Test.IValue";
 }
+pub trait IValue_Impl: windows_core::IUnknownImpl {}
+impl IValue_Vtbl {
+    pub const fn new<Identity: IValue_Impl, const OFFSET: isize>() -> Self {
+        Self {
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
+        }
+    }
+    pub fn matches(iid: &windows_core::GUID) -> bool {
+        iid == &<IValue as windows_core::Interface>::IID
+    }
+}
+#[repr(C)]
+pub struct IValue_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+}
+windows_core::imp::define_winrt_interface!(IVector < T >, IVector_Vtbl < T, >, 0x1b2776f1_623d_5a07_b5d8_9a225dfc1901, b"Test.IVector`1");
 impl<T: windows_core::RuntimeType + 'static> IVector<T> {
     pub fn GetAt(&self, index: u32) -> windows_core::Result<T> {
         unsafe {
-            let mut result__ = core::mem::zeroed();
+            let mut result__ =
+                core::mem::MaybeUninit::<<T as windows_core::imp::Type>::Default>::zeroed();
             (windows_core::Interface::vtable(self).GetAt)(
                 windows_core::Interface::as_raw(self),
                 index,
-                &mut result__,
+                result__.as_mut_ptr().cast(),
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::Type::from_default_owned(result__.assume_init()))
         }
     }
     pub fn Size(&self) -> windows_core::Result<u32> {
@@ -91,8 +127,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector_Vtbl<T> {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IVector_Impl::GetAt(this, index) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -140,7 +175,7 @@ impl<T: windows_core::RuntimeType + 'static> IVector_Vtbl<T> {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IVector<T>, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetAt: GetAt::<T, Identity, OFFSET>,
             Size: Size::<T, Identity, OFFSET>,
             Append: Append::<T, Identity, OFFSET>,

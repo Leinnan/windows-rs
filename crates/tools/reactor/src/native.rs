@@ -82,7 +82,11 @@ fn emit_object_structs(output: &mut String, objects: &[&Object]) {
                     .is_some_and(PropertyAdapter::has_managed_state)
             }) {
                 let field = snake_case(&property.name);
-                if property.adapter == Some(PropertyAdapter::DropPolicy) {
+                if property.adapter == Some(PropertyAdapter::ImplicitScale) {
+                    output.push_str(&format!(
+                        "{field}: RefCell<Option<windows_core::EventRevoker>>,\n"
+                    ));
+                } else if property.adapter == Some(PropertyAdapter::DropPolicy) {
                     output.push_str(&format!(
                         "{field}: Rc<RefCell<Option<Rc<DragDropPolicy>>>>,\n"
                     ));
@@ -192,7 +196,9 @@ fn emit_create(
                     .is_some_and(PropertyAdapter::has_managed_state)
             }) {
                 let field = snake_case(&property.name);
-                if property.adapter == Some(PropertyAdapter::DropPolicy) {
+                if property.adapter == Some(PropertyAdapter::ImplicitScale) {
+                    output.push_str(&format!("let {field} = RefCell::new(None);\n"));
+                } else if property.adapter == Some(PropertyAdapter::DropPolicy) {
                     output.push_str(&format!("let {field} = Rc::new(RefCell::new(None));\n"));
                 } else {
                     output.push_str(&format!("let {field} = Rc::new(Cell::new(false));\n"));
@@ -353,13 +359,30 @@ fn emit_event(
             "let property_{field} = native::{owner}::{native}Property()?;\n\
                          let object_{field} = value.cast::<native::DependencyObject>()?;\n\
                          let callback_{field} = native::DependencyPropertyChangedCallback::new(\
-                         move |_, _| {{\n"
+                         local::handler(move |_, _| {{\n"
         ));
     } else {
-        let event_target =
-            native_interface_value("value", &native_name(object), interface.unwrap(), metadata);
+        let event_target = if selection.is_none()
+            && matches!(event.value, Value::PointerEventInfo | Value::FocusEventInfo)
+            && interface == Some("IUIElement")
+            && !metadata.is_default_interface(&native_name(object), "IUIElement")
+        {
+            // `source_{field}` already holds the `UIElement`, whose default interface raises
+            // these events.
+            format!("source_{field}.clone()")
+        } else {
+            native_interface_value("value", &native_name(object), interface.unwrap(), metadata)
+        };
+        let args = if args == "_" {
+            args.to_string()
+        } else {
+            let name = metadata
+                .event_args_name(&native_name(object), &format!("add_{}", event.name))
+                .unwrap();
+            format!("args: windows_core::InRef<'_, native::{name}>")
+        };
         code.push_str(&format!(
-            "let revoker = {event_target}.{}(move |_, {args}| {{\n",
+            "let revoker = {event_target}.{}(local::handler(move |_, {args}| {{\n",
             event.name,
         ));
     }
@@ -371,8 +394,7 @@ fn emit_event(
             format!("source_{field}.{}()", selection.selected_item_property)
         } else {
             format!(
-                "source_{field}.{}().and_then(|selected| \
-                             selected.cast::<IInspectable>())",
+                "source_{field}.{}().map(IInspectable::from)",
                 selection.selected_item_property
             )
         };
@@ -432,7 +454,7 @@ fn emit_event(
         ));
     } else if managed_source.is_some() {
         code.push_str("let dispatch = !managed_source.get();\nlet observation = None;\n");
-    } else if !event.routed {
+    } else if !event.routed && event.value != Value::PointerEventInfo {
         code.push_str("let dispatch = true;\nlet observation = None;\n");
     }
     if selection.is_none()
@@ -442,7 +464,7 @@ fn emit_event(
             code.push_str(&format!(
                 "let args = args.unwrap();\n\
                              let payload = event_queue_{field}.item_object(object, \
-                             &args.{payload}().and_then(|value| value.cast::<IInspectable>())\
+                             &args.{payload}().map(IInspectable::from)\
                              .unwrap());\n\
                              let Some(payload) = payload else {{ return; }};\n"
             ));
@@ -486,7 +508,7 @@ fn emit_event(
         "observed"
     };
     if selection.is_some() {
-        code.push_str("})?;\n");
+        code.push_str("}))?;\n");
         code.push_str(&format!(
             "let _{field} = GeneratedRevoker::Event(revoker);\n"
         ));
@@ -533,11 +555,15 @@ fn emit_event(
                 "false"
             };
             code.push_str(&format!(
-                "let value = WinUiAdapter::pointer_event_info(\
+                "let args = args.unwrap();\n\
+                 let value = WinUiAdapter::pointer_event_info(\
                              object, &source_{field}, args, {capture_on_press}, {release_capture}, \
-                             {focus_on_release}, &pending_focus_states_{field}).unwrap();\n"
+                             {focus_on_release}, &pending_focus_states_{field}).unwrap();\n\
+                 if WinUiAdapter::dispatch_pointer(&event_for_callback, &event_queue_{field}, \
+                 object, EventId::{}, value) {{ args.SetHandled(true).unwrap(); }}\n",
+                event.name
             ));
-            Some("value")
+            None
         }
         Value::FocusEventInfo => {
             let got_focus = event.name == "GotFocus";
@@ -596,7 +622,7 @@ fn emit_event(
     }
     if event.property_changed {
         code.push_str(&format!(
-            "}});\n\
+            "}}));\n\
                          let token_{field} = object_{field}.RegisterPropertyChangedCallback(\
                          &property_{field}, &callback_{field})?;\n\
                          let _{field} = GeneratedRevoker::Property(PropertyChangedRevoker {{ \
@@ -604,12 +630,12 @@ fn emit_event(
                          }});\n"
         ));
     } else if lazy {
-        code.push_str("})?;\n");
+        code.push_str("}))?;\n");
         code.push_str(&format!(
             "self._{field} = Some(GeneratedRevoker::Event(revoker));\n"
         ));
     } else {
-        code.push_str("})?;\n");
+        code.push_str("}))?;\n");
         code.push_str(&format!(
             "let _{field} = GeneratedRevoker::Event(revoker);\n"
         ));
@@ -764,9 +790,7 @@ fn emit_selected_item(
                 let selected = if selected_is_object {
                     "Ok(selected) => Ok(Some(selected))".to_string()
                 } else {
-                    "Ok(selected) => selected.cast::<IInspectable>().map(Some)\
-                     .map_err(Into::into)"
-                        .to_string()
+                    "Ok(selected) => Ok(Some(selected.into()))".to_string()
                 };
                 format!(
                     "match {object}.{}() {{ \
@@ -1314,6 +1338,7 @@ fn dependency_conversion(adapter: Option<PropertyAdapter>) -> Option<&'static st
             | PropertyAdapter::InspectableStringList
             | PropertyAdapter::OptionalDateTime
             | PropertyAdapter::SelectionIndex
+            | PropertyAdapter::SystemBackdrop
             | PropertyAdapter::ThemeBrush
             | PropertyAdapter::ThemeTransitions,
         ) => "Value",
@@ -1504,6 +1529,35 @@ fn emit_native_property_arms(
     metadata: &tool_reactor_metadata::MetadataResolver,
 ) {
     match adapter {
+        PropertyAdapter::PointerCursor => {
+            // ProtectedCursor is protected in XAML, but WinUI elements implement
+            // IUIElementProtected and accept the cursor through it.
+            let interface = metadata
+                .resolve("UIElement", "put_ProtectedCursor")
+                .unwrap()
+                .short_name();
+            output.push_str(&format!(
+                "{pattern}None) => Some({target}.cast::<native::{interface}>().map_err(Into::into)\
+                 .and_then(|object| object.SetProtectedCursor(None::<&native::InputCursor>).map_err(Into::into))),\n\
+                 {pattern}Some(PropertyValue::Enum {{ kind: \"InputSystemCursorShape\", variant }})) => {{\n\
+                 let shape = match *variant {{\n"
+            ));
+            let (_, variants) = metadata
+                .static_enum_info("InputSystemCursor", "Create")
+                .unwrap();
+            for variant in variants {
+                output.push_str(&format!(
+                    "\"{variant}\" => native::InputSystemCursorShape::{variant},\n"
+                ));
+            }
+            output.push_str(&format!(
+                "_ => unreachable!(\"validated enum variant\"), }};\n\
+                 Some((|| -> Result<(), WinUiError> {{\n\
+                 let cursor = native::InputSystemCursor::Create(shape)?;\n\
+                 {target}.cast::<native::{interface}>()?.SetProtectedCursor(&cursor)?;\n\
+                 Ok(()) }})()) }},\n"
+            ));
+        }
         PropertyAdapter::ImplicitTranslation => output.push_str(&format!(
             "{pattern}None) => Some({target}.cast::<native::UIElement>().map_err(Into::into)\
              .and_then(|object| object.SetTranslation(native::Vector3::default()).map_err(Into::into))),\n\
@@ -1514,10 +1568,10 @@ fn emit_native_property_arms(
         )),
         PropertyAdapter::ImplicitScale => output.push_str(&format!(
             "{pattern}None) => Some({target}.cast::<native::UIElement>().map_err(Into::into)\
-             .and_then(|object| set_implicit_scale(&object, 1.0))),\n\
-             {pattern}Some(PropertyValue::F64(value))) => \
+             .and_then(|element| set_implicit_scale(&element, &object.scale, [1.0, 1.0]))),\n\
+             {pattern}Some(PropertyValue::Vector2(value))) => \
              Some({target}.cast::<native::UIElement>().map_err(Into::into)\
-             .and_then(|object| set_implicit_scale(&object, *value))),\n"
+             .and_then(|element| set_implicit_scale(&element, &object.scale, *value))),\n"
         )),
         PropertyAdapter::ImplicitOpacityTransition
         | PropertyAdapter::ImplicitScaleTransition

@@ -150,6 +150,7 @@ enum Validation {
     NonNegative,
     Positive,
     ZeroToFiftyNine,
+    AnchorRatio,
 }
 
 impl std::fmt::Display for Validation {
@@ -161,6 +162,7 @@ impl std::fmt::Display for Validation {
             Self::NonNegative => "non_negative",
             Self::Positive => "positive",
             Self::ZeroToFiftyNine => "zero_to_fifty_nine",
+            Self::AnchorRatio => "NaN or between 0 and 1",
         };
         formatter.write_str(value)
     }
@@ -193,6 +195,7 @@ enum PropertyAdapter {
     OptionalDateTime,
     PathData,
     PointerCapture,
+    PointerCursor,
     PointerFocus,
     RatingValue,
     ResourceOverrides,
@@ -200,6 +203,7 @@ enum PropertyAdapter {
     RichEditText,
     RichTextBlocks,
     SelectionIndex,
+    SystemBackdrop,
     ThemeBrush,
     ThemeTransitions,
     Uri,
@@ -216,8 +220,7 @@ impl PropertyAdapter {
             Self::ImplicitOpacityTransition
             | Self::ImplicitScaleTransition
             | Self::ImplicitTranslationTransition => Value::Duration,
-            Self::ImplicitScale => Value::F64,
-            Self::ImplicitTranslation => Value::Vector2,
+            Self::ImplicitScale | Self::ImplicitTranslation => Value::Vector2,
             Self::EditText
             | Self::FontFamily
             | Self::InspectableString
@@ -230,10 +233,12 @@ impl PropertyAdapter {
             Self::NumberBoxValue | Self::RatingValue => Value::OptionalF64,
             Self::OptionalDateTime => Value::OptionalDateTime,
             Self::PointerCapture | Self::PointerFocus => Value::Bool,
+            Self::PointerCursor => Value::Enum("InputSystemCursorShape".to_string()),
             Self::ResourceOverrides => Value::ResourceOverrides,
             Self::ResourceStyle => Value::ButtonStyle,
             Self::RichTextBlocks => Value::RichText,
             Self::SelectionIndex => Value::SelectionIndex,
+            Self::SystemBackdrop => Value::SystemBackdrop,
             Self::ThemeBrush => Value::Brush,
             Self::ThemeTransitions => Value::ThemeTransitions,
         }
@@ -253,7 +258,11 @@ impl PropertyAdapter {
     fn has_managed_state(self) -> bool {
         matches!(
             self,
-            Self::PointerCapture | Self::PointerFocus | Self::DropPolicy | Self::ImageUri
+            Self::PointerCapture
+                | Self::PointerFocus
+                | Self::DropPolicy
+                | Self::ImageUri
+                | Self::ImplicitScale
         )
     }
 
@@ -402,6 +411,7 @@ values!(
     SelectionIndex,
     String,
     StringList,
+    SystemBackdrop,
     ThemeTransitions,
     Thickness,
     Unit,
@@ -430,6 +440,7 @@ impl Value {
             Self::CornerRadius => format!("{name}: impl Into<CornerRadius>"),
             Self::F64 => format!("{name}: f64"),
             Self::GridLengths => format!("{name}: impl IntoIterator<Item = GridLength>"),
+            Self::ThemeTransitions => format!("{name}: impl IntoIterator<Item = ThemeTransition>"),
             Self::I32 => format!("{name}: i32"),
             Self::Icon => format!("{name}: impl Into<Icon>"),
             Self::OptionalF64 => format!("{name}: impl Into<Option<f64>>"),
@@ -449,8 +460,8 @@ impl Value {
             Self::String => format!("PropertyValue::String(Rc::from({name}.as_ref()))"),
             Self::Brush | Self::Icon => format!("PropertyValue::{self}({name}.into())"),
             Self::DragDropPolicy => format!("PropertyValue::DragDropPolicy(Rc::new({name}))"),
-            Self::GridLengths => {
-                format!("PropertyValue::GridLengths({name}.into_iter().collect())")
+            Self::GridLengths | Self::ThemeTransitions => {
+                format!("PropertyValue::{self}({name}.into_iter().collect())")
             }
             Self::OptionalF64
             | Self::OptionalBool
@@ -480,6 +491,7 @@ impl Value {
                 Self::OptionalF64 | Self::OptionalBool | Self::SelectionIndex => "None",
                 Self::ResourceOverrides => "ResourceOverrides::default()",
                 Self::StringList => "std::iter::empty::<&str>()",
+                Self::SystemBackdrop => "SystemBackdrop::None",
                 Self::Thickness => "Thickness::uniform(0.0)",
                 _ => return None,
             }
@@ -682,9 +694,7 @@ fn main() {
             "Microsoft.UI.Xaml.Markup.IXamlMetadataProvider",
         ])
         .compose("Microsoft.UI.Xaml.Application")
-        .minimal()
         .dead_code()
-        .flat()
         .filter_file(workspace_path(BINDINGS_FILTER))
         .filters(dependency_filters(&dependency_properties(
             &schema, &metadata,
@@ -694,9 +704,7 @@ fn main() {
         .input(workspace_path(WINMD))
         .input_default()
         .output(workspace_path(CANVAS_BINDINGS_OUTPUT))
-        .minimal()
         .dead_code()
-        .flat()
         .filter_file(workspace_path(CANVAS_FILTER))
         .write();
 }
@@ -883,36 +891,33 @@ fn normalize_schema(schema: &mut Schema, metadata: &tool_reactor_metadata::Metad
                 property.name
             );
             if let Some(event) = &property.controlled {
+                let event = object
+                    .events
+                    .iter()
+                    .find(|candidate| candidate.name == *event)
+                    .unwrap_or_else(|| {
+                        panic!(
+                            "{}.{} references missing event {event}",
+                            object.name, property.name
+                        )
+                    });
                 assert!(
-                    object
-                        .events
-                        .iter()
-                        .any(|candidate| candidate.name == *event),
-                    "{}.{} references missing event {event}",
+                    event.observes.as_deref() == Some(property.name.as_str()),
+                    "{}.{} must observe {}",
                     object.name,
+                    event.name,
                     property.name
                 );
             }
             if let Some(coerced) = &property.coerces {
-                let position = |name: &str| {
-                    object
-                        .properties
-                        .iter()
-                        .position(|candidate| candidate.name == name)
-                };
                 assert!(
-                    object
-                        .properties
-                        .iter()
-                        .any(|candidate| candidate.name == *coerced
-                            && candidate.controlled.is_some()),
-                    "{}.{} must coerce a controlled property",
-                    object.name,
-                    property.name
-                );
-                assert!(
-                    position(&property.name) < position(coerced),
-                    "{}.{} must precede the {coerced} property it coerces",
+                    property.controlled.is_none()
+                        && object
+                            .properties
+                            .iter()
+                            .any(|candidate| candidate.name == *coerced
+                                && candidate.coerces.is_none()),
+                    "{}.{} must be an uncontrolled property coercing another object property",
                     object.name,
                     property.name
                 );
@@ -1077,6 +1082,32 @@ fn normalize_schema(schema: &mut Schema, metadata: &tool_reactor_metadata::Metad
                     "{} selection references missing relation {relation}",
                     object.name
                 );
+            }
+        }
+    }
+
+    // Only move values whose declared constraints follow them. Properties without a dependency
+    // retain their relative order; controlled values do not imply an ordering dependency.
+    for object in &mut schema.objects {
+        let coerced = object
+            .properties
+            .iter()
+            .filter_map(|property| property.coerces.clone())
+            .collect::<BTreeSet<_>>();
+        for name in coerced {
+            let value = object
+                .properties
+                .iter()
+                .position(|property| property.name == name)
+                .unwrap();
+            let constraint = object
+                .properties
+                .iter()
+                .rposition(|property| property.coerces.as_ref() == Some(&name))
+                .unwrap();
+            if value < constraint {
+                let property = object.properties.remove(value);
+                object.properties.insert(constraint, property);
             }
         }
     }
@@ -1361,14 +1392,7 @@ fn generate(schema: &Schema, metadata: &tool_reactor_metadata::MetadataResolver)
             let value = if property.value.enum_name().is_none() {
                 format!("ValueType::{}", property.value)
             } else {
-                let (_, variants) = metadata
-                    .enum_info(
-                        &native_name(object),
-                        &format!("put_{}", native_property(property)),
-                    )
-                    .unwrap_or_else(|| {
-                        panic!("{}.{} is not an enum property", object.name, property.name)
-                    });
+                let variants = property_enum_variants(object, property, metadata);
                 format!(
                     "ValueType::Enum {{ kind: \"{}\", variants: &[{}] }}",
                     property.value,
@@ -1441,26 +1465,6 @@ fn generate(schema: &Schema, metadata: &tool_reactor_metadata::MetadataResolver)
         output.push_str(&format!("ObjectType::{} => {index},", object.name));
     }
     output.push_str("} }\n");
-    output.push_str(
-        "#[cfg(any(test, feature = \"test\"))]\n\
-         pub(crate) fn focus_capable(kind: ObjectType) -> bool { matches!(kind,",
-    );
-    if !schema.objects.iter().any(|object| object.focus) {
-        output.push_str("_ if false");
-    } else {
-        for (index, object) in schema
-            .objects
-            .iter()
-            .filter(|object| object.focus)
-            .enumerate()
-        {
-            if index != 0 {
-                output.push('|');
-            }
-            output.push_str(&format!("ObjectType::{}", object.name));
-        }
-    }
-    output.push_str(") }\n");
 
     output.push_str(
         "pub fn relation_contracts(kind: ObjectType) -> &'static [RelationContract] { match kind {\n",
@@ -1526,12 +1530,7 @@ fn generate_declarations(
             let Some(kind) = property.value.enum_name() else {
                 continue;
             };
-            let (_, variants) = metadata
-                .enum_info(
-                    &native_name(object),
-                    &format!("put_{}", native_property(property)),
-                )
-                .unwrap();
+            let variants = property_enum_variants(object, property, metadata);
             if let Some(previous) = enums.insert(kind, variants.to_vec()) {
                 assert_eq!(previous, variants, "conflicting enum definitions");
             }
@@ -1721,6 +1720,17 @@ fn generate_declarations(
                 }
                 _ => property.value.argument(&name),
             };
+            if property.adapter == Some(PropertyAdapter::ImplicitScale) {
+                output.push_str(
+                    "/// Scales rendering independently on each axis around the element's center.\n\
+                     /// The center follows layout changes; scaling does not change layout size.\n\
+                     /// Factors must be non-negative and finite when converted to `f32`.\n\
+                     /// Use [`Self::scale_transition`] to animate changes.\n\
+                     ///\n\
+                     /// WinUI can hide the element immediately when a factor becomes zero,\n\
+                     /// even during a transition.\n",
+                );
+            }
             output.push_str(&format!("pub fn {name}(mut self, {argument}) -> Self {{\n"));
             if property.value == Value::Vector2 {
                 output.push_str(&format!("let {name} = [x, y];\n"));
@@ -1910,6 +1920,14 @@ fn generate_declarations(
                 .and_then(|field| field.strip_prefix("on_"))
                 .map_or_else(|| snake_case(&event.name), str::to_string);
             match &event.value {
+                Value::PointerEventInfo => {
+                    output.push_str(&format!(
+                        "pub fn on_{method}(mut self, callback: impl Into<PointerCallback>) -> Self {{ \
+                         self.0 = self.0.event(EventId::{}, \
+                         EventValue::PointerEventInfo(callback.into())); self }}\n",
+                        event.name
+                    ));
+                }
                 Value::CharacterEventInfo => {
                     output.push_str(&format!(
                         "pub fn on_{method}(mut self, callback: \
@@ -1977,6 +1995,9 @@ fn validation_expression(name: &str, value: &Value, validation: Validation) -> S
         }
         Validation::Finite => format!("{name}.is_finite()"),
         Validation::FinitePositive => format!("{name}.is_finite() && {name} > 0.0"),
+        Validation::FiniteNonNegative if *value == Value::Vector2 => {
+            format!("{name}.iter().all(|value| (*value as f32).is_finite() && *value >= 0.0)")
+        }
         Validation::FiniteNonNegative if *value == Value::F64 => {
             format!("{name}.is_finite() && {name} >= 0.0")
         }
@@ -1984,6 +2005,7 @@ fn validation_expression(name: &str, value: &Value, validation: Validation) -> S
         Validation::NonNegative => format!("{name} >= 0"),
         Validation::Positive => format!("{name} > 0"),
         Validation::ZeroToFiftyNine => format!("(0..=59).contains(&{name})"),
+        Validation::AnchorRatio => format!("{name}.is_nan() || (0.0..=1.0).contains(&{name})"),
     }
 }
 
@@ -2013,6 +2035,24 @@ fn example_constructor(object: &Object) -> String {
 
 fn native_property(property: &Property) -> &str {
     property.native.as_deref().unwrap_or(&property.name)
+}
+
+/// Enum variants come from the native setter, except cursors, which WinUI creates from a shape.
+fn property_enum_variants<'a>(
+    object: &Object,
+    property: &Property,
+    metadata: &'a tool_reactor_metadata::MetadataResolver,
+) -> &'a [String] {
+    let info = if property.adapter == Some(PropertyAdapter::PointerCursor) {
+        metadata.static_enum_info("InputSystemCursor", "Create")
+    } else {
+        metadata.enum_info(
+            &native_name(object),
+            &format!("put_{}", native_property(property)),
+        )
+    };
+    info.unwrap_or_else(|| panic!("{}.{} is not an enum property", object.name, property.name))
+        .1
 }
 
 fn snake_case(value: &str) -> String {
@@ -2053,4 +2093,112 @@ fn rustfmt(source: &str) -> String {
     let output = child.wait_with_output().unwrap();
     assert!(output.status.success());
     String::from_utf8(output.stdout).unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn normalize(update: impl FnOnce(&mut Schema)) -> Schema {
+        let mut schema: Schema = toml::from_str(include_str!("schema.toml")).unwrap();
+        update(&mut schema);
+        let metadata = tool_reactor_metadata::MetadataResolver::load(&workspace_path(WINMD));
+        normalize_schema(&mut schema, &metadata);
+        schema
+    }
+
+    fn object<'a>(schema: &'a mut Schema, name: &str) -> &'a mut Object {
+        schema
+            .objects
+            .iter_mut()
+            .find(|object| object.name == name)
+            .unwrap()
+    }
+
+    #[test]
+    fn dependencies_order_values_without_reordering_unrelated_properties() {
+        let mut expected = BTreeMap::new();
+        let schema = normalize(|schema| {
+            for name in ["Slider", "ProgressRing"] {
+                let properties = &mut object(schema, name).properties;
+                let index = properties
+                    .iter()
+                    .position(|property| property.name == "Value")
+                    .unwrap();
+                let value = properties.remove(index);
+                properties.insert(0, value);
+            }
+            for object in &schema.objects {
+                let mut names = object
+                    .properties
+                    .iter()
+                    .map(|property| property.name.clone())
+                    .collect::<Vec<_>>();
+                let (value, constraint) = match object.name.as_str() {
+                    "TextBox" => ("Text", "AcceptsReturn"),
+                    "Slider" | "ProgressRing" => ("Value", "Maximum"),
+                    _ => {
+                        expected.insert(object.name.clone(), names);
+                        continue;
+                    }
+                };
+                let index = names.iter().position(|name| name == value).unwrap();
+                names.remove(index);
+                let index = names.iter().position(|name| name == constraint).unwrap();
+                names.insert(index + 1, value.to_string());
+                expected.insert(object.name.clone(), names);
+            }
+        });
+        for object in schema.objects {
+            assert_eq!(
+                object
+                    .properties
+                    .iter()
+                    .map(|property| &property.name)
+                    .collect::<Vec<_>>(),
+                expected[&object.name].iter().collect::<Vec<_>>(),
+                "{}",
+                object.name
+            );
+        }
+    }
+
+    #[test]
+    #[should_panic(expected = "TextBox.TextChanged must observe Text")]
+    fn controlled_event_must_observe_its_property() {
+        normalize(|schema| {
+            object(schema, "TextBox")
+                .events
+                .iter_mut()
+                .find(|event| event.name == "TextChanged")
+                .unwrap()
+                .observes = Some("PlaceholderText".into());
+        });
+    }
+
+    #[test]
+    #[should_panic(expected = "must be an uncontrolled property coercing another object property")]
+    fn coercion_target_must_exist() {
+        normalize(|schema| {
+            object(schema, "Slider")
+                .properties
+                .iter_mut()
+                .find(|property| property.name == "Minimum")
+                .unwrap()
+                .coerces = Some("Missing".into());
+        });
+    }
+
+    #[test]
+    #[should_panic(expected = "must be an uncontrolled property coercing another object property")]
+    fn coercion_chains_are_rejected() {
+        normalize(|schema| {
+            object(schema, "ProgressRing")
+                .properties
+                .iter_mut()
+                .find(|property| property.name == "Value")
+                .unwrap()
+                .coerces = Some("Minimum".into());
+        });
+    }
 }

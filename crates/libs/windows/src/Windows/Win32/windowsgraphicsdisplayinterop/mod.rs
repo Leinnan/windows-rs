@@ -1,4 +1,4 @@
-windows_core::imp::define_interface!(IDisplayInformationStaticsInterop, IDisplayInformationStaticsInterop_Vtbl, 0x7449121c_382b_4705_8da7_a795ba482013);
+windows_core::imp::define_interface!(IDisplayInformationStaticsInterop, IDisplayInformationStaticsInterop_Vtbl, 0x7449121c_382b_4705_8da7_a795ba482013, inspectable);
 windows_core::imp::interface_hierarchy!(IDisplayInformationStaticsInterop, windows_core::IUnknown, windows_core::IInspectable);
 impl IDisplayInformationStaticsInterop {
     #[cfg(all(feature = "guiddef", feature = "windef"))]
@@ -7,7 +7,7 @@ impl IDisplayInformationStaticsInterop {
         T: windows_core::Interface,
     {
         let mut result__ = core::ptr::null_mut();
-        unsafe { (windows_core::Interface::vtable(self).GetForWindow)(windows_core::Interface::as_raw(self), window, &T::IID, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+        unsafe { (windows_core::Interface::vtable(self).GetForWindow)(windows_core::Interface::as_raw(self), window, &T::IID, &mut result__).and_then(|| windows_core::imp::from_abi(result__)) }
     }
     #[cfg(all(feature = "guiddef", feature = "windef"))]
     pub unsafe fn GetForMonitor<T>(&self, monitor: super::HMONITOR) -> windows_core::Result<T>
@@ -15,7 +15,7 @@ impl IDisplayInformationStaticsInterop {
         T: windows_core::Interface,
     {
         let mut result__ = core::ptr::null_mut();
-        unsafe { (windows_core::Interface::vtable(self).GetForMonitor)(windows_core::Interface::as_raw(self), monitor, &T::IID, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__)) }
+        unsafe { (windows_core::Interface::vtable(self).GetForMonitor)(windows_core::Interface::as_raw(self), monitor, &T::IID, &mut result__).and_then(|| windows_core::imp::from_abi(result__)) }
     }
 }
 #[repr(C)]
@@ -52,7 +52,7 @@ impl IDisplayInformationStaticsInterop_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IDisplayInformationStaticsInterop, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetForWindow: GetForWindow::<Identity, OFFSET>,
             GetForMonitor: GetForMonitor::<Identity, OFFSET>,
         }

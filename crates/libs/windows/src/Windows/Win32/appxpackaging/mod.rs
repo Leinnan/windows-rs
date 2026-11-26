@@ -35,10 +35,16 @@ pub const APPX_COMPRESSION_OPTION_NORMAL: APPX_COMPRESSION_OPTION = 1;
 pub const APPX_COMPRESSION_OPTION_SUPERFAST: APPX_COMPRESSION_OPTION = 4;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct APPX_ENCRYPTED_EXEMPTIONS {
     pub count: super::UINT32,
     pub plainTextFiles: *mut windows_core::PCWSTR,
+}
+#[cfg(feature = "shared")]
+impl Default for APPX_ENCRYPTED_EXEMPTIONS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type APPX_ENCRYPTED_PACKAGE_OPTIONS = i32;
 pub const APPX_ENCRYPTED_PACKAGE_OPTION_DIFFUSION: APPX_ENCRYPTED_PACKAGE_OPTIONS = 1;
@@ -70,12 +76,18 @@ pub const APPX_FOOTPRINT_FILE_TYPE_MANIFEST: APPX_FOOTPRINT_FILE_TYPE = 0;
 pub const APPX_FOOTPRINT_FILE_TYPE_SIGNATURE: APPX_FOOTPRINT_FILE_TYPE = 2;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct APPX_KEY_INFO {
     pub keyLength: super::UINT32,
     pub keyIdLength: super::UINT32,
     pub key: *mut super::BYTE,
     pub keyId: *mut super::BYTE,
+}
+#[cfg(feature = "shared")]
+impl Default for APPX_KEY_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type APPX_PACKAGE_ARCHITECTURE = i32;
 pub type APPX_PACKAGE_ARCHITECTURE2 = i32;
@@ -136,7 +148,7 @@ impl IAppxAppInstallerReader {
     pub unsafe fn GetXmlDom(&self) -> windows_core::Result<super::IXMLDOMDocument> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetXmlDom)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetXmlDom)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -161,7 +173,7 @@ impl IAppxAppInstallerReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxAppInstallerReader_Impl::GetXmlDom(this) {
                     Ok(ok__) => {
-                        dom.write(core::mem::transmute(ok__));
+                        dom.cast::<super::IXMLDOMDocument>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -254,7 +266,7 @@ impl IAppxBlockMapBlocksEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxBlockMapBlock> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -290,7 +302,7 @@ impl IAppxBlockMapBlocksEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBlockMapBlocksEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        block.write(core::mem::transmute(ok__));
+                        block.cast::<IAppxBlockMapBlock>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -348,7 +360,7 @@ impl IAppxBlockMapFile {
     pub unsafe fn GetBlocks(&self) -> windows_core::Result<IAppxBlockMapBlocksEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetBlocks)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetBlocks)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -414,7 +426,7 @@ impl IAppxBlockMapFile_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBlockMapFile_Impl::GetBlocks(this) {
                     Ok(ok__) => {
-                        blocks.write(core::mem::transmute(ok__));
+                        blocks.cast::<IAppxBlockMapBlocksEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -552,7 +564,7 @@ impl IAppxBlockMapFilesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxBlockMapFile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -588,7 +600,7 @@ impl IAppxBlockMapFilesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBlockMapFilesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        file.write(core::mem::transmute(ok__));
+                        file.cast::<IAppxBlockMapFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -649,27 +661,27 @@ impl IAppxBlockMapReader {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFile)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFile)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetFiles(&self) -> windows_core::Result<IAppxBlockMapFilesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "urlmon")]
     pub unsafe fn GetHashMethod(&self) -> windows_core::Result<super::IUri> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetHashMethod)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetHashMethod)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
     pub unsafe fn GetStream(&self) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -701,9 +713,9 @@ impl IAppxBlockMapReader_Vtbl {
         unsafe extern "system" fn GetFile<Identity: IAppxBlockMapReader_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, file: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxBlockMapReader_Impl::GetFile(this, core::mem::transmute(&filename)) {
+                match IAppxBlockMapReader_Impl::GetFile(this, &*(&raw const filename).cast()) {
                     Ok(ok__) => {
-                        file.write(core::mem::transmute(ok__));
+                        file.cast::<IAppxBlockMapFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -718,7 +730,7 @@ impl IAppxBlockMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBlockMapReader_Impl::GetFiles(this) {
                     Ok(ok__) => {
-                        enumerator.write(core::mem::transmute(ok__));
+                        enumerator.cast::<IAppxBlockMapFilesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -733,7 +745,7 @@ impl IAppxBlockMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBlockMapReader_Impl::GetHashMethod(this) {
                     Ok(ok__) => {
-                        hashmethod.write(core::mem::transmute(ok__));
+                        hashmethod.cast::<super::IUri>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -748,7 +760,7 @@ impl IAppxBlockMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBlockMapReader_Impl::GetStream(this) {
                     Ok(ok__) => {
-                        blockmapstream.write(core::mem::transmute(ok__));
+                        blockmapstream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -782,7 +794,7 @@ impl IAppxBundleFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBundleWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), bundleversion, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateBundleWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), bundleversion, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -792,7 +804,7 @@ impl IAppxBundleFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBundleReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateBundleReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -802,7 +814,7 @@ impl IAppxBundleFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBundleManifestReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateBundleManifestReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -837,7 +849,7 @@ impl IAppxBundleFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleFactory_Impl::CreateBundleWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&bundleversion)) {
                     Ok(ok__) => {
-                        bundlewriter.write(core::mem::transmute(ok__));
+                        bundlewriter.cast::<IAppxBundleWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -852,7 +864,7 @@ impl IAppxBundleFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleFactory_Impl::CreateBundleReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        bundlereader.write(core::mem::transmute(ok__));
+                        bundlereader.cast::<IAppxBundleReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -867,7 +879,7 @@ impl IAppxBundleFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleFactory_Impl::CreateBundleManifestReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        manifestreader.write(core::mem::transmute(ok__));
+                        manifestreader.cast::<IAppxBundleManifestReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -901,7 +913,7 @@ impl IAppxBundleFactory2 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBundleReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateBundleReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -924,9 +936,9 @@ impl IAppxBundleFactory2_Vtbl {
         unsafe extern "system" fn CreateBundleReader2<Identity: IAppxBundleFactory2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, inputstream: *mut core::ffi::c_void, expecteddigest: windows_core::PCWSTR, bundlereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxBundleFactory2_Impl::CreateBundleReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute(&expecteddigest)) {
+                match IAppxBundleFactory2_Impl::CreateBundleReader2(this, core::mem::transmute_copy(&inputstream), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        bundlereader.write(core::mem::transmute(ok__));
+                        bundlereader.cast::<IAppxBundleReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -954,7 +966,7 @@ impl IAppxBundleFactory3 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBundleReaderFromSourceUri)(windows_core::Interface::as_raw(self), uri.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateBundleReaderFromSourceUri)(windows_core::Interface::as_raw(self), uri.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -972,9 +984,9 @@ impl IAppxBundleFactory3_Vtbl {
         unsafe extern "system" fn CreateBundleReaderFromSourceUri<Identity: IAppxBundleFactory3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, uri: windows_core::PCWSTR, expecteddigest: windows_core::PCWSTR, bundlereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxBundleFactory3_Impl::CreateBundleReaderFromSourceUri(this, core::mem::transmute(&uri), core::mem::transmute(&expecteddigest)) {
+                match IAppxBundleFactory3_Impl::CreateBundleReaderFromSourceUri(this, &*(&raw const uri).cast(), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        bundlereader.write(core::mem::transmute(ok__));
+                        bundlereader.cast::<IAppxBundleReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1000,7 +1012,7 @@ impl IAppxBundleManifestOptionalBundleInfo {
     pub unsafe fn GetPackageId(&self) -> windows_core::Result<IAppxManifestPackageId> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetFileName(&self, filename: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -1009,7 +1021,7 @@ impl IAppxBundleManifestOptionalBundleInfo {
     pub unsafe fn GetPackageInfoItems(&self) -> windows_core::Result<IAppxBundleManifestPackageInfoEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageInfoItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageInfoItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1033,7 +1045,7 @@ impl IAppxBundleManifestOptionalBundleInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestOptionalBundleInfo_Impl::GetPackageId(this) {
                     Ok(ok__) => {
-                        packageid.write(core::mem::transmute(ok__));
+                        packageid.cast::<IAppxManifestPackageId>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1054,7 +1066,7 @@ impl IAppxBundleManifestOptionalBundleInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestOptionalBundleInfo_Impl::GetPackageInfoItems(this) {
                     Ok(ok__) => {
-                        packageinfoitems.write(core::mem::transmute(ok__));
+                        packageinfoitems.cast::<IAppxBundleManifestPackageInfoEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1082,7 +1094,7 @@ impl IAppxBundleManifestOptionalBundleInfoEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxBundleManifestOptionalBundleInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -1118,7 +1130,7 @@ impl IAppxBundleManifestOptionalBundleInfoEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestOptionalBundleInfoEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        optionalbundle.write(core::mem::transmute(ok__));
+                        optionalbundle.cast::<IAppxBundleManifestOptionalBundleInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1182,7 +1194,7 @@ impl IAppxBundleManifestPackageInfo {
     pub unsafe fn GetPackageId(&self) -> windows_core::Result<IAppxManifestPackageId> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetFileName(&self, filename: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -1205,7 +1217,7 @@ impl IAppxBundleManifestPackageInfo {
     pub unsafe fn GetResources(&self) -> windows_core::Result<IAppxManifestQualifiedResourcesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetResources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetResources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1258,7 +1270,7 @@ impl IAppxBundleManifestPackageInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestPackageInfo_Impl::GetPackageId(this) {
                     Ok(ok__) => {
-                        packageid.write(core::mem::transmute(ok__));
+                        packageid.cast::<IAppxManifestPackageId>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1309,7 +1321,7 @@ impl IAppxBundleManifestPackageInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestPackageInfo_Impl::GetResources(this) {
                     Ok(ok__) => {
-                        resources.write(core::mem::transmute(ok__));
+                        resources.cast::<IAppxManifestQualifiedResourcesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1435,7 +1447,7 @@ impl IAppxBundleManifestPackageInfo3 {
     pub unsafe fn GetTargetDeviceFamilies(&self) -> windows_core::Result<IAppxManifestTargetDeviceFamiliesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetTargetDeviceFamilies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetTargetDeviceFamilies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1455,7 +1467,7 @@ impl IAppxBundleManifestPackageInfo3_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestPackageInfo3_Impl::GetTargetDeviceFamilies(this) {
                     Ok(ok__) => {
-                        targetdevicefamilies.write(core::mem::transmute(ok__));
+                        targetdevicefamilies.cast::<IAppxManifestTargetDeviceFamiliesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1521,7 +1533,7 @@ impl IAppxBundleManifestPackageInfoEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxBundleManifestPackageInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -1557,7 +1569,7 @@ impl IAppxBundleManifestPackageInfoEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestPackageInfoEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        packageinfo.write(core::mem::transmute(ok__));
+                        packageinfo.cast::<IAppxBundleManifestPackageInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1615,20 +1627,20 @@ impl IAppxBundleManifestReader {
     pub unsafe fn GetPackageId(&self) -> windows_core::Result<IAppxManifestPackageId> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetPackageInfoItems(&self) -> windows_core::Result<IAppxBundleManifestPackageInfoEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageInfoItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageInfoItems)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
     pub unsafe fn GetStream(&self) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1657,7 +1669,7 @@ impl IAppxBundleManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestReader_Impl::GetPackageId(this) {
                     Ok(ok__) => {
-                        packageid.write(core::mem::transmute(ok__));
+                        packageid.cast::<IAppxManifestPackageId>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1672,7 +1684,7 @@ impl IAppxBundleManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestReader_Impl::GetPackageInfoItems(this) {
                     Ok(ok__) => {
-                        packageinfoitems.write(core::mem::transmute(ok__));
+                        packageinfoitems.cast::<IAppxBundleManifestPackageInfoEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1687,7 +1699,7 @@ impl IAppxBundleManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestReader_Impl::GetStream(this) {
                     Ok(ok__) => {
-                        manifeststream.write(core::mem::transmute(ok__));
+                        manifeststream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1716,7 +1728,7 @@ impl IAppxBundleManifestReader2 {
     pub unsafe fn GetOptionalBundles(&self) -> windows_core::Result<IAppxBundleManifestOptionalBundleInfoEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetOptionalBundles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetOptionalBundles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1736,7 +1748,7 @@ impl IAppxBundleManifestReader2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleManifestReader2_Impl::GetOptionalBundles(this) {
                     Ok(ok__) => {
-                        optionalbundles.write(core::mem::transmute(ok__));
+                        optionalbundles.cast::<IAppxBundleManifestOptionalBundleInfoEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1759,25 +1771,25 @@ impl IAppxBundleReader {
     pub unsafe fn GetFootprintFile(&self, filetype: APPX_BUNDLE_FOOTPRINT_FILE_TYPE) -> windows_core::Result<IAppxFile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFootprintFile)(windows_core::Interface::as_raw(self), filetype, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFootprintFile)(windows_core::Interface::as_raw(self), filetype, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetBlockMap(&self) -> windows_core::Result<IAppxBlockMapReader> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetBlockMap)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetBlockMap)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetManifest(&self) -> windows_core::Result<IAppxBundleManifestReader> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetManifest)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetManifest)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetPayloadPackages(&self) -> windows_core::Result<IAppxFilesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPayloadPackages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPayloadPackages)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetPayloadPackage<P0>(&self, filename: P0) -> windows_core::Result<IAppxFile>
@@ -1786,7 +1798,7 @@ impl IAppxBundleReader {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPayloadPackage)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPayloadPackage)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1814,7 +1826,7 @@ impl IAppxBundleReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleReader_Impl::GetFootprintFile(this, core::mem::transmute_copy(&filetype)) {
                     Ok(ok__) => {
-                        footprintfile.write(core::mem::transmute(ok__));
+                        footprintfile.cast::<IAppxFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1829,7 +1841,7 @@ impl IAppxBundleReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleReader_Impl::GetBlockMap(this) {
                     Ok(ok__) => {
-                        blockmapreader.write(core::mem::transmute(ok__));
+                        blockmapreader.cast::<IAppxBlockMapReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1844,7 +1856,7 @@ impl IAppxBundleReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleReader_Impl::GetManifest(this) {
                     Ok(ok__) => {
-                        manifestreader.write(core::mem::transmute(ok__));
+                        manifestreader.cast::<IAppxBundleManifestReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1859,7 +1871,7 @@ impl IAppxBundleReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxBundleReader_Impl::GetPayloadPackages(this) {
                     Ok(ok__) => {
-                        payloadpackages.write(core::mem::transmute(ok__));
+                        payloadpackages.cast::<IAppxFilesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1872,9 +1884,9 @@ impl IAppxBundleReader_Vtbl {
         unsafe extern "system" fn GetPayloadPackage<Identity: IAppxBundleReader_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, payloadpackage: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxBundleReader_Impl::GetPayloadPackage(this, core::mem::transmute(&filename)) {
+                match IAppxBundleReader_Impl::GetPayloadPackage(this, &*(&raw const filename).cast()) {
                     Ok(ok__) => {
-                        payloadpackage.write(core::mem::transmute(ok__));
+                        payloadpackage.cast::<IAppxFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1907,7 +1919,7 @@ impl IAppxBundleReader2 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPayloadPackageReader)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPayloadPackageReader)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1925,9 +1937,9 @@ impl IAppxBundleReader2_Vtbl {
         unsafe extern "system" fn GetPayloadPackageReader<Identity: IAppxBundleReader2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, payloadpackagereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxBundleReader2_Impl::GetPayloadPackageReader(this, core::mem::transmute(&filename)) {
+                match IAppxBundleReader2_Impl::GetPayloadPackageReader(this, &*(&raw const filename).cast()) {
                     Ok(ok__) => {
-                        payloadpackagereader.write(core::mem::transmute(ok__));
+                        payloadpackagereader.cast::<IAppxPackageReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1980,7 +1992,7 @@ impl IAppxBundleWriter_Vtbl {
         unsafe extern "system" fn AddPayloadPackage<Identity: IAppxBundleWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, packagestream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter_Impl::AddPayloadPackage(this, core::mem::transmute(&filename), core::mem::transmute_copy(&packagestream))
+                IAppxBundleWriter_Impl::AddPayloadPackage(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&packagestream))
             }
         }
         unsafe extern "system" fn Close<Identity: IAppxBundleWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -2032,7 +2044,7 @@ impl IAppxBundleWriter2_Vtbl {
         unsafe extern "system" fn AddExternalPackageReference<Identity: IAppxBundleWriter2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, inputstream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter2_Impl::AddExternalPackageReference(this, core::mem::transmute(&filename), core::mem::transmute_copy(&inputstream))
+                IAppxBundleWriter2_Impl::AddExternalPackageReference(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&inputstream))
             }
         }
         Self { base__: windows_core::IUnknown_Vtbl::new::<Identity, OFFSET>(), AddExternalPackageReference: AddExternalPackageReference::<Identity, OFFSET> }
@@ -2082,13 +2094,13 @@ impl IAppxBundleWriter3_Vtbl {
         unsafe extern "system" fn AddPackageReference<Identity: IAppxBundleWriter3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, inputstream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter3_Impl::AddPackageReference(this, core::mem::transmute(&filename), core::mem::transmute_copy(&inputstream))
+                IAppxBundleWriter3_Impl::AddPackageReference(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&inputstream))
             }
         }
         unsafe extern "system" fn Close<Identity: IAppxBundleWriter3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, hashmethodstring: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter3_Impl::Close(this, core::mem::transmute(&hashmethodstring))
+                IAppxBundleWriter3_Impl::Close(this, &*(&raw const hashmethodstring).cast())
             }
         }
         Self {
@@ -2160,19 +2172,19 @@ impl IAppxBundleWriter4_Vtbl {
         unsafe extern "system" fn AddPayloadPackage<Identity: IAppxBundleWriter4_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, packagestream: *mut core::ffi::c_void, isdefaultapplicablepackage: windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter4_Impl::AddPayloadPackage(this, core::mem::transmute(&filename), core::mem::transmute_copy(&packagestream), core::mem::transmute_copy(&isdefaultapplicablepackage))
+                IAppxBundleWriter4_Impl::AddPayloadPackage(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&packagestream), core::mem::transmute_copy(&isdefaultapplicablepackage))
             }
         }
         unsafe extern "system" fn AddPackageReference<Identity: IAppxBundleWriter4_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, inputstream: *mut core::ffi::c_void, isdefaultapplicablepackage: windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter4_Impl::AddPackageReference(this, core::mem::transmute(&filename), core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&isdefaultapplicablepackage))
+                IAppxBundleWriter4_Impl::AddPackageReference(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&isdefaultapplicablepackage))
             }
         }
         unsafe extern "system" fn AddExternalPackageReference<Identity: IAppxBundleWriter4_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, inputstream: *mut core::ffi::c_void, isdefaultapplicablepackage: windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxBundleWriter4_Impl::AddExternalPackageReference(this, core::mem::transmute(&filename), core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&isdefaultapplicablepackage))
+                IAppxBundleWriter4_Impl::AddExternalPackageReference(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&isdefaultapplicablepackage))
             }
         }
         Self {
@@ -2197,7 +2209,7 @@ impl IAppxContentGroup {
     pub unsafe fn GetFiles(&self) -> windows_core::Result<IAppxContentGroupFilesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2225,7 +2237,7 @@ impl IAppxContentGroup_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxContentGroup_Impl::GetFiles(this) {
                     Ok(ok__) => {
-                        enumerator.write(core::mem::transmute(ok__));
+                        enumerator.cast::<IAppxContentGroupFilesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2342,13 +2354,13 @@ impl IAppxContentGroupMapReader {
     pub unsafe fn GetRequiredGroup(&self) -> windows_core::Result<IAppxContentGroup> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRequiredGroup)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRequiredGroup)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetAutomaticGroups(&self) -> windows_core::Result<IAppxContentGroupsEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAutomaticGroups)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAutomaticGroups)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2370,7 +2382,7 @@ impl IAppxContentGroupMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxContentGroupMapReader_Impl::GetRequiredGroup(this) {
                     Ok(ok__) => {
-                        requiredgroup.write(core::mem::transmute(ok__));
+                        requiredgroup.cast::<IAppxContentGroup>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2385,7 +2397,7 @@ impl IAppxContentGroupMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxContentGroupMapReader_Impl::GetAutomaticGroups(this) {
                     Ok(ok__) => {
-                        automaticgroupsenumerator.write(core::mem::transmute(ok__));
+                        automaticgroupsenumerator.cast::<IAppxContentGroupsEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2443,13 +2455,13 @@ impl IAppxContentGroupMapWriter_Vtbl {
         unsafe extern "system" fn AddAutomaticGroup<Identity: IAppxContentGroupMapWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, groupname: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxContentGroupMapWriter_Impl::AddAutomaticGroup(this, core::mem::transmute(&groupname))
+                IAppxContentGroupMapWriter_Impl::AddAutomaticGroup(this, &*(&raw const groupname).cast())
             }
         }
         unsafe extern "system" fn AddAutomaticFile<Identity: IAppxContentGroupMapWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxContentGroupMapWriter_Impl::AddAutomaticFile(this, core::mem::transmute(&filename))
+                IAppxContentGroupMapWriter_Impl::AddAutomaticFile(this, &*(&raw const filename).cast())
             }
         }
         unsafe extern "system" fn Close<Identity: IAppxContentGroupMapWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -2476,7 +2488,7 @@ impl IAppxContentGroupsEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxContentGroup> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -2512,7 +2524,7 @@ impl IAppxContentGroupsEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxContentGroupsEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        stream.write(core::mem::transmute(ok__));
+                        stream.cast::<IAppxContentGroup>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2643,7 +2655,7 @@ impl IAppxEncryptedBundleWriter_Vtbl {
         unsafe extern "system" fn AddPayloadPackageEncrypted<Identity: IAppxEncryptedBundleWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, packagestream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxEncryptedBundleWriter_Impl::AddPayloadPackageEncrypted(this, core::mem::transmute(&filename), core::mem::transmute_copy(&packagestream))
+                IAppxEncryptedBundleWriter_Impl::AddPayloadPackageEncrypted(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&packagestream))
             }
         }
         unsafe extern "system" fn Close<Identity: IAppxEncryptedBundleWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -2695,7 +2707,7 @@ impl IAppxEncryptedBundleWriter2_Vtbl {
         unsafe extern "system" fn AddExternalPackageReference<Identity: IAppxEncryptedBundleWriter2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, inputstream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxEncryptedBundleWriter2_Impl::AddExternalPackageReference(this, core::mem::transmute(&filename), core::mem::transmute_copy(&inputstream))
+                IAppxEncryptedBundleWriter2_Impl::AddExternalPackageReference(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&inputstream))
             }
         }
         Self { base__: windows_core::IUnknown_Vtbl::new::<Identity, OFFSET>(), AddExternalPackageReference: AddExternalPackageReference::<Identity, OFFSET> }
@@ -2750,13 +2762,13 @@ impl IAppxEncryptedBundleWriter3_Vtbl {
         unsafe extern "system" fn AddPayloadPackageEncrypted<Identity: IAppxEncryptedBundleWriter3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, packagestream: *mut core::ffi::c_void, isdefaultapplicablepackage: windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxEncryptedBundleWriter3_Impl::AddPayloadPackageEncrypted(this, core::mem::transmute(&filename), core::mem::transmute_copy(&packagestream), core::mem::transmute_copy(&isdefaultapplicablepackage))
+                IAppxEncryptedBundleWriter3_Impl::AddPayloadPackageEncrypted(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&packagestream), core::mem::transmute_copy(&isdefaultapplicablepackage))
             }
         }
         unsafe extern "system" fn AddExternalPackageReference<Identity: IAppxEncryptedBundleWriter3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, inputstream: *mut core::ffi::c_void, isdefaultapplicablepackage: windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxEncryptedBundleWriter3_Impl::AddExternalPackageReference(this, core::mem::transmute(&filename), core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&isdefaultapplicablepackage))
+                IAppxEncryptedBundleWriter3_Impl::AddExternalPackageReference(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&isdefaultapplicablepackage))
             }
         }
         Self {
@@ -2807,7 +2819,7 @@ impl IAppxEncryptedPackageWriter_Vtbl {
         unsafe extern "system" fn AddPayloadFileEncrypted<Identity: IAppxEncryptedPackageWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, compressionoption: APPX_COMPRESSION_OPTION, inputstream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxEncryptedPackageWriter_Impl::AddPayloadFileEncrypted(this, core::mem::transmute(&filename), core::mem::transmute_copy(&compressionoption), core::mem::transmute_copy(&inputstream))
+                IAppxEncryptedPackageWriter_Impl::AddPayloadFileEncrypted(this, &*(&raw const filename).cast(), core::mem::transmute_copy(&compressionoption), core::mem::transmute_copy(&inputstream))
             }
         }
         unsafe extern "system" fn Close<Identity: IAppxEncryptedPackageWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -2893,7 +2905,7 @@ impl IAppxEncryptionFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedPackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), manifeststream.param().abi(), settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedPackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), manifeststream.param().abi(), settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "objidlbase", feature = "shared"))]
@@ -2903,7 +2915,7 @@ impl IAppxEncryptionFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedPackageReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedPackageReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "objidlbase", feature = "shared", feature = "urlmon"))]
@@ -2929,7 +2941,7 @@ impl IAppxEncryptionFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedBundleWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), bundleversion, settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedBundleWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), bundleversion, settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "objidlbase", feature = "shared"))]
@@ -2939,7 +2951,7 @@ impl IAppxEncryptionFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedBundleReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedBundleReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3011,7 +3023,7 @@ impl IAppxEncryptionFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory_Impl::CreateEncryptedPackageWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&manifeststream), core::mem::transmute_copy(&settings), core::mem::transmute_copy(&keyinfo), core::mem::transmute_copy(&exemptedfiles)) {
                     Ok(ok__) => {
-                        packagewriter.write(core::mem::transmute(ok__));
+                        packagewriter.cast::<IAppxEncryptedPackageWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3026,7 +3038,7 @@ impl IAppxEncryptionFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory_Impl::CreateEncryptedPackageReader(this, core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&keyinfo)) {
                     Ok(ok__) => {
-                        packagereader.write(core::mem::transmute(ok__));
+                        packagereader.cast::<IAppxPackageReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3053,7 +3065,7 @@ impl IAppxEncryptionFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory_Impl::CreateEncryptedBundleWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&bundleversion), core::mem::transmute_copy(&settings), core::mem::transmute_copy(&keyinfo), core::mem::transmute_copy(&exemptedfiles)) {
                     Ok(ok__) => {
-                        bundlewriter.write(core::mem::transmute(ok__));
+                        bundlewriter.cast::<IAppxEncryptedBundleWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3068,7 +3080,7 @@ impl IAppxEncryptionFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory_Impl::CreateEncryptedBundleReader(this, core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&keyinfo)) {
                     Ok(ok__) => {
-                        bundlereader.write(core::mem::transmute(ok__));
+                        bundlereader.cast::<IAppxBundleReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3108,7 +3120,7 @@ impl IAppxEncryptionFactory2 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedPackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), manifeststream.param().abi(), contentgroupmapstream.param().abi(), settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedPackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), manifeststream.param().abi(), contentgroupmapstream.param().abi(), settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3133,7 +3145,7 @@ impl IAppxEncryptionFactory2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory2_Impl::CreateEncryptedPackageWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&manifeststream), core::mem::transmute_copy(&contentgroupmapstream), core::mem::transmute_copy(&settings), core::mem::transmute_copy(&keyinfo), core::mem::transmute_copy(&exemptedfiles)) {
                     Ok(ok__) => {
-                        packagewriter.write(core::mem::transmute(ok__));
+                        packagewriter.cast::<IAppxEncryptedPackageWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3171,7 +3183,7 @@ impl IAppxEncryptionFactory3 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedPackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), manifeststream.param().abi(), contentgroupmapstream.param().abi(), settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedPackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), manifeststream.param().abi(), contentgroupmapstream.param().abi(), settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "objidlbase", feature = "shared", feature = "urlmon"))]
@@ -3189,7 +3201,7 @@ impl IAppxEncryptionFactory3 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedBundleWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), bundleversion, settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedBundleWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), bundleversion, settings, keyinfo, exemptedfiles, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3235,7 +3247,7 @@ impl IAppxEncryptionFactory3_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory3_Impl::CreateEncryptedPackageWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&manifeststream), core::mem::transmute_copy(&contentgroupmapstream), core::mem::transmute_copy(&settings), core::mem::transmute_copy(&keyinfo), core::mem::transmute_copy(&exemptedfiles)) {
                     Ok(ok__) => {
-                        packagewriter.write(core::mem::transmute(ok__));
+                        packagewriter.cast::<IAppxEncryptedPackageWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3256,7 +3268,7 @@ impl IAppxEncryptionFactory3_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxEncryptionFactory3_Impl::CreateEncryptedBundleWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&bundleversion), core::mem::transmute_copy(&settings), core::mem::transmute_copy(&keyinfo), core::mem::transmute_copy(&exemptedfiles)) {
                     Ok(ok__) => {
-                        bundlewriter.write(core::mem::transmute(ok__));
+                        bundlewriter.cast::<IAppxEncryptedBundleWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3333,7 +3345,7 @@ impl IAppxEncryptionFactory5 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedPackageReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo.unwrap_or(core::mem::zeroed()) as _, expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedPackageReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo.unwrap_or(core::mem::zeroed()) as _, expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "objidlbase", feature = "shared"))]
@@ -3344,7 +3356,7 @@ impl IAppxEncryptionFactory5 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateEncryptedBundleReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo.unwrap_or(core::mem::zeroed()) as _, expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateEncryptedBundleReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), keyinfo.unwrap_or(core::mem::zeroed()) as _, expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3372,9 +3384,9 @@ impl IAppxEncryptionFactory5_Vtbl {
         unsafe extern "system" fn CreateEncryptedPackageReader2<Identity: IAppxEncryptionFactory5_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, inputstream: *mut core::ffi::c_void, keyinfo: *const APPX_KEY_INFO, expecteddigest: windows_core::PCWSTR, packagereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxEncryptionFactory5_Impl::CreateEncryptedPackageReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&keyinfo), core::mem::transmute(&expecteddigest)) {
+                match IAppxEncryptionFactory5_Impl::CreateEncryptedPackageReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&keyinfo), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        packagereader.write(core::mem::transmute(ok__));
+                        packagereader.cast::<IAppxPackageReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3387,9 +3399,9 @@ impl IAppxEncryptionFactory5_Vtbl {
         unsafe extern "system" fn CreateEncryptedBundleReader2<Identity: IAppxEncryptionFactory5_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, inputstream: *mut core::ffi::c_void, keyinfo: *const APPX_KEY_INFO, expecteddigest: windows_core::PCWSTR, bundlereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxEncryptionFactory5_Impl::CreateEncryptedBundleReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&keyinfo), core::mem::transmute(&expecteddigest)) {
+                match IAppxEncryptionFactory5_Impl::CreateEncryptedBundleReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute_copy(&keyinfo), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        bundlereader.write(core::mem::transmute(ok__));
+                        bundlereader.cast::<IAppxBundleReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3421,7 +3433,7 @@ impl IAppxFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), settings, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePackageWriter)(windows_core::Interface::as_raw(self), outputstream.param().abi(), settings, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3431,7 +3443,7 @@ impl IAppxFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePackageReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePackageReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3441,7 +3453,7 @@ impl IAppxFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateManifestReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateManifestReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3451,7 +3463,7 @@ impl IAppxFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateBlockMapReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateBlockMapReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3462,7 +3474,7 @@ impl IAppxFactory {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateValidatedBlockMapReader)(windows_core::Interface::as_raw(self), blockmapstream.param().abi(), signaturefilename.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateValidatedBlockMapReader)(windows_core::Interface::as_raw(self), blockmapstream.param().abi(), signaturefilename.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3507,7 +3519,7 @@ impl IAppxFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory_Impl::CreatePackageWriter(this, core::mem::transmute_copy(&outputstream), core::mem::transmute_copy(&settings)) {
                     Ok(ok__) => {
-                        packagewriter.write(core::mem::transmute(ok__));
+                        packagewriter.cast::<IAppxPackageWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3522,7 +3534,7 @@ impl IAppxFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory_Impl::CreatePackageReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        packagereader.write(core::mem::transmute(ok__));
+                        packagereader.cast::<IAppxPackageReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3537,7 +3549,7 @@ impl IAppxFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory_Impl::CreateManifestReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        manifestreader.write(core::mem::transmute(ok__));
+                        manifestreader.cast::<IAppxManifestReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3552,7 +3564,7 @@ impl IAppxFactory_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory_Impl::CreateBlockMapReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        blockmapreader.write(core::mem::transmute(ok__));
+                        blockmapreader.cast::<IAppxBlockMapReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3565,9 +3577,9 @@ impl IAppxFactory_Vtbl {
         unsafe extern "system" fn CreateValidatedBlockMapReader<Identity: IAppxFactory_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, blockmapstream: *mut core::ffi::c_void, signaturefilename: windows_core::PCWSTR, blockmapreader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxFactory_Impl::CreateValidatedBlockMapReader(this, core::mem::transmute_copy(&blockmapstream), core::mem::transmute(&signaturefilename)) {
+                match IAppxFactory_Impl::CreateValidatedBlockMapReader(this, core::mem::transmute_copy(&blockmapstream), &*(&raw const signaturefilename).cast()) {
                     Ok(ok__) => {
-                        blockmapreader.write(core::mem::transmute(ok__));
+                        blockmapreader.cast::<IAppxBlockMapReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3602,7 +3614,7 @@ impl IAppxFactory2 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateContentGroupMapReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateContentGroupMapReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3612,7 +3624,7 @@ impl IAppxFactory2 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateSourceContentGroupMapReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateSourceContentGroupMapReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3622,7 +3634,7 @@ impl IAppxFactory2 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateContentGroupMapWriter)(windows_core::Interface::as_raw(self), stream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateContentGroupMapWriter)(windows_core::Interface::as_raw(self), stream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3657,7 +3669,7 @@ impl IAppxFactory2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory2_Impl::CreateContentGroupMapReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        contentgroupmapreader.write(core::mem::transmute(ok__));
+                        contentgroupmapreader.cast::<IAppxContentGroupMapReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3672,7 +3684,7 @@ impl IAppxFactory2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory2_Impl::CreateSourceContentGroupMapReader(this, core::mem::transmute_copy(&inputstream)) {
                     Ok(ok__) => {
-                        reader.write(core::mem::transmute(ok__));
+                        reader.cast::<IAppxSourceContentGroupMapReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3687,7 +3699,7 @@ impl IAppxFactory2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFactory2_Impl::CreateContentGroupMapWriter(this, core::mem::transmute_copy(&stream)) {
                     Ok(ok__) => {
-                        contentgroupmapwriter.write(core::mem::transmute(ok__));
+                        contentgroupmapwriter.cast::<IAppxContentGroupMapWriter>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3721,7 +3733,7 @@ impl IAppxFactory3 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePackageReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePackageReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3732,7 +3744,7 @@ impl IAppxFactory3 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateManifestReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateManifestReader2)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
@@ -3743,7 +3755,7 @@ impl IAppxFactory3 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateAppInstallerReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateAppInstallerReader)(windows_core::Interface::as_raw(self), inputstream.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3776,9 +3788,9 @@ impl IAppxFactory3_Vtbl {
         unsafe extern "system" fn CreatePackageReader2<Identity: IAppxFactory3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, inputstream: *mut core::ffi::c_void, expecteddigest: windows_core::PCWSTR, packagereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxFactory3_Impl::CreatePackageReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute(&expecteddigest)) {
+                match IAppxFactory3_Impl::CreatePackageReader2(this, core::mem::transmute_copy(&inputstream), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        packagereader.write(core::mem::transmute(ok__));
+                        packagereader.cast::<IAppxPackageReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3791,9 +3803,9 @@ impl IAppxFactory3_Vtbl {
         unsafe extern "system" fn CreateManifestReader2<Identity: IAppxFactory3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, inputstream: *mut core::ffi::c_void, expecteddigest: windows_core::PCWSTR, manifestreader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxFactory3_Impl::CreateManifestReader2(this, core::mem::transmute_copy(&inputstream), core::mem::transmute(&expecteddigest)) {
+                match IAppxFactory3_Impl::CreateManifestReader2(this, core::mem::transmute_copy(&inputstream), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        manifestreader.write(core::mem::transmute(ok__));
+                        manifestreader.cast::<IAppxManifestReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3806,9 +3818,9 @@ impl IAppxFactory3_Vtbl {
         unsafe extern "system" fn CreateAppInstallerReader<Identity: IAppxFactory3_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, inputstream: *mut core::ffi::c_void, expecteddigest: windows_core::PCWSTR, appinstallerreader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxFactory3_Impl::CreateAppInstallerReader(this, core::mem::transmute_copy(&inputstream), core::mem::transmute(&expecteddigest)) {
+                match IAppxFactory3_Impl::CreateAppInstallerReader(this, core::mem::transmute_copy(&inputstream), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        appinstallerreader.write(core::mem::transmute(ok__));
+                        appinstallerreader.cast::<IAppxAppInstallerReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3841,7 +3853,7 @@ impl IAppxFactory4 {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreatePackageReaderFromSourceUri)(windows_core::Interface::as_raw(self), uri.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreatePackageReaderFromSourceUri)(windows_core::Interface::as_raw(self), uri.param().abi(), expecteddigest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3859,9 +3871,9 @@ impl IAppxFactory4_Vtbl {
         unsafe extern "system" fn CreatePackageReaderFromSourceUri<Identity: IAppxFactory4_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, uri: windows_core::PCWSTR, expecteddigest: windows_core::PCWSTR, packagereader: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxFactory4_Impl::CreatePackageReaderFromSourceUri(this, core::mem::transmute(&uri), core::mem::transmute(&expecteddigest)) {
+                match IAppxFactory4_Impl::CreatePackageReaderFromSourceUri(this, &*(&raw const uri).cast(), &*(&raw const expecteddigest).cast()) {
                     Ok(ok__) => {
-                        packagereader.write(core::mem::transmute(ok__));
+                        packagereader.cast::<IAppxPackageReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3907,7 +3919,7 @@ impl IAppxFile {
     pub unsafe fn GetStream(&self) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3985,7 +3997,7 @@ impl IAppxFile_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFile_Impl::GetStream(this) {
                     Ok(ok__) => {
-                        stream.write(core::mem::transmute(ok__));
+                        stream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4072,7 +4084,7 @@ impl IAppxFilesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxFile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -4108,7 +4120,7 @@ impl IAppxFilesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxFilesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        file.write(core::mem::transmute(ok__));
+                        file.cast::<IAppxFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4189,7 +4201,7 @@ impl IAppxManifestApplication_Vtbl {
         unsafe extern "system" fn GetStringValue<Identity: IAppxManifestApplication_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, name: windows_core::PCWSTR, value: *mut windows_core::PWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxManifestApplication_Impl::GetStringValue(this, core::mem::transmute(&name), core::mem::transmute_copy(&value))
+                IAppxManifestApplication_Impl::GetStringValue(this, &*(&raw const name).cast(), core::mem::transmute_copy(&value))
             }
         }
         unsafe extern "system" fn GetAppUserModelId<Identity: IAppxManifestApplication_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, appusermodelid: *mut windows_core::PWSTR) -> windows_core::HRESULT {
@@ -4215,7 +4227,7 @@ impl IAppxManifestApplicationsEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestApplication> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -4251,7 +4263,7 @@ impl IAppxManifestApplicationsEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestApplicationsEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        application.write(core::mem::transmute(ok__));
+                        application.cast::<IAppxManifestApplication>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4550,7 +4562,7 @@ impl IAppxManifestDriverConstraintsEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestDriverConstraint> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -4586,7 +4598,7 @@ impl IAppxManifestDriverConstraintsEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestDriverConstraintsEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        driverconstraint.write(core::mem::transmute(ok__));
+                        driverconstraint.cast::<IAppxManifestDriverConstraint>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4644,7 +4656,7 @@ impl IAppxManifestDriverDependenciesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestDriverDependency> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -4680,7 +4692,7 @@ impl IAppxManifestDriverDependenciesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestDriverDependenciesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        driverdependency.write(core::mem::transmute(ok__));
+                        driverdependency.cast::<IAppxManifestDriverDependency>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4738,7 +4750,7 @@ impl IAppxManifestDriverDependency {
     pub unsafe fn GetDriverConstraints(&self) -> windows_core::Result<IAppxManifestDriverConstraintsEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDriverConstraints)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDriverConstraints)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -4758,7 +4770,7 @@ impl IAppxManifestDriverDependency_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestDriverDependency_Impl::GetDriverConstraints(this) {
                     Ok(ok__) => {
-                        driverconstraints.write(core::mem::transmute(ok__));
+                        driverconstraints.cast::<IAppxManifestDriverConstraintsEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4781,7 +4793,7 @@ impl IAppxManifestHostRuntimeDependenciesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestHostRuntimeDependency> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -4817,7 +4829,7 @@ impl IAppxManifestHostRuntimeDependenciesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestHostRuntimeDependenciesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        hostruntimedependency.write(core::mem::transmute(ok__));
+                        hostruntimedependency.cast::<IAppxManifestHostRuntimeDependency>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4983,7 +4995,7 @@ impl IAppxManifestMainPackageDependenciesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestMainPackageDependency> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -5019,7 +5031,7 @@ impl IAppxManifestMainPackageDependenciesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestMainPackageDependenciesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        mainpackagedependency.write(core::mem::transmute(ok__));
+                        mainpackagedependency.cast::<IAppxManifestMainPackageDependency>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5135,7 +5147,7 @@ impl IAppxManifestOSPackageDependenciesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestOSPackageDependency> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -5171,7 +5183,7 @@ impl IAppxManifestOSPackageDependenciesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestOSPackageDependenciesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        ospackagedependency.write(core::mem::transmute(ok__));
+                        ospackagedependency.cast::<IAppxManifestOSPackageDependency>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5348,7 +5360,7 @@ impl IAppxManifestPackageDependenciesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestPackageDependency> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -5384,7 +5396,7 @@ impl IAppxManifestPackageDependenciesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestPackageDependenciesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        dependency.write(core::mem::transmute(ok__));
+                        dependency.cast::<IAppxManifestPackageDependency>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5734,7 +5746,7 @@ impl IAppxManifestPackageId_Vtbl {
         unsafe extern "system" fn ComparePublisher<Identity: IAppxManifestPackageId_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, other: windows_core::PCWSTR, issame: *mut windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxManifestPackageId_Impl::ComparePublisher(this, core::mem::transmute(&other)) {
+                match IAppxManifestPackageId_Impl::ComparePublisher(this, &*(&raw const other).cast()) {
                     Ok(ok__) => {
                         issame.write(ok__);
                         windows_core::HRESULT(0)
@@ -5863,7 +5875,7 @@ impl IAppxManifestProperties_Vtbl {
         unsafe extern "system" fn GetBoolValue<Identity: IAppxManifestProperties_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, name: windows_core::PCWSTR, value: *mut windows_core::BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxManifestProperties_Impl::GetBoolValue(this, core::mem::transmute(&name)) {
+                match IAppxManifestProperties_Impl::GetBoolValue(this, &*(&raw const name).cast()) {
                     Ok(ok__) => {
                         value.write(ok__);
                         windows_core::HRESULT(0)
@@ -5878,7 +5890,7 @@ impl IAppxManifestProperties_Vtbl {
         unsafe extern "system" fn GetStringValue<Identity: IAppxManifestProperties_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, name: windows_core::PCWSTR, value: *mut windows_core::PWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxManifestProperties_Impl::GetStringValue(this, core::mem::transmute(&name), core::mem::transmute_copy(&value))
+                IAppxManifestProperties_Impl::GetStringValue(this, &*(&raw const name).cast(), core::mem::transmute_copy(&value))
             }
         }
         Self {
@@ -5987,7 +5999,7 @@ impl IAppxManifestQualifiedResourcesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestQualifiedResource> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -6023,7 +6035,7 @@ impl IAppxManifestQualifiedResourcesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestQualifiedResourcesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        resource.write(core::mem::transmute(ok__));
+                        resource.cast::<IAppxManifestQualifiedResource>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6081,19 +6093,19 @@ impl IAppxManifestReader {
     pub unsafe fn GetPackageId(&self) -> windows_core::Result<IAppxManifestPackageId> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageId)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetProperties(&self) -> windows_core::Result<IAppxManifestProperties> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetProperties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetProperties)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetPackageDependencies(&self) -> windows_core::Result<IAppxManifestPackageDependenciesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPackageDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPackageDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetCapabilities(&self) -> windows_core::Result<APPX_CAPABILITIES> {
@@ -6105,13 +6117,13 @@ impl IAppxManifestReader {
     pub unsafe fn GetResources(&self) -> windows_core::Result<IAppxManifestResourcesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetResources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetResources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetDeviceCapabilities(&self) -> windows_core::Result<IAppxManifestDeviceCapabilitiesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeviceCapabilities)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeviceCapabilities)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -6127,14 +6139,14 @@ impl IAppxManifestReader {
     pub unsafe fn GetApplications(&self) -> windows_core::Result<IAppxManifestApplicationsEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetApplications)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetApplications)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "objidlbase")]
     pub unsafe fn GetStream(&self) -> windows_core::Result<super::IStream> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStream)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6178,7 +6190,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetPackageId(this) {
                     Ok(ok__) => {
-                        packageid.write(core::mem::transmute(ok__));
+                        packageid.cast::<IAppxManifestPackageId>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6193,7 +6205,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetProperties(this) {
                     Ok(ok__) => {
-                        packageproperties.write(core::mem::transmute(ok__));
+                        packageproperties.cast::<IAppxManifestProperties>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6208,7 +6220,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetPackageDependencies(this) {
                     Ok(ok__) => {
-                        dependencies.write(core::mem::transmute(ok__));
+                        dependencies.cast::<IAppxManifestPackageDependenciesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6238,7 +6250,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetResources(this) {
                     Ok(ok__) => {
-                        resources.write(core::mem::transmute(ok__));
+                        resources.cast::<IAppxManifestResourcesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6253,7 +6265,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetDeviceCapabilities(this) {
                     Ok(ok__) => {
-                        devicecapabilities.write(core::mem::transmute(ok__));
+                        devicecapabilities.cast::<IAppxManifestDeviceCapabilitiesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6266,7 +6278,7 @@ impl IAppxManifestReader_Vtbl {
         unsafe extern "system" fn GetPrerequisite<Identity: IAppxManifestReader_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, name: windows_core::PCWSTR, value: *mut super::UINT64) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxManifestReader_Impl::GetPrerequisite(this, core::mem::transmute(&name)) {
+                match IAppxManifestReader_Impl::GetPrerequisite(this, &*(&raw const name).cast()) {
                     Ok(ok__) => {
                         value.write(ok__);
                         windows_core::HRESULT(0)
@@ -6283,7 +6295,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetApplications(this) {
                     Ok(ok__) => {
-                        applications.write(core::mem::transmute(ok__));
+                        applications.cast::<IAppxManifestApplicationsEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6298,7 +6310,7 @@ impl IAppxManifestReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader_Impl::GetStream(this) {
                     Ok(ok__) => {
-                        manifeststream.write(core::mem::transmute(ok__));
+                        manifeststream.cast::<super::IStream>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6339,7 +6351,7 @@ impl IAppxManifestReader2 {
     pub unsafe fn GetQualifiedResources(&self) -> windows_core::Result<IAppxManifestQualifiedResourcesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetQualifiedResources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetQualifiedResources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6361,7 +6373,7 @@ impl IAppxManifestReader2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader2_Impl::GetQualifiedResources(this) {
                     Ok(ok__) => {
-                        resources.write(core::mem::transmute(ok__));
+                        resources.cast::<IAppxManifestQualifiedResourcesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6391,13 +6403,13 @@ impl IAppxManifestReader3 {
     pub unsafe fn GetCapabilitiesByCapabilityClass(&self, capabilityclass: APPX_CAPABILITY_CLASS_TYPE) -> windows_core::Result<IAppxManifestCapabilitiesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCapabilitiesByCapabilityClass)(windows_core::Interface::as_raw(self), capabilityclass, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCapabilitiesByCapabilityClass)(windows_core::Interface::as_raw(self), capabilityclass, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetTargetDeviceFamilies(&self) -> windows_core::Result<IAppxManifestTargetDeviceFamiliesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetTargetDeviceFamilies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetTargetDeviceFamilies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6421,7 +6433,7 @@ impl IAppxManifestReader3_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader3_Impl::GetCapabilitiesByCapabilityClass(this, core::mem::transmute_copy(&capabilityclass)) {
                     Ok(ok__) => {
-                        capabilities.write(core::mem::transmute(ok__));
+                        capabilities.cast::<IAppxManifestCapabilitiesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6436,7 +6448,7 @@ impl IAppxManifestReader3_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader3_Impl::GetTargetDeviceFamilies(this) {
                     Ok(ok__) => {
-                        targetdevicefamilies.write(core::mem::transmute(ok__));
+                        targetdevicefamilies.cast::<IAppxManifestTargetDeviceFamiliesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6470,7 +6482,7 @@ impl IAppxManifestReader4 {
     pub unsafe fn GetOptionalPackageInfo(&self) -> windows_core::Result<IAppxManifestOptionalPackageInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetOptionalPackageInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetOptionalPackageInfo)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6492,7 +6504,7 @@ impl IAppxManifestReader4_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader4_Impl::GetOptionalPackageInfo(this) {
                     Ok(ok__) => {
-                        optionalpackageinfo.write(core::mem::transmute(ok__));
+                        optionalpackageinfo.cast::<IAppxManifestOptionalPackageInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6516,7 +6528,7 @@ impl IAppxManifestReader5 {
     pub unsafe fn GetMainPackageDependencies(&self) -> windows_core::Result<IAppxManifestMainPackageDependenciesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetMainPackageDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetMainPackageDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6536,7 +6548,7 @@ impl IAppxManifestReader5_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader5_Impl::GetMainPackageDependencies(this) {
                     Ok(ok__) => {
-                        mainpackagedependencies.write(core::mem::transmute(ok__));
+                        mainpackagedependencies.cast::<IAppxManifestMainPackageDependenciesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6605,19 +6617,19 @@ impl IAppxManifestReader7 {
     pub unsafe fn GetDriverDependencies(&self) -> windows_core::Result<IAppxManifestDriverDependenciesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDriverDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDriverDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetOSPackageDependencies(&self) -> windows_core::Result<IAppxManifestOSPackageDependenciesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetOSPackageDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetOSPackageDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHostRuntimeDependencies(&self) -> windows_core::Result<IAppxManifestHostRuntimeDependenciesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetHostRuntimeDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetHostRuntimeDependencies)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -6641,7 +6653,7 @@ impl IAppxManifestReader7_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader7_Impl::GetDriverDependencies(this) {
                     Ok(ok__) => {
-                        driverdependencies.write(core::mem::transmute(ok__));
+                        driverdependencies.cast::<IAppxManifestDriverDependenciesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6656,7 +6668,7 @@ impl IAppxManifestReader7_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader7_Impl::GetOSPackageDependencies(this) {
                     Ok(ok__) => {
-                        ospackagedependencies.write(core::mem::transmute(ok__));
+                        ospackagedependencies.cast::<IAppxManifestOSPackageDependenciesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6671,7 +6683,7 @@ impl IAppxManifestReader7_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestReader7_Impl::GetHostRuntimeDependencies(this) {
                     Ok(ok__) => {
-                        hostruntimedependencies.write(core::mem::transmute(ok__));
+                        hostruntimedependencies.cast::<IAppxManifestHostRuntimeDependenciesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6781,7 +6793,7 @@ impl IAppxManifestTargetDeviceFamiliesEnumerator {
     pub unsafe fn GetCurrent(&self) -> windows_core::Result<IAppxManifestTargetDeviceFamily> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCurrent)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetHasCurrent(&self) -> windows_core::Result<windows_core::BOOL> {
@@ -6817,7 +6829,7 @@ impl IAppxManifestTargetDeviceFamiliesEnumerator_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxManifestTargetDeviceFamiliesEnumerator_Impl::GetCurrent(this) {
                     Ok(ok__) => {
-                        targetdevicefamily.write(core::mem::transmute(ok__));
+                        targetdevicefamily.cast::<IAppxManifestTargetDeviceFamily>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7056,7 +7068,7 @@ impl IAppxPackageEditor_Vtbl {
         unsafe extern "system" fn SetWorkingDirectory<Identity: IAppxPackageEditor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, workingdirectory: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxPackageEditor_Impl::SetWorkingDirectory(this, core::mem::transmute(&workingdirectory))
+                IAppxPackageEditor_Impl::SetWorkingDirectory(this, &*(&raw const workingdirectory).cast())
             }
         }
         unsafe extern "system" fn CreateDeltaPackage<Identity: IAppxPackageEditor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, updatedpackagestream: *mut core::ffi::c_void, baselinepackagestream: *mut core::ffi::c_void, deltapackagestream: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -7068,7 +7080,7 @@ impl IAppxPackageEditor_Vtbl {
         unsafe extern "system" fn CreateDeltaPackageUsingBaselineBlockMap<Identity: IAppxPackageEditor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, updatedpackagestream: *mut core::ffi::c_void, baselineblockmapstream: *mut core::ffi::c_void, baselinepackagefullname: windows_core::PCWSTR, deltapackagestream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxPackageEditor_Impl::CreateDeltaPackageUsingBaselineBlockMap(this, core::mem::transmute_copy(&updatedpackagestream), core::mem::transmute_copy(&baselineblockmapstream), core::mem::transmute(&baselinepackagefullname), core::mem::transmute_copy(&deltapackagestream))
+                IAppxPackageEditor_Impl::CreateDeltaPackageUsingBaselineBlockMap(this, core::mem::transmute_copy(&updatedpackagestream), core::mem::transmute_copy(&baselineblockmapstream), &*(&raw const baselinepackagefullname).cast(), core::mem::transmute_copy(&deltapackagestream))
             }
         }
         unsafe extern "system" fn UpdatePackage<Identity: IAppxPackageEditor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, baselinepackagestream: *mut core::ffi::c_void, deltapackagestream: *mut core::ffi::c_void, updateoption: APPX_PACKAGE_EDITOR_UPDATE_PACKAGE_OPTION) -> windows_core::HRESULT {
@@ -7111,13 +7123,13 @@ impl IAppxPackageReader {
     pub unsafe fn GetBlockMap(&self) -> windows_core::Result<IAppxBlockMapReader> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetBlockMap)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetBlockMap)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetFootprintFile(&self, r#type: APPX_FOOTPRINT_FILE_TYPE) -> windows_core::Result<IAppxFile> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFootprintFile)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFootprintFile)(windows_core::Interface::as_raw(self), r#type, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetPayloadFile<P0>(&self, filename: P0) -> windows_core::Result<IAppxFile>
@@ -7126,19 +7138,19 @@ impl IAppxPackageReader {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPayloadFile)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPayloadFile)(windows_core::Interface::as_raw(self), filename.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetPayloadFiles(&self) -> windows_core::Result<IAppxFilesEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPayloadFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPayloadFiles)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetManifest(&self) -> windows_core::Result<IAppxManifestReader> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetManifest)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetManifest)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -7166,7 +7178,7 @@ impl IAppxPackageReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxPackageReader_Impl::GetBlockMap(this) {
                     Ok(ok__) => {
-                        blockmapreader.write(core::mem::transmute(ok__));
+                        blockmapreader.cast::<IAppxBlockMapReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7181,7 +7193,7 @@ impl IAppxPackageReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxPackageReader_Impl::GetFootprintFile(this, core::mem::transmute_copy(&r#type)) {
                     Ok(ok__) => {
-                        file.write(core::mem::transmute(ok__));
+                        file.cast::<IAppxFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7194,9 +7206,9 @@ impl IAppxPackageReader_Vtbl {
         unsafe extern "system" fn GetPayloadFile<Identity: IAppxPackageReader_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, file: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IAppxPackageReader_Impl::GetPayloadFile(this, core::mem::transmute(&filename)) {
+                match IAppxPackageReader_Impl::GetPayloadFile(this, &*(&raw const filename).cast()) {
                     Ok(ok__) => {
-                        file.write(core::mem::transmute(ok__));
+                        file.cast::<IAppxFile>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7211,7 +7223,7 @@ impl IAppxPackageReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxPackageReader_Impl::GetPayloadFiles(this) {
                     Ok(ok__) => {
-                        filesenumerator.write(core::mem::transmute(ok__));
+                        filesenumerator.cast::<IAppxFilesEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7226,7 +7238,7 @@ impl IAppxPackageReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxPackageReader_Impl::GetManifest(this) {
                     Ok(ok__) => {
-                        manifestreader.write(core::mem::transmute(ok__));
+                        manifestreader.cast::<IAppxManifestReader>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7294,7 +7306,7 @@ impl IAppxPackageWriter_Vtbl {
         unsafe extern "system" fn AddPayloadFile<Identity: IAppxPackageWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, filename: windows_core::PCWSTR, contenttype: windows_core::PCWSTR, compressionoption: APPX_COMPRESSION_OPTION, inputstream: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxPackageWriter_Impl::AddPayloadFile(this, core::mem::transmute(&filename), core::mem::transmute(&contenttype), core::mem::transmute_copy(&compressionoption), core::mem::transmute_copy(&inputstream))
+                IAppxPackageWriter_Impl::AddPayloadFile(this, &*(&raw const filename).cast(), &*(&raw const contenttype).cast(), core::mem::transmute_copy(&compressionoption), core::mem::transmute_copy(&inputstream))
             }
         }
         unsafe extern "system" fn Close<Identity: IAppxPackageWriter_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, manifest: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -7435,13 +7447,13 @@ impl IAppxPackagingDiagnosticEventSink_Vtbl {
         unsafe extern "system" fn ReportContextChange<Identity: IAppxPackagingDiagnosticEventSink_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, changetype: APPX_PACKAGING_CONTEXT_CHANGE_TYPE, contextid: super::LONG, contextname: windows_core::PCSTR, contextmessage: windows_core::PCWSTR, detailsmessage: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxPackagingDiagnosticEventSink_Impl::ReportContextChange(this, core::mem::transmute_copy(&changetype), core::mem::transmute_copy(&contextid), core::mem::transmute(&contextname), core::mem::transmute(&contextmessage), core::mem::transmute(&detailsmessage))
+                IAppxPackagingDiagnosticEventSink_Impl::ReportContextChange(this, core::mem::transmute_copy(&changetype), core::mem::transmute_copy(&contextid), &*(&raw const contextname).cast(), &*(&raw const contextmessage).cast(), &*(&raw const detailsmessage).cast())
             }
         }
         unsafe extern "system" fn ReportError<Identity: IAppxPackagingDiagnosticEventSink_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, errormessage: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IAppxPackagingDiagnosticEventSink_Impl::ReportError(this, core::mem::transmute(&errormessage))
+                IAppxPackagingDiagnosticEventSink_Impl::ReportError(this, &*(&raw const errormessage).cast())
             }
         }
         Self {
@@ -7496,13 +7508,13 @@ impl IAppxSourceContentGroupMapReader {
     pub unsafe fn GetRequiredGroup(&self) -> windows_core::Result<IAppxContentGroup> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetRequiredGroup)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetRequiredGroup)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetAutomaticGroups(&self) -> windows_core::Result<IAppxContentGroupsEnumerator> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetAutomaticGroups)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetAutomaticGroups)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -7524,7 +7536,7 @@ impl IAppxSourceContentGroupMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxSourceContentGroupMapReader_Impl::GetRequiredGroup(this) {
                     Ok(ok__) => {
-                        requiredgroup.write(core::mem::transmute(ok__));
+                        requiredgroup.cast::<IAppxContentGroup>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7539,7 +7551,7 @@ impl IAppxSourceContentGroupMapReader_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IAppxSourceContentGroupMapReader_Impl::GetAutomaticGroups(this) {
                     Ok(ok__) => {
-                        automaticgroupsenumerator.write(core::mem::transmute(ok__));
+                        automaticgroupsenumerator.cast::<IAppxContentGroupsEnumerator>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

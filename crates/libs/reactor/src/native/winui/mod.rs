@@ -22,7 +22,7 @@ use content_dialog::*;
 use dependency::*;
 use event_queue::*;
 use images::*;
-use objects::set_properties;
+use objects::*;
 use relations::*;
 use style::*;
 use virtualization::*;
@@ -47,18 +47,18 @@ struct NativeTreeNode {
     content: Option<ObjectId>,
 }
 
-struct NativeValueEvent<T> {
-    subscription: Option<NativeSubscription<T>>,
+struct NativeCallbackEvent<C> {
+    subscription: Option<NativeSubscription<C>>,
 }
 
 /// A subscribed native event. Replacing the callback keeps the subscription; removing it ends the
 /// subscription and invalidates occurrences still queued or pending under it.
-struct NativeSubscription<T> {
-    callback: Callback<T>,
+struct NativeSubscription<C> {
+    callback: C,
     live: Rc<Cell<bool>>,
 }
 
-impl<T> Clone for NativeSubscription<T> {
+impl<C: Clone> Clone for NativeSubscription<C> {
     fn clone(&self) -> Self {
         Self {
             callback: self.callback.clone(),
@@ -67,7 +67,7 @@ impl<T> Clone for NativeSubscription<T> {
     }
 }
 
-impl<T: EventArg> NativeSubscription<T> {
+impl<T: EventArg> NativeSubscription<Callback<T>> {
     /// The handler for an occurrence under this subscription.
     fn handler(self, value: T::Native) -> QueuedHandler {
         QueuedHandler::Callback {
@@ -77,14 +77,14 @@ impl<T: EventArg> NativeSubscription<T> {
     }
 }
 
-impl<T> Default for NativeValueEvent<T> {
+impl<C> Default for NativeCallbackEvent<C> {
     fn default() -> Self {
         Self { subscription: None }
     }
 }
 
-impl<T> NativeValueEvent<T> {
-    fn set(&mut self, callback: Option<Callback<T>>) {
+impl<C> NativeCallbackEvent<C> {
+    fn set(&mut self, callback: Option<C>) {
         match (&mut self.subscription, callback) {
             (Some(subscription), Some(callback)) => subscription.callback = callback,
             (_, callback) => {
@@ -98,7 +98,9 @@ impl<T> NativeValueEvent<T> {
             }
         }
     }
+}
 
+impl<T> NativeCallbackEvent<Callback<T>> {
     /// The handler for an occurrence firing now under the current subscription.
     fn handler(&self, value: T::Native) -> Option<QueuedHandler>
     where
@@ -126,6 +128,7 @@ impl<T> NativeRoutedValueEvent<T> {
     }
 }
 
+type NativeValueEvent<T> = NativeCallbackEvent<Callback<T>>;
 type NativeBoolEvent = NativeValueEvent<bool>;
 type NativeColorEvent = NativeValueEvent<Color>;
 type NativeCharacterEventInfoEvent = NativeRoutedValueEvent<CharacterEventInfo>;
@@ -139,7 +142,7 @@ type NativeOptionalDateTimeEvent = NativeValueEvent<Option<DateTime>>;
 type NativeOptionalF64Event = NativeValueEvent<Option<f64>>;
 type NativeOptionalTimeSpanEvent = NativeValueEvent<Option<TimeSpan>>;
 type NativeNavigationViewDisplayModeEvent = NativeValueEvent<NavigationViewDisplayMode>;
-type NativePointerEventInfoEvent = NativeValueEvent<PointerEventInfo>;
+type NativePointerEventInfoEvent = NativeCallbackEvent<PointerCallback>;
 type NativeKeyEvent = NativeValueEvent<Key>;
 type NativeKeyEventInfoEvent = NativeRoutedValueEvent<KeyEventInfo>;
 type NativeKeysEvent = NativeValueEvent<Vec<Key>>;
@@ -212,7 +215,7 @@ macro_rules! generated_collection {
                 match self {
                     Self::Visual(value) => value.InsertAt(index, child).map_err(Into::into),
                     Self::Inspectable(value) => value
-                        .InsertAt(index, &child.cast::<IInspectable>()?)
+                        .InsertAt(index, child)
                         .map_err(Into::into),
                     $(Self::$item(value) => value
                         .InsertAt(index, &child.cast::<native::$item>()?)
@@ -225,7 +228,7 @@ macro_rules! generated_collection {
                 let found = match self {
                     Self::Visual(value) => value.IndexOf(child, &mut index)?,
                     Self::Inspectable(value) => {
-                        value.IndexOf(&child.cast::<IInspectable>()?, &mut index)?
+                        value.IndexOf(child, &mut index)?
                     }
                     $(Self::$item(value) => {
                         value.IndexOf(&child.cast::<native::$item>()?, &mut index)?
@@ -249,7 +252,7 @@ include!("../generated.rs");
 
 enum ObservationSubscription {
     SwapChainPanel {
-        _rendering: windows_core::EventRevoker,
+        _rendering: Option<windows_core::EventRevoker>,
         _scale: windows_core::EventRevoker,
         _size: windows_core::EventRevoker,
     },
@@ -263,9 +266,40 @@ enum ObservationSubscription {
         _size: windows_core::EventRevoker,
     },
     ScrollView {
+        _view: windows_core::EventRevoker,
+        _extent: windows_core::EventRevoker,
+        _size: windows_core::EventRevoker,
+    },
+    ScrollViewer {
         _changed: windows_core::EventRevoker,
         _size: windows_core::EventRevoker,
     },
+}
+
+/// Scrolls requested on one `ScrollView`, keyed by the correlation id its `ScrollCompleted`
+/// event reports.
+struct ScrollRequests {
+    _completed: windows_core::EventRevoker,
+    completions: HashMap<i32, Callback<Result<ScrollViewMetrics, IntegrationError>>>,
+}
+
+impl ScrollRequests {
+    fn cancel(self) {
+        for completion in self.completions.into_values() {
+            completion.call(Err(IntegrationError::Unavailable));
+        }
+    }
+}
+
+fn scroll_view_metrics(view: &native::ScrollView) -> windows_core::Result<ScrollViewMetrics> {
+    Ok(ScrollViewMetrics {
+        horizontal_offset: view.HorizontalOffset()?,
+        vertical_offset: view.VerticalOffset()?,
+        viewport_width: view.ViewportWidth()?,
+        viewport_height: view.ViewportHeight()?,
+        extent_width: view.ExtentWidth()?,
+        extent_height: view.ExtentHeight()?,
+    })
 }
 
 struct WebViewInitialization {
@@ -423,17 +457,42 @@ fn set_opacity_transition(
     Ok(())
 }
 
-fn set_implicit_scale(element: &native::UIElement, value: f64) -> Result<(), WinUiError> {
-    let framework = element.cast::<native::IFrameworkElement>()?;
+fn set_scale_center(element: &native::UIElement, size: native::Size) -> windows_core::Result<()> {
     element.SetCenterPoint(native::Vector3 {
-        x: framework.ActualWidth()? as f32 / 2.0,
-        y: framework.ActualHeight()? as f32 / 2.0,
+        x: size.width / 2.0,
+        y: size.height / 2.0,
         z: 0.0,
-    })?;
-    let value = value as f32;
+    })
+}
+
+fn set_implicit_scale(
+    element: &native::UIElement,
+    subscription: &RefCell<Option<windows_core::EventRevoker>>,
+    value: [f64; 2],
+) -> Result<(), WinUiError> {
+    let framework = element.cast::<native::IFrameworkElement>()?;
+    let mut subscription = subscription.borrow_mut();
+    if subscription.is_none() {
+        // Keep centering through a transition back to the default scale, until the owner is removed.
+        *subscription = Some(framework.SizeChanged(local::handler::<
+            IInspectable,
+            native::SizeChangedEventArgs,
+            _,
+        >(|sender, args| {
+            let element = sender.unwrap().cast::<native::UIElement>().unwrap();
+            set_scale_center(&element, args.unwrap().NewSize().unwrap()).unwrap();
+        }))?);
+    }
+    set_scale_center(
+        element,
+        native::Size {
+            width: framework.ActualWidth()? as f32,
+            height: framework.ActualHeight()? as f32,
+        },
+    )?;
     element.SetScale(native::Vector3 {
-        x: value,
-        y: value,
+        x: value[0] as f32,
+        y: value[1] as f32,
         z: 1.0,
     })?;
     Ok(())
@@ -485,7 +544,7 @@ fn complete_webview_initialization(
     }
 }
 
-fn scroll_view(viewer: &native::ScrollViewer, is_intermediate: bool) -> ScrollPosition {
+fn scroll_viewer_position(viewer: &native::ScrollViewer, is_intermediate: bool) -> ScrollPosition {
     ScrollPosition {
         horizontal_offset: viewer.HorizontalOffset().unwrap_or(0.0),
         vertical_offset: viewer.VerticalOffset().unwrap_or(0.0),
@@ -516,9 +575,13 @@ fn observe_xaml_scale(
         Err(error) => return Err(error),
     };
     callback.call(root.RasterizationScale()?);
-    changed.replace(Some(root.Changed(move |sender, _| {
+    changed.replace(Some(root.Changed(local::handler::<
+        native::XamlRoot,
+        _,
+        _,
+    >(move |sender, _| {
         callback.call(sender.as_ref().unwrap().RasterizationScale().unwrap());
-    })?));
+    }))?));
     Ok(())
 }
 
@@ -540,10 +603,10 @@ pub struct WinUiAdapter {
     data_text_key: HSTRING,
     data_text_visibility_key: HSTRING,
     event_queue: Rc<NativeEventQueue>,
-    retirements: HashMap<ObjectId, NativeRetirement>,
     virtual_items: HashMap<ObjectId, NativeVirtualItems>,
     observations: HashMap<(ObjectId, u64), ObservationSubscription>,
     webview_initializations: Rc<RefCell<HashMap<ObjectId, WebViewInitialization>>>,
+    scroll_requests: Rc<RefCell<HashMap<ObjectId, ScrollRequests>>>,
     windows: Rc<RefCell<Vec<Weak<NativeWindowState>>>>,
     window_title_bar: Option<(ObjectId, WindowTitleBarHeight)>,
     tooltips: HashMap<ObjectId, (ObjectId, TooltipPlacement)>,
@@ -559,14 +622,6 @@ pub struct WinUiAdapter {
     style_cache: HashMap<NativeStyleKey, native::Style>,
     pending_focus_states: Rc<RefCell<HashMap<ObjectId, ElementFocusState>>>,
     tree_node_texts: Rc<RefCell<HashMap<usize, Rc<str>>>>,
-}
-
-struct NativeRetirement {
-    nodes: Vec<ObjectId>,
-    parent: ObjectId,
-    relation: RelationId,
-    timer: native::DispatcherQueueTimer,
-    _tick: windows_core::EventRevoker,
 }
 
 impl Default for WinUiAdapter {
@@ -586,10 +641,10 @@ impl Default for WinUiAdapter {
             data_text_key: HSTRING::from("Text"),
             data_text_visibility_key: HSTRING::from("TextVisibility"),
             event_queue: Rc::new(NativeEventQueue::default()),
-            retirements: HashMap::new(),
             virtual_items: HashMap::new(),
             observations: HashMap::new(),
             webview_initializations: Rc::new(RefCell::new(HashMap::new())),
+            scroll_requests: Rc::new(RefCell::new(HashMap::new())),
             windows: Rc::new(RefCell::new(Vec::new())),
             window_title_bar: None,
             tooltips: HashMap::new(),
@@ -611,10 +666,6 @@ impl Default for WinUiAdapter {
 
 impl Drop for WinUiAdapter {
     fn drop(&mut self) {
-        for retirement in self.retirements.values() {
-            _ = retirement.timer.Stop();
-        }
-        self.retirements.clear();
         let hide = self.event_queue.content_dialogs.borrow_mut().reset();
         for dialog in hide {
             _ = dialog.Hide();
@@ -633,6 +684,11 @@ impl Drop for WinUiAdapter {
                 Some(Handle::Generated(GeneratedHandle::Button(control))) => {
                     _ = control.value.SetFlyout(None::<&native::FlyoutBase>);
                 }
+                Some(Handle::Generated(GeneratedHandle::DropDownButton(control))) => {
+                    if let Ok(button) = control.value.cast::<native::IButton>() {
+                        _ = button.SetFlyout(None::<&native::FlyoutBase>);
+                    }
+                }
                 Some(Handle::Generated(GeneratedHandle::SplitButton(control))) => {
                     _ = control.value.SetFlyout(None::<&native::FlyoutBase>);
                 }
@@ -646,6 +702,10 @@ impl Drop for WinUiAdapter {
             for completion in initialization.completions {
                 completion.call(Err(IntegrationError::Unavailable));
             }
+        }
+        let scrolls = std::mem::take(&mut *self.scroll_requests.borrow_mut());
+        for requests in scrolls.into_values() {
+            requests.cancel();
         }
     }
 }

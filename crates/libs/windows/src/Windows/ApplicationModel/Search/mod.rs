@@ -1,10 +1,6 @@
 #[cfg(feature = "ApplicationModel_Search_Core")]
 pub mod Core;
-windows_core::imp::define_interface!(ILocalContentSuggestionSettings, ILocalContentSuggestionSettings_Vtbl, 0xeeaeb062_743d_456e_84a3_23f06f2d15d7);
-impl windows_core::RuntimeType for ILocalContentSuggestionSettings {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ILocalContentSuggestionSettings");
-}
+windows_core::imp::define_winrt_interface!(ILocalContentSuggestionSettings, ILocalContentSuggestionSettings_Vtbl, 0xeeaeb062_743d_456e_84a3_23f06f2d15d7, b"Windows.ApplicationModel.Search.ILocalContentSuggestionSettings");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ILocalContentSuggestionSettings_Vtbl {
@@ -19,11 +15,7 @@ pub struct ILocalContentSuggestionSettings_Vtbl {
     pub AqsFilter: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub PropertiesToMatch: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPane, ISearchPane_Vtbl, 0xfdacec38_3700_4d73_91a1_2f998674238a);
-impl windows_core::RuntimeType for ISearchPane {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPane");
-}
+windows_core::imp::define_winrt_interface!(ISearchPane, ISearchPane_Vtbl, 0xfdacec38_3700_4d73_91a1_2f998674238a, b"Windows.ApplicationModel.Search.ISearchPane");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPane_Vtbl {
@@ -54,11 +46,7 @@ pub struct ISearchPane_Vtbl {
     pub ShowOnKeyboardInput: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub TrySetQueryText: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneQueryChangedEventArgs, ISearchPaneQueryChangedEventArgs_Vtbl, 0x3c064fe9_2351_4248_a529_7110f464a785);
-impl windows_core::RuntimeType for ISearchPaneQueryChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneQueryChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneQueryChangedEventArgs, ISearchPaneQueryChangedEventArgs_Vtbl, 0x3c064fe9_2351_4248_a529_7110f464a785, b"Windows.ApplicationModel.Search.ISearchPaneQueryChangedEventArgs");
 windows_core::imp::interface_hierarchy!(ISearchPaneQueryChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl ISearchPaneQueryChangedEventArgs {
     pub fn QueryText(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -76,7 +64,7 @@ impl ISearchPaneQueryChangedEventArgs {
     pub fn LinguisticDetails(&self) -> windows_core::Result<SearchPaneQueryLinguisticDetails> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LinguisticDetails)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LinguisticDetails)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -95,8 +83,7 @@ impl ISearchPaneQueryChangedEventArgs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISearchPaneQueryChangedEventArgs_Impl::QueryText(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -111,8 +98,7 @@ impl ISearchPaneQueryChangedEventArgs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISearchPaneQueryChangedEventArgs_Impl::Language(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -127,8 +113,7 @@ impl ISearchPaneQueryChangedEventArgs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISearchPaneQueryChangedEventArgs_Impl::LinguisticDetails(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -139,7 +124,7 @@ impl ISearchPaneQueryChangedEventArgs_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ISearchPaneQueryChangedEventArgs, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             QueryText: QueryText::<Identity, OFFSET>,
             Language: Language::<Identity, OFFSET>,
             LinguisticDetails: LinguisticDetails::<Identity, OFFSET>,
@@ -157,11 +142,7 @@ pub struct ISearchPaneQueryChangedEventArgs_Vtbl {
     pub Language: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub LinguisticDetails: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneQueryLinguisticDetails, ISearchPaneQueryLinguisticDetails_Vtbl, 0x82fb460e_0940_4b6d_b8d0_642b30989e15);
-impl windows_core::RuntimeType for ISearchPaneQueryLinguisticDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneQueryLinguisticDetails");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneQueryLinguisticDetails, ISearchPaneQueryLinguisticDetails_Vtbl, 0x82fb460e_0940_4b6d_b8d0_642b30989e15, b"Windows.ApplicationModel.Search.ISearchPaneQueryLinguisticDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneQueryLinguisticDetails_Vtbl {
@@ -170,11 +151,7 @@ pub struct ISearchPaneQueryLinguisticDetails_Vtbl {
     pub QueryTextCompositionStart: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
     pub QueryTextCompositionLength: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneQuerySubmittedEventArgs, ISearchPaneQuerySubmittedEventArgs_Vtbl, 0x143ba4fc_e9c5_4736_91b2_e8eb9cb88356);
-impl windows_core::RuntimeType for ISearchPaneQuerySubmittedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneQuerySubmittedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneQuerySubmittedEventArgs, ISearchPaneQuerySubmittedEventArgs_Vtbl, 0x143ba4fc_e9c5_4736_91b2_e8eb9cb88356, b"Windows.ApplicationModel.Search.ISearchPaneQuerySubmittedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneQuerySubmittedEventArgs_Vtbl {
@@ -182,55 +159,35 @@ pub struct ISearchPaneQuerySubmittedEventArgs_Vtbl {
     pub QueryText: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Language: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails, ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails_Vtbl, 0x460c92e5_4c32_4538_a4d4_b6b4400d140f);
-impl windows_core::RuntimeType for ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails, ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails_Vtbl, 0x460c92e5_4c32_4538_a4d4_b6b4400d140f, b"Windows.ApplicationModel.Search.ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub LinguisticDetails: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneResultSuggestionChosenEventArgs, ISearchPaneResultSuggestionChosenEventArgs_Vtbl, 0xc8316cc0_aed2_41e0_bce0_c26ca74f85ec);
-impl windows_core::RuntimeType for ISearchPaneResultSuggestionChosenEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneResultSuggestionChosenEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneResultSuggestionChosenEventArgs, ISearchPaneResultSuggestionChosenEventArgs_Vtbl, 0xc8316cc0_aed2_41e0_bce0_c26ca74f85ec, b"Windows.ApplicationModel.Search.ISearchPaneResultSuggestionChosenEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneResultSuggestionChosenEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Tag: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneStatics, ISearchPaneStatics_Vtbl, 0x9572adf1_8f1d_481f_a15b_c61655f16a0e);
-impl windows_core::RuntimeType for ISearchPaneStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneStatics");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneStatics, ISearchPaneStatics_Vtbl, 0x9572adf1_8f1d_481f_a15b_c61655f16a0e, b"Windows.ApplicationModel.Search.ISearchPaneStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetForCurrentView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneStaticsWithHideThisApplication, ISearchPaneStaticsWithHideThisApplication_Vtbl, 0x00732830_50f1_4d03_99ac_c6644c8ed8b5);
-impl windows_core::RuntimeType for ISearchPaneStaticsWithHideThisApplication {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneStaticsWithHideThisApplication");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneStaticsWithHideThisApplication, ISearchPaneStaticsWithHideThisApplication_Vtbl, 0x00732830_50f1_4d03_99ac_c6644c8ed8b5, b"Windows.ApplicationModel.Search.ISearchPaneStaticsWithHideThisApplication");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneStaticsWithHideThisApplication_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub HideThisApplication: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneSuggestionsRequest, ISearchPaneSuggestionsRequest_Vtbl, 0x81b10b1c_e561_4093_9b4d_2ad482794a53);
-impl windows_core::RuntimeType for ISearchPaneSuggestionsRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneSuggestionsRequest");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneSuggestionsRequest, ISearchPaneSuggestionsRequest_Vtbl, 0x81b10b1c_e561_4093_9b4d_2ad482794a53, b"Windows.ApplicationModel.Search.ISearchPaneSuggestionsRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneSuggestionsRequest_Vtbl {
@@ -239,44 +196,28 @@ pub struct ISearchPaneSuggestionsRequest_Vtbl {
     pub SearchSuggestionCollection: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneSuggestionsRequestDeferral, ISearchPaneSuggestionsRequestDeferral_Vtbl, 0xa0d009f7_8748_4ee2_ad44_afa6be997c51);
-impl windows_core::RuntimeType for ISearchPaneSuggestionsRequestDeferral {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneSuggestionsRequestDeferral");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneSuggestionsRequestDeferral, ISearchPaneSuggestionsRequestDeferral_Vtbl, 0xa0d009f7_8748_4ee2_ad44_afa6be997c51, b"Windows.ApplicationModel.Search.ISearchPaneSuggestionsRequestDeferral");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneSuggestionsRequestDeferral_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Complete: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneSuggestionsRequestedEventArgs, ISearchPaneSuggestionsRequestedEventArgs_Vtbl, 0xc89b8a2f_ac56_4460_8d2f_80023bec4fc5);
-impl windows_core::RuntimeType for ISearchPaneSuggestionsRequestedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneSuggestionsRequestedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneSuggestionsRequestedEventArgs, ISearchPaneSuggestionsRequestedEventArgs_Vtbl, 0xc89b8a2f_ac56_4460_8d2f_80023bec4fc5, b"Windows.ApplicationModel.Search.ISearchPaneSuggestionsRequestedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneSuggestionsRequestedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Request: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchPaneVisibilityChangedEventArgs, ISearchPaneVisibilityChangedEventArgs_Vtbl, 0x3c4d3046_ac4b_49f2_97d6_020e6182cb9c);
-impl windows_core::RuntimeType for ISearchPaneVisibilityChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchPaneVisibilityChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ISearchPaneVisibilityChangedEventArgs, ISearchPaneVisibilityChangedEventArgs_Vtbl, 0x3c4d3046_ac4b_49f2_97d6_020e6182cb9c, b"Windows.ApplicationModel.Search.ISearchPaneVisibilityChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchPaneVisibilityChangedEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Visible: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchQueryLinguisticDetails, ISearchQueryLinguisticDetails_Vtbl, 0x46a1205b_69c9_4745_b72f_a8a4fc8f24ae);
-impl windows_core::RuntimeType for ISearchQueryLinguisticDetails {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchQueryLinguisticDetails");
-}
+windows_core::imp::define_winrt_interface!(ISearchQueryLinguisticDetails, ISearchQueryLinguisticDetails_Vtbl, 0x46a1205b_69c9_4745_b72f_a8a4fc8f24ae, b"Windows.ApplicationModel.Search.ISearchQueryLinguisticDetails");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchQueryLinguisticDetails_Vtbl {
@@ -285,22 +226,14 @@ pub struct ISearchQueryLinguisticDetails_Vtbl {
     pub QueryTextCompositionStart: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
     pub QueryTextCompositionLength: unsafe extern "system" fn(*mut core::ffi::c_void, *mut u32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchQueryLinguisticDetailsFactory, ISearchQueryLinguisticDetailsFactory_Vtbl, 0xcac6c3b8_3c64_4dfd_ad9f_479e4d4065a4);
-impl windows_core::RuntimeType for ISearchQueryLinguisticDetailsFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchQueryLinguisticDetailsFactory");
-}
+windows_core::imp::define_winrt_interface!(ISearchQueryLinguisticDetailsFactory, ISearchQueryLinguisticDetailsFactory_Vtbl, 0xcac6c3b8_3c64_4dfd_ad9f_479e4d4065a4, b"Windows.ApplicationModel.Search.ISearchQueryLinguisticDetailsFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchQueryLinguisticDetailsFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub CreateInstance: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, u32, u32, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchSuggestionCollection, ISearchSuggestionCollection_Vtbl, 0x323a8a4b_fbea_4446_abbc_3da7915fdd3a);
-impl windows_core::RuntimeType for ISearchSuggestionCollection {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchSuggestionCollection");
-}
+windows_core::imp::define_winrt_interface!(ISearchSuggestionCollection, ISearchSuggestionCollection_Vtbl, 0x323a8a4b_fbea_4446_abbc_3da7915fdd3a, b"Windows.ApplicationModel.Search.ISearchSuggestionCollection");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchSuggestionCollection_Vtbl {
@@ -314,11 +247,7 @@ pub struct ISearchSuggestionCollection_Vtbl {
     AppendResultSuggestion: usize,
     pub AppendSearchSeparator: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchSuggestionsRequest, ISearchSuggestionsRequest_Vtbl, 0x4e4e26a7_44e5_4039_9099_6000ead1f0c6);
-impl windows_core::RuntimeType for ISearchSuggestionsRequest {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchSuggestionsRequest");
-}
+windows_core::imp::define_winrt_interface!(ISearchSuggestionsRequest, ISearchSuggestionsRequest_Vtbl, 0x4e4e26a7_44e5_4039_9099_6000ead1f0c6, b"Windows.ApplicationModel.Search.ISearchSuggestionsRequest");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchSuggestionsRequest_Vtbl {
@@ -327,11 +256,7 @@ pub struct ISearchSuggestionsRequest_Vtbl {
     pub SearchSuggestionCollection: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetDeferral: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchSuggestionsRequestDeferral, ISearchSuggestionsRequestDeferral_Vtbl, 0xb71598a9_c065_456d_a845_1eccec5dc28b);
-impl windows_core::RuntimeType for ISearchSuggestionsRequestDeferral {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.ISearchSuggestionsRequestDeferral");
-}
+windows_core::imp::define_winrt_interface!(ISearchSuggestionsRequestDeferral, ISearchSuggestionsRequestDeferral_Vtbl, 0xb71598a9_c065_456d_a845_1eccec5dc28b, b"Windows.ApplicationModel.Search.ISearchSuggestionsRequestDeferral");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchSuggestionsRequestDeferral_Vtbl {
@@ -363,7 +288,7 @@ impl LocalContentSuggestionSettings {
     pub fn Locations(&self) -> windows_core::Result<windows_collections::IVector<super::super::Storage::StorageFolder>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Locations)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Locations)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetAqsFilter(&self, value: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -378,7 +303,7 @@ impl LocalContentSuggestionSettings {
     pub fn PropertiesToMatch(&self) -> windows_core::Result<windows_collections::IVector<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PropertiesToMatch)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PropertiesToMatch)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -388,6 +313,7 @@ impl windows_core::RuntimeType for LocalContentSuggestionSettings {
 unsafe impl windows_core::Interface for LocalContentSuggestionSettings {
     type Vtable = <ILocalContentSuggestionSettings as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ILocalContentSuggestionSettings as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for LocalContentSuggestionSettings {
     const NAME: &'static str = "Windows.ApplicationModel.Search.LocalContentSuggestionSettings";
@@ -444,7 +370,7 @@ impl SearchPane {
     }
     pub fn VisibilityChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneVisibilityChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneVisibilityChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, SearchPaneVisibilityChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -458,7 +384,7 @@ impl SearchPane {
     }
     pub fn QueryChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneQueryChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneQueryChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, SearchPaneQueryChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -472,7 +398,7 @@ impl SearchPane {
     }
     pub fn SuggestionsRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneSuggestionsRequestedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneSuggestionsRequestedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, SearchPaneSuggestionsRequestedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -486,7 +412,7 @@ impl SearchPane {
     }
     pub fn QuerySubmitted<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneQuerySubmittedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneQuerySubmittedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, SearchPaneQuerySubmittedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -500,7 +426,7 @@ impl SearchPane {
     }
     pub fn ResultSuggestionChosen<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneResultSuggestionChosenEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchPaneResultSuggestionChosenEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::Foundation::TypedEventHandler<Self, SearchPaneResultSuggestionChosenEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -542,7 +468,7 @@ impl SearchPane {
     pub fn GetForCurrentView() -> windows_core::Result<Self> {
         Self::ISearchPaneStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn HideThisApplication() -> windows_core::Result<()> {
@@ -563,6 +489,7 @@ impl windows_core::RuntimeType for SearchPane {
 unsafe impl windows_core::Interface for SearchPane {
     type Vtable = <ISearchPane as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPane as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPane {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPane";
@@ -587,7 +514,7 @@ impl SearchPaneQueryChangedEventArgs {
     pub fn LinguisticDetails(&self) -> windows_core::Result<SearchPaneQueryLinguisticDetails> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LinguisticDetails)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LinguisticDetails)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -597,6 +524,7 @@ impl windows_core::RuntimeType for SearchPaneQueryChangedEventArgs {
 unsafe impl windows_core::Interface for SearchPaneQueryChangedEventArgs {
     type Vtable = <ISearchPaneQueryChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneQueryChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneQueryChangedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneQueryChangedEventArgs";
@@ -611,7 +539,7 @@ impl SearchPaneQueryLinguisticDetails {
     pub fn QueryTextAlternatives(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).QueryTextAlternatives)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).QueryTextAlternatives)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn QueryTextCompositionStart(&self) -> windows_core::Result<u32> {
@@ -633,6 +561,7 @@ impl windows_core::RuntimeType for SearchPaneQueryLinguisticDetails {
 unsafe impl windows_core::Interface for SearchPaneQueryLinguisticDetails {
     type Vtable = <ISearchPaneQueryLinguisticDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneQueryLinguisticDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneQueryLinguisticDetails {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneQueryLinguisticDetails";
@@ -660,7 +589,7 @@ impl SearchPaneQuerySubmittedEventArgs {
         let this = &windows_core::Interface::cast::<ISearchPaneQuerySubmittedEventArgsWithLinguisticDetails>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).LinguisticDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).LinguisticDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -670,6 +599,7 @@ impl windows_core::RuntimeType for SearchPaneQuerySubmittedEventArgs {
 unsafe impl windows_core::Interface for SearchPaneQuerySubmittedEventArgs {
     type Vtable = <ISearchPaneQuerySubmittedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneQuerySubmittedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneQuerySubmittedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneQuerySubmittedEventArgs";
@@ -694,6 +624,7 @@ impl windows_core::RuntimeType for SearchPaneResultSuggestionChosenEventArgs {
 unsafe impl windows_core::Interface for SearchPaneResultSuggestionChosenEventArgs {
     type Vtable = <ISearchPaneResultSuggestionChosenEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneResultSuggestionChosenEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneResultSuggestionChosenEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneResultSuggestionChosenEventArgs";
@@ -714,13 +645,13 @@ impl SearchPaneSuggestionsRequest {
     pub fn SearchSuggestionCollection(&self) -> windows_core::Result<SearchSuggestionCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SearchSuggestionCollection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SearchSuggestionCollection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<SearchPaneSuggestionsRequestDeferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -730,6 +661,7 @@ impl windows_core::RuntimeType for SearchPaneSuggestionsRequest {
 unsafe impl windows_core::Interface for SearchPaneSuggestionsRequest {
     type Vtable = <ISearchPaneSuggestionsRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneSuggestionsRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneSuggestionsRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneSuggestionsRequest";
@@ -751,6 +683,7 @@ impl windows_core::RuntimeType for SearchPaneSuggestionsRequestDeferral {
 unsafe impl windows_core::Interface for SearchPaneSuggestionsRequestDeferral {
     type Vtable = <ISearchPaneSuggestionsRequestDeferral as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneSuggestionsRequestDeferral as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneSuggestionsRequestDeferral {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneSuggestionsRequestDeferral";
@@ -781,13 +714,13 @@ impl SearchPaneSuggestionsRequestedEventArgs {
         let this = &windows_core::Interface::cast::<ISearchPaneQueryChangedEventArgs>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).LinguisticDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).LinguisticDetails)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Request(&self) -> windows_core::Result<SearchPaneSuggestionsRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -797,6 +730,7 @@ impl windows_core::RuntimeType for SearchPaneSuggestionsRequestedEventArgs {
 unsafe impl windows_core::Interface for SearchPaneSuggestionsRequestedEventArgs {
     type Vtable = <ISearchPaneSuggestionsRequestedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneSuggestionsRequestedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneSuggestionsRequestedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneSuggestionsRequestedEventArgs";
@@ -821,6 +755,7 @@ impl windows_core::RuntimeType for SearchPaneVisibilityChangedEventArgs {
 unsafe impl windows_core::Interface for SearchPaneVisibilityChangedEventArgs {
     type Vtable = <ISearchPaneVisibilityChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchPaneVisibilityChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchPaneVisibilityChangedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchPaneVisibilityChangedEventArgs";
@@ -835,7 +770,7 @@ impl SearchQueryLinguisticDetails {
     pub fn QueryTextAlternatives(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).QueryTextAlternatives)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).QueryTextAlternatives)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn QueryTextCompositionStart(&self) -> windows_core::Result<u32> {
@@ -856,7 +791,7 @@ impl SearchQueryLinguisticDetails {
     {
         Self::ISearchQueryLinguisticDetailsFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), querytextalternatives.param().abi(), querytextcompositionstart, querytextcompositionlength, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), querytextalternatives.param().abi(), querytextcompositionstart, querytextcompositionlength, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ISearchQueryLinguisticDetailsFactory<R, F: FnOnce(&ISearchQueryLinguisticDetailsFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -870,6 +805,7 @@ impl windows_core::RuntimeType for SearchQueryLinguisticDetails {
 unsafe impl windows_core::Interface for SearchQueryLinguisticDetails {
     type Vtable = <ISearchQueryLinguisticDetails as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchQueryLinguisticDetails as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchQueryLinguisticDetails {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchQueryLinguisticDetails";
@@ -913,6 +849,7 @@ impl windows_core::RuntimeType for SearchSuggestionCollection {
 unsafe impl windows_core::Interface for SearchSuggestionCollection {
     type Vtable = <ISearchSuggestionCollection as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchSuggestionCollection as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchSuggestionCollection {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchSuggestionCollection";
@@ -933,13 +870,13 @@ impl SearchSuggestionsRequest {
     pub fn SearchSuggestionCollection(&self) -> windows_core::Result<SearchSuggestionCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SearchSuggestionCollection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SearchSuggestionCollection)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDeferral(&self) -> windows_core::Result<SearchSuggestionsRequestDeferral> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDeferral)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -949,6 +886,7 @@ impl windows_core::RuntimeType for SearchSuggestionsRequest {
 unsafe impl windows_core::Interface for SearchSuggestionsRequest {
     type Vtable = <ISearchSuggestionsRequest as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchSuggestionsRequest as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchSuggestionsRequest {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchSuggestionsRequest";
@@ -970,6 +908,7 @@ impl windows_core::RuntimeType for SearchSuggestionsRequestDeferral {
 unsafe impl windows_core::Interface for SearchSuggestionsRequestDeferral {
     type Vtable = <ISearchSuggestionsRequestDeferral as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchSuggestionsRequestDeferral as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchSuggestionsRequestDeferral {
     const NAME: &'static str = "Windows.ApplicationModel.Search.SearchSuggestionsRequestDeferral";

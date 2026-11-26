@@ -1,10 +1,6 @@
 #[cfg(feature = "Devices_Spi_Provider")]
 pub mod Provider;
-windows_core::imp::define_interface!(ISpiBusInfo, ISpiBusInfo_Vtbl, 0x9929444a_54f2_48c6_b952_9c32fc02c669);
-impl windows_core::RuntimeType for ISpiBusInfo {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiBusInfo");
-}
+windows_core::imp::define_winrt_interface!(ISpiBusInfo, ISpiBusInfo_Vtbl, 0x9929444a_54f2_48c6_b952_9c32fc02c669, b"Windows.Devices.Spi.ISpiBusInfo");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpiBusInfo_Vtbl {
@@ -14,11 +10,7 @@ pub struct ISpiBusInfo_Vtbl {
     pub MaxClockFrequency: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     pub SupportedDataBitLengths: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpiConnectionSettings, ISpiConnectionSettings_Vtbl, 0x5283a37f_f935_4b9f_a7a7_3a7890afa5ce);
-impl windows_core::RuntimeType for ISpiConnectionSettings {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiConnectionSettings");
-}
+windows_core::imp::define_winrt_interface!(ISpiConnectionSettings, ISpiConnectionSettings_Vtbl, 0x5283a37f_f935_4b9f_a7a7_3a7890afa5ce, b"Windows.Devices.Spi.ISpiConnectionSettings");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpiConnectionSettings_Vtbl {
@@ -34,33 +26,21 @@ pub struct ISpiConnectionSettings_Vtbl {
     pub SharingMode: unsafe extern "system" fn(*mut core::ffi::c_void, *mut SpiSharingMode) -> windows_core::HRESULT,
     pub SetSharingMode: unsafe extern "system" fn(*mut core::ffi::c_void, SpiSharingMode) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpiConnectionSettingsFactory, ISpiConnectionSettingsFactory_Vtbl, 0xff99081e_10c4_44b7_9fea_a748b5a46f31);
-impl windows_core::RuntimeType for ISpiConnectionSettingsFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiConnectionSettingsFactory");
-}
+windows_core::imp::define_winrt_interface!(ISpiConnectionSettingsFactory, ISpiConnectionSettingsFactory_Vtbl, 0xff99081e_10c4_44b7_9fea_a748b5a46f31, b"Windows.Devices.Spi.ISpiConnectionSettingsFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpiConnectionSettingsFactory_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub Create: unsafe extern "system" fn(*mut core::ffi::c_void, i32, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpiController, ISpiController_Vtbl, 0xa8d3c829_9895_4159_a934_8741f1ee6d27);
-impl windows_core::RuntimeType for ISpiController {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiController");
-}
+windows_core::imp::define_winrt_interface!(ISpiController, ISpiController_Vtbl, 0xa8d3c829_9895_4159_a934_8741f1ee6d27, b"Windows.Devices.Spi.ISpiController");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpiController_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetDevice: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpiControllerStatics, ISpiControllerStatics_Vtbl, 0x0d5229e2_138b_4e48_b964_4f2f79b9c5a2);
-impl windows_core::RuntimeType for ISpiControllerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiControllerStatics");
-}
+windows_core::imp::define_winrt_interface!(ISpiControllerStatics, ISpiControllerStatics_Vtbl, 0x0d5229e2_138b_4e48_b964_4f2f79b9c5a2, b"Windows.Devices.Spi.ISpiControllerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpiControllerStatics_Vtbl {
@@ -71,11 +51,7 @@ pub struct ISpiControllerStatics_Vtbl {
     #[cfg(not(feature = "Devices_Spi_Provider"))]
     GetControllersAsync: usize,
 }
-windows_core::imp::define_interface!(ISpiDevice, ISpiDevice_Vtbl, 0x05d5356d_11b6_4d39_84d5_95dfb4c9f2ce);
-impl windows_core::RuntimeType for ISpiDevice {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiDevice");
-}
+windows_core::imp::define_winrt_interface!(ISpiDevice, ISpiDevice_Vtbl, 0x05d5356d_11b6_4d39_84d5_95dfb4c9f2ce, b"Windows.Devices.Spi.ISpiDevice");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISpiDevice_Vtbl {
@@ -87,11 +63,7 @@ pub struct ISpiDevice_Vtbl {
     pub TransferSequential: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const u8, u32, *mut u8) -> windows_core::HRESULT,
     pub TransferFullDuplex: unsafe extern "system" fn(*mut core::ffi::c_void, u32, *const u8, u32, *mut u8) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISpiDeviceStatics, ISpiDeviceStatics_Vtbl, 0xa278e559_5720_4d3f_bd93_56f5ff5a5879);
-impl windows_core::RuntimeType for ISpiDeviceStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Devices.Spi.ISpiDeviceStatics");
-}
+windows_core::imp::define_winrt_interface!(ISpiDeviceStatics, ISpiDeviceStatics_Vtbl, 0xa278e559_5720_4d3f_bd93_56f5ff5a5879, b"Windows.Devices.Spi.ISpiDeviceStatics");
 windows_core::imp::interface_hierarchy!(ISpiDeviceStatics, windows_core::IUnknown, windows_core::IInspectable);
 impl ISpiDeviceStatics {
     pub fn GetDeviceSelector(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -109,7 +81,7 @@ impl ISpiDeviceStatics {
     pub fn GetBusInfo(&self, busid: &windows_core::HSTRING) -> windows_core::Result<SpiBusInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetBusInfo)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(busid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetBusInfo)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(busid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FromIdAsync<P1>(&self, busid: &windows_core::HSTRING, settings: P1) -> windows_core::Result<windows_future::IAsyncOperation<SpiDevice>>
@@ -118,7 +90,7 @@ impl ISpiDeviceStatics {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).FromIdAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(busid), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).FromIdAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(busid), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -138,8 +110,7 @@ impl ISpiDeviceStatics_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISpiDeviceStatics_Impl::GetDeviceSelector(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -152,10 +123,9 @@ impl ISpiDeviceStatics_Vtbl {
         unsafe extern "system" fn GetDeviceSelectorFromFriendlyName<Identity: ISpiDeviceStatics_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, friendlyname: *mut core::ffi::c_void, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match ISpiDeviceStatics_Impl::GetDeviceSelectorFromFriendlyName(this, core::mem::transmute(&friendlyname)) {
+                match ISpiDeviceStatics_Impl::GetDeviceSelectorFromFriendlyName(this, &*(&raw const friendlyname).cast()) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -168,10 +138,9 @@ impl ISpiDeviceStatics_Vtbl {
         unsafe extern "system" fn GetBusInfo<Identity: ISpiDeviceStatics_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, busid: *mut core::ffi::c_void, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match ISpiDeviceStatics_Impl::GetBusInfo(this, core::mem::transmute(&busid)) {
+                match ISpiDeviceStatics_Impl::GetBusInfo(this, &*(&raw const busid).cast()) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -184,10 +153,9 @@ impl ISpiDeviceStatics_Vtbl {
         unsafe extern "system" fn FromIdAsync<Identity: ISpiDeviceStatics_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, busid: *mut core::ffi::c_void, settings: *mut core::ffi::c_void, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match ISpiDeviceStatics_Impl::FromIdAsync(this, core::mem::transmute(&busid), core::mem::transmute_copy(&settings)) {
+                match ISpiDeviceStatics_Impl::FromIdAsync(this, &*(&raw const busid).cast(), core::mem::transmute_copy(&settings)) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -198,7 +166,7 @@ impl ISpiDeviceStatics_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ISpiDeviceStatics, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetDeviceSelector: GetDeviceSelector::<Identity, OFFSET>,
             GetDeviceSelectorFromFriendlyName: GetDeviceSelectorFromFriendlyName::<Identity, OFFSET>,
             GetBusInfo: GetBusInfo::<Identity, OFFSET>,
@@ -244,7 +212,7 @@ impl SpiBusInfo {
     pub fn SupportedDataBitLengths(&self) -> windows_core::Result<windows_collections::IVectorView<i32>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SupportedDataBitLengths)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SupportedDataBitLengths)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -254,6 +222,7 @@ impl windows_core::RuntimeType for SpiBusInfo {
 unsafe impl windows_core::Interface for SpiBusInfo {
     type Vtable = <ISpiBusInfo as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISpiBusInfo as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SpiBusInfo {
     const NAME: &'static str = "Windows.Devices.Spi.SpiBusInfo";
@@ -313,7 +282,7 @@ impl SpiConnectionSettings {
     pub fn Create(chipselectline: i32) -> windows_core::Result<Self> {
         Self::ISpiConnectionSettingsFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), chipselectline, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).Create)(windows_core::Interface::as_raw(this), chipselectline, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ISpiConnectionSettingsFactory<R, F: FnOnce(&ISpiConnectionSettingsFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -327,6 +296,7 @@ impl windows_core::RuntimeType for SpiConnectionSettings {
 unsafe impl windows_core::Interface for SpiConnectionSettings {
     type Vtable = <ISpiConnectionSettings as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISpiConnectionSettings as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SpiConnectionSettings {
     const NAME: &'static str = "Windows.Devices.Spi.SpiConnectionSettings";
@@ -344,13 +314,13 @@ impl SpiController {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetDevice)(windows_core::Interface::as_raw(self), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetDevice)(windows_core::Interface::as_raw(self), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDefaultAsync() -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::ISpiControllerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     #[cfg(feature = "Devices_Spi_Provider")]
@@ -360,7 +330,7 @@ impl SpiController {
     {
         Self::ISpiControllerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetControllersAsync)(windows_core::Interface::as_raw(this), provider.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetControllersAsync)(windows_core::Interface::as_raw(this), provider.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ISpiControllerStatics<R, F: FnOnce(&ISpiControllerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -374,6 +344,7 @@ impl windows_core::RuntimeType for SpiController {
 unsafe impl windows_core::Interface for SpiController {
     type Vtable = <ISpiController as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISpiController as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SpiController {
     const NAME: &'static str = "Windows.Devices.Spi.SpiController";
@@ -384,7 +355,7 @@ unsafe impl Sync for SpiController {}
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SpiDevice(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SpiDevice, windows_core::IUnknown, windows_core::IInspectable);
-windows_core::imp::required_hierarchy!(SpiDevice, super::super::Foundation::IClosable, ISpiDeviceStatics);
+windows_core::imp::required_hierarchy!(SpiDevice, super::super::Foundation::IClosable);
 impl SpiDevice {
     pub fn Close(&self) -> windows_core::Result<()> {
         let this = &windows_core::Interface::cast::<super::super::Foundation::IClosable>(self)?;
@@ -399,7 +370,7 @@ impl SpiDevice {
     pub fn ConnectionSettings(&self) -> windows_core::Result<SpiConnectionSettings> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ConnectionSettings)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ConnectionSettings)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Write(&self, buffer: &[u8]) -> windows_core::Result<()> {
@@ -429,7 +400,7 @@ impl SpiDevice {
     pub fn GetBusInfo(busid: &windows_core::HSTRING) -> windows_core::Result<SpiBusInfo> {
         Self::ISpiDeviceStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetBusInfo)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(busid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetBusInfo)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(busid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn FromIdAsync<P1>(busid: &windows_core::HSTRING, settings: P1) -> windows_core::Result<windows_future::IAsyncOperation<Self>>
@@ -438,7 +409,7 @@ impl SpiDevice {
     {
         Self::ISpiDeviceStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(busid), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).FromIdAsync)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(busid), settings.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ISpiDeviceStatics<R, F: FnOnce(&ISpiDeviceStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -452,6 +423,7 @@ impl windows_core::RuntimeType for SpiDevice {
 unsafe impl windows_core::Interface for SpiDevice {
     type Vtable = <ISpiDevice as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISpiDevice as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SpiDevice {
     const NAME: &'static str = "Windows.Devices.Spi.SpiDevice";

@@ -5,7 +5,7 @@ windows_core::imp::interface_hierarchy!(CoreFrameworkInputView, windows_core::IU
 impl CoreFrameworkInputView {
     pub fn PrimaryViewAnimationStarting<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreFrameworkInputViewAnimationStartingEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreFrameworkInputViewAnimationStartingEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreFrameworkInputViewAnimationStartingEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -19,7 +19,7 @@ impl CoreFrameworkInputView {
     }
     pub fn OcclusionsChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreFrameworkInputViewOcclusionsChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreFrameworkInputViewOcclusionsChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreFrameworkInputViewOcclusionsChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -37,13 +37,13 @@ impl CoreFrameworkInputView {
     {
         Self::ICoreFrameworkInputViewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetForCurrentView() -> windows_core::Result<Self> {
         Self::ICoreFrameworkInputViewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreFrameworkInputViewStatics<R, F: FnOnce(&ICoreFrameworkInputViewStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -57,6 +57,7 @@ impl windows_core::RuntimeType for CoreFrameworkInputView {
 unsafe impl windows_core::Interface for CoreFrameworkInputView {
     type Vtable = <ICoreFrameworkInputView as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreFrameworkInputView as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreFrameworkInputView {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreFrameworkInputView";
@@ -71,7 +72,7 @@ impl CoreFrameworkInputViewAnimationStartingEventArgs {
     pub fn Occlusions(&self) -> windows_core::Result<windows_collections::IVectorView<CoreInputViewOcclusion>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn FrameworkAnimationRecommended(&self) -> windows_core::Result<bool> {
@@ -93,6 +94,7 @@ impl windows_core::RuntimeType for CoreFrameworkInputViewAnimationStartingEventA
 unsafe impl windows_core::Interface for CoreFrameworkInputViewAnimationStartingEventArgs {
     type Vtable = <ICoreFrameworkInputViewAnimationStartingEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreFrameworkInputViewAnimationStartingEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreFrameworkInputViewAnimationStartingEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreFrameworkInputViewAnimationStartingEventArgs";
@@ -107,7 +109,7 @@ impl CoreFrameworkInputViewOcclusionsChangedEventArgs {
     pub fn Occlusions(&self) -> windows_core::Result<windows_collections::IVectorView<CoreInputViewOcclusion>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Handled(&self) -> windows_core::Result<bool> {
@@ -123,6 +125,7 @@ impl windows_core::RuntimeType for CoreFrameworkInputViewOcclusionsChangedEventA
 unsafe impl windows_core::Interface for CoreFrameworkInputViewOcclusionsChangedEventArgs {
     type Vtable = <ICoreFrameworkInputViewOcclusionsChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreFrameworkInputViewOcclusionsChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreFrameworkInputViewOcclusionsChangedEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreFrameworkInputViewOcclusionsChangedEventArgs";
@@ -136,7 +139,7 @@ windows_core::imp::interface_hierarchy!(CoreInputView, windows_core::IUnknown, w
 impl CoreInputView {
     pub fn OcclusionsChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewOcclusionsChangedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewOcclusionsChangedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreInputViewOcclusionsChangedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -151,7 +154,7 @@ impl CoreInputView {
     pub fn GetCoreInputViewOcclusions(&self) -> windows_core::Result<windows_collections::IVectorView<CoreInputViewOcclusion>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCoreInputViewOcclusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCoreInputViewOcclusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn TryShowPrimaryView(&self) -> windows_core::Result<bool> {
@@ -168,7 +171,7 @@ impl CoreInputView {
     }
     pub fn XYFocusTransferringFromPrimaryView<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewTransferringXYFocusEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewTransferringXYFocusEventArgs>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreInputView2>(self)?;
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreInputViewTransferringXYFocusEventArgs>>::new(move |a0, a1| {
@@ -183,7 +186,7 @@ impl CoreInputView {
     }
     pub fn XYFocusTransferredToPrimaryView<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreInputView2>(self)?;
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, windows_core::IInspectable>>::new(move |a0, a1| {
@@ -226,7 +229,7 @@ impl CoreInputView {
     }
     pub fn PrimaryViewShowing<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewShowingEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewShowingEventArgs>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreInputView4>(self)?;
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreInputViewShowingEventArgs>>::new(move |a0, a1| {
@@ -241,7 +244,7 @@ impl CoreInputView {
     }
     pub fn PrimaryViewHiding<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewHidingEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewHidingEventArgs>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreInputView4>(self)?;
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreInputViewHidingEventArgs>>::new(move |a0, a1| {
@@ -263,7 +266,7 @@ impl CoreInputView {
     }
     pub fn SupportedKindsChanged<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<windows_core::IInspectable>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreInputView5>(self)?;
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, windows_core::IInspectable>>::new(move |a0, a1| {
@@ -278,7 +281,7 @@ impl CoreInputView {
     }
     pub fn PrimaryViewAnimationStarting<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewAnimationStartingEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<CoreInputViewAnimationStartingEventArgs>) + Send + Sync + 'static,
     {
         let this = &windows_core::Interface::cast::<ICoreInputView5>(self)?;
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, CoreInputViewAnimationStartingEventArgs>>::new(move |a0, a1| {
@@ -294,7 +297,7 @@ impl CoreInputView {
     pub fn GetForCurrentView() -> windows_core::Result<Self> {
         Self::ICoreInputViewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForCurrentView)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     pub fn GetForUIContext<P0>(context: P0) -> windows_core::Result<Self>
@@ -303,7 +306,7 @@ impl CoreInputView {
     {
         Self::ICoreInputViewStatics2(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetForUIContext)(windows_core::Interface::as_raw(this), context.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn ICoreInputViewStatics<R, F: FnOnce(&ICoreInputViewStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -321,6 +324,7 @@ impl windows_core::RuntimeType for CoreInputView {
 unsafe impl windows_core::Interface for CoreInputView {
     type Vtable = <ICoreInputView as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputView as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputView {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputView";
@@ -335,7 +339,7 @@ impl CoreInputViewAnimationStartingEventArgs {
     pub fn Occlusions(&self) -> windows_core::Result<windows_collections::IVectorView<CoreInputViewOcclusion>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Handled(&self) -> windows_core::Result<bool> {
@@ -360,6 +364,7 @@ impl windows_core::RuntimeType for CoreInputViewAnimationStartingEventArgs {
 unsafe impl windows_core::Interface for CoreInputViewAnimationStartingEventArgs {
     type Vtable = <ICoreInputViewAnimationStartingEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputViewAnimationStartingEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputViewAnimationStartingEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputViewAnimationStartingEventArgs";
@@ -384,6 +389,7 @@ impl windows_core::RuntimeType for CoreInputViewHidingEventArgs {
 unsafe impl windows_core::Interface for CoreInputViewHidingEventArgs {
     type Vtable = <ICoreInputViewHidingEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputViewHidingEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputViewHidingEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputViewHidingEventArgs";
@@ -434,6 +440,7 @@ impl windows_core::RuntimeType for CoreInputViewOcclusion {
 unsafe impl windows_core::Interface for CoreInputViewOcclusion {
     type Vtable = <ICoreInputViewOcclusion as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputViewOcclusion as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputViewOcclusion {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputViewOcclusion";
@@ -463,7 +470,7 @@ impl CoreInputViewOcclusionsChangedEventArgs {
     pub fn Occlusions(&self) -> windows_core::Result<windows_collections::IVectorView<CoreInputViewOcclusion>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Occlusions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Handled(&self) -> windows_core::Result<bool> {
@@ -482,6 +489,7 @@ impl windows_core::RuntimeType for CoreInputViewOcclusionsChangedEventArgs {
 unsafe impl windows_core::Interface for CoreInputViewOcclusionsChangedEventArgs {
     type Vtable = <ICoreInputViewOcclusionsChangedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputViewOcclusionsChangedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputViewOcclusionsChangedEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputViewOcclusionsChangedEventArgs";
@@ -506,6 +514,7 @@ impl windows_core::RuntimeType for CoreInputViewShowingEventArgs {
 unsafe impl windows_core::Interface for CoreInputViewShowingEventArgs {
     type Vtable = <ICoreInputViewShowingEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputViewShowingEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputViewShowingEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputViewShowingEventArgs";
@@ -554,6 +563,7 @@ impl windows_core::RuntimeType for CoreInputViewTransferringXYFocusEventArgs {
 unsafe impl windows_core::Interface for CoreInputViewTransferringXYFocusEventArgs {
     type Vtable = <ICoreInputViewTransferringXYFocusEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ICoreInputViewTransferringXYFocusEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for CoreInputViewTransferringXYFocusEventArgs {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.CoreInputViewTransferringXYFocusEventArgs";
@@ -576,11 +586,7 @@ impl windows_core::RuntimeType for CoreInputViewXYFocusTransferDirection {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.UI.ViewManagement.Core.CoreInputViewXYFocusTransferDirection;i4)");
     const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.CoreInputViewXYFocusTransferDirection");
 }
-windows_core::imp::define_interface!(ICoreFrameworkInputView, ICoreFrameworkInputView_Vtbl, 0xd77c94ae_46b8_5d4a_9489_8ddec3d639a6);
-impl windows_core::RuntimeType for ICoreFrameworkInputView {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputView");
-}
+windows_core::imp::define_winrt_interface!(ICoreFrameworkInputView, ICoreFrameworkInputView_Vtbl, 0xd77c94ae_46b8_5d4a_9489_8ddec3d639a6, b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputView");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreFrameworkInputView_Vtbl {
@@ -590,11 +596,7 @@ pub struct ICoreFrameworkInputView_Vtbl {
     pub OcclusionsChanged: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveOcclusionsChanged: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreFrameworkInputViewAnimationStartingEventArgs, ICoreFrameworkInputViewAnimationStartingEventArgs_Vtbl, 0xc0ec901c_bba4_501b_ae8b_65c9e756a719);
-impl windows_core::RuntimeType for ICoreFrameworkInputViewAnimationStartingEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputViewAnimationStartingEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreFrameworkInputViewAnimationStartingEventArgs, ICoreFrameworkInputViewAnimationStartingEventArgs_Vtbl, 0xc0ec901c_bba4_501b_ae8b_65c9e756a719, b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputViewAnimationStartingEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreFrameworkInputViewAnimationStartingEventArgs_Vtbl {
@@ -603,11 +605,7 @@ pub struct ICoreFrameworkInputViewAnimationStartingEventArgs_Vtbl {
     pub FrameworkAnimationRecommended: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub AnimationDuration: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::TimeSpan) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreFrameworkInputViewOcclusionsChangedEventArgs, ICoreFrameworkInputViewOcclusionsChangedEventArgs_Vtbl, 0xf36f4949_c82c_53d1_a75d_2b2baf0d9b0d);
-impl windows_core::RuntimeType for ICoreFrameworkInputViewOcclusionsChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputViewOcclusionsChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreFrameworkInputViewOcclusionsChangedEventArgs, ICoreFrameworkInputViewOcclusionsChangedEventArgs_Vtbl, 0xf36f4949_c82c_53d1_a75d_2b2baf0d9b0d, b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputViewOcclusionsChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreFrameworkInputViewOcclusionsChangedEventArgs_Vtbl {
@@ -615,11 +613,7 @@ pub struct ICoreFrameworkInputViewOcclusionsChangedEventArgs_Vtbl {
     pub Occlusions: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Handled: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreFrameworkInputViewStatics, ICoreFrameworkInputViewStatics_Vtbl, 0x6eebd9b6_eac2_5f8b_975f_772ee3e42eeb);
-impl windows_core::RuntimeType for ICoreFrameworkInputViewStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputViewStatics");
-}
+windows_core::imp::define_winrt_interface!(ICoreFrameworkInputViewStatics, ICoreFrameworkInputViewStatics_Vtbl, 0x6eebd9b6_eac2_5f8b_975f_772ee3e42eeb, b"Windows.UI.ViewManagement.Core.ICoreFrameworkInputViewStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreFrameworkInputViewStatics_Vtbl {
@@ -627,11 +621,7 @@ pub struct ICoreFrameworkInputViewStatics_Vtbl {
     pub GetForUIContext: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetForCurrentView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputView, ICoreInputView_Vtbl, 0xc770cd7a_7001_4c32_bf94_25c1f554cbf1);
-impl windows_core::RuntimeType for ICoreInputView {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputView");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputView, ICoreInputView_Vtbl, 0xc770cd7a_7001_4c32_bf94_25c1f554cbf1, b"Windows.UI.ViewManagement.Core.ICoreInputView");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputView_Vtbl {
@@ -642,11 +632,7 @@ pub struct ICoreInputView_Vtbl {
     pub TryShowPrimaryView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub TryHidePrimaryView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputView2, ICoreInputView2_Vtbl, 0x0ed726c1_e09a_4ae8_aedf_dfa4857d1a01);
-impl windows_core::RuntimeType for ICoreInputView2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputView2");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputView2, ICoreInputView2_Vtbl, 0x0ed726c1_e09a_4ae8_aedf_dfa4857d1a01, b"Windows.UI.ViewManagement.Core.ICoreInputView2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputView2_Vtbl {
@@ -657,11 +643,7 @@ pub struct ICoreInputView2_Vtbl {
     pub RemoveXYFocusTransferredToPrimaryView: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     pub TryTransferXYFocusToPrimaryView: unsafe extern "system" fn(*mut core::ffi::c_void, super::super::super::Foundation::Rect, CoreInputViewXYFocusTransferDirection, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputView3, ICoreInputView3_Vtbl, 0xbc941653_3ab9_4849_8f58_46e7f0353cfc);
-impl windows_core::RuntimeType for ICoreInputView3 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputView3");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputView3, ICoreInputView3_Vtbl, 0xbc941653_3ab9_4849_8f58_46e7f0353cfc, b"Windows.UI.ViewManagement.Core.ICoreInputView3");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputView3_Vtbl {
@@ -670,11 +652,7 @@ pub struct ICoreInputView3_Vtbl {
     pub TryShowWithKind: unsafe extern "system" fn(*mut core::ffi::c_void, CoreInputViewKind, *mut bool) -> windows_core::HRESULT,
     pub TryHide: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputView4, ICoreInputView4_Vtbl, 0x002863d6_d9ef_57eb_8cef_77f6ce1b7ee7);
-impl windows_core::RuntimeType for ICoreInputView4 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputView4");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputView4, ICoreInputView4_Vtbl, 0x002863d6_d9ef_57eb_8cef_77f6ce1b7ee7, b"Windows.UI.ViewManagement.Core.ICoreInputView4");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputView4_Vtbl {
@@ -684,11 +662,7 @@ pub struct ICoreInputView4_Vtbl {
     pub PrimaryViewHiding: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemovePrimaryViewHiding: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputView5, ICoreInputView5_Vtbl, 0x136316e0_c6d5_5c57_811e_1ad8a99ba6ab);
-impl windows_core::RuntimeType for ICoreInputView5 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputView5");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputView5, ICoreInputView5_Vtbl, 0x136316e0_c6d5_5c57_811e_1ad8a99ba6ab, b"Windows.UI.ViewManagement.Core.ICoreInputView5");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputView5_Vtbl {
@@ -699,11 +673,7 @@ pub struct ICoreInputView5_Vtbl {
     pub PrimaryViewAnimationStarting: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemovePrimaryViewAnimationStarting: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewAnimationStartingEventArgs, ICoreInputViewAnimationStartingEventArgs_Vtbl, 0xa9144af2_b55c_5ea1_b8ab_5340f3e94897);
-impl windows_core::RuntimeType for ICoreInputViewAnimationStartingEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewAnimationStartingEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewAnimationStartingEventArgs, ICoreInputViewAnimationStartingEventArgs_Vtbl, 0xa9144af2_b55c_5ea1_b8ab_5340f3e94897, b"Windows.UI.ViewManagement.Core.ICoreInputViewAnimationStartingEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewAnimationStartingEventArgs_Vtbl {
@@ -713,22 +683,14 @@ pub struct ICoreInputViewAnimationStartingEventArgs_Vtbl {
     pub SetHandled: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
     pub AnimationDuration: unsafe extern "system" fn(*mut core::ffi::c_void, *mut windows_time::TimeSpan) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewHidingEventArgs, ICoreInputViewHidingEventArgs_Vtbl, 0xeada47bd_bac5_5336_848d_41083584daad);
-impl windows_core::RuntimeType for ICoreInputViewHidingEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewHidingEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewHidingEventArgs, ICoreInputViewHidingEventArgs_Vtbl, 0xeada47bd_bac5_5336_848d_41083584daad, b"Windows.UI.ViewManagement.Core.ICoreInputViewHidingEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewHidingEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub TryCancel: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewOcclusion, ICoreInputViewOcclusion_Vtbl, 0xcc36ce06_3865_4177_b5f5_8b65e0b9ce84);
-impl windows_core::RuntimeType for ICoreInputViewOcclusion {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewOcclusion");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewOcclusion, ICoreInputViewOcclusion_Vtbl, 0xcc36ce06_3865_4177_b5f5_8b65e0b9ce84, b"Windows.UI.ViewManagement.Core.ICoreInputViewOcclusion");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewOcclusion_Vtbl {
@@ -736,11 +698,7 @@ pub struct ICoreInputViewOcclusion_Vtbl {
     pub OccludingRect: unsafe extern "system" fn(*mut core::ffi::c_void, *mut super::super::super::Foundation::Rect) -> windows_core::HRESULT,
     pub OcclusionKind: unsafe extern "system" fn(*mut core::ffi::c_void, *mut CoreInputViewOcclusionKind) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewOcclusionsChangedEventArgs, ICoreInputViewOcclusionsChangedEventArgs_Vtbl, 0xbe1027e8_b3ee_4df7_9554_89cdc66082c2);
-impl windows_core::RuntimeType for ICoreInputViewOcclusionsChangedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewOcclusionsChangedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewOcclusionsChangedEventArgs, ICoreInputViewOcclusionsChangedEventArgs_Vtbl, 0xbe1027e8_b3ee_4df7_9554_89cdc66082c2, b"Windows.UI.ViewManagement.Core.ICoreInputViewOcclusionsChangedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewOcclusionsChangedEventArgs_Vtbl {
@@ -749,44 +707,28 @@ pub struct ICoreInputViewOcclusionsChangedEventArgs_Vtbl {
     pub Handled: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub SetHandled: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewShowingEventArgs, ICoreInputViewShowingEventArgs_Vtbl, 0xca52261b_fb9e_5daf_a98c_262b8b76af50);
-impl windows_core::RuntimeType for ICoreInputViewShowingEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewShowingEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewShowingEventArgs, ICoreInputViewShowingEventArgs_Vtbl, 0xca52261b_fb9e_5daf_a98c_262b8b76af50, b"Windows.UI.ViewManagement.Core.ICoreInputViewShowingEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewShowingEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub TryCancel: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewStatics, ICoreInputViewStatics_Vtbl, 0x7d9b97cd_edbe_49cf_a54f_337de052907f);
-impl windows_core::RuntimeType for ICoreInputViewStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewStatics");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewStatics, ICoreInputViewStatics_Vtbl, 0x7d9b97cd_edbe_49cf_a54f_337de052907f, b"Windows.UI.ViewManagement.Core.ICoreInputViewStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewStatics_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetForCurrentView: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewStatics2, ICoreInputViewStatics2_Vtbl, 0x7ebc0862_d049_4e52_87b0_1e90e98c49ed);
-impl windows_core::RuntimeType for ICoreInputViewStatics2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewStatics2");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewStatics2, ICoreInputViewStatics2_Vtbl, 0x7ebc0862_d049_4e52_87b0_1e90e98c49ed, b"Windows.UI.ViewManagement.Core.ICoreInputViewStatics2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewStatics2_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetForUIContext: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ICoreInputViewTransferringXYFocusEventArgs, ICoreInputViewTransferringXYFocusEventArgs_Vtbl, 0x04de169f_ba02_4850_8b55_d82d03ba6d7f);
-impl windows_core::RuntimeType for ICoreInputViewTransferringXYFocusEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.ICoreInputViewTransferringXYFocusEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ICoreInputViewTransferringXYFocusEventArgs, ICoreInputViewTransferringXYFocusEventArgs_Vtbl, 0x04de169f_ba02_4850_8b55_d82d03ba6d7f, b"Windows.UI.ViewManagement.Core.ICoreInputViewTransferringXYFocusEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ICoreInputViewTransferringXYFocusEventArgs_Vtbl {
@@ -798,11 +740,7 @@ pub struct ICoreInputViewTransferringXYFocusEventArgs_Vtbl {
     pub SetKeepPrimaryViewVisible: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
     pub KeepPrimaryViewVisible: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUISettingsController, IUISettingsController_Vtbl, 0x78a51ac4_15c0_5a1b_a75b_acbf9cb8bb9e);
-impl windows_core::RuntimeType for IUISettingsController {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.IUISettingsController");
-}
+windows_core::imp::define_winrt_interface!(IUISettingsController, IUISettingsController_Vtbl, 0x78a51ac4_15c0_5a1b_a75b_acbf9cb8bb9e, b"Windows.UI.ViewManagement.Core.IUISettingsController");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUISettingsController_Vtbl {
@@ -813,11 +751,7 @@ pub struct IUISettingsController_Vtbl {
     pub SetMessageDuration: unsafe extern "system" fn(*mut core::ffi::c_void, u32) -> windows_core::HRESULT,
     pub SetTextScaleFactor: unsafe extern "system" fn(*mut core::ffi::c_void, f64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IUISettingsControllerStatics, IUISettingsControllerStatics_Vtbl, 0xeb3c68cc_c220_578c_8119_7db324ed26a6);
-impl windows_core::RuntimeType for IUISettingsControllerStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.UI.ViewManagement.Core.IUISettingsControllerStatics");
-}
+windows_core::imp::define_winrt_interface!(IUISettingsControllerStatics, IUISettingsControllerStatics_Vtbl, 0xeb3c68cc_c220_578c_8119_7db324ed26a6, b"Windows.UI.ViewManagement.Core.IUISettingsControllerStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IUISettingsControllerStatics_Vtbl {
@@ -847,7 +781,7 @@ impl UISettingsController {
     pub fn RequestDefaultAsync() -> windows_core::Result<windows_future::IAsyncOperation<Self>> {
         Self::IUISettingsControllerStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).RequestDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).RequestDefaultAsync)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IUISettingsControllerStatics<R, F: FnOnce(&IUISettingsControllerStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -861,6 +795,7 @@ impl windows_core::RuntimeType for UISettingsController {
 unsafe impl windows_core::Interface for UISettingsController {
     type Vtable = <IUISettingsController as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IUISettingsController as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for UISettingsController {
     const NAME: &'static str = "Windows.UI.ViewManagement.Core.UISettingsController";

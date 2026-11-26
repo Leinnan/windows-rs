@@ -135,13 +135,19 @@ pub struct ADS_ATTR_DEF {
 pub const ADS_ATTR_DELETE: i32 = 4;
 #[repr(C)]
 #[cfg(all(feature = "minwinbase", feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_ATTR_INFO {
     pub pszAttrName: windows_core::PWSTR,
     pub dwControlCode: super::DWORD,
     pub dwADsType: ADSTYPE,
     pub pADsValues: PADSVALUE,
     pub dwNumValues: super::DWORD,
+}
+#[cfg(all(feature = "minwinbase", feature = "shared", feature = "winnt"))]
+impl Default for ADS_ATTR_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const ADS_ATTR_UPDATE: i32 = 2;
 pub type ADS_AUTHENTICATION_ENUM = i32;
@@ -155,10 +161,15 @@ pub struct ADS_BACKLINK {
 }
 pub type ADS_BOOLEAN = u32;
 #[repr(C)]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_CASEIGNORE_LIST {
     pub Next: *mut Self,
     pub String: windows_core::PWSTR,
+}
+impl Default for ADS_CASEIGNORE_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type ADS_CASE_EXACT_STRING = *mut u16;
 pub type ADS_CASE_IGNORE_STRING = *mut u16;
@@ -169,7 +180,7 @@ pub const ADS_CHASE_REFERRALS_NEVER: ADS_CHASE_REFERRALS_ENUM = 0;
 pub const ADS_CHASE_REFERRALS_SUBORDINATE: ADS_CHASE_REFERRALS_ENUM = 32;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_CLASS_DEF {
     pub pszClassName: windows_core::PWSTR,
     pub dwMandatoryAttrs: super::DWORD,
@@ -181,6 +192,12 @@ pub struct ADS_CLASS_DEF {
     pub dwSuperClasses: super::DWORD,
     pub ppszSuperClasses: *mut *mut windows_core::PWSTR,
     pub fIsContainer: windows_core::BOOL,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_CLASS_DEF {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type ADS_DEREFENUM = i32;
 pub const ADS_DEREF_ALWAYS: ADS_DEREFENUM = 3;
@@ -194,11 +211,17 @@ pub const ADS_DISPLAY_VALUE_ONLY: ADS_DISPLAY_ENUM = 2;
 pub type ADS_DN_STRING = *mut u16;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_DN_WITH_BINARY {
     pub dwLength: super::DWORD,
     pub lpBinaryValue: super::LPBYTE,
     pub pszDNString: windows_core::PWSTR,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_DN_WITH_BINARY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -225,11 +248,17 @@ pub const ADS_EXT_MINEXTDISPID: i32 = 1;
 pub const ADS_FAST_BIND: ADS_AUTHENTICATION_ENUM = 32;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_FAXNUMBER {
     pub TelephoneNumber: windows_core::PWSTR,
     pub NumberOfBits: super::DWORD,
     pub Parameters: super::LPBYTE,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_FAXNUMBER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type ADS_FLAGTYPE_ENUM = i32;
 pub const ADS_FLAG_INHERITED_OBJECT_TYPE_PRESENT: ADS_FLAGTYPE_ENUM = 2;
@@ -281,20 +310,32 @@ pub const ADS_NAME_TYPE_UNKNOWN: ADS_NAME_TYPE_ENUM = 8;
 pub const ADS_NAME_TYPE_USER_PRINCIPAL_NAME: ADS_NAME_TYPE_ENUM = 9;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_NETADDRESS {
     pub AddressType: super::DWORD,
     pub AddressLength: super::DWORD,
     pub Address: *mut super::BYTE,
 }
+#[cfg(feature = "shared")]
+impl Default for ADS_NETADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ADS_NO_AUTHENTICATION: ADS_AUTHENTICATION_ENUM = 16;
 pub const ADS_NO_REFERRAL_CHASING: ADS_AUTHENTICATION_ENUM = 1024;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_NT_SECURITY_DESCRIPTOR {
     pub dwLength: super::DWORD,
     pub lpValue: super::LPBYTE,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_NT_SECURITY_DESCRIPTOR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type ADS_NUMERIC_STRING = *mut u16;
 pub type ADS_OBJECT_CLASS = *mut u16;
@@ -309,18 +350,30 @@ pub struct ADS_OBJECT_INFO {
 }
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_OCTET_LIST {
     pub Next: *mut Self,
     pub Length: super::DWORD,
     pub Data: *mut super::BYTE,
 }
+#[cfg(feature = "shared")]
+impl Default for ADS_OCTET_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_OCTET_STRING {
     pub dwLength: super::DWORD,
     pub lpValue: super::LPBYTE,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_OCTET_STRING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const ADS_OPTION_ACCUMULATIVE_MODIFICATION: ADS_OPTION_ENUM = 8;
 pub type ADS_OPTION_ENUM = i32;
@@ -368,21 +421,33 @@ pub type ADS_PROPERTY_OPERATION_ENUM = i32;
 pub const ADS_PROPERTY_UPDATE: ADS_PROPERTY_OPERATION_ENUM = 2;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_PROV_SPECIFIC {
     pub dwLength: super::DWORD,
     pub lpValue: super::LPBYTE,
 }
+#[cfg(feature = "shared")]
+impl Default for ADS_PROV_SPECIFIC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ADS_READONLY_SERVER: ADS_AUTHENTICATION_ENUM = 4;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_REPLICAPOINTER {
     pub ServerName: windows_core::PWSTR,
     pub ReplicaType: super::DWORD,
     pub ReplicaNumber: super::DWORD,
     pub Count: super::DWORD,
     pub ReplicaAddressHints: PADS_NETADDRESS,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_REPLICAPOINTER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type ADS_RIGHTS_ENUM = i32;
 pub const ADS_RIGHT_ACCESS_SYSTEM_SECURITY: ADS_RIGHTS_ENUM = 16777216;
@@ -465,13 +530,19 @@ pub const ADS_SEARCHPREF_TOMBSTONE: ADS_SEARCHPREF_ENUM = 13;
 pub const ADS_SEARCHPREF_VLV: ADS_SEARCHPREF_ENUM = 14;
 #[repr(C)]
 #[cfg(all(feature = "minwinbase", feature = "shared", feature = "winnt"))]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_SEARCH_COLUMN {
     pub pszAttrName: windows_core::PWSTR,
     pub dwADsType: ADSTYPE,
     pub pADsValues: PADSVALUE,
     pub dwNumValues: super::DWORD,
     pub hReserved: super::HANDLE,
+}
+#[cfg(all(feature = "minwinbase", feature = "shared", feature = "winnt"))]
+impl Default for ADS_SEARCH_COLUMN {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub type ADS_SEARCH_HANDLE = *mut core::ffi::c_void;
 pub const ADS_SECURE_AUTHENTICATION: ADS_AUTHENTICATION_ENUM = 1;
@@ -556,7 +627,7 @@ pub const ADS_USE_SSL: ADS_AUTHENTICATION_ENUM = 2;
 pub type ADS_UTC_TIME = super::SYSTEMTIME;
 #[repr(C)]
 #[cfg(feature = "shared")]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ADS_VLV {
     pub dwBeforeCount: super::DWORD,
     pub dwAfterCount: super::DWORD,
@@ -565,6 +636,12 @@ pub struct ADS_VLV {
     pub pszTarget: windows_core::PWSTR,
     pub dwContextIDLength: super::DWORD,
     pub lpContextID: super::LPBYTE,
+}
+#[cfg(feature = "shared")]
+impl Default for ADS_VLV {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 pub const ADS_VLV_RESPONSE: windows_core::PCWSTR = windows_core::w!("fc8cb04d-311d-406c-8cb9-1ae8b843b419");
 pub const ADSystemInfo: windows_core::GUID = windows_core::GUID::from_u128(0x50b6327f_afd1_11d2_9cb9_0000f87a369e);
@@ -718,7 +795,7 @@ impl IADs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADs_Impl::Name(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -733,7 +810,7 @@ impl IADs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADs_Impl::Class(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -748,7 +825,7 @@ impl IADs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADs_Impl::GUID(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -763,7 +840,7 @@ impl IADs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADs_Impl::ADsPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -778,7 +855,7 @@ impl IADs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADs_Impl::Parent(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -793,7 +870,7 @@ impl IADs_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADs_Impl::Schema(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -818,9 +895,9 @@ impl IADs_Vtbl {
         unsafe extern "system" fn Get<Identity: IADs_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void, pvprop: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADs_Impl::Get(this, core::mem::transmute(&bstrname)) {
+                match IADs_Impl::Get(this, &*(&raw const bstrname).cast()) {
                     Ok(ok__) => {
-                        pvprop.write(core::mem::transmute(ok__));
+                        pvprop.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -833,15 +910,15 @@ impl IADs_Vtbl {
         unsafe extern "system" fn Put<Identity: IADs_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void, vprop: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADs_Impl::Put(this, core::mem::transmute(&bstrname), core::mem::transmute(&vprop))
+                IADs_Impl::Put(this, &*(&raw const bstrname).cast(), &*(&raw const vprop).cast())
             }
         }
         unsafe extern "system" fn GetEx<Identity: IADs_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void, pvprop: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADs_Impl::GetEx(this, core::mem::transmute(&bstrname)) {
+                match IADs_Impl::GetEx(this, &*(&raw const bstrname).cast()) {
                     Ok(ok__) => {
-                        pvprop.write(core::mem::transmute(ok__));
+                        pvprop.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -854,13 +931,13 @@ impl IADs_Vtbl {
         unsafe extern "system" fn PutEx<Identity: IADs_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lncontrolcode: i32, bstrname: *mut core::ffi::c_void, vprop: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADs_Impl::PutEx(this, core::mem::transmute_copy(&lncontrolcode), core::mem::transmute(&bstrname), core::mem::transmute(&vprop))
+                IADs_Impl::PutEx(this, core::mem::transmute_copy(&lncontrolcode), &*(&raw const bstrname).cast(), &*(&raw const vprop).cast())
             }
         }
         unsafe extern "system" fn GetInfoEx<Identity: IADs_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vproperties: super::VARIANT, lnreserved: i32) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADs_Impl::GetInfoEx(this, core::mem::transmute(&vproperties), core::mem::transmute_copy(&lnreserved))
+                IADs_Impl::GetInfoEx(this, &*(&raw const vproperties).cast(), core::mem::transmute_copy(&lnreserved))
             }
         }
         Self {
@@ -1026,7 +1103,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::UserName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1041,7 +1118,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::ComputerName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1056,7 +1133,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::SiteName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1071,7 +1148,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::DomainShortName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1086,7 +1163,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::DomainDNSName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1101,7 +1178,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::ForestDNSName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1116,7 +1193,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::PDCRoleOwner(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1131,7 +1208,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::SchemaRoleOwner(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1161,7 +1238,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::GetAnyDCName(this) {
                     Ok(ok__) => {
-                        pszdcname.write(core::mem::transmute(ok__));
+                        pszdcname.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1174,9 +1251,9 @@ impl IADsADSystemInfo_Vtbl {
         unsafe extern "system" fn GetDCSiteName<Identity: IADsADSystemInfo_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, szserver: *mut core::ffi::c_void, pszsitename: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsADSystemInfo_Impl::GetDCSiteName(this, core::mem::transmute(&szserver)) {
+                match IADsADSystemInfo_Impl::GetDCSiteName(this, &*(&raw const szserver).cast()) {
                     Ok(ok__) => {
-                        pszsitename.write(core::mem::transmute(ok__));
+                        pszsitename.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1197,7 +1274,7 @@ impl IADsADSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsADSystemInfo_Impl::GetTrees(this) {
                     Ok(ok__) => {
-                        pvtrees.write(core::mem::transmute(ok__));
+                        pvtrees.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1436,7 +1513,7 @@ impl IADsAccessControlEntry_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAccessControlEntry_Impl::ObjectType(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1449,7 +1526,7 @@ impl IADsAccessControlEntry_Vtbl {
         unsafe extern "system" fn SetObjectType<Identity: IADsAccessControlEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrobjecttype: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsAccessControlEntry_Impl::SetObjectType(this, core::mem::transmute(&bstrobjecttype))
+                IADsAccessControlEntry_Impl::SetObjectType(this, &*(&raw const bstrobjecttype).cast())
             }
         }
         unsafe extern "system" fn InheritedObjectType<Identity: IADsAccessControlEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -1457,7 +1534,7 @@ impl IADsAccessControlEntry_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAccessControlEntry_Impl::InheritedObjectType(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1470,7 +1547,7 @@ impl IADsAccessControlEntry_Vtbl {
         unsafe extern "system" fn SetInheritedObjectType<Identity: IADsAccessControlEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrinheritedobjecttype: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsAccessControlEntry_Impl::SetInheritedObjectType(this, core::mem::transmute(&bstrinheritedobjecttype))
+                IADsAccessControlEntry_Impl::SetInheritedObjectType(this, &*(&raw const bstrinheritedobjecttype).cast())
             }
         }
         unsafe extern "system" fn Trustee<Identity: IADsAccessControlEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -1478,7 +1555,7 @@ impl IADsAccessControlEntry_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAccessControlEntry_Impl::Trustee(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1491,7 +1568,7 @@ impl IADsAccessControlEntry_Vtbl {
         unsafe extern "system" fn SetTrustee<Identity: IADsAccessControlEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrtrustee: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsAccessControlEntry_Impl::SetTrustee(this, core::mem::transmute(&bstrtrustee))
+                IADsAccessControlEntry_Impl::SetTrustee(this, &*(&raw const bstrtrustee).cast())
             }
         }
         Self {
@@ -1564,13 +1641,13 @@ impl IADsAccessControlList {
     pub unsafe fn CopyAccessList(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CopyAccessList)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CopyAccessList)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn _NewEnum(&self) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1661,7 +1738,7 @@ impl IADsAccessControlList_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAccessControlList_Impl::CopyAccessList(this) {
                     Ok(ok__) => {
-                        ppaccesscontrollist.write(core::mem::transmute(ok__));
+                        ppaccesscontrollist.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1676,7 +1753,7 @@ impl IADsAccessControlList_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAccessControlList_Impl::_NewEnum(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1747,7 +1824,7 @@ impl IADsAcl {
     pub unsafe fn CopyAcl(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CopyAcl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CopyAcl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -1782,7 +1859,7 @@ impl IADsAcl_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAcl_Impl::ProtectedAttrName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1795,7 +1872,7 @@ impl IADsAcl_Vtbl {
         unsafe extern "system" fn SetProtectedAttrName<Identity: IADsAcl_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprotectedattrname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsAcl_Impl::SetProtectedAttrName(this, core::mem::transmute(&bstrprotectedattrname))
+                IADsAcl_Impl::SetProtectedAttrName(this, &*(&raw const bstrprotectedattrname).cast())
             }
         }
         unsafe extern "system" fn SubjectName<Identity: IADsAcl_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -1803,7 +1880,7 @@ impl IADsAcl_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAcl_Impl::SubjectName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -1816,7 +1893,7 @@ impl IADsAcl_Vtbl {
         unsafe extern "system" fn SetSubjectName<Identity: IADsAcl_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrsubjectname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsAcl_Impl::SetSubjectName(this, core::mem::transmute(&bstrsubjectname))
+                IADsAcl_Impl::SetSubjectName(this, &*(&raw const bstrsubjectname).cast())
             }
         }
         unsafe extern "system" fn Privileges<Identity: IADsAcl_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -1845,7 +1922,7 @@ impl IADsAcl_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsAcl_Impl::CopyAcl(this) {
                     Ok(ok__) => {
-                        ppacl.write(core::mem::transmute(ok__));
+                        ppacl.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2083,7 +2160,7 @@ impl IADsBackLink_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsBackLink_Impl::ObjectName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2096,7 +2173,7 @@ impl IADsBackLink_Vtbl {
         unsafe extern "system" fn SetObjectName<Identity: IADsBackLink_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrobjectname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsBackLink_Impl::SetObjectName(this, core::mem::transmute(&bstrobjectname))
+                IADsBackLink_Impl::SetObjectName(this, &*(&raw const bstrobjectname).cast())
             }
         }
         Self {
@@ -2165,7 +2242,7 @@ impl IADsCaseIgnoreList_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsCaseIgnoreList_Impl::CaseIgnoreList(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2178,7 +2255,7 @@ impl IADsCaseIgnoreList_Vtbl {
         unsafe extern "system" fn SetCaseIgnoreList<Identity: IADsCaseIgnoreList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vcaseignorelist: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsCaseIgnoreList_Impl::SetCaseIgnoreList(this, core::mem::transmute(&vcaseignorelist))
+                IADsCaseIgnoreList_Impl::SetCaseIgnoreList(this, &*(&raw const vcaseignorelist).cast())
             }
         }
         Self {
@@ -2361,7 +2438,7 @@ impl IADsClass {
     pub unsafe fn Qualifiers(&self) -> windows_core::Result<IADsCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Qualifiers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Qualifiers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -2502,7 +2579,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::PrimaryInterface(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2517,7 +2594,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::CLSID(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2530,7 +2607,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetCLSID<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrclsid: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetCLSID(this, core::mem::transmute(&bstrclsid))
+                IADsClass_Impl::SetCLSID(this, &*(&raw const bstrclsid).cast())
             }
         }
         unsafe extern "system" fn OID<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -2538,7 +2615,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::OID(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2551,7 +2628,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetOID<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstroid: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetOID(this, core::mem::transmute(&bstroid))
+                IADsClass_Impl::SetOID(this, &*(&raw const bstroid).cast())
             }
         }
         unsafe extern "system" fn Abstract<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT_BOOL) -> windows_core::HRESULT {
@@ -2601,7 +2678,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::MandatoryProperties(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2614,7 +2691,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetMandatoryProperties<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vmandatoryproperties: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetMandatoryProperties(this, core::mem::transmute(&vmandatoryproperties))
+                IADsClass_Impl::SetMandatoryProperties(this, &*(&raw const vmandatoryproperties).cast())
             }
         }
         unsafe extern "system" fn OptionalProperties<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -2622,7 +2699,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::OptionalProperties(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2635,7 +2712,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetOptionalProperties<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, voptionalproperties: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetOptionalProperties(this, core::mem::transmute(&voptionalproperties))
+                IADsClass_Impl::SetOptionalProperties(this, &*(&raw const voptionalproperties).cast())
             }
         }
         unsafe extern "system" fn NamingProperties<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -2643,7 +2720,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::NamingProperties(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2656,7 +2733,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetNamingProperties<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vnamingproperties: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetNamingProperties(this, core::mem::transmute(&vnamingproperties))
+                IADsClass_Impl::SetNamingProperties(this, &*(&raw const vnamingproperties).cast())
             }
         }
         unsafe extern "system" fn DerivedFrom<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -2664,7 +2741,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::DerivedFrom(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2677,7 +2754,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetDerivedFrom<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vderivedfrom: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetDerivedFrom(this, core::mem::transmute(&vderivedfrom))
+                IADsClass_Impl::SetDerivedFrom(this, &*(&raw const vderivedfrom).cast())
             }
         }
         unsafe extern "system" fn AuxDerivedFrom<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -2685,7 +2762,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::AuxDerivedFrom(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2698,7 +2775,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetAuxDerivedFrom<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vauxderivedfrom: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetAuxDerivedFrom(this, core::mem::transmute(&vauxderivedfrom))
+                IADsClass_Impl::SetAuxDerivedFrom(this, &*(&raw const vauxderivedfrom).cast())
             }
         }
         unsafe extern "system" fn PossibleSuperiors<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -2706,7 +2783,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::PossibleSuperiors(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2719,7 +2796,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetPossibleSuperiors<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vpossiblesuperiors: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetPossibleSuperiors(this, core::mem::transmute(&vpossiblesuperiors))
+                IADsClass_Impl::SetPossibleSuperiors(this, &*(&raw const vpossiblesuperiors).cast())
             }
         }
         unsafe extern "system" fn Containment<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -2727,7 +2804,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::Containment(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2740,7 +2817,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetContainment<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vcontainment: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetContainment(this, core::mem::transmute(&vcontainment))
+                IADsClass_Impl::SetContainment(this, &*(&raw const vcontainment).cast())
             }
         }
         unsafe extern "system" fn Container<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT_BOOL) -> windows_core::HRESULT {
@@ -2769,7 +2846,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::HelpFileName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2782,7 +2859,7 @@ impl IADsClass_Vtbl {
         unsafe extern "system" fn SetHelpFileName<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrhelpfilename: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsClass_Impl::SetHelpFileName(this, core::mem::transmute(&bstrhelpfilename))
+                IADsClass_Impl::SetHelpFileName(this, &*(&raw const bstrhelpfilename).cast())
             }
         }
         unsafe extern "system" fn HelpFileContext<Identity: IADsClass_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -2811,7 +2888,7 @@ impl IADsClass_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsClass_Impl::Qualifiers(this) {
                     Ok(ok__) => {
-                        ppqualifiers.write(core::mem::transmute(ok__));
+                        ppqualifiers.cast::<IADsCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2877,7 +2954,7 @@ impl IADsCollection {
     pub unsafe fn _NewEnum(&self) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
@@ -2926,7 +3003,7 @@ impl IADsCollection_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsCollection_Impl::_NewEnum(this) {
                     Ok(ok__) => {
-                        ppenumerator.write(core::mem::transmute(ok__));
+                        ppenumerator.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -2939,21 +3016,21 @@ impl IADsCollection_Vtbl {
         unsafe extern "system" fn Add<Identity: IADsCollection_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void, vitem: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsCollection_Impl::Add(this, core::mem::transmute(&bstrname), core::mem::transmute(&vitem))
+                IADsCollection_Impl::Add(this, &*(&raw const bstrname).cast(), &*(&raw const vitem).cast())
             }
         }
         unsafe extern "system" fn Remove<Identity: IADsCollection_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstritemtoberemoved: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsCollection_Impl::Remove(this, core::mem::transmute(&bstritemtoberemoved))
+                IADsCollection_Impl::Remove(this, &*(&raw const bstritemtoberemoved).cast())
             }
         }
         unsafe extern "system" fn GetObject<Identity: IADsCollection_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void, pvitem: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsCollection_Impl::GetObject(this, core::mem::transmute(&bstrname)) {
+                match IADsCollection_Impl::GetObject(this, &*(&raw const bstrname).cast()) {
                     Ok(ok__) => {
-                        pvitem.write(core::mem::transmute(ok__));
+                        pvitem.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3227,7 +3304,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::ComputerID(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3242,7 +3319,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Site(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3257,7 +3334,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3270,7 +3347,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsComputer_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn Location<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3278,7 +3355,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Location(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3291,7 +3368,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetLocation<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrlocation: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetLocation(this, core::mem::transmute(&bstrlocation))
+                IADsComputer_Impl::SetLocation(this, &*(&raw const bstrlocation).cast())
             }
         }
         unsafe extern "system" fn PrimaryUser<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3299,7 +3376,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::PrimaryUser(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3312,7 +3389,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetPrimaryUser<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprimaryuser: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetPrimaryUser(this, core::mem::transmute(&bstrprimaryuser))
+                IADsComputer_Impl::SetPrimaryUser(this, &*(&raw const bstrprimaryuser).cast())
             }
         }
         unsafe extern "system" fn Owner<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3320,7 +3397,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Owner(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3333,7 +3410,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetOwner<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrowner: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetOwner(this, core::mem::transmute(&bstrowner))
+                IADsComputer_Impl::SetOwner(this, &*(&raw const bstrowner).cast())
             }
         }
         unsafe extern "system" fn Division<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3341,7 +3418,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Division(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3354,7 +3431,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetDivision<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdivision: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetDivision(this, core::mem::transmute(&bstrdivision))
+                IADsComputer_Impl::SetDivision(this, &*(&raw const bstrdivision).cast())
             }
         }
         unsafe extern "system" fn Department<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3362,7 +3439,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Department(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3375,7 +3452,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetDepartment<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdepartment: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetDepartment(this, core::mem::transmute(&bstrdepartment))
+                IADsComputer_Impl::SetDepartment(this, &*(&raw const bstrdepartment).cast())
             }
         }
         unsafe extern "system" fn Role<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3383,7 +3460,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Role(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3396,7 +3473,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetRole<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrrole: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetRole(this, core::mem::transmute(&bstrrole))
+                IADsComputer_Impl::SetRole(this, &*(&raw const bstrrole).cast())
             }
         }
         unsafe extern "system" fn OperatingSystem<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3404,7 +3481,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::OperatingSystem(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3417,7 +3494,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetOperatingSystem<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstroperatingsystem: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetOperatingSystem(this, core::mem::transmute(&bstroperatingsystem))
+                IADsComputer_Impl::SetOperatingSystem(this, &*(&raw const bstroperatingsystem).cast())
             }
         }
         unsafe extern "system" fn OperatingSystemVersion<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3425,7 +3502,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::OperatingSystemVersion(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3438,7 +3515,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetOperatingSystemVersion<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstroperatingsystemversion: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetOperatingSystemVersion(this, core::mem::transmute(&bstroperatingsystemversion))
+                IADsComputer_Impl::SetOperatingSystemVersion(this, &*(&raw const bstroperatingsystemversion).cast())
             }
         }
         unsafe extern "system" fn Model<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3446,7 +3523,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Model(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3459,7 +3536,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetModel<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrmodel: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetModel(this, core::mem::transmute(&bstrmodel))
+                IADsComputer_Impl::SetModel(this, &*(&raw const bstrmodel).cast())
             }
         }
         unsafe extern "system" fn Processor<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3467,7 +3544,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::Processor(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3480,7 +3557,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetProcessor<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprocessor: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetProcessor(this, core::mem::transmute(&bstrprocessor))
+                IADsComputer_Impl::SetProcessor(this, &*(&raw const bstrprocessor).cast())
             }
         }
         unsafe extern "system" fn ProcessorCount<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3488,7 +3565,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::ProcessorCount(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3501,7 +3578,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetProcessorCount<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprocessorcount: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetProcessorCount(this, core::mem::transmute(&bstrprocessorcount))
+                IADsComputer_Impl::SetProcessorCount(this, &*(&raw const bstrprocessorcount).cast())
             }
         }
         unsafe extern "system" fn MemorySize<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3509,7 +3586,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::MemorySize(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3522,7 +3599,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetMemorySize<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrmemorysize: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetMemorySize(this, core::mem::transmute(&bstrmemorysize))
+                IADsComputer_Impl::SetMemorySize(this, &*(&raw const bstrmemorysize).cast())
             }
         }
         unsafe extern "system" fn StorageCapacity<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -3530,7 +3607,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::StorageCapacity(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3543,7 +3620,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetStorageCapacity<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrstoragecapacity: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetStorageCapacity(this, core::mem::transmute(&bstrstoragecapacity))
+                IADsComputer_Impl::SetStorageCapacity(this, &*(&raw const bstrstoragecapacity).cast())
             }
         }
         unsafe extern "system" fn NetAddresses<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -3551,7 +3628,7 @@ impl IADsComputer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputer_Impl::NetAddresses(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3564,7 +3641,7 @@ impl IADsComputer_Vtbl {
         unsafe extern "system" fn SetNetAddresses<Identity: IADsComputer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vnetaddresses: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsComputer_Impl::SetNetAddresses(this, core::mem::transmute(&vnetaddresses))
+                IADsComputer_Impl::SetNetAddresses(this, &*(&raw const vnetaddresses).cast())
             }
         }
         Self {
@@ -3625,7 +3702,7 @@ impl IADsComputerOperations {
     pub unsafe fn Status(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Status)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Status)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "wtypes")]
@@ -3657,7 +3734,7 @@ impl IADsComputerOperations_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsComputerOperations_Impl::Status(this) {
                     Ok(ok__) => {
-                        ppobject.write(core::mem::transmute(ok__));
+                        ppobject.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3703,7 +3780,7 @@ impl IADsContainer {
     pub unsafe fn _NewEnum(&self) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
@@ -3731,13 +3808,13 @@ impl IADsContainer {
     pub unsafe fn GetObject(&self, classname: &windows_core::BSTR, relativename: &windows_core::BSTR) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetObject)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(classname), core::mem::transmute_copy(relativename), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetObject)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(classname), core::mem::transmute_copy(relativename), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Create(&self, classname: &windows_core::BSTR, relativename: &windows_core::BSTR) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(classname), core::mem::transmute_copy(relativename), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Create)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(classname), core::mem::transmute_copy(relativename), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Delete(&self, bstrclassname: &windows_core::BSTR, bstrrelativename: &windows_core::BSTR) -> windows_core::HRESULT {
@@ -3746,13 +3823,13 @@ impl IADsContainer {
     pub unsafe fn CopyHere(&self, sourcename: &windows_core::BSTR, newname: &windows_core::BSTR) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CopyHere)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(sourcename), core::mem::transmute_copy(newname), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CopyHere)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(sourcename), core::mem::transmute_copy(newname), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn MoveHere(&self, sourcename: &windows_core::BSTR, newname: &windows_core::BSTR) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MoveHere)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(sourcename), core::mem::transmute_copy(newname), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).MoveHere)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(sourcename), core::mem::transmute_copy(newname), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -3822,7 +3899,7 @@ impl IADsContainer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsContainer_Impl::_NewEnum(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3837,7 +3914,7 @@ impl IADsContainer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsContainer_Impl::Filter(this) {
                     Ok(ok__) => {
-                        pvar.write(core::mem::transmute(ok__));
+                        pvar.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3850,7 +3927,7 @@ impl IADsContainer_Vtbl {
         unsafe extern "system" fn SetFilter<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, var: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsContainer_Impl::SetFilter(this, core::mem::transmute(&var))
+                IADsContainer_Impl::SetFilter(this, &*(&raw const var).cast())
             }
         }
         unsafe extern "system" fn Hints<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pvfilter: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -3858,7 +3935,7 @@ impl IADsContainer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsContainer_Impl::Hints(this) {
                     Ok(ok__) => {
-                        pvfilter.write(core::mem::transmute(ok__));
+                        pvfilter.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3871,15 +3948,15 @@ impl IADsContainer_Vtbl {
         unsafe extern "system" fn SetHints<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vhints: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsContainer_Impl::SetHints(this, core::mem::transmute(&vhints))
+                IADsContainer_Impl::SetHints(this, &*(&raw const vhints).cast())
             }
         }
         unsafe extern "system" fn GetObject<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, classname: *mut core::ffi::c_void, relativename: *mut core::ffi::c_void, ppobject: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsContainer_Impl::GetObject(this, core::mem::transmute(&classname), core::mem::transmute(&relativename)) {
+                match IADsContainer_Impl::GetObject(this, &*(&raw const classname).cast(), &*(&raw const relativename).cast()) {
                     Ok(ok__) => {
-                        ppobject.write(core::mem::transmute(ok__));
+                        ppobject.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3892,9 +3969,9 @@ impl IADsContainer_Vtbl {
         unsafe extern "system" fn Create<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, classname: *mut core::ffi::c_void, relativename: *mut core::ffi::c_void, ppobject: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsContainer_Impl::Create(this, core::mem::transmute(&classname), core::mem::transmute(&relativename)) {
+                match IADsContainer_Impl::Create(this, &*(&raw const classname).cast(), &*(&raw const relativename).cast()) {
                     Ok(ok__) => {
-                        ppobject.write(core::mem::transmute(ok__));
+                        ppobject.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3907,15 +3984,15 @@ impl IADsContainer_Vtbl {
         unsafe extern "system" fn Delete<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrclassname: *mut core::ffi::c_void, bstrrelativename: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsContainer_Impl::Delete(this, core::mem::transmute(&bstrclassname), core::mem::transmute(&bstrrelativename))
+                IADsContainer_Impl::Delete(this, &*(&raw const bstrclassname).cast(), &*(&raw const bstrrelativename).cast())
             }
         }
         unsafe extern "system" fn CopyHere<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, sourcename: *mut core::ffi::c_void, newname: *mut core::ffi::c_void, ppobject: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsContainer_Impl::CopyHere(this, core::mem::transmute(&sourcename), core::mem::transmute(&newname)) {
+                match IADsContainer_Impl::CopyHere(this, &*(&raw const sourcename).cast(), &*(&raw const newname).cast()) {
                     Ok(ok__) => {
-                        ppobject.write(core::mem::transmute(ok__));
+                        ppobject.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -3928,9 +4005,9 @@ impl IADsContainer_Vtbl {
         unsafe extern "system" fn MoveHere<Identity: IADsContainer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, sourcename: *mut core::ffi::c_void, newname: *mut core::ffi::c_void, ppobject: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsContainer_Impl::MoveHere(this, core::mem::transmute(&sourcename), core::mem::transmute(&newname)) {
+                match IADsContainer_Impl::MoveHere(this, &*(&raw const sourcename).cast(), &*(&raw const newname).cast()) {
                     Ok(ok__) => {
-                        ppobject.write(core::mem::transmute(ok__));
+                        ppobject.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4026,7 +4103,7 @@ impl IADsDNWithBinary_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsDNWithBinary_Impl::BinaryValue(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4039,7 +4116,7 @@ impl IADsDNWithBinary_Vtbl {
         unsafe extern "system" fn SetBinaryValue<Identity: IADsDNWithBinary_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vbinaryvalue: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsDNWithBinary_Impl::SetBinaryValue(this, core::mem::transmute(&vbinaryvalue))
+                IADsDNWithBinary_Impl::SetBinaryValue(this, &*(&raw const vbinaryvalue).cast())
             }
         }
         unsafe extern "system" fn DNString<Identity: IADsDNWithBinary_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -4047,7 +4124,7 @@ impl IADsDNWithBinary_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsDNWithBinary_Impl::DNString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4060,7 +4137,7 @@ impl IADsDNWithBinary_Vtbl {
         unsafe extern "system" fn SetDNString<Identity: IADsDNWithBinary_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdnstring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsDNWithBinary_Impl::SetDNString(this, core::mem::transmute(&bstrdnstring))
+                IADsDNWithBinary_Impl::SetDNString(this, &*(&raw const bstrdnstring).cast())
             }
         }
         Self {
@@ -4134,7 +4211,7 @@ impl IADsDNWithString_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsDNWithString_Impl::StringValue(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4147,7 +4224,7 @@ impl IADsDNWithString_Vtbl {
         unsafe extern "system" fn SetStringValue<Identity: IADsDNWithString_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrstringvalue: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsDNWithString_Impl::SetStringValue(this, core::mem::transmute(&bstrstringvalue))
+                IADsDNWithString_Impl::SetStringValue(this, &*(&raw const bstrstringvalue).cast())
             }
         }
         unsafe extern "system" fn DNString<Identity: IADsDNWithString_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -4155,7 +4232,7 @@ impl IADsDNWithString_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsDNWithString_Impl::DNString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4168,7 +4245,7 @@ impl IADsDNWithString_Vtbl {
         unsafe extern "system" fn SetDNString<Identity: IADsDNWithString_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdnstring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsDNWithString_Impl::SetDNString(this, core::mem::transmute(&bstrdnstring))
+                IADsDNWithString_Impl::SetDNString(this, &*(&raw const bstrdnstring).cast())
             }
         }
         Self {
@@ -4660,7 +4737,7 @@ impl IADsEmail_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsEmail_Impl::Address(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4673,7 +4750,7 @@ impl IADsEmail_Vtbl {
         unsafe extern "system" fn SetAddress<Identity: IADsEmail_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstraddress: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsEmail_Impl::SetAddress(this, core::mem::transmute(&bstraddress))
+                IADsEmail_Impl::SetAddress(this, &*(&raw const bstraddress).cast())
             }
         }
         Self {
@@ -4735,7 +4812,7 @@ impl IADsExtension_Vtbl {
         unsafe extern "system" fn Operate<Identity: IADsExtension_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, dwcode: super::DWORD, vardata1: super::VARIANT, vardata2: super::VARIANT, vardata3: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsExtension_Impl::Operate(this, core::mem::transmute_copy(&dwcode), core::mem::transmute(&vardata1), core::mem::transmute(&vardata2), core::mem::transmute(&vardata3))
+                IADsExtension_Impl::Operate(this, core::mem::transmute_copy(&dwcode), &*(&raw const vardata1).cast(), &*(&raw const vardata2).cast(), &*(&raw const vardata3).cast())
             }
         }
         unsafe extern "system" fn PrivateGetIDsOfNames<Identity: IADsExtension_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, riid: *const super::IID, rgsznames: *const *const super::OLECHAR, cnames: u32, lcid: super::LCID, rgdispid: *mut super::DISPID) -> windows_core::HRESULT {
@@ -4828,7 +4905,7 @@ impl IADsFaxNumber_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFaxNumber_Impl::TelephoneNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4841,7 +4918,7 @@ impl IADsFaxNumber_Vtbl {
         unsafe extern "system" fn SetTelephoneNumber<Identity: IADsFaxNumber_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrtelephonenumber: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsFaxNumber_Impl::SetTelephoneNumber(this, core::mem::transmute(&bstrtelephonenumber))
+                IADsFaxNumber_Impl::SetTelephoneNumber(this, &*(&raw const bstrtelephonenumber).cast())
             }
         }
         unsafe extern "system" fn Parameters<Identity: IADsFaxNumber_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -4849,7 +4926,7 @@ impl IADsFaxNumber_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFaxNumber_Impl::Parameters(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4862,7 +4939,7 @@ impl IADsFaxNumber_Vtbl {
         unsafe extern "system" fn SetParameters<Identity: IADsFaxNumber_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vparameters: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsFaxNumber_Impl::SetParameters(this, core::mem::transmute(&vparameters))
+                IADsFaxNumber_Impl::SetParameters(this, &*(&raw const vparameters).cast())
             }
         }
         Self {
@@ -4936,7 +5013,7 @@ impl IADsFileService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFileService_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -4949,7 +5026,7 @@ impl IADsFileService_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsFileService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsFileService_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsFileService_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn MaxUserCount<Identity: IADsFileService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -5003,13 +5080,13 @@ impl IADsFileServiceOperations {
     pub unsafe fn Sessions(&self) -> windows_core::Result<IADsCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Sessions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Sessions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Resources(&self) -> windows_core::Result<IADsCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Resources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Resources)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -5034,7 +5111,7 @@ impl IADsFileServiceOperations_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFileServiceOperations_Impl::Sessions(this) {
                     Ok(ok__) => {
-                        ppsessions.write(core::mem::transmute(ok__));
+                        ppsessions.cast::<IADsCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5049,7 +5126,7 @@ impl IADsFileServiceOperations_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFileServiceOperations_Impl::Resources(this) {
                     Ok(ok__) => {
-                        ppresources.write(core::mem::transmute(ok__));
+                        ppresources.cast::<IADsCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5173,7 +5250,7 @@ impl IADsFileShare_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFileShare_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5186,7 +5263,7 @@ impl IADsFileShare_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsFileShare_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsFileShare_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsFileShare_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn HostComputer<Identity: IADsFileShare_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -5194,7 +5271,7 @@ impl IADsFileShare_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFileShare_Impl::HostComputer(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5207,7 +5284,7 @@ impl IADsFileShare_Vtbl {
         unsafe extern "system" fn SetHostComputer<Identity: IADsFileShare_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrhostcomputer: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsFileShare_Impl::SetHostComputer(this, core::mem::transmute(&bstrhostcomputer))
+                IADsFileShare_Impl::SetHostComputer(this, &*(&raw const bstrhostcomputer).cast())
             }
         }
         unsafe extern "system" fn Path<Identity: IADsFileShare_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -5215,7 +5292,7 @@ impl IADsFileShare_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsFileShare_Impl::Path(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5228,7 +5305,7 @@ impl IADsFileShare_Vtbl {
         unsafe extern "system" fn SetPath<Identity: IADsFileShare_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrpath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsFileShare_Impl::SetPath(this, core::mem::transmute(&bstrpath))
+                IADsFileShare_Impl::SetPath(this, &*(&raw const bstrpath).cast())
             }
         }
         unsafe extern "system" fn MaxUserCount<Identity: IADsFileShare_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -5296,7 +5373,7 @@ impl IADsGroup {
     pub unsafe fn Members(&self) -> windows_core::Result<IADsMembers> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Members)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Members)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "wtypes")]
@@ -5345,7 +5422,7 @@ impl IADsGroup_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsGroup_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5358,7 +5435,7 @@ impl IADsGroup_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsGroup_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsGroup_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsGroup_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn Members<Identity: IADsGroup_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppmembers: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -5366,7 +5443,7 @@ impl IADsGroup_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsGroup_Impl::Members(this) {
                     Ok(ok__) => {
-                        ppmembers.write(core::mem::transmute(ok__));
+                        ppmembers.cast::<IADsMembers>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5379,7 +5456,7 @@ impl IADsGroup_Vtbl {
         unsafe extern "system" fn IsMember<Identity: IADsGroup_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrmember: *mut core::ffi::c_void, bmember: *mut super::VARIANT_BOOL) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsGroup_Impl::IsMember(this, core::mem::transmute(&bstrmember)) {
+                match IADsGroup_Impl::IsMember(this, &*(&raw const bstrmember).cast()) {
                     Ok(ok__) => {
                         bmember.write(ok__);
                         windows_core::HRESULT(0)
@@ -5394,13 +5471,13 @@ impl IADsGroup_Vtbl {
         unsafe extern "system" fn Add<Identity: IADsGroup_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnewitem: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsGroup_Impl::Add(this, core::mem::transmute(&bstrnewitem))
+                IADsGroup_Impl::Add(this, &*(&raw const bstrnewitem).cast())
             }
         }
         unsafe extern "system" fn Remove<Identity: IADsGroup_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstritemtoberemoved: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsGroup_Impl::Remove(this, core::mem::transmute(&bstritemtoberemoved))
+                IADsGroup_Impl::Remove(this, &*(&raw const bstritemtoberemoved).cast())
             }
         }
         Self {
@@ -5476,7 +5553,7 @@ impl IADsHold_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsHold_Impl::ObjectName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5489,7 +5566,7 @@ impl IADsHold_Vtbl {
         unsafe extern "system" fn SetObjectName<Identity: IADsHold_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrobjectname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsHold_Impl::SetObjectName(this, core::mem::transmute(&bstrobjectname))
+                IADsHold_Impl::SetObjectName(this, &*(&raw const bstrobjectname).cast())
             }
         }
         unsafe extern "system" fn Amount<Identity: IADsHold_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -5726,7 +5803,7 @@ impl IADsLocality_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsLocality_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5739,7 +5816,7 @@ impl IADsLocality_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsLocality_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsLocality_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn LocalityName<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -5747,7 +5824,7 @@ impl IADsLocality_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsLocality_Impl::LocalityName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5760,7 +5837,7 @@ impl IADsLocality_Vtbl {
         unsafe extern "system" fn SetLocalityName<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrlocalityname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsLocality_Impl::SetLocalityName(this, core::mem::transmute(&bstrlocalityname))
+                IADsLocality_Impl::SetLocalityName(this, &*(&raw const bstrlocalityname).cast())
             }
         }
         unsafe extern "system" fn PostalAddress<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -5768,7 +5845,7 @@ impl IADsLocality_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsLocality_Impl::PostalAddress(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5781,7 +5858,7 @@ impl IADsLocality_Vtbl {
         unsafe extern "system" fn SetPostalAddress<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrpostaladdress: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsLocality_Impl::SetPostalAddress(this, core::mem::transmute(&bstrpostaladdress))
+                IADsLocality_Impl::SetPostalAddress(this, &*(&raw const bstrpostaladdress).cast())
             }
         }
         unsafe extern "system" fn SeeAlso<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -5789,7 +5866,7 @@ impl IADsLocality_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsLocality_Impl::SeeAlso(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5802,7 +5879,7 @@ impl IADsLocality_Vtbl {
         unsafe extern "system" fn SetSeeAlso<Identity: IADsLocality_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vseealso: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsLocality_Impl::SetSeeAlso(this, core::mem::transmute(&vseealso))
+                IADsLocality_Impl::SetSeeAlso(this, &*(&raw const vseealso).cast())
             }
         }
         Self {
@@ -5845,7 +5922,7 @@ impl IADsMembers {
     pub unsafe fn _NewEnum(&self) -> windows_core::Result<windows_core::IUnknown> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self)._NewEnum)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "minwindef", feature = "shared", feature = "winnt", feature = "wtypes", feature = "wtypesbase"))]
@@ -5906,7 +5983,7 @@ impl IADsMembers_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsMembers_Impl::_NewEnum(this) {
                     Ok(ok__) => {
-                        ppenumerator.write(core::mem::transmute(ok__));
+                        ppenumerator.cast::<windows_core::IUnknown>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5921,7 +5998,7 @@ impl IADsMembers_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsMembers_Impl::Filter(this) {
                     Ok(ok__) => {
-                        pvfilter.write(core::mem::transmute(ok__));
+                        pvfilter.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -5934,7 +6011,7 @@ impl IADsMembers_Vtbl {
         unsafe extern "system" fn SetFilter<Identity: IADsMembers_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pvfilter: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsMembers_Impl::SetFilter(this, core::mem::transmute(&pvfilter))
+                IADsMembers_Impl::SetFilter(this, &*(&raw const pvfilter).cast())
             }
         }
         Self {
@@ -6035,19 +6112,19 @@ impl IADsNameTranslate_Vtbl {
         unsafe extern "system" fn Init<Identity: IADsNameTranslate_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnsettype: i32, bstradspath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsNameTranslate_Impl::Init(this, core::mem::transmute_copy(&lnsettype), core::mem::transmute(&bstradspath))
+                IADsNameTranslate_Impl::Init(this, core::mem::transmute_copy(&lnsettype), &*(&raw const bstradspath).cast())
             }
         }
         unsafe extern "system" fn InitEx<Identity: IADsNameTranslate_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnsettype: i32, bstradspath: *mut core::ffi::c_void, bstruserid: *mut core::ffi::c_void, bstrdomain: *mut core::ffi::c_void, bstrpassword: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsNameTranslate_Impl::InitEx(this, core::mem::transmute_copy(&lnsettype), core::mem::transmute(&bstradspath), core::mem::transmute(&bstruserid), core::mem::transmute(&bstrdomain), core::mem::transmute(&bstrpassword))
+                IADsNameTranslate_Impl::InitEx(this, core::mem::transmute_copy(&lnsettype), &*(&raw const bstradspath).cast(), &*(&raw const bstruserid).cast(), &*(&raw const bstrdomain).cast(), &*(&raw const bstrpassword).cast())
             }
         }
         unsafe extern "system" fn Set<Identity: IADsNameTranslate_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnsettype: i32, bstradspath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsNameTranslate_Impl::Set(this, core::mem::transmute_copy(&lnsettype), core::mem::transmute(&bstradspath))
+                IADsNameTranslate_Impl::Set(this, core::mem::transmute_copy(&lnsettype), &*(&raw const bstradspath).cast())
             }
         }
         unsafe extern "system" fn Get<Identity: IADsNameTranslate_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnformattype: i32, pbstradspath: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6055,7 +6132,7 @@ impl IADsNameTranslate_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsNameTranslate_Impl::Get(this, core::mem::transmute_copy(&lnformattype)) {
                     Ok(ok__) => {
-                        pbstradspath.write(core::mem::transmute(ok__));
+                        pbstradspath.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6068,7 +6145,7 @@ impl IADsNameTranslate_Vtbl {
         unsafe extern "system" fn SetEx<Identity: IADsNameTranslate_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnformattype: i32, pvar: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsNameTranslate_Impl::SetEx(this, core::mem::transmute_copy(&lnformattype), core::mem::transmute(&pvar))
+                IADsNameTranslate_Impl::SetEx(this, core::mem::transmute_copy(&lnformattype), &*(&raw const pvar).cast())
             }
         }
         unsafe extern "system" fn GetEx<Identity: IADsNameTranslate_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnformattype: i32, pvar: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -6076,7 +6153,7 @@ impl IADsNameTranslate_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsNameTranslate_Impl::GetEx(this, core::mem::transmute_copy(&lnformattype)) {
                     Ok(ok__) => {
-                        pvar.write(core::mem::transmute(ok__));
+                        pvar.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6147,7 +6224,7 @@ impl IADsNamespaces_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsNamespaces_Impl::DefaultContainer(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6160,7 +6237,7 @@ impl IADsNamespaces_Vtbl {
         unsafe extern "system" fn SetDefaultContainer<Identity: IADsNamespaces_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdefaultcontainer: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsNamespaces_Impl::SetDefaultContainer(this, core::mem::transmute(&bstrdefaultcontainer))
+                IADsNamespaces_Impl::SetDefaultContainer(this, &*(&raw const bstrdefaultcontainer).cast())
             }
         }
         Self {
@@ -6261,7 +6338,7 @@ impl IADsNetAddress_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsNetAddress_Impl::Address(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6274,7 +6351,7 @@ impl IADsNetAddress_Vtbl {
         unsafe extern "system" fn SetAddress<Identity: IADsNetAddress_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vaddress: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsNetAddress_Impl::SetAddress(this, core::mem::transmute(&vaddress))
+                IADsNetAddress_Impl::SetAddress(this, &*(&raw const vaddress).cast())
             }
         }
         Self {
@@ -6408,7 +6485,7 @@ impl IADsO_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsO_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6421,7 +6498,7 @@ impl IADsO_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsO_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsO_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn LocalityName<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6429,7 +6506,7 @@ impl IADsO_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsO_Impl::LocalityName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6442,7 +6519,7 @@ impl IADsO_Vtbl {
         unsafe extern "system" fn SetLocalityName<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrlocalityname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsO_Impl::SetLocalityName(this, core::mem::transmute(&bstrlocalityname))
+                IADsO_Impl::SetLocalityName(this, &*(&raw const bstrlocalityname).cast())
             }
         }
         unsafe extern "system" fn PostalAddress<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6450,7 +6527,7 @@ impl IADsO_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsO_Impl::PostalAddress(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6463,7 +6540,7 @@ impl IADsO_Vtbl {
         unsafe extern "system" fn SetPostalAddress<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrpostaladdress: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsO_Impl::SetPostalAddress(this, core::mem::transmute(&bstrpostaladdress))
+                IADsO_Impl::SetPostalAddress(this, &*(&raw const bstrpostaladdress).cast())
             }
         }
         unsafe extern "system" fn TelephoneNumber<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6471,7 +6548,7 @@ impl IADsO_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsO_Impl::TelephoneNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6484,7 +6561,7 @@ impl IADsO_Vtbl {
         unsafe extern "system" fn SetTelephoneNumber<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrtelephonenumber: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsO_Impl::SetTelephoneNumber(this, core::mem::transmute(&bstrtelephonenumber))
+                IADsO_Impl::SetTelephoneNumber(this, &*(&raw const bstrtelephonenumber).cast())
             }
         }
         unsafe extern "system" fn FaxNumber<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6492,7 +6569,7 @@ impl IADsO_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsO_Impl::FaxNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6505,7 +6582,7 @@ impl IADsO_Vtbl {
         unsafe extern "system" fn SetFaxNumber<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrfaxnumber: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsO_Impl::SetFaxNumber(this, core::mem::transmute(&bstrfaxnumber))
+                IADsO_Impl::SetFaxNumber(this, &*(&raw const bstrfaxnumber).cast())
             }
         }
         unsafe extern "system" fn SeeAlso<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -6513,7 +6590,7 @@ impl IADsO_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsO_Impl::SeeAlso(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6526,7 +6603,7 @@ impl IADsO_Vtbl {
         unsafe extern "system" fn SetSeeAlso<Identity: IADsO_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vseealso: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsO_Impl::SetSeeAlso(this, core::mem::transmute(&vseealso))
+                IADsO_Impl::SetSeeAlso(this, &*(&raw const vseealso).cast())
             }
         }
         Self {
@@ -6681,7 +6758,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6694,7 +6771,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsOU_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn LocalityName<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6702,7 +6779,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::LocalityName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6715,7 +6792,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetLocalityName<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrlocalityname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetLocalityName(this, core::mem::transmute(&bstrlocalityname))
+                IADsOU_Impl::SetLocalityName(this, &*(&raw const bstrlocalityname).cast())
             }
         }
         unsafe extern "system" fn PostalAddress<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6723,7 +6800,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::PostalAddress(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6736,7 +6813,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetPostalAddress<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrpostaladdress: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetPostalAddress(this, core::mem::transmute(&bstrpostaladdress))
+                IADsOU_Impl::SetPostalAddress(this, &*(&raw const bstrpostaladdress).cast())
             }
         }
         unsafe extern "system" fn TelephoneNumber<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6744,7 +6821,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::TelephoneNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6757,7 +6834,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetTelephoneNumber<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrtelephonenumber: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetTelephoneNumber(this, core::mem::transmute(&bstrtelephonenumber))
+                IADsOU_Impl::SetTelephoneNumber(this, &*(&raw const bstrtelephonenumber).cast())
             }
         }
         unsafe extern "system" fn FaxNumber<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6765,7 +6842,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::FaxNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6778,7 +6855,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetFaxNumber<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrfaxnumber: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetFaxNumber(this, core::mem::transmute(&bstrfaxnumber))
+                IADsOU_Impl::SetFaxNumber(this, &*(&raw const bstrfaxnumber).cast())
             }
         }
         unsafe extern "system" fn SeeAlso<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -6786,7 +6863,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::SeeAlso(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6799,7 +6876,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetSeeAlso<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vseealso: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetSeeAlso(this, core::mem::transmute(&vseealso))
+                IADsOU_Impl::SetSeeAlso(this, &*(&raw const vseealso).cast())
             }
         }
         unsafe extern "system" fn BusinessCategory<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -6807,7 +6884,7 @@ impl IADsOU_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOU_Impl::BusinessCategory(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6820,7 +6897,7 @@ impl IADsOU_Vtbl {
         unsafe extern "system" fn SetBusinessCategory<Identity: IADsOU_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrbusinesscategory: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOU_Impl::SetBusinessCategory(this, core::mem::transmute(&bstrbusinesscategory))
+                IADsOU_Impl::SetBusinessCategory(this, &*(&raw const bstrbusinesscategory).cast())
             }
         }
         Self {
@@ -6899,7 +6976,7 @@ impl IADsObjectOptions_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsObjectOptions_Impl::GetOption(this, core::mem::transmute_copy(&lnoption)) {
                     Ok(ok__) => {
-                        pvvalue.write(core::mem::transmute(ok__));
+                        pvvalue.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6912,7 +6989,7 @@ impl IADsObjectOptions_Vtbl {
         unsafe extern "system" fn SetOption<Identity: IADsObjectOptions_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnoption: i32, vvalue: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsObjectOptions_Impl::SetOption(this, core::mem::transmute_copy(&lnoption), core::mem::transmute(&vvalue))
+                IADsObjectOptions_Impl::SetOption(this, core::mem::transmute_copy(&lnoption), &*(&raw const vvalue).cast())
             }
         }
         Self { base__: super::IDispatch_Vtbl::new::<Identity, OFFSET>(), GetOption: GetOption::<Identity, OFFSET>, SetOption: SetOption::<Identity, OFFSET> }
@@ -6975,7 +7052,7 @@ impl IADsOctetList_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsOctetList_Impl::OctetList(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -6988,7 +7065,7 @@ impl IADsOctetList_Vtbl {
         unsafe extern "system" fn SetOctetList<Identity: IADsOctetList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, voctetlist: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsOctetList_Impl::SetOctetList(this, core::mem::transmute(&voctetlist))
+                IADsOctetList_Impl::SetOctetList(this, &*(&raw const voctetlist).cast())
             }
         }
         Self {
@@ -7019,7 +7096,7 @@ impl IADsOpenDSObject {
     pub unsafe fn OpenDSObject(&self, lpszdnname: &windows_core::BSTR, lpszusername: &windows_core::BSTR, lpszpassword: &windows_core::BSTR, lnreserved: i32) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).OpenDSObject)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(lpszdnname), core::mem::transmute_copy(lpszusername), core::mem::transmute_copy(lpszpassword), lnreserved, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).OpenDSObject)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(lpszdnname), core::mem::transmute_copy(lpszusername), core::mem::transmute_copy(lpszpassword), lnreserved, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -7040,9 +7117,9 @@ impl IADsOpenDSObject_Vtbl {
         unsafe extern "system" fn OpenDSObject<Identity: IADsOpenDSObject_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lpszdnname: *mut core::ffi::c_void, lpszusername: *mut core::ffi::c_void, lpszpassword: *mut core::ffi::c_void, lnreserved: i32, ppoledsobj: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsOpenDSObject_Impl::OpenDSObject(this, core::mem::transmute(&lpszdnname), core::mem::transmute(&lpszusername), core::mem::transmute(&lpszpassword), core::mem::transmute_copy(&lnreserved)) {
+                match IADsOpenDSObject_Impl::OpenDSObject(this, &*(&raw const lpszdnname).cast(), &*(&raw const lpszusername).cast(), &*(&raw const lpszpassword).cast(), core::mem::transmute_copy(&lnreserved)) {
                     Ok(ok__) => {
-                        ppoledsobj.write(core::mem::transmute(ok__));
+                        ppoledsobj.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7151,7 +7228,7 @@ impl IADsPath_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPath_Impl::VolumeName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7164,7 +7241,7 @@ impl IADsPath_Vtbl {
         unsafe extern "system" fn SetVolumeName<Identity: IADsPath_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrvolumename: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPath_Impl::SetVolumeName(this, core::mem::transmute(&bstrvolumename))
+                IADsPath_Impl::SetVolumeName(this, &*(&raw const bstrvolumename).cast())
             }
         }
         unsafe extern "system" fn Path<Identity: IADsPath_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -7172,7 +7249,7 @@ impl IADsPath_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPath_Impl::Path(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7185,7 +7262,7 @@ impl IADsPath_Vtbl {
         unsafe extern "system" fn SetPath<Identity: IADsPath_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrpath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPath_Impl::SetPath(this, core::mem::transmute(&bstrpath))
+                IADsPath_Impl::SetPath(this, &*(&raw const bstrpath).cast())
             }
         }
         Self {
@@ -7250,7 +7327,7 @@ impl IADsPathname {
     pub unsafe fn CopyPath(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CopyPath)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CopyPath)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn GetEscapedElement(&self, lnreserved: i32, bstrinstr: &windows_core::BSTR) -> windows_core::Result<windows_core::BSTR> {
@@ -7306,7 +7383,7 @@ impl IADsPathname_Vtbl {
         unsafe extern "system" fn Set<Identity: IADsPathname_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstradspath: *mut core::ffi::c_void, lnsettype: i32) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPathname_Impl::Set(this, core::mem::transmute(&bstradspath), core::mem::transmute_copy(&lnsettype))
+                IADsPathname_Impl::Set(this, &*(&raw const bstradspath).cast(), core::mem::transmute_copy(&lnsettype))
             }
         }
         unsafe extern "system" fn SetDisplayType<Identity: IADsPathname_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lndisplaytype: i32) -> windows_core::HRESULT {
@@ -7320,7 +7397,7 @@ impl IADsPathname_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPathname_Impl::Retrieve(this, core::mem::transmute_copy(&lnformattype)) {
                     Ok(ok__) => {
-                        pbstradspath.write(core::mem::transmute(ok__));
+                        pbstradspath.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7350,7 +7427,7 @@ impl IADsPathname_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPathname_Impl::GetElement(this, core::mem::transmute_copy(&lnelementindex)) {
                     Ok(ok__) => {
-                        pbstrelement.write(core::mem::transmute(ok__));
+                        pbstrelement.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7363,7 +7440,7 @@ impl IADsPathname_Vtbl {
         unsafe extern "system" fn AddLeafElement<Identity: IADsPathname_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrleafelement: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPathname_Impl::AddLeafElement(this, core::mem::transmute(&bstrleafelement))
+                IADsPathname_Impl::AddLeafElement(this, &*(&raw const bstrleafelement).cast())
             }
         }
         unsafe extern "system" fn RemoveLeafElement<Identity: IADsPathname_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -7377,7 +7454,7 @@ impl IADsPathname_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPathname_Impl::CopyPath(this) {
                     Ok(ok__) => {
-                        ppadspath.write(core::mem::transmute(ok__));
+                        ppadspath.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7390,9 +7467,9 @@ impl IADsPathname_Vtbl {
         unsafe extern "system" fn GetEscapedElement<Identity: IADsPathname_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnreserved: i32, bstrinstr: *mut core::ffi::c_void, pbstroutstr: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsPathname_Impl::GetEscapedElement(this, core::mem::transmute_copy(&lnreserved), core::mem::transmute(&bstrinstr)) {
+                match IADsPathname_Impl::GetEscapedElement(this, core::mem::transmute_copy(&lnreserved), &*(&raw const bstrinstr).cast()) {
                     Ok(ok__) => {
-                        pbstroutstr.write(core::mem::transmute(ok__));
+                        pbstroutstr.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7496,7 +7573,7 @@ impl IADsPostalAddress_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPostalAddress_Impl::PostalAddress(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7509,7 +7586,7 @@ impl IADsPostalAddress_Vtbl {
         unsafe extern "system" fn SetPostalAddress<Identity: IADsPostalAddress_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vpostaladdress: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPostalAddress_Impl::SetPostalAddress(this, core::mem::transmute(&vpostaladdress))
+                IADsPostalAddress_Impl::SetPostalAddress(this, &*(&raw const vpostaladdress).cast())
             }
         }
         Self {
@@ -7701,7 +7778,7 @@ impl IADsPrintJob_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintJob_Impl::HostPrintQueue(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7716,7 +7793,7 @@ impl IADsPrintJob_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintJob_Impl::User(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7731,7 +7808,7 @@ impl IADsPrintJob_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintJob_Impl::UserPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7791,7 +7868,7 @@ impl IADsPrintJob_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintJob_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7804,7 +7881,7 @@ impl IADsPrintJob_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsPrintJob_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintJob_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsPrintJob_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn Priority<Identity: IADsPrintJob_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -7875,7 +7952,7 @@ impl IADsPrintJob_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintJob_Impl::Notify(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7888,7 +7965,7 @@ impl IADsPrintJob_Vtbl {
         unsafe extern "system" fn SetNotify<Identity: IADsPrintJob_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnotify: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintJob_Impl::SetNotify(this, core::mem::transmute(&bstrnotify))
+                IADsPrintJob_Impl::SetNotify(this, &*(&raw const bstrnotify).cast())
             }
         }
         unsafe extern "system" fn NotifyPath<Identity: IADsPrintJob_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -7896,7 +7973,7 @@ impl IADsPrintJob_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintJob_Impl::NotifyPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -7909,7 +7986,7 @@ impl IADsPrintJob_Vtbl {
         unsafe extern "system" fn SetNotifyPath<Identity: IADsPrintJob_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnotifypath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintJob_Impl::SetNotifyPath(this, core::mem::transmute(&bstrnotifypath))
+                IADsPrintJob_Impl::SetNotifyPath(this, &*(&raw const bstrnotifypath).cast())
             }
         }
         Self {
@@ -8340,7 +8417,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::PrinterPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8353,7 +8430,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetPrinterPath<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprinterpath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetPrinterPath(this, core::mem::transmute(&bstrprinterpath))
+                IADsPrintQueue_Impl::SetPrinterPath(this, &*(&raw const bstrprinterpath).cast())
             }
         }
         unsafe extern "system" fn Model<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -8361,7 +8438,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::Model(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8374,7 +8451,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetModel<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrmodel: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetModel(this, core::mem::transmute(&bstrmodel))
+                IADsPrintQueue_Impl::SetModel(this, &*(&raw const bstrmodel).cast())
             }
         }
         unsafe extern "system" fn Datatype<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -8382,7 +8459,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::Datatype(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8395,7 +8472,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetDatatype<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdatatype: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetDatatype(this, core::mem::transmute(&bstrdatatype))
+                IADsPrintQueue_Impl::SetDatatype(this, &*(&raw const bstrdatatype).cast())
             }
         }
         unsafe extern "system" fn PrintProcessor<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -8403,7 +8480,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::PrintProcessor(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8416,7 +8493,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetPrintProcessor<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprintprocessor: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetPrintProcessor(this, core::mem::transmute(&bstrprintprocessor))
+                IADsPrintQueue_Impl::SetPrintProcessor(this, &*(&raw const bstrprintprocessor).cast())
             }
         }
         unsafe extern "system" fn Description<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -8424,7 +8501,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8437,7 +8514,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsPrintQueue_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn Location<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -8445,7 +8522,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::Location(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8458,7 +8535,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetLocation<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrlocation: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetLocation(this, core::mem::transmute(&bstrlocation))
+                IADsPrintQueue_Impl::SetLocation(this, &*(&raw const bstrlocation).cast())
             }
         }
         unsafe extern "system" fn StartTime<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::DATE) -> windows_core::HRESULT {
@@ -8550,7 +8627,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::BannerPage(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8563,7 +8640,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetBannerPage<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrbannerpage: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetBannerPage(this, core::mem::transmute(&bstrbannerpage))
+                IADsPrintQueue_Impl::SetBannerPage(this, &*(&raw const bstrbannerpage).cast())
             }
         }
         unsafe extern "system" fn PrintDevices<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -8571,7 +8648,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::PrintDevices(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8584,7 +8661,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetPrintDevices<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vprintdevices: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetPrintDevices(this, core::mem::transmute(&vprintdevices))
+                IADsPrintQueue_Impl::SetPrintDevices(this, &*(&raw const vprintdevices).cast())
             }
         }
         unsafe extern "system" fn NetAddresses<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -8592,7 +8669,7 @@ impl IADsPrintQueue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueue_Impl::NetAddresses(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8605,7 +8682,7 @@ impl IADsPrintQueue_Vtbl {
         unsafe extern "system" fn SetNetAddresses<Identity: IADsPrintQueue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vnetaddresses: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPrintQueue_Impl::SetNetAddresses(this, core::mem::transmute(&vnetaddresses))
+                IADsPrintQueue_Impl::SetNetAddresses(this, &*(&raw const vnetaddresses).cast())
             }
         }
         Self {
@@ -8666,7 +8743,7 @@ impl IADsPrintQueueOperations {
     pub unsafe fn PrintJobs(&self) -> windows_core::Result<IADsCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PrintJobs)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PrintJobs)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Pause(&self) -> windows_core::HRESULT {
@@ -8721,7 +8798,7 @@ impl IADsPrintQueueOperations_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPrintQueueOperations_Impl::PrintJobs(this) {
                     Ok(ok__) => {
-                        pobject.write(core::mem::transmute(ok__));
+                        pobject.cast::<IADsCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8827,7 +8904,7 @@ impl IADsProperty {
     pub unsafe fn Qualifiers(&self) -> windows_core::Result<IADsCollection> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Qualifiers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Qualifiers)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -8876,7 +8953,7 @@ impl IADsProperty_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsProperty_Impl::OID(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8889,7 +8966,7 @@ impl IADsProperty_Vtbl {
         unsafe extern "system" fn SetOID<Identity: IADsProperty_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstroid: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsProperty_Impl::SetOID(this, core::mem::transmute(&bstroid))
+                IADsProperty_Impl::SetOID(this, &*(&raw const bstroid).cast())
             }
         }
         unsafe extern "system" fn Syntax<Identity: IADsProperty_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -8897,7 +8974,7 @@ impl IADsProperty_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsProperty_Impl::Syntax(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -8910,7 +8987,7 @@ impl IADsProperty_Vtbl {
         unsafe extern "system" fn SetSyntax<Identity: IADsProperty_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrsyntax: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsProperty_Impl::SetSyntax(this, core::mem::transmute(&bstrsyntax))
+                IADsProperty_Impl::SetSyntax(this, &*(&raw const bstrsyntax).cast())
             }
         }
         unsafe extern "system" fn MaxRange<Identity: IADsProperty_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -8981,7 +9058,7 @@ impl IADsProperty_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsProperty_Impl::Qualifiers(this) {
                     Ok(ok__) => {
-                        ppqualifiers.write(core::mem::transmute(ok__));
+                        ppqualifiers.cast::<IADsCollection>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9114,7 +9191,7 @@ impl IADsPropertyEntry_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyEntry_Impl::Name(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9127,7 +9204,7 @@ impl IADsPropertyEntry_Vtbl {
         unsafe extern "system" fn SetName<Identity: IADsPropertyEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyEntry_Impl::SetName(this, core::mem::transmute(&bstrname))
+                IADsPropertyEntry_Impl::SetName(this, &*(&raw const bstrname).cast())
             }
         }
         unsafe extern "system" fn ADsType<Identity: IADsPropertyEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -9177,7 +9254,7 @@ impl IADsPropertyEntry_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyEntry_Impl::Values(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9190,7 +9267,7 @@ impl IADsPropertyEntry_Vtbl {
         unsafe extern "system" fn SetValues<Identity: IADsPropertyEntry_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vvalues: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyEntry_Impl::SetValues(this, core::mem::transmute(&vvalues))
+                IADsPropertyEntry_Impl::SetValues(this, &*(&raw const vvalues).cast())
             }
         }
         Self {
@@ -9335,7 +9412,7 @@ impl IADsPropertyList_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyList_Impl::Next(this) {
                     Ok(ok__) => {
-                        pvariant.write(core::mem::transmute(ok__));
+                        pvariant.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9360,9 +9437,9 @@ impl IADsPropertyList_Vtbl {
         unsafe extern "system" fn Item<Identity: IADsPropertyList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, varindex: super::VARIANT, pvariant: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsPropertyList_Impl::Item(this, core::mem::transmute(&varindex)) {
+                match IADsPropertyList_Impl::Item(this, &*(&raw const varindex).cast()) {
                     Ok(ok__) => {
-                        pvariant.write(core::mem::transmute(ok__));
+                        pvariant.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9375,9 +9452,9 @@ impl IADsPropertyList_Vtbl {
         unsafe extern "system" fn GetPropertyItem<Identity: IADsPropertyList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrname: *mut core::ffi::c_void, lnadstype: super::LONG, pvariant: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsPropertyList_Impl::GetPropertyItem(this, core::mem::transmute(&bstrname), core::mem::transmute_copy(&lnadstype)) {
+                match IADsPropertyList_Impl::GetPropertyItem(this, &*(&raw const bstrname).cast(), core::mem::transmute_copy(&lnadstype)) {
                     Ok(ok__) => {
-                        pvariant.write(core::mem::transmute(ok__));
+                        pvariant.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9390,13 +9467,13 @@ impl IADsPropertyList_Vtbl {
         unsafe extern "system" fn PutPropertyItem<Identity: IADsPropertyList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vardata: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyList_Impl::PutPropertyItem(this, core::mem::transmute(&vardata))
+                IADsPropertyList_Impl::PutPropertyItem(this, &*(&raw const vardata).cast())
             }
         }
         unsafe extern "system" fn ResetPropertyItem<Identity: IADsPropertyList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, varentry: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyList_Impl::ResetPropertyItem(this, core::mem::transmute(&varentry))
+                IADsPropertyList_Impl::ResetPropertyItem(this, &*(&raw const varentry).cast())
             }
         }
         unsafe extern "system" fn PurgePropertyList<Identity: IADsPropertyList_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -9526,7 +9603,7 @@ impl IADsPropertyValue {
     pub unsafe fn SecurityDescriptor(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SecurityDescriptor)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SecurityDescriptor)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetSecurityDescriptor<P0>(&self, psecuritydescriptor: P0) -> windows_core::HRESULT
@@ -9538,7 +9615,7 @@ impl IADsPropertyValue {
     pub unsafe fn LargeInteger(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LargeInteger)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LargeInteger)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetLargeInteger<P0>(&self, plargeinteger: P0) -> windows_core::HRESULT
@@ -9665,7 +9742,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::DNString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9678,7 +9755,7 @@ impl IADsPropertyValue_Vtbl {
         unsafe extern "system" fn SetDNString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdnstring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue_Impl::SetDNString(this, core::mem::transmute(&bstrdnstring))
+                IADsPropertyValue_Impl::SetDNString(this, &*(&raw const bstrdnstring).cast())
             }
         }
         unsafe extern "system" fn CaseExactString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -9686,7 +9763,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::CaseExactString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9699,7 +9776,7 @@ impl IADsPropertyValue_Vtbl {
         unsafe extern "system" fn SetCaseExactString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrcaseexactstring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue_Impl::SetCaseExactString(this, core::mem::transmute(&bstrcaseexactstring))
+                IADsPropertyValue_Impl::SetCaseExactString(this, &*(&raw const bstrcaseexactstring).cast())
             }
         }
         unsafe extern "system" fn CaseIgnoreString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -9707,7 +9784,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::CaseIgnoreString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9720,7 +9797,7 @@ impl IADsPropertyValue_Vtbl {
         unsafe extern "system" fn SetCaseIgnoreString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrcaseignorestring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue_Impl::SetCaseIgnoreString(this, core::mem::transmute(&bstrcaseignorestring))
+                IADsPropertyValue_Impl::SetCaseIgnoreString(this, &*(&raw const bstrcaseignorestring).cast())
             }
         }
         unsafe extern "system" fn PrintableString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -9728,7 +9805,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::PrintableString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9741,7 +9818,7 @@ impl IADsPropertyValue_Vtbl {
         unsafe extern "system" fn SetPrintableString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprintablestring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue_Impl::SetPrintableString(this, core::mem::transmute(&bstrprintablestring))
+                IADsPropertyValue_Impl::SetPrintableString(this, &*(&raw const bstrprintablestring).cast())
             }
         }
         unsafe extern "system" fn NumericString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -9749,7 +9826,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::NumericString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9762,7 +9839,7 @@ impl IADsPropertyValue_Vtbl {
         unsafe extern "system" fn SetNumericString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnumericstring: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue_Impl::SetNumericString(this, core::mem::transmute(&bstrnumericstring))
+                IADsPropertyValue_Impl::SetNumericString(this, &*(&raw const bstrnumericstring).cast())
             }
         }
         unsafe extern "system" fn Boolean<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -9812,7 +9889,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::OctetString(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9825,7 +9902,7 @@ impl IADsPropertyValue_Vtbl {
         unsafe extern "system" fn SetOctetString<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, voctetstring: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue_Impl::SetOctetString(this, core::mem::transmute(&voctetstring))
+                IADsPropertyValue_Impl::SetOctetString(this, &*(&raw const voctetstring).cast())
             }
         }
         unsafe extern "system" fn SecurityDescriptor<Identity: IADsPropertyValue_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -9833,7 +9910,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::SecurityDescriptor(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9854,7 +9931,7 @@ impl IADsPropertyValue_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue_Impl::LargeInteger(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9978,7 +10055,7 @@ impl IADsPropertyValue2_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsPropertyValue2_Impl::GetObjectProperty(this, core::mem::transmute_copy(&lnadstype)) {
                     Ok(ok__) => {
-                        pvprop.write(core::mem::transmute(ok__));
+                        pvprop.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -9991,7 +10068,7 @@ impl IADsPropertyValue2_Vtbl {
         unsafe extern "system" fn PutObjectProperty<Identity: IADsPropertyValue2_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lnadstype: i32, vprop: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsPropertyValue2_Impl::PutObjectProperty(this, core::mem::transmute_copy(&lnadstype), core::mem::transmute(&vprop))
+                IADsPropertyValue2_Impl::PutObjectProperty(this, core::mem::transmute_copy(&lnadstype), &*(&raw const vprop).cast())
             }
         }
         Self {
@@ -10110,7 +10187,7 @@ impl IADsReplicaPointer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsReplicaPointer_Impl::ServerName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10123,7 +10200,7 @@ impl IADsReplicaPointer_Vtbl {
         unsafe extern "system" fn SetServerName<Identity: IADsReplicaPointer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrservername: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsReplicaPointer_Impl::SetServerName(this, core::mem::transmute(&bstrservername))
+                IADsReplicaPointer_Impl::SetServerName(this, &*(&raw const bstrservername).cast())
             }
         }
         unsafe extern "system" fn ReplicaType<Identity: IADsReplicaPointer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -10194,7 +10271,7 @@ impl IADsReplicaPointer_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsReplicaPointer_Impl::ReplicaAddressHints(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10207,7 +10284,7 @@ impl IADsReplicaPointer_Vtbl {
         unsafe extern "system" fn SetReplicaAddressHints<Identity: IADsReplicaPointer_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vreplicaaddresshints: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsReplicaPointer_Impl::SetReplicaAddressHints(this, core::mem::transmute(&vreplicaaddresshints))
+                IADsReplicaPointer_Impl::SetReplicaAddressHints(this, &*(&raw const vreplicaaddresshints).cast())
             }
         }
         Self {
@@ -10293,7 +10370,7 @@ impl IADsResource_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsResource_Impl::User(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10308,7 +10385,7 @@ impl IADsResource_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsResource_Impl::UserPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10323,7 +10400,7 @@ impl IADsResource_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsResource_Impl::Path(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10436,7 +10513,7 @@ impl IADsSecurityDescriptor {
     pub unsafe fn DiscretionaryAcl(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DiscretionaryAcl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DiscretionaryAcl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetDiscretionaryAcl<P0>(&self, pdiscretionaryacl: P0) -> windows_core::HRESULT
@@ -10459,7 +10536,7 @@ impl IADsSecurityDescriptor {
     pub unsafe fn SystemAcl(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SystemAcl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SystemAcl)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetSystemAcl<P0>(&self, psystemacl: P0) -> windows_core::HRESULT
@@ -10482,7 +10559,7 @@ impl IADsSecurityDescriptor {
     pub unsafe fn CopySecurityDescriptor(&self) -> windows_core::Result<super::IDispatch> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CopySecurityDescriptor)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CopySecurityDescriptor)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -10611,7 +10688,7 @@ impl IADsSecurityDescriptor_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSecurityDescriptor_Impl::Owner(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10624,7 +10701,7 @@ impl IADsSecurityDescriptor_Vtbl {
         unsafe extern "system" fn SetOwner<Identity: IADsSecurityDescriptor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrowner: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsSecurityDescriptor_Impl::SetOwner(this, core::mem::transmute(&bstrowner))
+                IADsSecurityDescriptor_Impl::SetOwner(this, &*(&raw const bstrowner).cast())
             }
         }
         unsafe extern "system" fn OwnerDefaulted<Identity: IADsSecurityDescriptor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT_BOOL) -> windows_core::HRESULT {
@@ -10653,7 +10730,7 @@ impl IADsSecurityDescriptor_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSecurityDescriptor_Impl::Group(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10666,7 +10743,7 @@ impl IADsSecurityDescriptor_Vtbl {
         unsafe extern "system" fn SetGroup<Identity: IADsSecurityDescriptor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrgroup: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsSecurityDescriptor_Impl::SetGroup(this, core::mem::transmute(&bstrgroup))
+                IADsSecurityDescriptor_Impl::SetGroup(this, &*(&raw const bstrgroup).cast())
             }
         }
         unsafe extern "system" fn GroupDefaulted<Identity: IADsSecurityDescriptor_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT_BOOL) -> windows_core::HRESULT {
@@ -10695,7 +10772,7 @@ impl IADsSecurityDescriptor_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSecurityDescriptor_Impl::DiscretionaryAcl(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10737,7 +10814,7 @@ impl IADsSecurityDescriptor_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSecurityDescriptor_Impl::SystemAcl(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10779,7 +10856,7 @@ impl IADsSecurityDescriptor_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSecurityDescriptor_Impl::CopySecurityDescriptor(this) {
                     Ok(ok__) => {
-                        ppsecuritydescriptor.write(core::mem::transmute(ok__));
+                        ppsecuritydescriptor.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10895,9 +10972,9 @@ impl IADsSecurityUtility_Vtbl {
         unsafe extern "system" fn GetSecurityDescriptor<Identity: IADsSecurityUtility_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, varpath: super::VARIANT, lpathformat: i32, lformat: i32, pvariant: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsSecurityUtility_Impl::GetSecurityDescriptor(this, core::mem::transmute(&varpath), core::mem::transmute_copy(&lpathformat), core::mem::transmute_copy(&lformat)) {
+                match IADsSecurityUtility_Impl::GetSecurityDescriptor(this, &*(&raw const varpath).cast(), core::mem::transmute_copy(&lpathformat), core::mem::transmute_copy(&lformat)) {
                     Ok(ok__) => {
-                        pvariant.write(core::mem::transmute(ok__));
+                        pvariant.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -10910,15 +10987,15 @@ impl IADsSecurityUtility_Vtbl {
         unsafe extern "system" fn SetSecurityDescriptor<Identity: IADsSecurityUtility_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, varpath: super::VARIANT, lpathformat: i32, vardata: super::VARIANT, ldataformat: i32) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsSecurityUtility_Impl::SetSecurityDescriptor(this, core::mem::transmute(&varpath), core::mem::transmute_copy(&lpathformat), core::mem::transmute(&vardata), core::mem::transmute_copy(&ldataformat))
+                IADsSecurityUtility_Impl::SetSecurityDescriptor(this, &*(&raw const varpath).cast(), core::mem::transmute_copy(&lpathformat), &*(&raw const vardata).cast(), core::mem::transmute_copy(&ldataformat))
             }
         }
         unsafe extern "system" fn ConvertSecurityDescriptor<Identity: IADsSecurityUtility_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, varsd: super::VARIANT, ldataformat: i32, loutformat: i32, presult: *mut super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IADsSecurityUtility_Impl::ConvertSecurityDescriptor(this, core::mem::transmute(&varsd), core::mem::transmute_copy(&ldataformat), core::mem::transmute_copy(&loutformat)) {
+                match IADsSecurityUtility_Impl::ConvertSecurityDescriptor(this, &*(&raw const varsd).cast(), core::mem::transmute_copy(&ldataformat), core::mem::transmute_copy(&loutformat)) {
                     Ok(ok__) => {
-                        presult.write(core::mem::transmute(ok__));
+                        presult.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11159,7 +11236,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::HostComputer(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11172,7 +11249,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetHostComputer<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrhostcomputer: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetHostComputer(this, core::mem::transmute(&bstrhostcomputer))
+                IADsService_Impl::SetHostComputer(this, &*(&raw const bstrhostcomputer).cast())
             }
         }
         unsafe extern "system" fn DisplayName<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -11180,7 +11257,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::DisplayName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11193,7 +11270,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetDisplayName<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdisplayname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetDisplayName(this, core::mem::transmute(&bstrdisplayname))
+                IADsService_Impl::SetDisplayName(this, &*(&raw const bstrdisplayname).cast())
             }
         }
         unsafe extern "system" fn Version<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -11201,7 +11278,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::Version(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11214,7 +11291,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetVersion<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrversion: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetVersion(this, core::mem::transmute(&bstrversion))
+                IADsService_Impl::SetVersion(this, &*(&raw const bstrversion).cast())
             }
         }
         unsafe extern "system" fn ServiceType<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -11264,7 +11341,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::Path(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11277,7 +11354,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetPath<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrpath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetPath(this, core::mem::transmute(&bstrpath))
+                IADsService_Impl::SetPath(this, &*(&raw const bstrpath).cast())
             }
         }
         unsafe extern "system" fn StartupParameters<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -11285,7 +11362,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::StartupParameters(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11298,7 +11375,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetStartupParameters<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrstartupparameters: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetStartupParameters(this, core::mem::transmute(&bstrstartupparameters))
+                IADsService_Impl::SetStartupParameters(this, &*(&raw const bstrstartupparameters).cast())
             }
         }
         unsafe extern "system" fn ErrorControl<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -11327,7 +11404,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::LoadOrderGroup(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11340,7 +11417,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetLoadOrderGroup<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrloadordergroup: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetLoadOrderGroup(this, core::mem::transmute(&bstrloadordergroup))
+                IADsService_Impl::SetLoadOrderGroup(this, &*(&raw const bstrloadordergroup).cast())
             }
         }
         unsafe extern "system" fn ServiceAccountName<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -11348,7 +11425,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::ServiceAccountName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11361,7 +11438,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetServiceAccountName<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrserviceaccountname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetServiceAccountName(this, core::mem::transmute(&bstrserviceaccountname))
+                IADsService_Impl::SetServiceAccountName(this, &*(&raw const bstrserviceaccountname).cast())
             }
         }
         unsafe extern "system" fn ServiceAccountPath<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -11369,7 +11446,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::ServiceAccountPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11382,7 +11459,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetServiceAccountPath<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrserviceaccountpath: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetServiceAccountPath(this, core::mem::transmute(&bstrserviceaccountpath))
+                IADsService_Impl::SetServiceAccountPath(this, &*(&raw const bstrserviceaccountpath).cast())
             }
         }
         unsafe extern "system" fn Dependencies<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -11390,7 +11467,7 @@ impl IADsService_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsService_Impl::Dependencies(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11403,7 +11480,7 @@ impl IADsService_Vtbl {
         unsafe extern "system" fn SetDependencies<Identity: IADsService_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vdependencies: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsService_Impl::SetDependencies(this, core::mem::transmute(&vdependencies))
+                IADsService_Impl::SetDependencies(this, &*(&raw const vdependencies).cast())
             }
         }
         Self {
@@ -11541,7 +11618,7 @@ impl IADsServiceOperations_Vtbl {
         unsafe extern "system" fn SetPassword<Identity: IADsServiceOperations_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnewpassword: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsServiceOperations_Impl::SetPassword(this, core::mem::transmute(&bstrnewpassword))
+                IADsServiceOperations_Impl::SetPassword(this, &*(&raw const bstrnewpassword).cast())
             }
         }
         Self {
@@ -11639,7 +11716,7 @@ impl IADsSession_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSession_Impl::User(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11654,7 +11731,7 @@ impl IADsSession_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSession_Impl::UserPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11669,7 +11746,7 @@ impl IADsSession_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSession_Impl::Computer(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11684,7 +11761,7 @@ impl IADsSession_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsSession_Impl::ComputerPath(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -11990,7 +12067,7 @@ impl IADsTypedName_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsTypedName_Impl::ObjectName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -12003,7 +12080,7 @@ impl IADsTypedName_Vtbl {
         unsafe extern "system" fn SetObjectName<Identity: IADsTypedName_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrobjectname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsTypedName_Impl::SetObjectName(this, core::mem::transmute(&bstrobjectname))
+                IADsTypedName_Impl::SetObjectName(this, &*(&raw const bstrobjectname).cast())
             }
         }
         unsafe extern "system" fn Level<Identity: IADsTypedName_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -12527,7 +12604,7 @@ impl IADsUser {
     pub unsafe fn Groups(&self) -> windows_core::Result<IADsMembers> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Groups)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Groups)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn SetPassword(&self, newpassword: &windows_core::BSTR) -> windows_core::HRESULT {
@@ -12862,7 +12939,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::BadLoginAddress(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -12952,7 +13029,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Description(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -12965,7 +13042,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetDescription<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdescription: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetDescription(this, core::mem::transmute(&bstrdescription))
+                IADsUser_Impl::SetDescription(this, &*(&raw const bstrdescription).cast())
             }
         }
         unsafe extern "system" fn Division<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -12973,7 +13050,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Division(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -12986,7 +13063,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetDivision<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdivision: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetDivision(this, core::mem::transmute(&bstrdivision))
+                IADsUser_Impl::SetDivision(this, &*(&raw const bstrdivision).cast())
             }
         }
         unsafe extern "system" fn Department<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -12994,7 +13071,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Department(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13007,7 +13084,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetDepartment<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrdepartment: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetDepartment(this, core::mem::transmute(&bstrdepartment))
+                IADsUser_Impl::SetDepartment(this, &*(&raw const bstrdepartment).cast())
             }
         }
         unsafe extern "system" fn EmployeeID<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13015,7 +13092,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::EmployeeID(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13028,7 +13105,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetEmployeeID<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstremployeeid: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetEmployeeID(this, core::mem::transmute(&bstremployeeid))
+                IADsUser_Impl::SetEmployeeID(this, &*(&raw const bstremployeeid).cast())
             }
         }
         unsafe extern "system" fn FullName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13036,7 +13113,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::FullName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13049,7 +13126,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetFullName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrfullname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetFullName(this, core::mem::transmute(&bstrfullname))
+                IADsUser_Impl::SetFullName(this, &*(&raw const bstrfullname).cast())
             }
         }
         unsafe extern "system" fn FirstName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13057,7 +13134,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::FirstName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13070,7 +13147,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetFirstName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrfirstname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetFirstName(this, core::mem::transmute(&bstrfirstname))
+                IADsUser_Impl::SetFirstName(this, &*(&raw const bstrfirstname).cast())
             }
         }
         unsafe extern "system" fn LastName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13078,7 +13155,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::LastName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13091,7 +13168,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetLastName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrlastname: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetLastName(this, core::mem::transmute(&bstrlastname))
+                IADsUser_Impl::SetLastName(this, &*(&raw const bstrlastname).cast())
             }
         }
         unsafe extern "system" fn OtherName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13099,7 +13176,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::OtherName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13112,7 +13189,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetOtherName<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrothername: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetOtherName(this, core::mem::transmute(&bstrothername))
+                IADsUser_Impl::SetOtherName(this, &*(&raw const bstrothername).cast())
             }
         }
         unsafe extern "system" fn NamePrefix<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13120,7 +13197,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::NamePrefix(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13133,7 +13210,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetNamePrefix<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnameprefix: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetNamePrefix(this, core::mem::transmute(&bstrnameprefix))
+                IADsUser_Impl::SetNamePrefix(this, &*(&raw const bstrnameprefix).cast())
             }
         }
         unsafe extern "system" fn NameSuffix<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13141,7 +13218,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::NameSuffix(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13154,7 +13231,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetNameSuffix<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrnamesuffix: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetNameSuffix(this, core::mem::transmute(&bstrnamesuffix))
+                IADsUser_Impl::SetNameSuffix(this, &*(&raw const bstrnamesuffix).cast())
             }
         }
         unsafe extern "system" fn Title<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13162,7 +13239,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Title(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13175,7 +13252,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetTitle<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrtitle: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetTitle(this, core::mem::transmute(&bstrtitle))
+                IADsUser_Impl::SetTitle(this, &*(&raw const bstrtitle).cast())
             }
         }
         unsafe extern "system" fn Manager<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13183,7 +13260,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Manager(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13196,7 +13273,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetManager<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrmanager: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetManager(this, core::mem::transmute(&bstrmanager))
+                IADsUser_Impl::SetManager(this, &*(&raw const bstrmanager).cast())
             }
         }
         unsafe extern "system" fn TelephoneHome<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13204,7 +13281,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::TelephoneHome(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13217,7 +13294,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetTelephoneHome<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vtelephonehome: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetTelephoneHome(this, core::mem::transmute(&vtelephonehome))
+                IADsUser_Impl::SetTelephoneHome(this, &*(&raw const vtelephonehome).cast())
             }
         }
         unsafe extern "system" fn TelephoneMobile<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13225,7 +13302,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::TelephoneMobile(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13238,7 +13315,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetTelephoneMobile<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vtelephonemobile: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetTelephoneMobile(this, core::mem::transmute(&vtelephonemobile))
+                IADsUser_Impl::SetTelephoneMobile(this, &*(&raw const vtelephonemobile).cast())
             }
         }
         unsafe extern "system" fn TelephoneNumber<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13246,7 +13323,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::TelephoneNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13259,7 +13336,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetTelephoneNumber<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vtelephonenumber: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetTelephoneNumber(this, core::mem::transmute(&vtelephonenumber))
+                IADsUser_Impl::SetTelephoneNumber(this, &*(&raw const vtelephonenumber).cast())
             }
         }
         unsafe extern "system" fn TelephonePager<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13267,7 +13344,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::TelephonePager(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13280,7 +13357,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetTelephonePager<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vtelephonepager: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetTelephonePager(this, core::mem::transmute(&vtelephonepager))
+                IADsUser_Impl::SetTelephonePager(this, &*(&raw const vtelephonepager).cast())
             }
         }
         unsafe extern "system" fn FaxNumber<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13288,7 +13365,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::FaxNumber(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13301,7 +13378,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetFaxNumber<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vfaxnumber: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetFaxNumber(this, core::mem::transmute(&vfaxnumber))
+                IADsUser_Impl::SetFaxNumber(this, &*(&raw const vfaxnumber).cast())
             }
         }
         unsafe extern "system" fn OfficeLocations<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13309,7 +13386,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::OfficeLocations(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13322,7 +13399,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetOfficeLocations<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vofficelocations: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetOfficeLocations(this, core::mem::transmute(&vofficelocations))
+                IADsUser_Impl::SetOfficeLocations(this, &*(&raw const vofficelocations).cast())
             }
         }
         unsafe extern "system" fn PostalAddresses<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13330,7 +13407,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::PostalAddresses(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13343,7 +13420,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetPostalAddresses<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vpostaladdresses: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetPostalAddresses(this, core::mem::transmute(&vpostaladdresses))
+                IADsUser_Impl::SetPostalAddresses(this, &*(&raw const vpostaladdresses).cast())
             }
         }
         unsafe extern "system" fn PostalCodes<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13351,7 +13428,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::PostalCodes(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13364,7 +13441,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetPostalCodes<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vpostalcodes: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetPostalCodes(this, core::mem::transmute(&vpostalcodes))
+                IADsUser_Impl::SetPostalCodes(this, &*(&raw const vpostalcodes).cast())
             }
         }
         unsafe extern "system" fn SeeAlso<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13372,7 +13449,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::SeeAlso(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13385,7 +13462,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetSeeAlso<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vseealso: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetSeeAlso(this, core::mem::transmute(&vseealso))
+                IADsUser_Impl::SetSeeAlso(this, &*(&raw const vseealso).cast())
             }
         }
         unsafe extern "system" fn AccountDisabled<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT_BOOL) -> windows_core::HRESULT {
@@ -13498,7 +13575,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::LoginHours(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13511,7 +13588,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetLoginHours<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vloginhours: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetLoginHours(this, core::mem::transmute(&vloginhours))
+                IADsUser_Impl::SetLoginHours(this, &*(&raw const vloginhours).cast())
             }
         }
         unsafe extern "system" fn LoginWorkstations<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13519,7 +13596,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::LoginWorkstations(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13532,7 +13609,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetLoginWorkstations<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vloginworkstations: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetLoginWorkstations(this, core::mem::transmute(&vloginworkstations))
+                IADsUser_Impl::SetLoginWorkstations(this, &*(&raw const vloginworkstations).cast())
             }
         }
         unsafe extern "system" fn MaxLogins<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut i32) -> windows_core::HRESULT {
@@ -13666,7 +13743,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::EmailAddress(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13679,7 +13756,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetEmailAddress<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstremailaddress: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetEmailAddress(this, core::mem::transmute(&bstremailaddress))
+                IADsUser_Impl::SetEmailAddress(this, &*(&raw const bstremailaddress).cast())
             }
         }
         unsafe extern "system" fn HomeDirectory<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13687,7 +13764,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::HomeDirectory(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13700,7 +13777,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetHomeDirectory<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrhomedirectory: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetHomeDirectory(this, core::mem::transmute(&bstrhomedirectory))
+                IADsUser_Impl::SetHomeDirectory(this, &*(&raw const bstrhomedirectory).cast())
             }
         }
         unsafe extern "system" fn Languages<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13708,7 +13785,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Languages(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13721,7 +13798,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetLanguages<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vlanguages: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetLanguages(this, core::mem::transmute(&vlanguages))
+                IADsUser_Impl::SetLanguages(this, &*(&raw const vlanguages).cast())
             }
         }
         unsafe extern "system" fn Profile<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13729,7 +13806,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Profile(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13742,7 +13819,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetProfile<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrprofile: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetProfile(this, core::mem::transmute(&bstrprofile))
+                IADsUser_Impl::SetProfile(this, &*(&raw const bstrprofile).cast())
             }
         }
         unsafe extern "system" fn LoginScript<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13750,7 +13827,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::LoginScript(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13763,7 +13840,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetLoginScript<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrloginscript: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetLoginScript(this, core::mem::transmute(&bstrloginscript))
+                IADsUser_Impl::SetLoginScript(this, &*(&raw const bstrloginscript).cast())
             }
         }
         unsafe extern "system" fn Picture<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut super::VARIANT) -> windows_core::HRESULT {
@@ -13771,7 +13848,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Picture(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<super::VARIANT>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13784,7 +13861,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetPicture<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, vpicture: super::VARIANT) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetPicture(this, core::mem::transmute(&vpicture))
+                IADsUser_Impl::SetPicture(this, &*(&raw const vpicture).cast())
             }
         }
         unsafe extern "system" fn HomePage<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, retval: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13792,7 +13869,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::HomePage(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13805,7 +13882,7 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetHomePage<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstrhomepage: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetHomePage(this, core::mem::transmute(&bstrhomepage))
+                IADsUser_Impl::SetHomePage(this, &*(&raw const bstrhomepage).cast())
             }
         }
         unsafe extern "system" fn Groups<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppgroups: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -13813,7 +13890,7 @@ impl IADsUser_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsUser_Impl::Groups(this) {
                     Ok(ok__) => {
-                        ppgroups.write(core::mem::transmute(ok__));
+                        ppgroups.cast::<IADsMembers>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -13826,13 +13903,13 @@ impl IADsUser_Vtbl {
         unsafe extern "system" fn SetPassword<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, newpassword: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::SetPassword(this, core::mem::transmute(&newpassword))
+                IADsUser_Impl::SetPassword(this, &*(&raw const newpassword).cast())
             }
         }
         unsafe extern "system" fn ChangePassword<Identity: IADsUser_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, bstroldpassword: *mut core::ffi::c_void, bstrnewpassword: *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IADsUser_Impl::ChangePassword(this, core::mem::transmute(&bstroldpassword), core::mem::transmute(&bstrnewpassword))
+                IADsUser_Impl::ChangePassword(this, &*(&raw const bstroldpassword).cast(), &*(&raw const bstrnewpassword).cast())
             }
         }
         Self {
@@ -13999,7 +14076,7 @@ impl IADsWinNTSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsWinNTSystemInfo_Impl::UserName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -14014,7 +14091,7 @@ impl IADsWinNTSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsWinNTSystemInfo_Impl::ComputerName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -14029,7 +14106,7 @@ impl IADsWinNTSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsWinNTSystemInfo_Impl::DomainName(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -14044,7 +14121,7 @@ impl IADsWinNTSystemInfo_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IADsWinNTSystemInfo_Impl::PDC(this) {
                     Ok(ok__) => {
-                        retval.write(core::mem::transmute(ok__));
+                        retval.cast::<windows_core::BSTR>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -14089,7 +14166,7 @@ impl IDirectoryObject {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateDSObject)(windows_core::Interface::as_raw(self), pszrdnname.param().abi(), pattributeentries, dwnumattributes, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateDSObject)(windows_core::Interface::as_raw(self), pszrdnname.param().abi(), pattributeentries, dwnumattributes, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn DeleteDSObject<P0>(&self, pszrdnname: P0) -> windows_core::HRESULT
@@ -14150,9 +14227,9 @@ impl IDirectoryObject_Vtbl {
         unsafe extern "system" fn CreateDSObject<Identity: IDirectoryObject_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszrdnname: windows_core::PCWSTR, pattributeentries: PADS_ATTR_INFO, dwnumattributes: super::DWORD, ppobject: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IDirectoryObject_Impl::CreateDSObject(this, core::mem::transmute(&pszrdnname), core::mem::transmute_copy(&pattributeentries), core::mem::transmute_copy(&dwnumattributes)) {
+                match IDirectoryObject_Impl::CreateDSObject(this, &*(&raw const pszrdnname).cast(), core::mem::transmute_copy(&pattributeentries), core::mem::transmute_copy(&dwnumattributes)) {
                     Ok(ok__) => {
-                        ppobject.write(core::mem::transmute(ok__));
+                        ppobject.cast::<super::IDispatch>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -14165,7 +14242,7 @@ impl IDirectoryObject_Vtbl {
         unsafe extern "system" fn DeleteDSObject<Identity: IDirectoryObject_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszrdnname: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectoryObject_Impl::DeleteDSObject(this, core::mem::transmute(&pszrdnname))
+                IDirectoryObject_Impl::DeleteDSObject(this, &*(&raw const pszrdnname).cast())
             }
         }
         Self {
@@ -14289,19 +14366,19 @@ impl IDirectorySchemaMgmt_Vtbl {
         unsafe extern "system" fn CreateAttributeDefinition<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszattributename: windows_core::PCWSTR, pattributedefinition: PADS_ATTR_DEF) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySchemaMgmt_Impl::CreateAttributeDefinition(this, core::mem::transmute(&pszattributename), core::mem::transmute_copy(&pattributedefinition))
+                IDirectorySchemaMgmt_Impl::CreateAttributeDefinition(this, &*(&raw const pszattributename).cast(), core::mem::transmute_copy(&pattributedefinition))
             }
         }
         unsafe extern "system" fn WriteAttributeDefinition<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszattributename: windows_core::PCWSTR, pattributedefinition: PADS_ATTR_DEF) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySchemaMgmt_Impl::WriteAttributeDefinition(this, core::mem::transmute(&pszattributename), core::mem::transmute_copy(&pattributedefinition))
+                IDirectorySchemaMgmt_Impl::WriteAttributeDefinition(this, &*(&raw const pszattributename).cast(), core::mem::transmute_copy(&pattributedefinition))
             }
         }
         unsafe extern "system" fn DeleteAttributeDefinition<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszattributename: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySchemaMgmt_Impl::DeleteAttributeDefinition(this, core::mem::transmute(&pszattributename))
+                IDirectorySchemaMgmt_Impl::DeleteAttributeDefinition(this, &*(&raw const pszattributename).cast())
             }
         }
         unsafe extern "system" fn EnumClasses<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, ppszclassnames: *const windows_core::PCWSTR, dwnumclasses: super::DWORD, ppclassdefinition: *const PADS_CLASS_DEF, pdwnumclasses: *const super::DWORD) -> windows_core::HRESULT {
@@ -14313,19 +14390,19 @@ impl IDirectorySchemaMgmt_Vtbl {
         unsafe extern "system" fn WriteClassDefinition<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszclassname: windows_core::PCWSTR, pclassdefinition: PADS_CLASS_DEF) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySchemaMgmt_Impl::WriteClassDefinition(this, core::mem::transmute(&pszclassname), core::mem::transmute_copy(&pclassdefinition))
+                IDirectorySchemaMgmt_Impl::WriteClassDefinition(this, &*(&raw const pszclassname).cast(), core::mem::transmute_copy(&pclassdefinition))
             }
         }
         unsafe extern "system" fn CreateClassDefinition<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszclassname: windows_core::PCWSTR, pclassdefinition: PADS_CLASS_DEF) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySchemaMgmt_Impl::CreateClassDefinition(this, core::mem::transmute(&pszclassname), core::mem::transmute_copy(&pclassdefinition))
+                IDirectorySchemaMgmt_Impl::CreateClassDefinition(this, &*(&raw const pszclassname).cast(), core::mem::transmute_copy(&pclassdefinition))
             }
         }
         unsafe extern "system" fn DeleteClassDefinition<Identity: IDirectorySchemaMgmt_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszclassname: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySchemaMgmt_Impl::DeleteClassDefinition(this, core::mem::transmute(&pszclassname))
+                IDirectorySchemaMgmt_Impl::DeleteClassDefinition(this, &*(&raw const pszclassname).cast())
             }
         }
         Self {
@@ -14442,7 +14519,7 @@ impl IDirectorySearch_Vtbl {
         unsafe extern "system" fn ExecuteSearch<Identity: IDirectorySearch_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pszsearchfilter: windows_core::PCWSTR, pattributenames: *const windows_core::PCWSTR, dwnumberattributes: super::DWORD, phsearchresult: PADS_SEARCH_HANDLE) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySearch_Impl::ExecuteSearch(this, core::mem::transmute(&pszsearchfilter), core::mem::transmute_copy(&pattributenames), core::mem::transmute_copy(&dwnumberattributes), core::mem::transmute_copy(&phsearchresult))
+                IDirectorySearch_Impl::ExecuteSearch(this, &*(&raw const pszsearchfilter).cast(), core::mem::transmute_copy(&pattributenames), core::mem::transmute_copy(&dwnumberattributes), core::mem::transmute_copy(&phsearchresult))
             }
         }
         unsafe extern "system" fn AbandonSearch<Identity: IDirectorySearch_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, phsearchresult: ADS_SEARCH_HANDLE) -> windows_core::HRESULT {
@@ -14478,7 +14555,7 @@ impl IDirectorySearch_Vtbl {
         unsafe extern "system" fn GetColumn<Identity: IDirectorySearch_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, hsearchresult: ADS_SEARCH_HANDLE, szcolumnname: windows_core::PCWSTR, psearchcolumn: PADS_SEARCH_COLUMN) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IDirectorySearch_Impl::GetColumn(this, core::mem::transmute_copy(&hsearchresult), core::mem::transmute(&szcolumnname), core::mem::transmute_copy(&psearchcolumn))
+                IDirectorySearch_Impl::GetColumn(this, core::mem::transmute_copy(&hsearchresult), &*(&raw const szcolumnname).cast(), core::mem::transmute_copy(&psearchcolumn))
             }
         }
         unsafe extern "system" fn FreeColumn<Identity: IDirectorySearch_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, psearchcolumn: PADS_SEARCH_COLUMN) -> windows_core::HRESULT {
@@ -14527,7 +14604,7 @@ impl IPrivateDispatch {
     pub unsafe fn ADSIGetTypeInfo(&self, itinfo: super::UINT, lcid: super::LCID) -> windows_core::Result<super::ITypeInfo> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ADSIGetTypeInfo)(windows_core::Interface::as_raw(self), itinfo, lcid, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ADSIGetTypeInfo)(windows_core::Interface::as_raw(self), itinfo, lcid, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "guiddef", feature = "shared", feature = "wtypesbase"))]
@@ -14589,7 +14666,7 @@ impl IPrivateDispatch_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IPrivateDispatch_Impl::ADSIGetTypeInfo(this, core::mem::transmute_copy(&itinfo), core::mem::transmute_copy(&lcid)) {
                     Ok(ok__) => {
-                        pptinfo.write(core::mem::transmute(ok__));
+                        pptinfo.cast::<super::ITypeInfo>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -14652,7 +14729,7 @@ impl IPrivateUnknown_Vtbl {
         unsafe extern "system" fn ADSIInitializeObject<Identity: IPrivateUnknown_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, lpszusername: *mut core::ffi::c_void, lpszpassword: *mut core::ffi::c_void, lnreserved: i32) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IPrivateUnknown_Impl::ADSIInitializeObject(this, core::mem::transmute(&lpszusername), core::mem::transmute(&lpszpassword), core::mem::transmute_copy(&lnreserved))
+                IPrivateUnknown_Impl::ADSIInitializeObject(this, &*(&raw const lpszusername).cast(), &*(&raw const lpszpassword).cast(), core::mem::transmute_copy(&lnreserved))
             }
         }
         unsafe extern "system" fn ADSIReleaseObject<Identity: IPrivateUnknown_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void) -> windows_core::HRESULT {

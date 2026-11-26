@@ -3,8 +3,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 use windows_canvas::*;
-use windows_canvas::{Ellipse as CanvasEllipse, Rect as CanvasRect, TextAlignment};
+use windows_canvas::{Ellipse as CanvasEllipse, Rect as CanvasRect};
 use windows_reactor::*;
+use windows_text::{TextAlignment, TextFormat};
 
 const COLS: usize = 4;
 const ROWS: usize = 3;
@@ -41,7 +42,7 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Canvas Shared Device");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
 
         let image = self.images[0].clone();
         let on_scale = context.forward();
@@ -186,7 +187,7 @@ fn draw_tile(session: &DrawingSession, i: usize) -> Result<()> {
         }
     }
 
-    let format = TextFormat::new("Segoe UI", 16.0)?.with_alignment(TextAlignment::Center);
+    let format = TextFormat::new("Segoe UI", 16.0).with_alignment(TextAlignment::Center);
     session.draw_text(
         &format!("{i}"),
         &format,

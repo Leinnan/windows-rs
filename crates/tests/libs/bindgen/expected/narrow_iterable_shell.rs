@@ -1,10 +1,9 @@
-windows_core::imp::define_interface!(IItems, IItems_Vtbl, 0x8dfef4bd_8c6e_5d6d_9614_0aca51e6943b);
-impl windows_core::RuntimeType for IItems {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.IItems");
-}
+windows_core::imp::define_winrt_interface!(
+    IItems,
+    IItems_Vtbl,
+    0x8dfef4bd_8c6e_5d6d_9614_0aca51e6943b,
+    b"Test.IItems"
+);
 windows_core::imp::interface_hierarchy!(IItems, windows_core::IUnknown, windows_core::IInspectable);
 impl windows_core::RuntimeName for IItems {
     const NAME: &'static str = "Test.IItems";
@@ -13,7 +12,7 @@ pub trait IItems_Impl: windows_core::IUnknownImpl {}
 impl IItems_Vtbl {
     pub const fn new<Identity: IItems_Impl, const OFFSET: isize>() -> Self {
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IItems, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
         }
     }
     pub fn matches(iid: &windows_core::GUID) -> bool {
@@ -24,17 +23,12 @@ impl IItems_Vtbl {
 pub struct IItems_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(
+windows_core::imp::define_winrt_interface!(
     ISource,
     ISource_Vtbl,
-    0x5c7edfa8_c1ba_5476_aa92_53abf2231e10
+    0x5c7edfa8_c1ba_5476_aa92_53abf2231e10,
+    b"Test.ISource"
 );
-impl windows_core::RuntimeType for ISource {
-    const SIGNATURE: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer =
-        windows_core::imp::ConstBuffer::from_slice(b"Test.ISource");
-}
 windows_core::imp::interface_hierarchy!(
     ISource,
     windows_core::IUnknown,
@@ -48,7 +42,7 @@ impl ISource {
                 windows_core::Interface::as_raw(self),
                 &mut result__,
             )
-            .and_then(|| windows_core::imp::Type::from_abi(result__))
+            .and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -69,8 +63,7 @@ impl ISource_Vtbl {
                     &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match ISource_Impl::GetItems(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -81,7 +74,7 @@ impl ISource_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, ISource, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetItems: GetItems::<Identity, OFFSET>,
         }
     }
@@ -113,6 +106,7 @@ impl windows_core::RuntimeType for Items {
 unsafe impl windows_core::Interface for Items {
     type Vtable = <IItems as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IItems as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for Items {
     const NAME: &'static str = "Test.Items";

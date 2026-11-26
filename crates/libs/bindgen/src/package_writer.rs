@@ -17,7 +17,7 @@ impl Cfg {
             .filter_map(|tn| {
                 if *tn != Type::Pointer64Helper.type_name()
                     && *tn != Type::UnalignedHelper.type_name()
-                    && config.types.contains_key(tn)
+                    && config.plan.types.contains_key(tn)
                 {
                     Some(tn.namespace())
                 } else {
@@ -101,8 +101,7 @@ impl Cfg {
 
 impl Config<'_> {
     #[track_caller]
-    pub(crate) fn write_package(&self, tree: &TypeTree) {
-        let output = &self.bindgen.output;
+    pub(crate) fn write_package(&self, tree: &TypeTree, output: &Path) {
         for name in tree.nested.keys() {
             _ = std::fs::remove_dir_all(output.join("src").join(name));
         }
@@ -206,7 +205,7 @@ impl Config<'_> {
             }
 
             let path = directory.join("mod.rs");
-            write_to_file(&path, self.format(&tokens.into_string()));
+            write_to_file(&path, self.format(tokens));
         });
 
         let toml_path = output.join("Cargo.toml");

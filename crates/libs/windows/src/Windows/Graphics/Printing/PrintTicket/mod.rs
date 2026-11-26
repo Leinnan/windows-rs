@@ -1,8 +1,4 @@
-windows_core::imp::define_interface!(IPrintTicketCapabilities, IPrintTicketCapabilities_Vtbl, 0x8c45508b_bbdc_4256_a142_2fd615ecb416);
-impl windows_core::RuntimeType for IPrintTicketCapabilities {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IPrintTicketCapabilities");
-}
+windows_core::imp::define_winrt_interface!(IPrintTicketCapabilities, IPrintTicketCapabilities_Vtbl, 0x8c45508b_bbdc_4256_a142_2fd615ecb416, b"Windows.Graphics.Printing.PrintTicket.IPrintTicketCapabilities");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPrintTicketCapabilities_Vtbl {
@@ -31,11 +27,7 @@ pub struct IPrintTicketCapabilities_Vtbl {
     pub GetFeature: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetParameterDefinition: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPrintTicketFeature, IPrintTicketFeature_Vtbl, 0xe7607d6a_59f5_4103_8858_b97710963d39);
-impl windows_core::RuntimeType for IPrintTicketFeature {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IPrintTicketFeature");
-}
+windows_core::imp::define_winrt_interface!(IPrintTicketFeature, IPrintTicketFeature_Vtbl, 0xe7607d6a_59f5_4103_8858_b97710963d39, b"Windows.Graphics.Printing.PrintTicket.IPrintTicketFeature");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPrintTicketFeature_Vtbl {
@@ -53,11 +45,7 @@ pub struct IPrintTicketFeature_Vtbl {
     pub SetSelectedOption: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub SelectionType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut PrintTicketFeatureSelectionType) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPrintTicketOption, IPrintTicketOption_Vtbl, 0xb086cf90_b367_4e4b_bd48_9c78a0bb31ce);
-impl windows_core::RuntimeType for IPrintTicketOption {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IPrintTicketOption");
-}
+windows_core::imp::define_winrt_interface!(IPrintTicketOption, IPrintTicketOption_Vtbl, 0xb086cf90_b367_4e4b_bd48_9c78a0bb31ce, b"Windows.Graphics.Printing.PrintTicket.IPrintTicketOption");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPrintTicketOption_Vtbl {
@@ -80,11 +68,7 @@ pub struct IPrintTicketOption_Vtbl {
     pub GetPropertyValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub GetScoredPropertyValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPrintTicketParameterDefinition, IPrintTicketParameterDefinition_Vtbl, 0xd6bab4e4_2962_4c01_b7f3_9a9294eb8335);
-impl windows_core::RuntimeType for IPrintTicketParameterDefinition {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IPrintTicketParameterDefinition");
-}
+windows_core::imp::define_winrt_interface!(IPrintTicketParameterDefinition, IPrintTicketParameterDefinition_Vtbl, 0xd6bab4e4_2962_4c01_b7f3_9a9294eb8335, b"Windows.Graphics.Printing.PrintTicket.IPrintTicketParameterDefinition");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPrintTicketParameterDefinition_Vtbl {
@@ -100,11 +84,7 @@ pub struct IPrintTicketParameterDefinition_Vtbl {
     pub RangeMin: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     pub RangeMax: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPrintTicketParameterInitializer, IPrintTicketParameterInitializer_Vtbl, 0x5e3335bb_a0a5_48b1_9d5c_07116ddc597a);
-impl windows_core::RuntimeType for IPrintTicketParameterInitializer {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IPrintTicketParameterInitializer");
-}
+windows_core::imp::define_winrt_interface!(IPrintTicketParameterInitializer, IPrintTicketParameterInitializer_Vtbl, 0x5e3335bb_a0a5_48b1_9d5c_07116ddc597a, b"Windows.Graphics.Printing.PrintTicket.IPrintTicketParameterInitializer");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPrintTicketParameterInitializer_Vtbl {
@@ -118,11 +98,7 @@ pub struct IPrintTicketParameterInitializer_Vtbl {
     pub SetValue: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub Value: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IPrintTicketValue, IPrintTicketValue_Vtbl, 0x66b30a32_244d_4e22_a98b_bb3cf1f2dd91);
-impl windows_core::RuntimeType for IPrintTicketValue {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IPrintTicketValue");
-}
+windows_core::imp::define_winrt_interface!(IPrintTicketValue, IPrintTicketValue_Vtbl, 0x66b30a32_244d_4e22_a98b_bb3cf1f2dd91, b"Windows.Graphics.Printing.PrintTicket.IPrintTicketValue");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IPrintTicketValue_Vtbl {
@@ -131,11 +107,7 @@ pub struct IPrintTicketValue_Vtbl {
     pub GetValueAsInteger: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
     pub GetValueAsString: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWorkflowPrintTicket, IWorkflowPrintTicket_Vtbl, 0x41d52285_35e8_448e_a8c5_e4b6a2cf826c);
-impl windows_core::RuntimeType for IWorkflowPrintTicket {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IWorkflowPrintTicket");
-}
+windows_core::imp::define_winrt_interface!(IWorkflowPrintTicket, IWorkflowPrintTicket_Vtbl, 0x41d52285_35e8_448e_a8c5_e4b6a2cf826c, b"Windows.Graphics.Printing.PrintTicket.IWorkflowPrintTicket");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWorkflowPrintTicket_Vtbl {
@@ -170,11 +142,7 @@ pub struct IWorkflowPrintTicket_Vtbl {
     pub SetParameterInitializerAsString: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub MergeAndValidateTicket: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IWorkflowPrintTicketFactory, IWorkflowPrintTicketFactory_Vtbl, 0x966d1166_d9c7_569e_b7d8_f2b341c8f976);
-impl windows_core::RuntimeType for IWorkflowPrintTicketFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IWorkflowPrintTicketFactory");
-}
+windows_core::imp::define_winrt_interface!(IWorkflowPrintTicketFactory, IWorkflowPrintTicketFactory_Vtbl, 0x966d1166_d9c7_569e_b7d8_f2b341c8f976, b"Windows.Graphics.Printing.PrintTicket.IWorkflowPrintTicketFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWorkflowPrintTicketFactory_Vtbl {
@@ -184,11 +152,7 @@ pub struct IWorkflowPrintTicketFactory_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     CreateInstance: usize,
 }
-windows_core::imp::define_interface!(IWorkflowPrintTicketValidationResult, IWorkflowPrintTicketValidationResult_Vtbl, 0x0ad1f392_da7b_4a36_bf36_6a99a62e2059);
-impl windows_core::RuntimeType for IWorkflowPrintTicketValidationResult {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Graphics.Printing.PrintTicket.IWorkflowPrintTicketValidationResult");
-}
+windows_core::imp::define_winrt_interface!(IWorkflowPrintTicketValidationResult, IWorkflowPrintTicketValidationResult_Vtbl, 0x0ad1f392_da7b_4a36_bf36_6a99a62e2059, b"Windows.Graphics.Printing.PrintTicket.IWorkflowPrintTicketValidationResult");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IWorkflowPrintTicketValidationResult_Vtbl {
@@ -217,109 +181,109 @@ impl PrintTicketCapabilities {
     pub fn XmlNode(&self) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentBindingFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentBindingFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentBindingFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentCollateFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentCollateFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentCollateFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentDuplexFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentDuplexFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentDuplexFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentHolePunchFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentHolePunchFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentHolePunchFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentInputBinFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentInputBinFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentInputBinFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentNUpFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentNUpFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentNUpFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentStapleFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentStapleFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentStapleFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn JobPasscodeFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).JobPasscodeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).JobPasscodeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageBorderlessFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageBorderlessFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageBorderlessFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageMediaSizeFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageMediaSizeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageMediaSizeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageMediaTypeFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageMediaTypeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageMediaTypeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageOrientationFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageOrientationFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageOrientationFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageOutputColorFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageOutputColorFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageOutputColorFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageOutputQualityFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageOutputQualityFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageOutputQualityFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageResolutionFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageResolutionFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageResolutionFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetFeature(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFeature)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFeature)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetParameterDefinition(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketParameterDefinition> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetParameterDefinition)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetParameterDefinition)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -329,6 +293,7 @@ impl windows_core::RuntimeType for PrintTicketCapabilities {
 unsafe impl windows_core::Interface for PrintTicketCapabilities {
     type Vtable = <IPrintTicketCapabilities as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPrintTicketCapabilities as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PrintTicketCapabilities {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.PrintTicketCapabilities";
@@ -356,7 +321,7 @@ impl PrintTicketFeature {
     pub fn XmlNode(&self) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DisplayName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -368,19 +333,19 @@ impl PrintTicketFeature {
     pub fn GetOption(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketOption> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetOption)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetOption)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Options(&self) -> windows_core::Result<windows_collections::IVectorView<PrintTicketOption>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Options)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Options)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetSelectedOption(&self) -> windows_core::Result<PrintTicketOption> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetSelectedOption)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetSelectedOption)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetSelectedOption<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -402,6 +367,7 @@ impl windows_core::RuntimeType for PrintTicketFeature {
 unsafe impl windows_core::Interface for PrintTicketFeature {
     type Vtable = <IPrintTicketFeature as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPrintTicketFeature as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PrintTicketFeature {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.PrintTicketFeature";
@@ -443,7 +409,7 @@ impl PrintTicketOption {
     pub fn XmlNode(&self) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DisplayName(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -456,26 +422,26 @@ impl PrintTicketOption {
     pub fn GetPropertyNode(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPropertyNode)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPropertyNode)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Data_Xml_Dom")]
     pub fn GetScoredPropertyNode(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetScoredPropertyNode)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetScoredPropertyNode)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetPropertyValue(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetPropertyValue)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetPropertyValue)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetScoredPropertyValue(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetScoredPropertyValue)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetScoredPropertyValue)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -485,6 +451,7 @@ impl windows_core::RuntimeType for PrintTicketOption {
 unsafe impl windows_core::Interface for PrintTicketOption {
     type Vtable = <IPrintTicketOption as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPrintTicketOption as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PrintTicketOption {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.PrintTicketOption";
@@ -527,7 +494,7 @@ impl PrintTicketParameterDefinition {
     pub fn XmlNode(&self) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DataType(&self) -> windows_core::Result<PrintTicketParameterDataType> {
@@ -561,6 +528,7 @@ impl windows_core::RuntimeType for PrintTicketParameterDefinition {
 unsafe impl windows_core::Interface for PrintTicketParameterDefinition {
     type Vtable = <IPrintTicketParameterDefinition as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPrintTicketParameterDefinition as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PrintTicketParameterDefinition {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.PrintTicketParameterDefinition";
@@ -588,7 +556,7 @@ impl PrintTicketParameterInitializer {
     pub fn XmlNode(&self) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetValue<P0>(&self, value: P0) -> windows_core::Result<()>
@@ -600,7 +568,7 @@ impl PrintTicketParameterInitializer {
     pub fn Value(&self) -> windows_core::Result<PrintTicketValue> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Value)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Value)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -610,6 +578,7 @@ impl windows_core::RuntimeType for PrintTicketParameterInitializer {
 unsafe impl windows_core::Interface for PrintTicketParameterInitializer {
     type Vtable = <IPrintTicketParameterInitializer as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPrintTicketParameterInitializer as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PrintTicketParameterInitializer {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.PrintTicketParameterInitializer";
@@ -646,6 +615,7 @@ impl windows_core::RuntimeType for PrintTicketValue {
 unsafe impl windows_core::Interface for PrintTicketValue {
     type Vtable = <IPrintTicketValue as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IPrintTicketValue as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for PrintTicketValue {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.PrintTicketValue";
@@ -688,139 +658,139 @@ impl WorkflowPrintTicket {
     pub fn XmlNode(&self) -> windows_core::Result<super::super::super::Data::Xml::Dom::IXmlNode> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).XmlNode)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetCapabilities(&self) -> windows_core::Result<PrintTicketCapabilities> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetCapabilities)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetCapabilities)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentBindingFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentBindingFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentBindingFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentCollateFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentCollateFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentCollateFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentDuplexFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentDuplexFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentDuplexFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentHolePunchFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentHolePunchFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentHolePunchFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentInputBinFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentInputBinFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentInputBinFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentNUpFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentNUpFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentNUpFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn DocumentStapleFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DocumentStapleFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DocumentStapleFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn JobPasscodeFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).JobPasscodeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).JobPasscodeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageBorderlessFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageBorderlessFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageBorderlessFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageMediaSizeFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageMediaSizeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageMediaSizeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageMediaTypeFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageMediaTypeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageMediaTypeFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageOrientationFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageOrientationFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageOrientationFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageOutputColorFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageOutputColorFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageOutputColorFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageOutputQualityFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageOutputQualityFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageOutputQualityFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn PageResolutionFeature(&self) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).PageResolutionFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).PageResolutionFeature)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetFeature(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketFeature> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetFeature)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetFeature)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn NotifyXmlChangedAsync(&self) -> windows_core::Result<windows_future::IAsyncAction> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).NotifyXmlChangedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).NotifyXmlChangedAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ValidateAsync(&self) -> windows_core::Result<windows_future::IAsyncOperation<WorkflowPrintTicketValidationResult>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ValidateAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ValidateAsync)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetParameterInitializer(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING) -> windows_core::Result<PrintTicketParameterInitializer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetParameterInitializer)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetParameterInitializer)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetParameterInitializerAsInteger(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING, integervalue: i32) -> windows_core::Result<PrintTicketParameterInitializer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SetParameterInitializerAsInteger)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), integervalue, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SetParameterInitializerAsInteger)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), integervalue, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SetParameterInitializerAsString(&self, name: &windows_core::HSTRING, xmlnamespace: &windows_core::HSTRING, stringvalue: &windows_core::HSTRING) -> windows_core::Result<PrintTicketParameterInitializer> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).SetParameterInitializerAsString)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), core::mem::transmute_copy(stringvalue), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).SetParameterInitializerAsString)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(name), core::mem::transmute_copy(xmlnamespace), core::mem::transmute_copy(stringvalue), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn MergeAndValidateTicket<P0>(&self, deltashematicket: P0) -> windows_core::Result<Self>
@@ -829,7 +799,7 @@ impl WorkflowPrintTicket {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).MergeAndValidateTicket)(windows_core::Interface::as_raw(self), deltashematicket.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).MergeAndValidateTicket)(windows_core::Interface::as_raw(self), deltashematicket.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -839,7 +809,7 @@ impl WorkflowPrintTicket {
     {
         Self::IWorkflowPrintTicketFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(printername), printticketstream.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateInstance)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(printername), printticketstream.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IWorkflowPrintTicketFactory<R, F: FnOnce(&IWorkflowPrintTicketFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -853,6 +823,7 @@ impl windows_core::RuntimeType for WorkflowPrintTicket {
 unsafe impl windows_core::Interface for WorkflowPrintTicket {
     type Vtable = <IWorkflowPrintTicket as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWorkflowPrintTicket as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for WorkflowPrintTicket {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.WorkflowPrintTicket";
@@ -883,6 +854,7 @@ impl windows_core::RuntimeType for WorkflowPrintTicketValidationResult {
 unsafe impl windows_core::Interface for WorkflowPrintTicketValidationResult {
     type Vtable = <IWorkflowPrintTicketValidationResult as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IWorkflowPrintTicketValidationResult as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for WorkflowPrintTicketValidationResult {
     const NAME: &'static str = "Windows.Graphics.Printing.PrintTicket.WorkflowPrintTicketValidationResult";

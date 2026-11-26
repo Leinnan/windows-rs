@@ -17,7 +17,7 @@ impl DataProtectionProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProtectAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProtectAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -27,7 +27,7 @@ impl DataProtectionProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).UnprotectAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).UnprotectAsync)(windows_core::Interface::as_raw(self), data.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -38,7 +38,7 @@ impl DataProtectionProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).ProtectStreamAsync)(windows_core::Interface::as_raw(self), src.param().abi(), dest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).ProtectStreamAsync)(windows_core::Interface::as_raw(self), src.param().abi(), dest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "Storage_Streams")]
@@ -49,13 +49,13 @@ impl DataProtectionProvider {
     {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).UnprotectStreamAsync)(windows_core::Interface::as_raw(self), src.param().abi(), dest.param().abi(), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).UnprotectStreamAsync)(windows_core::Interface::as_raw(self), src.param().abi(), dest.param().abi(), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn CreateOverloadExplicit(protectiondescriptor: &windows_core::HSTRING) -> windows_core::Result<Self> {
         Self::IDataProtectionProviderFactory(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).CreateOverloadExplicit)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(protectiondescriptor), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).CreateOverloadExplicit)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(protectiondescriptor), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IDataProtectionProviderFactory<R, F: FnOnce(&IDataProtectionProviderFactory) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -69,17 +69,14 @@ impl windows_core::RuntimeType for DataProtectionProvider {
 unsafe impl windows_core::Interface for DataProtectionProvider {
     type Vtable = <IDataProtectionProvider as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IDataProtectionProvider as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for DataProtectionProvider {
     const NAME: &'static str = "Windows.Security.Cryptography.DataProtection.DataProtectionProvider";
 }
 unsafe impl Send for DataProtectionProvider {}
 unsafe impl Sync for DataProtectionProvider {}
-windows_core::imp::define_interface!(IDataProtectionProvider, IDataProtectionProvider_Vtbl, 0x09639948_ed22_4270_bd1c_6d72c00f8787);
-impl windows_core::RuntimeType for IDataProtectionProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.DataProtection.IDataProtectionProvider");
-}
+windows_core::imp::define_winrt_interface!(IDataProtectionProvider, IDataProtectionProvider_Vtbl, 0x09639948_ed22_4270_bd1c_6d72c00f8787, b"Windows.Security.Cryptography.DataProtection.IDataProtectionProvider");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDataProtectionProvider_Vtbl {
@@ -101,11 +98,7 @@ pub struct IDataProtectionProvider_Vtbl {
     #[cfg(not(feature = "Storage_Streams"))]
     UnprotectStreamAsync: usize,
 }
-windows_core::imp::define_interface!(IDataProtectionProviderFactory, IDataProtectionProviderFactory_Vtbl, 0xadf33dac_4932_4cdf_ac41_7214333514ca);
-impl windows_core::RuntimeType for IDataProtectionProviderFactory {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.Security.Cryptography.DataProtection.IDataProtectionProviderFactory");
-}
+windows_core::imp::define_winrt_interface!(IDataProtectionProviderFactory, IDataProtectionProviderFactory_Vtbl, 0xadf33dac_4932_4cdf_ac41_7214333514ca, b"Windows.Security.Cryptography.DataProtection.IDataProtectionProviderFactory");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IDataProtectionProviderFactory_Vtbl {

@@ -1,5 +1,5 @@
 use crate::Interface;
-use super::Type;
+use super::from_abi;
 use core::ffi::c_void;
 use core::mem::{transmute_copy, zeroed};
 
@@ -8,7 +8,8 @@ use core::mem::{transmute_copy, zeroed};
 super::define_interface!(
     IGenericFactory,
     IGenericFactory_Vtbl,
-    0x00000035_0000_0000_c000_000000000046
+    0x00000035_0000_0000_c000_000000000046,
+    inspectable
 );
 super::interface_hierarchy!(IGenericFactory, crate::IUnknown, crate::IInspectable);
 
@@ -20,7 +21,7 @@ impl IGenericFactory {
                 transmute_copy(self),
                 &mut result__ as *mut _ as *mut _,
             )
-            .and_then(|| Type::from_abi(result__))
+            .and_then(|| from_abi(result__))
             .and_then(|interface: crate::IInspectable| interface.cast())
         }
     }

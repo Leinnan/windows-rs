@@ -4,11 +4,7 @@ pub mod Holographic;
 pub mod InkWorkspace;
 #[cfg(feature = "ApplicationModel_Preview_Notes")]
 pub mod Notes;
-windows_core::imp::define_interface!(IStartupAppInfoPreview, IStartupAppInfoPreview_Vtbl, 0xc3a147db_09fa_5aa5_b3bd_119a09963d58);
-impl windows_core::RuntimeType for IStartupAppInfoPreview {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.IStartupAppInfoPreview");
-}
+windows_core::imp::define_winrt_interface!(IStartupAppInfoPreview, IStartupAppInfoPreview_Vtbl, 0xc3a147db_09fa_5aa5_b3bd_119a09963d58, b"Windows.ApplicationModel.Preview.IStartupAppInfoPreview");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStartupAppInfoPreview_Vtbl {
@@ -19,22 +15,14 @@ pub struct IStartupAppInfoPreview_Vtbl {
     pub Impact: unsafe extern "system" fn(*mut core::ffi::c_void, *mut StartupAppImpactPreview) -> windows_core::HRESULT,
     pub ExecutablePath: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IStartupAppsManagerPreview, IStartupAppsManagerPreview_Vtbl, 0x7197b9c1_03bb_5693_87c3_6f983cc70fb3);
-impl windows_core::RuntimeType for IStartupAppsManagerPreview {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.IStartupAppsManagerPreview");
-}
+windows_core::imp::define_winrt_interface!(IStartupAppsManagerPreview, IStartupAppsManagerPreview_Vtbl, 0x7197b9c1_03bb_5693_87c3_6f983cc70fb3, b"Windows.ApplicationModel.Preview.IStartupAppsManagerPreview");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStartupAppsManagerPreview_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub GetStartupAppInfos: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IStartupAppsManagerPreviewStatics, IStartupAppsManagerPreviewStatics_Vtbl, 0x9d0331f5_343f_5cd7_9d66_762cfa2c0380);
-impl windows_core::RuntimeType for IStartupAppsManagerPreviewStatics {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Preview.IStartupAppsManagerPreviewStatics");
-}
+windows_core::imp::define_winrt_interface!(IStartupAppsManagerPreviewStatics, IStartupAppsManagerPreviewStatics_Vtbl, 0x9d0331f5_343f_5cd7_9d66_762cfa2c0380, b"Windows.ApplicationModel.Preview.IStartupAppsManagerPreviewStatics");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IStartupAppsManagerPreviewStatics_Vtbl {
@@ -100,6 +88,7 @@ impl windows_core::RuntimeType for StartupAppInfoPreview {
 unsafe impl windows_core::Interface for StartupAppInfoPreview {
     type Vtable = <IStartupAppInfoPreview as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IStartupAppInfoPreview as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for StartupAppInfoPreview {
     const NAME: &'static str = "Windows.ApplicationModel.Preview.StartupAppInfoPreview";
@@ -114,13 +103,13 @@ impl StartupAppsManagerPreview {
     pub fn GetStartupAppInfos(&self) -> windows_core::Result<windows_collections::IVectorView<StartupAppInfoPreview>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetStartupAppInfos)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetStartupAppInfos)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn GetDefault() -> windows_core::Result<Self> {
         Self::IStartupAppsManagerPreviewStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).GetDefault)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).GetDefault)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         })
     }
     fn IStartupAppsManagerPreviewStatics<R, F: FnOnce(&IStartupAppsManagerPreviewStatics) -> windows_core::Result<R>>(callback: F) -> windows_core::Result<R> {
@@ -134,6 +123,7 @@ impl windows_core::RuntimeType for StartupAppsManagerPreview {
 unsafe impl windows_core::Interface for StartupAppsManagerPreview {
     type Vtable = <IStartupAppsManagerPreview as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IStartupAppsManagerPreview as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for StartupAppsManagerPreview {
     const NAME: &'static str = "Windows.ApplicationModel.Preview.StartupAppsManagerPreview";

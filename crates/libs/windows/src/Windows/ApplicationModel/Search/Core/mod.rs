@@ -1,18 +1,10 @@
-windows_core::imp::define_interface!(IRequestingFocusOnKeyboardInputEventArgs, IRequestingFocusOnKeyboardInputEventArgs_Vtbl, 0xa1195f27_b1a7_41a2_879d_6a68687e5985);
-impl windows_core::RuntimeType for IRequestingFocusOnKeyboardInputEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.Core.IRequestingFocusOnKeyboardInputEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IRequestingFocusOnKeyboardInputEventArgs, IRequestingFocusOnKeyboardInputEventArgs_Vtbl, 0xa1195f27_b1a7_41a2_879d_6a68687e5985, b"Windows.ApplicationModel.Search.Core.IRequestingFocusOnKeyboardInputEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IRequestingFocusOnKeyboardInputEventArgs_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
-windows_core::imp::define_interface!(ISearchSuggestion, ISearchSuggestion_Vtbl, 0x5b5554b0_1527_437b_95c5_8d18d2b8af55);
-impl windows_core::RuntimeType for ISearchSuggestion {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.Core.ISearchSuggestion");
-}
+windows_core::imp::define_winrt_interface!(ISearchSuggestion, ISearchSuggestion_Vtbl, 0x5b5554b0_1527_437b_95c5_8d18d2b8af55, b"Windows.ApplicationModel.Search.Core.ISearchSuggestion");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchSuggestion_Vtbl {
@@ -27,11 +19,7 @@ pub struct ISearchSuggestion_Vtbl {
     Image: usize,
     pub ImageAlternateText: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchSuggestionManager, ISearchSuggestionManager_Vtbl, 0x3f0c50a1_cb9d_497b_b500_3c04ac959ad2);
-impl windows_core::RuntimeType for ISearchSuggestionManager {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.Core.ISearchSuggestionManager");
-}
+windows_core::imp::define_winrt_interface!(ISearchSuggestionManager, ISearchSuggestionManager_Vtbl, 0x3f0c50a1_cb9d_497b_b500_3c04ac959ad2, b"Windows.ApplicationModel.Search.Core.ISearchSuggestionManager");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchSuggestionManager_Vtbl {
@@ -53,11 +41,7 @@ pub struct ISearchSuggestionManager_Vtbl {
     pub RequestingFocusOnKeyboardInput: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveRequestingFocusOnKeyboardInput: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(ISearchSuggestionsRequestedEventArgs, ISearchSuggestionsRequestedEventArgs_Vtbl, 0x6fd519e5_9e7e_4ab4_8be3_c76b1bd4344a);
-impl windows_core::RuntimeType for ISearchSuggestionsRequestedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Search.Core.ISearchSuggestionsRequestedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(ISearchSuggestionsRequestedEventArgs, ISearchSuggestionsRequestedEventArgs_Vtbl, 0x6fd519e5_9e7e_4ab4_8be3_c76b1bd4344a, b"Windows.ApplicationModel.Search.Core.ISearchSuggestionsRequestedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct ISearchSuggestionsRequestedEventArgs_Vtbl {
@@ -77,6 +61,7 @@ impl windows_core::RuntimeType for RequestingFocusOnKeyboardInputEventArgs {
 unsafe impl windows_core::Interface for RequestingFocusOnKeyboardInputEventArgs {
     type Vtable = <IRequestingFocusOnKeyboardInputEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IRequestingFocusOnKeyboardInputEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for RequestingFocusOnKeyboardInputEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.Core.RequestingFocusOnKeyboardInputEventArgs";
@@ -116,7 +101,7 @@ impl SearchSuggestion {
     pub fn Image(&self) -> windows_core::Result<super::super::super::Storage::Streams::IRandomAccessStreamReference> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Image)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Image)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ImageAlternateText(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -132,6 +117,7 @@ impl windows_core::RuntimeType for SearchSuggestion {
 unsafe impl windows_core::Interface for SearchSuggestion {
     type Vtable = <ISearchSuggestion as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchSuggestion as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchSuggestion {
     const NAME: &'static str = "Windows.ApplicationModel.Search.Core.SearchSuggestion";
@@ -202,7 +188,7 @@ impl SearchSuggestionManager {
     pub fn Suggestions(&self) -> windows_core::Result<windows_collections::IObservableVector<SearchSuggestion>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Suggestions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Suggestions)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn AddToHistory(&self, querytext: &windows_core::HSTRING) -> windows_core::Result<()> {
@@ -216,7 +202,7 @@ impl SearchSuggestionManager {
     }
     pub fn SuggestionsRequested<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchSuggestionsRequestedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<SearchSuggestionsRequestedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, SearchSuggestionsRequestedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -230,7 +216,7 @@ impl SearchSuggestionManager {
     }
     pub fn RequestingFocusOnKeyboardInput<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<RequestingFocusOnKeyboardInputEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<RequestingFocusOnKeyboardInputEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, RequestingFocusOnKeyboardInputEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -249,6 +235,7 @@ impl windows_core::RuntimeType for SearchSuggestionManager {
 unsafe impl windows_core::Interface for SearchSuggestionManager {
     type Vtable = <ISearchSuggestionManager as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchSuggestionManager as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchSuggestionManager {
     const NAME: &'static str = "Windows.ApplicationModel.Search.Core.SearchSuggestionManager";
@@ -273,13 +260,13 @@ impl SearchSuggestionsRequestedEventArgs {
     pub fn LinguisticDetails(&self) -> windows_core::Result<super::SearchQueryLinguisticDetails> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).LinguisticDetails)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).LinguisticDetails)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn Request(&self) -> windows_core::Result<super::SearchSuggestionsRequest> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).Request)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -289,6 +276,7 @@ impl windows_core::RuntimeType for SearchSuggestionsRequestedEventArgs {
 unsafe impl windows_core::Interface for SearchSuggestionsRequestedEventArgs {
     type Vtable = <ISearchSuggestionsRequestedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <ISearchSuggestionsRequestedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for SearchSuggestionsRequestedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Search.Core.SearchSuggestionsRequestedEventArgs";

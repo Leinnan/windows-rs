@@ -8,7 +8,7 @@ where
     windows_core::link!("mfsensorgroup.dll" "system" fn MFCreateVirtualCamera(r#type : MFVirtualCameraType, lifetime : MFVirtualCameraLifetime, access : MFVirtualCameraAccess, friendlyname : windows_core::PCWSTR, sourceid : windows_core::PCWSTR, categories : *const windows_core::GUID, categorycount : super::ULONG, virtualcamera : *mut *mut core::ffi::c_void) -> windows_core::HRESULT);
     unsafe {
         let mut result__ = core::mem::zeroed();
-        MFCreateVirtualCamera(r#type, lifetime, access, friendlyname.param().abi(), sourceid.param().abi(), categories.unwrap_or(core::mem::zeroed()) as _, categorycount, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+        MFCreateVirtualCamera(r#type, lifetime, access, friendlyname.param().abi(), sourceid.param().abi(), categories.unwrap_or(core::mem::zeroed()) as _, categorycount, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
     }
 }
 #[inline]
@@ -124,7 +124,7 @@ impl IMFVirtualCamera {
     pub unsafe fn GetMediaSource(&self) -> windows_core::Result<super::IMFMediaSource> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetMediaSource)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetMediaSource)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(feature = "shared")]
@@ -135,14 +135,14 @@ impl IMFVirtualCamera {
     pub unsafe fn CreateSyncEvent(&self, kseventset: *const windows_core::GUID, kseventid: super::ULONG, kseventflags: super::ULONG, eventhandle: super::HANDLE) -> windows_core::Result<IMFCameraSyncObject> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateSyncEvent)(windows_core::Interface::as_raw(self), kseventset, kseventid, kseventflags, eventhandle, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateSyncEvent)(windows_core::Interface::as_raw(self), kseventset, kseventid, kseventflags, eventhandle, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     #[cfg(all(feature = "shared", feature = "winnt"))]
     pub unsafe fn CreateSyncSemaphore(&self, kseventset: *const windows_core::GUID, kseventid: super::ULONG, kseventflags: super::ULONG, semaphorehandle: super::HANDLE, semaphoreadjustment: super::LONG) -> windows_core::Result<IMFCameraSyncObject> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).CreateSyncSemaphore)(windows_core::Interface::as_raw(self), kseventset, kseventid, kseventflags, semaphorehandle, semaphoreadjustment, &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).CreateSyncSemaphore)(windows_core::Interface::as_raw(self), kseventset, kseventid, kseventflags, semaphorehandle, semaphoreadjustment, &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub unsafe fn Shutdown(&self) -> windows_core::HRESULT {
@@ -204,7 +204,7 @@ impl IMFVirtualCamera_Vtbl {
         unsafe extern "system" fn AddDeviceSourceInfo<Identity: IMFVirtualCamera_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, devicesourceinfo: windows_core::PCWSTR) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IMFVirtualCamera_Impl::AddDeviceSourceInfo(this, core::mem::transmute(&devicesourceinfo))
+                IMFVirtualCamera_Impl::AddDeviceSourceInfo(this, &*(&raw const devicesourceinfo).cast())
             }
         }
         unsafe extern "system" fn AddProperty<Identity: IMFVirtualCamera_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pkey: *const super::DEVPROPKEY, r#type: super::DEVPROPTYPE, pbdata: *const super::BYTE, cbdata: super::ULONG) -> windows_core::HRESULT {
@@ -216,7 +216,7 @@ impl IMFVirtualCamera_Vtbl {
         unsafe extern "system" fn AddRegistryEntry<Identity: IMFVirtualCamera_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, entryname: windows_core::PCWSTR, subkeypath: windows_core::PCWSTR, dwregtype: super::DWORD, pbdata: *const super::BYTE, cbdata: super::ULONG) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                IMFVirtualCamera_Impl::AddRegistryEntry(this, core::mem::transmute(&entryname), core::mem::transmute(&subkeypath), core::mem::transmute_copy(&dwregtype), core::mem::transmute_copy(&pbdata), core::mem::transmute_copy(&cbdata))
+                IMFVirtualCamera_Impl::AddRegistryEntry(this, &*(&raw const entryname).cast(), &*(&raw const subkeypath).cast(), core::mem::transmute_copy(&dwregtype), core::mem::transmute_copy(&pbdata), core::mem::transmute_copy(&cbdata))
             }
         }
         unsafe extern "system" fn Start<Identity: IMFVirtualCamera_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, pcallback: *mut core::ffi::c_void) -> windows_core::HRESULT {
@@ -242,7 +242,7 @@ impl IMFVirtualCamera_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMFVirtualCamera_Impl::GetMediaSource(this) {
                     Ok(ok__) => {
-                        ppmediasource.write(core::mem::transmute(ok__));
+                        ppmediasource.cast::<super::IMFMediaSource>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -263,7 +263,7 @@ impl IMFVirtualCamera_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMFVirtualCamera_Impl::CreateSyncEvent(this, core::mem::transmute_copy(&kseventset), core::mem::transmute_copy(&kseventid), core::mem::transmute_copy(&kseventflags), core::mem::transmute_copy(&eventhandle)) {
                     Ok(ok__) => {
-                        camerasyncobject.write(core::mem::transmute(ok__));
+                        camerasyncobject.cast::<IMFCameraSyncObject>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -278,7 +278,7 @@ impl IMFVirtualCamera_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IMFVirtualCamera_Impl::CreateSyncSemaphore(this, core::mem::transmute_copy(&kseventset), core::mem::transmute_copy(&kseventid), core::mem::transmute_copy(&kseventflags), core::mem::transmute_copy(&semaphorehandle), core::mem::transmute_copy(&semaphoreadjustment)) {
                     Ok(ok__) => {
-                        camerasyncobject.write(core::mem::transmute(ok__));
+                        camerasyncobject.cast::<IMFCameraSyncObject>().write(ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {

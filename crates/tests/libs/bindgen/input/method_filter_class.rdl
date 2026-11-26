@@ -1,7 +1,5 @@
-//! --flat --filter Test.Widget::Act
-// Drives the class member-routing branch of filter.rs register_member: a method
-// filter on a runtime class locates the required interface that carries the
-// method and registers it there.
+//! --filter Test.Widget::Act --full
+// A class member selection resolves to the declaring interface's method.
 #[winrt]
 mod Windows {
     mod Foundation {

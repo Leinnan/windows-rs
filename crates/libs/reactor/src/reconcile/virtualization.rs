@@ -11,14 +11,20 @@ fn virtual_relation(kind: ObjectType) -> Option<RelationId> {
 }
 
 fn virtual_keys(items: &VirtualItems) -> Vec<Key> {
-    let mut keys = Vec::with_capacity(items.len());
-    let mut unique = HashSet::with_capacity(items.len());
-    for index in 0..items.len() {
-        let key = items.key(index).unwrap();
-        assert!(unique.insert(key.clone()), "duplicate key {key:?}");
-        keys.push(key);
+    (0..items.len())
+        .map(|index| items.key(index).unwrap())
+        .collect()
+}
+
+fn virtual_key_indices(keys: &[Key]) -> HashMap<&Key, usize> {
+    let mut indices = HashMap::with_capacity(keys.len());
+    for (index, key) in keys.iter().enumerate() {
+        assert!(
+            indices.insert(key, index).is_none(),
+            "duplicate key {key:?}"
+        );
     }
-    keys
+    indices
 }
 
 pub(super) fn retain_virtual_items(declaration: &Declaration) -> Option<Box<RetainedVirtualItems>> {
@@ -39,6 +45,7 @@ pub(super) fn retain_virtual_items(declaration: &Declaration) -> Option<Box<Reta
         declaration.kind
     );
     let keys = virtual_keys(&declared.items);
+    virtual_key_indices(&keys);
     let next_token = u64::try_from(keys.len()).unwrap();
     Some(Box::new(RetainedVirtualItems {
         relation,
@@ -284,7 +291,7 @@ impl RetainedGraph {
     }
 }
 
-impl<A: Adapter> Runtime<A> {
+impl Runtime {
     /// Returns the virtual work for a realization at the front of the native queue, after applying
     /// the observations ahead of it. Returns `None` when a native event comes first, when the
     /// realization would replace one of the `busy` rows, or when a native event is being
@@ -303,9 +310,7 @@ impl<A: Adapter> Runtime<A> {
                 {
                     return None;
                 }
-                NativeEvent::Observation(_) | NativeEvent::Retirement(_)
-                    if self.native_event_active.get() =>
-                {
+                NativeEvent::Observation(_) if self.native_event_active.get() => {
                     return None;
                 }
                 _ => {}
@@ -419,6 +424,14 @@ impl<A: Adapter> Runtime<A> {
                 };
                 planner.reconcile_object(current, &declaration);
             } else {
+                if moved_container.is_none() {
+                    self.mutations.push(Mutation::Recycle {
+                        parent: lease.collection,
+                        relation: relation_id,
+                        container: lease.container,
+                        child: Some(current),
+                    });
+                }
                 let relation = self.graph.relation_mut(lease.collection, relation_id);
                 let RetainedRelationValue::Many(children) = &mut relation.value else {
                     unreachable!();
@@ -609,12 +622,8 @@ impl Planner<'_> {
         } else {
             previous.source_revision
         };
-        let indices = keys_changed.then(|| {
-            keys.iter()
-                .enumerate()
-                .map(|(index, key)| (key, index))
-                .collect::<HashMap<_, _>>()
-        });
+        // Equal keys were validated when retained.
+        let indices = keys_changed.then(|| virtual_key_indices(&keys));
         let mut next_token = previous.next_token;
         let tokens = if let Some(indices) = &indices {
             let mut tokens = vec![None; keys.len()];

@@ -295,13 +295,27 @@ impl ElementRef<SwapChainPanel> {
     }
 
     #[must_use]
+    /// Observes surface metrics and composition rendering events.
     pub fn observe_surface(
         &self,
         callback: impl Fn(SwapChainPanelEvent) + 'static,
     ) -> ElementObservation {
-        self.observe(ReferenceObservation::SwapChainPanel(Callback::new(
-            callback,
-        )))
+        self.observe(ReferenceObservation::SwapChainPanel {
+            callback: Callback::new(callback),
+            rendering: true,
+        })
+    }
+
+    #[must_use]
+    /// Observes size and scale changes without subscribing to composition rendering events.
+    pub fn observe_surface_metrics(
+        &self,
+        callback: impl Fn(SwapChainPanelEvent) + 'static,
+    ) -> ElementObservation {
+        self.observe(ReferenceObservation::SwapChainPanel {
+            callback: Callback::new(callback),
+            rendering: false,
+        })
     }
 
     fn request_swap_chain(
@@ -351,7 +365,7 @@ impl ElementRef<ScrollViewer> {
     /// scrolling report intermediate positions with `is_intermediate` set.
     #[must_use]
     pub fn observe_view(&self, callback: impl Fn(ScrollPosition) + 'static) -> ElementObservation {
-        self.observe(ReferenceObservation::ScrollView(Callback::new(callback)))
+        self.observe(ReferenceObservation::ScrollViewer(Callback::new(callback)))
     }
 
     /// Enqueues a scroll to the given offsets; `None` keeps that axis where it is.
@@ -366,11 +380,59 @@ impl ElementRef<ScrollViewer> {
         animated: bool,
         completion: impl Fn(Result<bool, IntegrationError>) + 'static,
     ) -> bool {
+        self.enqueue(
+            move |object, binding, target| ImperativeRequest::ScrollViewerTo {
+                object,
+                horizontal_offset,
+                vertical_offset,
+                animated,
+                completion: current_completion(target, binding, completion),
+            },
+        )
+    }
+}
+
+impl ElementRef<ScrollView> {
+    /// Observes the scroll offsets, viewport, and extent.
+    ///
+    /// The callback runs once the view is bound and again whenever any of these values change,
+    /// including during user and animated scrolling.
+    #[must_use]
+    pub fn observe_view(
+        &self,
+        callback: impl Fn(ScrollViewMetrics) + 'static,
+    ) -> ElementObservation {
+        self.observe(ReferenceObservation::ScrollView(Callback::new(callback)))
+    }
+
+    /// Scrolls to the given offsets, which WinUI clamps to the scrollable range.
+    ///
+    /// With `animate`, the scroll animates unless system animations are turned off. The
+    /// completion reports the view when the scroll ends, which is earlier than the target if
+    /// another scroll or user input interrupts it. It reports [`IntegrationError::Unavailable`]
+    /// if the view is removed first or WinUI does not start the scroll, such as when the view
+    /// has no content.
+    ///
+    /// # Panics
+    ///
+    /// Panics if either offset is not finite.
+    #[must_use]
+    pub fn request_scroll_to(
+        &self,
+        horizontal_offset: f64,
+        vertical_offset: f64,
+        animate: bool,
+        completion: impl Fn(Result<ScrollViewMetrics, IntegrationError>) + 'static,
+    ) -> bool {
+        assert!(
+            horizontal_offset.is_finite() && vertical_offset.is_finite(),
+            "scroll offsets must be finite"
+        );
         self.enqueue(move |object, binding, target| ImperativeRequest::ScrollTo {
             object,
             horizontal_offset,
             vertical_offset,
-            animated,
+            animate,
             completion: current_completion(target, binding, completion),
         })
     }
@@ -385,16 +447,18 @@ impl ElementRef<TextBox> {
         length: u32,
         completion: impl Fn(Result<(), IntegrationError>) + 'static,
     ) -> bool {
-        self.enqueue(move |object, binding, target| ImperativeRequest::SelectText {
-            object,
-            start,
-            length,
-            completion: current_completion(target, binding, completion),
-        })
+        self.enqueue(
+            move |object, binding, target| ImperativeRequest::SelectText {
+                object,
+                start,
+                length,
+                completion: current_completion(target, binding, completion),
+            },
+        )
     }
 }
 
-/// The scroll position of a `ScrollViewer`, in device-independent pixels.
+/// The scroll position of a [`ScrollViewer`], in device-independent pixels.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ScrollPosition {
     pub horizontal_offset: f64,
@@ -405,6 +469,17 @@ pub struct ScrollPosition {
     pub extent_height: f64,
     /// The position is still changing: more reports follow.
     pub is_intermediate: bool,
+}
+
+/// The scroll position and sizes of a [`ScrollView`], in view pixels.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct ScrollViewMetrics {
+    pub horizontal_offset: f64,
+    pub vertical_offset: f64,
+    pub viewport_width: f64,
+    pub viewport_height: f64,
+    pub extent_width: f64,
+    pub extent_height: f64,
 }
 
 impl ElementRef<Grid> {
@@ -596,10 +671,14 @@ struct ObservationRegistration {
 }
 
 enum ReferenceObservation {
-    SwapChainPanel(Callback<SwapChainPanelEvent>),
+    SwapChainPanel {
+        callback: Callback<SwapChainPanelEvent>,
+        rendering: bool,
+    },
     ImageScale(Callback<f64>),
     CompositionHost(Callback<CompositionHostEvent>),
-    ScrollView(Callback<ScrollPosition>),
+    ScrollView(Callback<ScrollViewMetrics>),
+    ScrollViewer(Callback<ScrollPosition>),
 }
 
 impl ObservationRegistration {
@@ -609,19 +688,21 @@ impl ObservationRegistration {
         binding: &ReferenceBinding,
     ) -> ImperativeRequest {
         match &self.kind {
-            ReferenceObservation::SwapChainPanel(callback) => {
-                ImperativeRequest::ObserveSwapChainPanel {
-                    object: binding.object,
-                    observation: self.id,
-                    binding: binding.id,
-                    callback: current_observation(
-                        Rc::downgrade(target),
-                        binding.id,
-                        self.id,
-                        callback.clone(),
-                    ),
-                }
-            }
+            ReferenceObservation::SwapChainPanel {
+                callback,
+                rendering,
+            } => ImperativeRequest::ObserveSwapChainPanel {
+                object: binding.object,
+                observation: self.id,
+                binding: binding.id,
+                rendering: *rendering,
+                callback: current_observation(
+                    Rc::downgrade(target),
+                    binding.id,
+                    self.id,
+                    callback.clone(),
+                ),
+            },
             ReferenceObservation::ImageScale(callback) => ImperativeRequest::ObserveImageScale {
                 object: binding.object,
                 observation: self.id,
@@ -654,6 +735,18 @@ impl ObservationRegistration {
                     callback.clone(),
                 ),
             },
+            ReferenceObservation::ScrollViewer(callback) => {
+                ImperativeRequest::ObserveScrollViewer {
+                    object: binding.object,
+                    observation: self.id,
+                    callback: current_observation(
+                        Rc::downgrade(target),
+                        binding.id,
+                        self.id,
+                        callback.clone(),
+                    ),
+                }
+            }
         }
     }
 }
@@ -708,7 +801,7 @@ fn current_observation<T: 'static>(
 pub(crate) struct ReferenceEndpoint {
     queue: Rc<RefCell<VecDeque<QueuedImperative>>>,
     routine_pending: Rc<Cell<usize>>,
-    waker: Rc<RefCell<Option<Rc<dyn Fn()>>>>,
+    drain: Rc<RefCell<Option<UiCallback>>>,
 }
 
 impl ReferenceEndpoint {
@@ -716,7 +809,7 @@ impl ReferenceEndpoint {
         Self {
             queue: Rc::new(RefCell::new(VecDeque::new())),
             routine_pending: Rc::new(Cell::new(0)),
-            waker: Rc::new(RefCell::new(None)),
+            drain: Rc::new(RefCell::new(None)),
         }
     }
 
@@ -743,9 +836,7 @@ impl ReferenceEndpoint {
         }
         queue.push_back(request);
         drop(queue);
-        if let Some(waker) = self.waker.borrow().as_ref() {
-            waker();
-        }
+        self.wake();
         true
     }
 
@@ -759,18 +850,17 @@ impl ReferenceEndpoint {
         Some(request)
     }
 
-    pub(crate) fn set_waker(&self, waker: impl Fn() + 'static) {
-        let waker: Rc<dyn Fn()> = Rc::new(waker);
-        *self.waker.borrow_mut() = Some(Rc::clone(&waker));
+    pub(crate) fn set_drain(&self, drain: UiCallback) {
+        *self.drain.borrow_mut() = Some(drain);
         if !self.queue.borrow().is_empty() {
-            waker();
+            self.wake();
         }
     }
 
     pub(crate) fn wake(&self) {
-        let waker = self.waker.borrow().clone();
-        if let Some(waker) = waker {
-            waker();
+        let drain = self.drain.borrow().clone();
+        if let Some(drain) = drain {
+            drain.wake();
         }
     }
 
@@ -780,7 +870,7 @@ impl ReferenceEndpoint {
         for request in requests {
             request.request.complete_unavailable();
         }
-        self.waker.borrow_mut().take();
+        self.drain.borrow_mut().take();
     }
 }
 
@@ -804,7 +894,7 @@ impl QueuedImperative {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub enum ImperativeRequest {
+pub(crate) enum ImperativeRequest {
     Focus {
         object: ObjectId,
         completion: Callback<Result<bool, FocusError>>,
@@ -822,6 +912,7 @@ pub enum ImperativeRequest {
         object: ObjectId,
         observation: u64,
         binding: u64,
+        rendering: bool,
         callback: Callback<SwapChainPanelEvent>,
     },
     RequestSwapChainPanelFrame {
@@ -848,6 +939,11 @@ pub enum ImperativeRequest {
         observation: u64,
         callback: Callback<CompositionHostEvent>,
     },
+    ObserveScrollView {
+        object: ObjectId,
+        observation: u64,
+        callback: Callback<ScrollViewMetrics>,
+    },
     RevokeObservation {
         object: ObjectId,
         observation: u64,
@@ -857,12 +953,19 @@ pub enum ImperativeRequest {
         visual: Option<windows_core::IUnknown>,
         completion: Callback<Result<(), IntegrationError>>,
     },
-    ObserveScrollView {
+    ScrollTo {
+        object: ObjectId,
+        horizontal_offset: f64,
+        vertical_offset: f64,
+        animate: bool,
+        completion: Callback<Result<ScrollViewMetrics, IntegrationError>>,
+    },
+    ObserveScrollViewer {
         object: ObjectId,
         observation: u64,
         callback: Callback<ScrollPosition>,
     },
-    ScrollTo {
+    ScrollViewerTo {
         object: ObjectId,
         horizontal_offset: Option<f64>,
         vertical_offset: Option<f64>,
@@ -900,6 +1003,11 @@ impl ImperativeRequest {
                 observation,
                 ..
             }
+            | Self::ObserveScrollViewer {
+                object,
+                observation,
+                ..
+            }
             | Self::RevokeObservation {
                 object,
                 observation,
@@ -916,7 +1024,7 @@ impl ImperativeRequest {
             Self::InitializeWebView2 { completion, .. } => {
                 completion.call(Err(IntegrationError::Unavailable));
             }
-            Self::ScrollTo { completion, .. } => {
+            Self::ScrollViewerTo { completion, .. } => {
                 completion.call(Err(IntegrationError::Unavailable));
             }
 
@@ -926,6 +1034,9 @@ impl ImperativeRequest {
             | Self::SetNativeImageSource { completion, .. }
             | Self::SetCompositionChildVisual { completion, .. }
             | Self::SelectText { completion, .. } => {
+                completion.call(Err(IntegrationError::Unavailable));
+            }
+            Self::ScrollTo { completion, .. } => {
                 completion.call(Err(IntegrationError::Unavailable));
             }
             _ => {}
@@ -956,7 +1067,3 @@ impl<T: ReferenceElement> CompatibleElementRef<T> for ElementRef<AnyElement> {
         self.clone()
     }
 }
-
-#[cfg(any(test, feature = "test"))]
-#[path = "test_support/reference.rs"]
-mod test_support;

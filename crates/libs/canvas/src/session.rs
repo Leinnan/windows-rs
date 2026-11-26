@@ -3,7 +3,7 @@ use super::*;
 /// An active Direct2D draw pass.
 ///
 /// Drawing coordinates and stroke widths use device-independent pixels (DIPs). Dropping an owned
-/// session ends its draw pass and records device loss.
+/// session ends its draw pass and records its result for the owning target or swap chain.
 pub struct DrawingSession<'a> {
     context: &'a ID2D1DeviceContext,
     mode: Mode<'a>,
@@ -11,7 +11,7 @@ pub struct DrawingSession<'a> {
 
 enum Mode<'a> {
     /// This session owns the `BeginDraw`/`EndDraw` bracket.
-    Owned { device_lost_flag: &'a Cell<bool> },
+    Owned { end_draw_result: &'a Cell<HRESULT> },
     /// This borrowed context is already bracketed by its owner.
     Borrowed { offset: Matrix3x2 },
 }
@@ -19,20 +19,22 @@ enum Mode<'a> {
 impl<'a> DrawingSession<'a> {
     pub(crate) fn new(
         context: &'a ID2D1DeviceContext,
-        device_lost_flag: &'a Cell<bool>,
+        end_draw_result: &'a Cell<HRESULT>,
     ) -> Result<Self> {
         unsafe { context.BeginDraw() };
         Ok(Self {
             context,
-            mode: Mode::Owned { device_lost_flag },
+            mode: Mode::Owned { end_draw_result },
         })
     }
 
     /// Wraps a context that is already inside a caller-owned `BeginDraw`/`EndDraw` bracket.
     ///
-    /// `offset` maps surface-local coordinates into a shared atlas while keeping caller-visible
-    /// transforms relative to `(0, 0)`.
-    pub fn from_borrowed_context(context: &'a ID2D1DeviceContext, offset: Matrix3x2) -> Self {
+    /// `context` is an `ID2D1DeviceContext` from any bindings, such as the `windows` crate; other
+    /// interfaces fail to build. `offset` maps surface-local coordinates into a shared atlas while
+    /// keeping caller-visible transforms relative to `(0, 0)`.
+    pub fn from_borrowed_context<T: Interface>(context: &'a T, offset: Matrix3x2) -> Self {
+        let context = context.as_interface::<ID2D1DeviceContext>();
         debug_assert!(
             offset.m11 == 1.0 && offset.m12 == 0.0 && offset.m21 == 0.0 && offset.m22 == 1.0,
             "offset must be a pure translation: get_transform decomposes it by negating m31/m32"
@@ -45,11 +47,14 @@ impl<'a> DrawingSession<'a> {
     }
 
     /// Wraps a borrowed context whose coordinates are device-independent pixels at `dpi`.
-    pub fn from_borrowed_context_with_dpi(
-        context: &'a ID2D1DeviceContext,
+    ///
+    /// See [`from_borrowed_context`](Self::from_borrowed_context).
+    pub fn from_borrowed_context_with_dpi<T: Interface>(
+        context: &'a T,
         offset: Matrix3x2,
         dpi: f32,
     ) -> Self {
+        let context = context.as_interface::<ID2D1DeviceContext>();
         unsafe { context.SetDpi(dpi, dpi) };
         Self::from_borrowed_context(context, offset)
     }
@@ -190,14 +195,8 @@ impl<'a> DrawingSession<'a> {
         end: Vector2,
         stops: &[GradientStop],
     ) -> Result<LinearGradient> {
-        let abi_stops: Vec<D2D1_GRADIENT_STOP> = stops.iter().map(|s| s.to_abi()).collect();
+        let collection = self.gradient_stops(stops)?;
         unsafe {
-            let collection = self.context.CreateGradientStopCollection(
-                abi_stops.as_ptr(),
-                abi_stops.len().try_into().unwrap(),
-                D2D1_GAMMA_2_2,
-                D2D1_EXTEND_MODE_CLAMP,
-            )?;
             let props = D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES {
                 startPoint: start,
                 endPoint: end,
@@ -216,14 +215,8 @@ impl<'a> DrawingSession<'a> {
         radius_y: f32,
         stops: &[GradientStop],
     ) -> Result<RadialGradient> {
-        let abi_stops: Vec<D2D1_GRADIENT_STOP> = stops.iter().map(|s| s.to_abi()).collect();
+        let collection = self.gradient_stops(stops)?;
         unsafe {
-            let collection = self.context.CreateGradientStopCollection(
-                abi_stops.as_ptr(),
-                abi_stops.len().try_into().unwrap(),
-                D2D1_GAMMA_2_2,
-                D2D1_EXTEND_MODE_CLAMP,
-            )?;
             let props = D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES {
                 center,
                 gradientOriginOffset: Vector2::new(0.0, 0.0),
@@ -236,23 +229,37 @@ impl<'a> DrawingSession<'a> {
         }
     }
 
-    /// Draws text into a layout rectangle measured in DIPs.
+    fn gradient_stops(&self, stops: &[GradientStop]) -> Result<ID2D1GradientStopCollection> {
+        let stops = GradientStop::as_abi(stops);
+        unsafe {
+            self.context.CreateGradientStopCollection(
+                stops.as_ptr(),
+                stops.len().try_into().unwrap(),
+                D2D1_GAMMA_2_2,
+                D2D1_EXTEND_MODE_CLAMP,
+            )
+        }
+    }
+
+    /// Draws text into a layout rectangle measured in DIPs. Color glyphs, such as emoji, draw in
+    /// their own colors.
     pub fn draw_text(&self, text: &str, format: &TextFormat, rect: &Rect, brush: &impl Paint) {
         let wide: Vec<u16> = text.encode_utf16().collect();
         unsafe {
             self.context.DrawText(
                 wide.as_ptr(),
                 wide.len().try_into().unwrap(),
-                format.raw(),
+                format.as_interface::<IDWriteTextFormat1>(),
                 &rect.to_abi(),
                 brush.as_raw_brush(),
-                D2D1_DRAW_TEXT_OPTIONS_NONE,
+                D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT,
                 0,
             );
         }
     }
 
-    /// Draws a pre-shaped [`TextLayout`] with its top-left at `origin`.
+    /// Draws a pre-shaped [`TextLayout`] with its top-left at `origin`. Color glyphs, such as
+    /// emoji, draw in their own colors.
     ///
     /// Prefer this over [`draw_text`](Self::draw_text) when the same text is
     /// drawn across frames: the layout is shaped once and reused.
@@ -260,9 +267,9 @@ impl<'a> DrawingSession<'a> {
         unsafe {
             self.context.DrawTextLayout(
                 origin,
-                layout.raw(),
+                layout.as_interface::<IDWriteTextLayout>(),
                 brush.as_raw_brush(),
-                D2D1_DRAW_TEXT_OPTIONS_NONE,
+                D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT,
             );
         }
     }
@@ -271,7 +278,7 @@ impl<'a> DrawingSession<'a> {
     pub fn draw_path(&self, path: &Path, brush: &impl Paint, width: f32) {
         unsafe {
             self.context
-                .DrawGeometry(path.raw(), brush.as_raw_brush(), width, None);
+                .DrawGeometry(&path.raw, brush.as_raw_brush(), width, None);
         }
     }
 
@@ -285,7 +292,7 @@ impl<'a> DrawingSession<'a> {
     ) {
         unsafe {
             self.context
-                .DrawGeometry(path.raw(), brush.as_raw_brush(), width, &style.0);
+                .DrawGeometry(&path.raw, brush.as_raw_brush(), width, &style.0);
         }
     }
 
@@ -293,7 +300,7 @@ impl<'a> DrawingSession<'a> {
     pub fn fill_path(&self, path: &Path, brush: &impl Paint) {
         unsafe {
             self.context
-                .FillGeometry(path.raw(), brush.as_raw_brush(), None);
+                .FillGeometry(&path.raw, brush.as_raw_brush(), None);
         }
     }
 
@@ -367,9 +374,37 @@ impl<'a> DrawingSession<'a> {
         self.set_transform(&prev);
     }
 
-    /// Returns the underlying Direct2D device context for interop.
-    pub fn raw(&self) -> &ID2D1DeviceContext {
-        self.context
+    /// Clips drawing for the duration of the closure, then restores the previous clip.
+    ///
+    /// `rect` is in DIPs under the current transform. Direct2D uses its axis-aligned bounding
+    /// box in target space, with aliased edges. Nested clips intersect.
+    pub fn with_clip(&self, rect: &Rect, f: impl FnOnce()) {
+        struct PopClip<'a>(&'a ID2D1DeviceContext);
+        impl Drop for PopClip<'_> {
+            fn drop(&mut self) {
+                unsafe { self.0.PopAxisAlignedClip() };
+            }
+        }
+        unsafe {
+            self.context
+                .PushAxisAlignedClip(&rect.to_abi(), D2D1_ANTIALIAS_MODE_ALIASED);
+        }
+        let _clip = PopClip(self.context);
+        f();
+    }
+
+    /// Borrows the underlying `ID2D1DeviceContext` as `T` without a `QueryInterface` call.
+    ///
+    /// `T` is `ID2D1DeviceContext` from other bindings, such as the `windows` crate; other
+    /// interfaces fail to build. Use [`to_interface`](Self::to_interface) to query for other
+    /// interfaces.
+    pub fn as_interface<T: Interface>(&self) -> &T {
+        self.context.as_interface()
+    }
+
+    /// Casts the underlying `ID2D1DeviceContext` to `T`.
+    pub fn to_interface<T: Interface>(&self) -> Result<T> {
+        self.context.cast()
     }
 
     /// Creates a bitmap suitable for use as a render target.
@@ -450,14 +485,9 @@ impl<'a> DrawingSession<'a> {
 
 impl Drop for DrawingSession<'_> {
     fn drop(&mut self) {
-        let Mode::Owned { device_lost_flag } = self.mode else {
+        let Mode::Owned { end_draw_result } = self.mode else {
             return;
         };
-        unsafe {
-            let result = self.context.EndDraw(None, None);
-            if is_device_lost(result) {
-                device_lost_flag.set(true);
-            }
-        }
+        end_draw_result.set(unsafe { self.context.EndDraw(None, None) });
     }
 }

@@ -37,14 +37,14 @@ impl Delegate {
             None,
             InterfaceKind::Default,
             &mut MethodNames::new(),
-            &mut MethodNames::new(),
+            &MethodNames::new().add(method.def),
             true,
         );
 
-        // Minimal event wrappers construct their delegates without calling `new`.
+        // Minimal event wrappers construct dependency delegates without calling `new`.
         let type_name = self.type_name();
         let is_event_only = config.bindgen.style.is_minimal()
-            && !config.filter.has_broad_filter
+            && !config.plan.selection.selects_type(type_name)
             && config.event_only_delegates.contains(&type_name);
         let invoke_method = if config.bindgen.style.is_minimal() {
             // Minimal delegates are framework-invoked, so hide public `Invoke`.
@@ -104,11 +104,7 @@ impl Delegate {
                 method.write_impl_signature(config, false, false)
             };
 
-            if config.bindgen.style.is_minimal() {
-                quote! { F: Fn #signature + 'static }
-            } else {
-                quote! { F: Fn #signature + Send + 'static }
-            }
+            quote! { F: Fn #signature + Send + Sync + 'static }
         };
 
         let new_method = if is_event_only {
@@ -170,7 +166,7 @@ impl Delegate {
                 };
                 unsafe extern "system" fn Invoke(#invoke_vtbl) -> windows_core::HRESULT {
                     unsafe {
-                        let this = &mut *(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox::<#name, F>);
+                        let this = &*(this as *mut *mut core::ffi::c_void as *mut windows_core::imp::DelegateBox::<#name, F>);
                         #invoke_upcall
                     }
                 }

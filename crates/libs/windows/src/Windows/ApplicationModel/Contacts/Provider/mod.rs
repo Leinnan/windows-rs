@@ -39,7 +39,7 @@ impl ContactPickerUI {
     pub fn DesiredFields(&self) -> windows_core::Result<windows_collections::IVectorView<windows_core::HSTRING>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).DesiredFields)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).DesiredFields)(windows_core::Interface::as_raw(self), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn SelectionMode(&self) -> windows_core::Result<super::ContactSelectionMode> {
@@ -50,7 +50,7 @@ impl ContactPickerUI {
     }
     pub fn ContactRemoved<F>(&self, handler: F) -> windows_core::Result<windows_core::EventRevoker>
     where
-        F: Fn(windows_core::Ref<Self>, windows_core::Ref<ContactRemovedEventArgs>) + Send + 'static,
+        F: Fn(windows_core::Ref<Self>, windows_core::Ref<ContactRemovedEventArgs>) + Send + Sync + 'static,
     {
         let handler = <super::super::super::Foundation::TypedEventHandler<Self, ContactRemovedEventArgs>>::new(move |a0, a1| {
             handler(a0, a1);
@@ -76,7 +76,7 @@ impl ContactPickerUI {
         let this = &windows_core::Interface::cast::<IContactPickerUI2>(self)?;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).DesiredFieldsWithContactFieldType)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(this).DesiredFieldsWithContactFieldType)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
 }
@@ -86,6 +86,7 @@ impl windows_core::RuntimeType for ContactPickerUI {
 unsafe impl windows_core::Interface for ContactPickerUI {
     type Vtable = <IContactPickerUI as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IContactPickerUI as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ContactPickerUI {
     const NAME: &'static str = "Windows.ApplicationModel.Contacts.Provider.ContactPickerUI";
@@ -108,15 +109,12 @@ impl windows_core::RuntimeType for ContactRemovedEventArgs {
 unsafe impl windows_core::Interface for ContactRemovedEventArgs {
     type Vtable = <IContactRemovedEventArgs as windows_core::Interface>::Vtable;
     const IID: windows_core::GUID = <IContactRemovedEventArgs as windows_core::Interface>::IID;
+    const INSPECTABLE: bool = true;
 }
 impl windows_core::RuntimeName for ContactRemovedEventArgs {
     const NAME: &'static str = "Windows.ApplicationModel.Contacts.Provider.ContactRemovedEventArgs";
 }
-windows_core::imp::define_interface!(IContactPickerUI, IContactPickerUI_Vtbl, 0xe2cc1366_cf66_43c4_a96a_a5a112db4746);
-impl windows_core::RuntimeType for IContactPickerUI {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Contacts.Provider.IContactPickerUI");
-}
+windows_core::imp::define_winrt_interface!(IContactPickerUI, IContactPickerUI_Vtbl, 0xe2cc1366_cf66_43c4_a96a_a5a112db4746, b"Windows.ApplicationModel.Contacts.Provider.IContactPickerUI");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IContactPickerUI_Vtbl {
@@ -129,11 +127,7 @@ pub struct IContactPickerUI_Vtbl {
     pub ContactRemoved: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut i64) -> windows_core::HRESULT,
     pub RemoveContactRemoved: unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IContactPickerUI2, IContactPickerUI2_Vtbl, 0x6e449e28_7b25_4999_9b0b_875400a1e8c8);
-impl windows_core::RuntimeType for IContactPickerUI2 {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Contacts.Provider.IContactPickerUI2");
-}
+windows_core::imp::define_winrt_interface!(IContactPickerUI2, IContactPickerUI2_Vtbl, 0x6e449e28_7b25_4999_9b0b_875400a1e8c8, b"Windows.ApplicationModel.Contacts.Provider.IContactPickerUI2");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IContactPickerUI2_Vtbl {
@@ -141,17 +135,13 @@ pub struct IContactPickerUI2_Vtbl {
     pub AddContact: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut AddContactResult) -> windows_core::HRESULT,
     pub DesiredFieldsWithContactFieldType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IContactProvider, IContactProvider_Vtbl, 0xc44bb54b_732f_5004_8cd7_65d90cf25f42);
-impl windows_core::RuntimeType for IContactProvider {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Contacts.Provider.IContactProvider");
-}
+windows_core::imp::define_winrt_interface!(IContactProvider, IContactProvider_Vtbl, 0xc44bb54b_732f_5004_8cd7_65d90cf25f42, b"Windows.ApplicationModel.Contacts.Provider.IContactProvider");
 windows_core::imp::interface_hierarchy!(IContactProvider, windows_core::IUnknown, windows_core::IInspectable);
 impl IContactProvider {
     pub fn GetContactFromRemoteIdAsync(&self, contactremoteid: &windows_core::HSTRING) -> windows_core::Result<windows_future::IAsyncOperation<super::Contact>> {
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(self).GetContactFromRemoteIdAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(contactremoteid), &mut result__).and_then(|| windows_core::imp::Type::from_abi(result__))
+            (windows_core::Interface::vtable(self).GetContactFromRemoteIdAsync)(windows_core::Interface::as_raw(self), core::mem::transmute_copy(contactremoteid), &mut result__).and_then(|| windows_core::imp::from_abi(result__))
         }
     }
     pub fn ContactListId(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -173,10 +163,9 @@ impl IContactProvider_Vtbl {
         unsafe extern "system" fn GetContactFromRemoteIdAsync<Identity: IContactProvider_Impl, const OFFSET: isize>(this: *mut core::ffi::c_void, contactremoteid: *mut core::ffi::c_void, result__: *mut *mut core::ffi::c_void) -> windows_core::HRESULT {
             unsafe {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
-                match IContactProvider_Impl::GetContactFromRemoteIdAsync(this, core::mem::transmute(&contactremoteid)) {
+                match IContactProvider_Impl::GetContactFromRemoteIdAsync(this, &*(&raw const contactremoteid).cast()) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -191,8 +180,7 @@ impl IContactProvider_Vtbl {
                 let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
                 match IContactProvider_Impl::ContactListId(this) {
                     Ok(ok__) => {
-                        result__.write(core::mem::transmute_copy(&ok__));
-                        core::mem::forget(ok__);
+                        core::ptr::write(result__.cast(), ok__);
                         windows_core::HRESULT(0)
                     }
                     Err(err) => {
@@ -203,7 +191,7 @@ impl IContactProvider_Vtbl {
             }
         }
         Self {
-            base__: windows_core::IInspectable_Vtbl::new::<Identity, IContactProvider, OFFSET>(),
+            base__: windows_core::IInspectable_Vtbl::new::<Identity, OFFSET>(),
             GetContactFromRemoteIdAsync: GetContactFromRemoteIdAsync::<Identity, OFFSET>,
             ContactListId: ContactListId::<Identity, OFFSET>,
         }
@@ -219,11 +207,7 @@ pub struct IContactProvider_Vtbl {
     pub GetContactFromRemoteIdAsync: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     pub ContactListId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
-windows_core::imp::define_interface!(IContactRemovedEventArgs, IContactRemovedEventArgs_Vtbl, 0x6f354338_3302_4d13_ad8d_adcc0ff9e47c);
-impl windows_core::RuntimeType for IContactRemovedEventArgs {
-    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
-    const NAME: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"Windows.ApplicationModel.Contacts.Provider.IContactRemovedEventArgs");
-}
+windows_core::imp::define_winrt_interface!(IContactRemovedEventArgs, IContactRemovedEventArgs_Vtbl, 0x6f354338_3302_4d13_ad8d_adcc0ff9e47c, b"Windows.ApplicationModel.Contacts.Provider.IContactRemovedEventArgs");
 #[repr(C)]
 #[doc(hidden)]
 pub struct IContactRemovedEventArgs_Vtbl {

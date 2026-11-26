@@ -2,8 +2,9 @@
 
 use std::time::Instant;
 use windows_canvas::*;
-use windows_canvas::{Ellipse as CanvasEllipse, Rect as CanvasRect, TextAlignment};
+use windows_canvas::{Ellipse as CanvasEllipse, Rect as CanvasRect};
 use windows_reactor::*;
+use windows_text::{TextAlignment, TextFormat};
 
 struct Sample {
     count: u32,
@@ -36,7 +37,7 @@ impl Component for Sample {
 
     fn view(&self, _input: &(), context: &mut ViewContext<Self>) -> View {
         context.window_title("Canvas + Reactor");
-        context.window_visuals(WindowVisuals::new().backdrop(WindowBackdrop::Mica));
+        context.window_visuals(WindowVisuals::new().backdrop(SystemBackdrop::Mica));
         let count = self.count;
         let start = self.start;
         let surface = animated_canvas(move |ctx| {
@@ -59,7 +60,8 @@ impl Component for Sample {
                 ));
                 ctx.fill_ellipse(&CanvasEllipse::circle(Vector2::new(x, y), radius), &brush);
             }
-            let format = TextFormat::with_weight("Segoe UI", 20.0, CanvasFontWeight::BOLD)?
+            let format = TextFormat::new("Segoe UI", 20.0)
+                .with_weight(windows_text::FontWeight::BOLD)
                 .with_alignment(TextAlignment::Center);
             brush.set_color(ColorF::WHITE);
             ctx.draw_text(

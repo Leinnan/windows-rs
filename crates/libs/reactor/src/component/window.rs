@@ -70,7 +70,7 @@ impl<T> WindowObserverLifetime<T> {
     }
 }
 
-impl<A: Adapter> ComponentHost<A> {
+impl ComponentHost {
     pub(crate) fn window_color_scheme_callback(
         &self,
         generation: u64,

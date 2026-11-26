@@ -524,7 +524,6 @@ name = "Children"
 
 [[objects]]
 name = "ScrollViewer"
-reference = true
 
 [[objects.properties]]
 name = "HorizontalScrollBarVisibility"

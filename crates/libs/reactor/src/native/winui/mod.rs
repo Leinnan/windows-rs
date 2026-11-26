@@ -270,10 +270,6 @@ enum ObservationSubscription {
         _extent: windows_core::EventRevoker,
         _size: windows_core::EventRevoker,
     },
-    ScrollViewer {
-        _changed: windows_core::EventRevoker,
-        _size: windows_core::EventRevoker,
-    },
 }
 
 /// Scrolls requested on one `ScrollView`, keyed by the correlation id its `ScrollCompleted`
@@ -541,18 +537,6 @@ fn complete_webview_initialization(
         for completion in initialization.completions {
             completion.call(result.clone());
         }
-    }
-}
-
-fn scroll_viewer_position(viewer: &native::ScrollViewer, is_intermediate: bool) -> ScrollPosition {
-    ScrollPosition {
-        horizontal_offset: viewer.HorizontalOffset().unwrap_or(0.0),
-        vertical_offset: viewer.VerticalOffset().unwrap_or(0.0),
-        viewport_width: viewer.ViewportWidth().unwrap_or(0.0),
-        viewport_height: viewer.ViewportHeight().unwrap_or(0.0),
-        extent_width: viewer.ExtentWidth().unwrap_or(0.0),
-        extent_height: viewer.ExtentHeight().unwrap_or(0.0),
-        is_intermediate,
     }
 }
 

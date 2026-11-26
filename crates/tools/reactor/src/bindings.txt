@@ -139,8 +139,6 @@ Microsoft::UI::Xaml::Controls::IScrollView::{add_ExtentChanged, add_ScrollComple
 Microsoft::UI::Xaml::Controls::ISelectorBar::{add_SelectionChanged, get_Items, get_SelectedItem, put_SelectedItem, remove_SelectionChanged}
 Microsoft::UI::Xaml::Controls::ISelectorBarItem::{get_Text, put_Icon}
 Microsoft::UI::Xaml::Controls::ISlider::put_Header
-Microsoft::UI::Xaml::Controls::IScrollViewer::{add_ViewChanged, ChangeViewWithOptionalAnimation, get_ExtentHeight, get_ExtentWidth, get_HorizontalOffset, get_VerticalOffset, get_ViewportHeight, get_ViewportWidth, remove_ViewChanged}
-Microsoft::UI::Xaml::Controls::IScrollViewerViewChangedEventArgs::get_IsIntermediate
 Microsoft::UI::Xaml::Controls::ISplitButton::{add_Click, put_Flyout, remove_Click}
 Microsoft::UI::Xaml::Controls::ISplitView::{add_PaneClosed, get_IsPaneOpen, put_Content, put_Pane, remove_PaneClosed}
 Microsoft::UI::Xaml::Controls::ISwapChainPanel::{add_CompositionScaleChanged, get_CompositionScaleX, get_CompositionScaleY, remove_CompositionScaleChanged}

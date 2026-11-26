@@ -834,69 +834,6 @@ impl WinUiAdapter {
                     Err(error) => completion.call(Err(integration_error(error))),
                 }
             }
-            ImperativeRequest::ObserveScrollViewer {
-                object,
-                observation,
-                callback,
-            } => {
-                let Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) =
-                    self.handles.get(&object)
-                else {
-                    return Ok(());
-                };
-                callback.call(scroll_viewer_position(control, false));
-                let changed_viewer = control.clone();
-                let changed_callback = callback.clone();
-                let changed = control.ViewChanged(local::handler::<
-                    IInspectable,
-                    native::ScrollViewerViewChangedEventArgs,
-                    _,
-                >(move |_, args| {
-                    let is_intermediate = args
-                        .as_ref()
-                        .and_then(|args| args.IsIntermediate().ok())
-                        .unwrap_or(false);
-                    changed_callback.call(scroll_viewer_position(&changed_viewer, is_intermediate));
-                }))?;
-                // A resize changes the viewport without moving the content.
-                let size_viewer = control.clone();
-                let size =
-                    control
-                        .cast::<native::IFrameworkElement>()?
-                        .SizeChanged(local::handler::<_, native::SizeChangedEventArgs, _>(
-                            move |_, _| callback.call(scroll_viewer_position(&size_viewer, false)),
-                        ))?;
-                self.observations.insert(
-                    (object, observation),
-                    ObservationSubscription::ScrollViewer {
-                        _changed: changed,
-                        _size: size,
-                    },
-                );
-            }
-            ImperativeRequest::ScrollViewerTo {
-                object,
-                horizontal_offset,
-                vertical_offset,
-                animated,
-                completion,
-            } => {
-                let result = match self.handles.get(&object) {
-                    Some(Handle::Generated(GeneratedHandle::ScrollViewer(control))) => control
-                        .ChangeViewWithOptionalAnimation(
-                            horizontal_offset,
-                            vertical_offset,
-                            None,
-                            !animated,
-                        ),
-                    _ => Err(windows_core::Error::new(
-                        HRESULT(0x8000000E_u32 as i32),
-                        "scroll viewer unavailable",
-                    )),
-                }
-                .map_err(integration_error);
-                completion.call(result);
-            }
             ImperativeRequest::SelectText {
                 object,
                 start,

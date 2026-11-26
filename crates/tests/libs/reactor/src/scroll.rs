@@ -73,7 +73,7 @@ impl Component for ScrollLayoutFixture {
     type Message = LayoutMessage;
 
     fn create(_: &bool, context: &ComponentContext<Self>) -> Self {
-        let view: ElementRef<ScrollView> = ElementRef::new();
+        let view = ElementRef::new();
         let observed = context.callback(LayoutMessage::View);
         let observation = view.observe_view(move |metrics| observed.call(metrics));
         Self {
@@ -233,7 +233,7 @@ impl Component for ScrollFixture {
     type Message = Message;
 
     fn create(_: &(), context: &ComponentContext<Self>) -> Self {
-        let view: ElementRef<ScrollView> = ElementRef::new();
+        let view = ElementRef::new();
         let observed = context.callback(Message::View);
         let observation = view.observe_view(move |metrics| observed.call(metrics));
         Self {
@@ -422,7 +422,7 @@ impl Component for ScrollPrependFixture {
     type Message = PrependMessage;
 
     fn create(_: &(), context: &ComponentContext<Self>) -> Self {
-        let view: ElementRef<ScrollView> = ElementRef::new();
+        let view = ElementRef::new();
         let observed = context.callback(PrependMessage::View);
         let observation = view.observe_view(move |metrics| observed.call(metrics));
         Self {
